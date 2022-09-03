@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Setting;
 use App\Models\Social;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        URL::forceScheme('http');
     }
 
     /**
@@ -57,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
 
-        
+        URL::forceScheme('http');
 
 
     }
