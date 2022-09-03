@@ -1,0 +1,23 @@
+{
+    "/js/admin_courses.js": "/js/admin_courses.js",
+    "/js/app.js": "/js/app.js",
+    "/css/responsive.css": "/css/responsive.css",
+    "/css/app.css": "/css/app.css",
+    "/css/course_instruction.css": "/css/course_instruction.css",
+    "/css/text.css": "/css/text.css",
+    "/js/bootstrap.js": "/js/bootstrap.js",
+    "/js/course_category.js": "/js/course_category.js",
+    "/js/course_instruction.js": "/js/course_instruction.js",
+    "/js/course_time_selection.js": "/js/course_time_selection.js",
+    "/js/course_title.js": "/js/course_title.js",
+    "/js/dashboard.js": "/js/dashboard.js",
+    "/js/edit_user.js": "/js/edit_user.js",
+    "/js/fade_out_msg.js": "/js/fade_out_msg.js",
+    "/js/landing_page.js": "/js/landing_page.js",
+    "/js/main.js": "/js/main.js",
+    "/js/message.js": "/js/message.js",
+    "/js/price.js": "/js/price.js",
+    "/js/promotion.js": "/js/promotion.js",
+    "/js/target_ur_students.js": "/js/target_ur_students.js",
+    "/js/users.js": "/js/users.js"
+}

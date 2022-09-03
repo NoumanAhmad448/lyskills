@@ -1,0 +1,538 @@
+@php
+    use App\Models\Lecture;    
+    use App\Models\WishList;
+    use App\Models\CourseEnrollment;
+    use Carbon\Carbon;
+    
+@endphp
+@extends('layouts.guest')
+
+@section('page-css')
+    <meta property="og:url"           content="{{route('user-course' , ['slug' => $course->slug])}}" />
+    <meta property="og:type"          content="website" />   
+    <meta property="og:image"         content="@if(empty($c_img))  {{asset('img/logo.jpg')}} @else  {{ asset('storage/'.$c_img) }} @endif" />
+@endsection
+
+
+@section('content')
+    <section class="my-1 bg-static">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 p-4 py-5">
+                    @include('session_msg')
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-white text-dark">                            
+                          @if($course->categories_selection) <li class="breadcrumb-item text-capitalize" > <a href="{{route('user-categories', ['category' => $course->categories_selection] )}}"> {{ $course->categories_selection ?? ''  }} </a> </li> @endif
+                            <li class="breadcrumb-item active" aria-current="page"> {{ $course->slug ?? '' }} </li>
+                        </ol>
+                      </nav>    
+                                        
+                    <h1 class="text-capitalize"> {{ $course->course_title ?? '' }} </h1>
+                    <div class="mt-2">
+                        {{ reduceCharIfAv($course->description ?? '', 200) }}
+                    </div>
+                    <div class="mt-2 text-uppercase">
+                        created by <span class="text-warning"> {{ $course->user->name ?? '' }} </span>
+                    </div>
+                    <div class="mt-2">
+                        Last updated {{ Carbon::parse($course->updated_at)->toDateString() ?? '' }}
+                    </div>
+                    @if(!empty($total_en))
+                        <div class="m2-1">
+                            Enrollment: {{ $total_en ?? '' }}
+                        </div>
+                    @endif
+                    @if($course && $course->lang && $course->lang->name)
+                        <div class="m2-1">
+                            Language: {{ $course->lang->name ?? '' }}
+                        </div>
+                    @endif
+
+                    
+                    
+                    <div class="mt-2">
+                        <section class="d-flex">
+                            <form action="{{route('wishlist-course-post', ['slug' => $course->slug])}}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-light"> 
+                                    @auth
+                                        @if(WishList::where('user_id' , auth()->id())->where('c_id', $course->id)->first())
+                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                        @else
+                                            <i class="fa fa-heart-o text-website" aria-hidden="true"></i>
+                                            @endif
+                                    @endauth
+                                    @guest
+                                        <i class="fa fa-heart-o text-website" aria-hidden="true"></i>
+                                    @endguest
+                                    Wishlist 
+                                </button>
+                            </form>
+                            
+                            <div link="{{route('user-course' , ['slug' => $course->slug ])}}" id="share_course" class="btn btn-light ml-2"> <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                                Share
+                            </div>
+                            {{-- <a href="" class="btn btn-light ml-2"> <i class="fa fa-gift" aria-hidden="true"></i>
+                                Gift Course
+                            </a> --}}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </section>
+    
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="jumbotron pt-3 bg-white">
+                   
+                    @php 
+                        $learnable_skill = json_decode($course->learnable_skill)
+                    @endphp
+    
+                    @if($learnable_skill)
+                        <h2 class="mt-1" style="">
+                            {{ __('Your Coverages')  }}
+                        </h2>
+                        <ul class="pl-2 mt-2" style="list-style-type: none">
+                            <div class="row">                                                          
+                                @foreach ($learnable_skill as $skill)                                
+                                <div class="col-md-6 d-flex mt-1">
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>    
+                                         <li class="ml-2"> {{ $skill }} </li>
+                                </div>                                
+                                @endforeach
+                            </div>                            
+                        </ul>
+                    @endif
+                </div>
+                <hr/>
+                
+                <div class="jumbotron pt-3 bg-white">
+                   
+                    @php 
+                        $course_requirements = json_decode($course->course_requirement)
+                    @endphp
+    
+                    @if($course_requirements)
+                        <ol class="pl-2 mt-2" style="list-style-type: none">
+                            <h2 class="mt-1">
+                                {{ __('Course Requirements')  }}
+                            </h2>
+                            <div class="row">                                                          
+                                @foreach ($course_requirements as $skill)
+                                <div class="col-md-6 d-flex mt-1">
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>    
+                                         <li class="ml-2"> {{ $skill }} </li>
+                                </div>   
+                                @endforeach
+                            </div>                            
+                        </ol>
+                    @endif
+                </div>
+                <hr/>
+                <div class="jumbotron pt-3 bg-white">
+                   
+                    @php 
+                        $targeting_student = json_decode($course->targeting_student);
+                    @endphp
+    
+                    @if($targeting_student)
+                        <ol class="pl-2 mt-2" style="list-style-type: none">
+                            <h2 class="mt-1">
+                                {{ __('Which Students must take this course')  }}
+                            </h2>
+                            <div class="row">                                                          
+                                @foreach ($targeting_student as $skill)
+                                     <div class="col-md-6 d-flex mt-1">
+                                        <i class="fa fa-star-o" aria-hidden="true"></i>    
+                                             <li class="ml-2"> {{ $skill }} </li>
+                                    </div>   
+                                @endforeach
+                            </div>                            
+                        </ol>
+                    @endif
+                </div>
+                <hr/>
+                <div class="course_content">
+                    <section class="my-4  ml-4 d-flex justify-content-between align-items-center">
+                        <h2 class=""> Course Content </h2>
+                        <div id="show_time"> </div>
+                    </section>
+                    
+                    <div class="accordion mt-2" id="course_content">
+                        <div class="card">
+                            @php $sections = $course->sections;
+                                $total_time = 0;
+                            @endphp
+                            
+                            @if (isset($sections) && $sections->count())
+                                @foreach ($sections as $sec)
+                                    <div class="card-header" id="headingOne">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link btn-block text-left font-bold text-dark text-capitalize"
+                                                style="font-size: 1.2rem;"
+                                                type="button" data-toggle="collapse" data-target="#section{{$sec->id}}" 
+                                                    aria-expanded="true" aria-controls="collapseOne">
+                                                        {{ $sec->section_title ?? '' }}
+                                                </button>
+                                            </h2>
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#section{{$sec->id}}" 
+                                                aria-expanded="true" aria-controls="collapseOne">                                                    
+                                                    <i class="fa fa-angle-double-down" aria-hidden="true"></i>
+                                            </button>
+                                    </div>
+                                    
+                                </div>
+                                    <div id="section{{$sec->id}}" class="collapse show @if($sec->section_no == 1 )  @endif" aria-labelledby="headingOne" data-parent="#course_content">
+                                        <div class="card-body">
+                                            @php $lectures = Lecture::where('course_id', $course->id)->where('sec_no', $sec->section_no)->get();
+                                            @endphp
+                                            @if($lectures->count())
+                                                @foreach ($lectures as $lec)
+                                                <section class="d-flex justify-content-between">
+                                                    <div> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
+                                                          {{ $lec->lec_name ?? '' }} </div>
+                                                          @php if($lec->count()) { $media = $lec->media;}
+                                                           if($media){ $total_time += $media->time_in_mili;}
+                                                          @endphp
+                                                    <div> @if($media) {{ $media->duration ?? '' }} @endif</div>
+
+                                                </section>
+                                                    {{-- @php $res_video = $lec->res_vid; @endphp --}}
+                                                    {{-- @if($res_video)
+                                                        <div> 
+                                                            <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
+                                                            {{ $res_video->f_name ?? '' }} 
+                                                        </div>
+                                                    @endif
+                                                    @php $article = $lec->article; @endphp
+                                                    @if($article)
+                                                        <div> 
+                                                            <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                                            {{ reduceCharIfAv($article->article_txt ?? '' , 50) }} 
+                                                        </div>
+                                                    @endif
+                                                    @php $ex_res = $lec->ex_res; @endphp
+                                                    @if($ex_res)
+                                                        <div> 
+                                                            <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                                            {{ $ex_res->title ?? ''  }} 
+                                                        </div>
+                                                    @endif
+                                                    @php $other_file = $lec->other_file; @endphp
+                                                    @if($other_file)
+                                                        <div> 
+                                                            <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                                            {{ $other_file->saved_f_name ?? ''  }} 
+                                                        </div>
+                                                    @endif --}}
+                                                    {{-- @php $assign = $lec->assign; @endphp
+                                                    @if($assign->count())
+                                                        @foreach ($assign as $ass)
+                                                            <div> 
+                                                                <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                                                {{ $ass->title ?? ''  }} 
+                                                            </div>                                                        
+                                                        @endforeach
+                                                    @endif
+                                                    @php $quizzs = $lec->quizzs; @endphp
+                                                        @if($quizzs->count())
+                                                            @foreach ($quizzs as $q)
+                                                                <div> 
+                                                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                                                    {{ $q->title ?? ''  }} 
+                                                                </div>                                                        
+                                                        @endforeach
+                                                    @endif --}}
+
+
+                                                @endforeach 
+                                            @endif
+                                        </div>
+                                    </div>                                    
+                                @endforeach
+                            @endif
+
+                            @php $total_time = Carbon::parse($total_time)->toTimeString();  @endphp
+                            <input type="hidden" id="total_time" value="{{$total_time}}">
+                        
+                        </div>
+                    </div>
+                </div>
+            
+                @if($course->description)
+                    <div class="mt-2 jumbotron bg-white pt-3">
+                        <h2> Description </h2>
+                        <div id="course_desc" class="mt-3">
+                            {{ $course->description ?? '' }}
+                        </div>
+                    </div>
+                    <hr/>
+                @endif
+                @php 
+                    $profile = $course->user->profile 
+                @endphp
+                @if($profile)
+                    <div class="mt-2 jumbotron pt-3 bg-white">
+                        <h2> Instructor Profile </h2>
+                        <div  class="mt-3"> 
+                            <div class="row">
+                                <div class="col-1">
+                                    <img height="50" width="50" class="rounded-circle object-cover" src="@if($course->user->profile_photo_path) {{ asset($course->user->profile_photo_path) }} @else
+                                    {{ $course->user()->profile_photo_url }} @endif" alt="{{ $course->user->name }}" />                      
+                                </div>
+                                <div class="col-7">
+                                    <div class="text-uppercase"> {{ $course->user->name ?? ''}} </div>
+                                    <div class="text-capitalize"> {{ $profile->headline ?? ''}} </div>
+                                </div>
+                            </div>
+                            <div class="mt-1">
+                                {{ $profile->bio ?? '' }}    
+                            </div> 
+                        </div>
+                    </div>
+                @endif
+            </div>
+            <div class="col-md-4">
+                <div class="border p-1">
+                    <?php 
+                        $c_vid = $course->course_vid;
+                    ?>
+                    @if($c_vid && $c_vid->vid_path)                    
+                        <video  controls class="w-100">
+                            <source src="{{asset('storage/'.$c_vid->vid_path)}}" type="{{$c_vid->video_type ?? '' }}">                        
+                                Your browser does not support the video tag.
+                        </video>
+                    @endif
+                    <div class="px-2">
+                        @php $price = $course->price; @endphp
+                        @if($price)
+                        <section class="d-flex ">
+                            @if($price->is_free)
+                                <div class="mt-2 h3"> FREE </div>
+                            @else
+
+                                @php $total_p = $price->pricing;  @endphp
+                                <section class="d-flex align-items-center">
+                                    <div class="mt-2 h3"> ${{$total_p}} </div>
+                                    @php $total_p = ((int)$total_p)+20 @endphp
+                                    <div class="ml-3"> <del> ${{ $total_p }} </del> </div>
+                                </section>
+                            @endif
+                        </section>
+                        @endif
+                        {{-- @unless($price->is_free) <a href="" class="btn btn-lg btn-block btn-website">Add to Cart</a> @endunless --}}
+                        @auth
+                            @php 
+                                $u_id = auth()->id();
+                                $enrolled_s = CourseEnrollment::where('user_id',$u_id)->where('course_id',$course->id)->first();
+                            @endphp
+                           @unless($price && $price->is_free || allowCourseToAdmin() || $u_id == $course->user_id || ($enrolled_s && $enrolled_s->count()))
+                                <a href="{{route('a_payment_methods', ['slug' => $course->slug])}}" class="btn btn-lg btn-block btn-outline-website"> Buy Now </a>                            
+                            @elseif($price && $price->is_free && $enrolled_s == null)                                
+                            <form action="{{route('enroll-now', ['course' => $course->id])}}" method="post">
+                                @csrf
+                                <input type="submit" class="btn btn-lg btn-block btn-outline-website" value="Enroll Now"/>                                        
+                            </form>                           
+                            @endunless
+                            
+                            @if ($course->slug )
+                                @if($course->lecture)
+                                @if( $course->lecture->media)
+                                @if($course->lecture->media->lec_name)
+                                @if(allowCourseToAdmin() 
+                                    || auth()->id() == $course->user_id || ($enrolled_s && $enrolled_s->count()))
+                                <a href="{{route('video-page', ['slug' => $course->slug, 
+                                'video' => explode('/',$course->lecture->media->lec_name)[1]])}}" class="btn btn-lg btn-block btn-outline-website"> Start Course </a>
+                                @endif
+                                @endif
+                                @endif
+                                @endif
+                            @endif
+                        @endauth 
+                        @guest 
+                            @unless($price && $price->is_free)
+                             <a href="{{route('a_payment_methods', ['slug' => $course->slug])}}" class="btn btn-lg btn-block btn-outline-website"> Buy Now </a>
+                             @endunless
+                            @if($price && $price->is_free)
+                                    <form action="{{route('enroll-now', ['course' => $course->id])}}" method="post">
+                                        @csrf
+                                        <input type="submit" class="btn btn-lg btn-block btn-outline-website" value="Enroll Now"/>                                        
+                                    </form>
+                            @endif
+                           @endguest
+                       
+                        <div class="text-center text-website d-none"> 30 days money back guarantee</div>
+                        <div class="mt-3">
+                            <div class="font-bold"> This course has</div>
+                            <div > <i class="fa fa-star-o" aria-hidden="true"></i>
+                                Full Lifetime Access </div>
+                            <div ><i class="fa fa-star-o" aria-hidden="true"></i>
+                                Access on mobile  </div>
+                            <div ><i class="fa fa-star-o" aria-hidden="true"></i>
+                                Certificate of Completion </div>
+                            @php $quizzes = $course->quizzes->count(); @endphp
+                                @if($quizzes)
+                                 <div> {{ $quizzes }} Quizzes </div>
+                            @endif
+                            @if($total_time)
+                            <i class="fa fa-star-o" aria-hidden="true"></i> total time {{ $total_time }}
+                            @endif
+                            @php $ass  =  $course->assignments->count(); @endphp
+                            @if($ass)
+                                <div> {{ $ass }} Assignments </div>
+                            @endif
+                        </div>
+                        <section class="apply_coupon my-3">                                                           
+                                    <form action="{{route('coupon')}}" method="post">  
+                                        @csrf
+                                        <div class="d-flex">
+                                            <input type="text" name="coupon" id="coupon" placeholder="Coupon"
+                                                value="{{old('coupon')}}" class="@error('coupon') is-invalid @enderror form-control"
+                                                >
+                                                <input type="hidden" name="course" value="{{$course->id}}">
+                                                <button type="submit" class="btn btn-website btn-sm ml-1"> 
+                                                    Confirm
+                                                </button>
+                                        </div>
+                                        {{-- <div class="col-6">
+                                        </div> --}}
+                                    </form>
+                                {{-- </div> --}}
+                            {{-- </div> --}}
+                        </section>
+                    </div>
+                        
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" tabindex="-1" id="course_share_modal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" >
+          <div class="modal-content">
+            <div class="modal-header bg-static-website">
+              <h5 class="modal-title"> Share Course </h5>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="share_m_body">
+              <div class="">
+                  <div class="mr-2" id="show_link">
+                  </div>
+                  <div class="d-flex justify-content-end"> 
+                      <input type="hidden" id="link" value="{{route('user-course' , ['slug' => $course->slug])}}">
+                      <div class="btn btn-website" id="copy_url"> Copy Link</div>
+                  </div>
+                  <div id="show_msg" clas="text-success">
+                  </div>
+              </div>
+              <section class="d-flex justify-content-between mt-3">
+                  <div>
+                <div class="btn btn-wesbite btn-sm" 
+                    data-href="{{ route('user-course' , ['slug' => $course->slug]) }}" 
+                    data-layout="button_count" style="border: 1px solid #0f7c80; color: #0f7c80">
+                    <i class="fa fa-facebook-official" aria-hidden="true"></i> Facebook 
+                 </div>
+                    {{-- <div class="fb-share-button" data-href="{{ route('user-course' , ['slug' => $course->slug]) }}"
+                     data-layout="button_count"
+                    data-size="large"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{route('user-course' , ['slug' => $course->slug])}}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div> --}}
+                        
+                    <a href="mailto:your_friend_email@gmail.com?subject=New%20Course
+                    &body={{ route('user-course' , ['slug' => $course->slug]) }}" class="btn btn-website btn-sm" target="_blank"> 
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>  Email </a>
+                    <a href="https://api.whatsapp.com/send?text={{route('user-course' , ['slug' => $course->slug])}}" class="btn btn-sm btn-website" target="_blank">
+                        <i class="fa fa-whatsapp" aria-hidden="true"></i> Whatsapp</a>
+                  </div>
+                  <div>
+                    <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+                    <script type="IN/Share" data-url="{{ route('user-course' , ['slug' => $course->slug]) }}"></script>
+                  </div>
+                </section>
+            </div>
+            {{-- <div class="modal-footer">                
+                    <button type="button" class="btn btn-website" data-dismiss="modal">Close</button>              
+                </div> --}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div aria-live="polite" aria-atomic="true" style=" min-height: 200px;width: 200px"  >
+        <div class="toast" style="position: absolute; top: 20; right: 0;">
+          <div class="toast-header">            
+            <strong class="mr-auto">Message</strong>
+            <small>1 sec ago</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body">
+             URL has been copied 
+          </div>
+        </div>
+      </div>
+
+@endsection
+
+@section('script')
+    <script>
+        $(function(){
+            $('#share_course').click(function(){
+                let url  = $(this).attr('link');
+                if(url){
+                    $('#show_link').text(url);
+                    $('#course_share_modal').modal('show');
+                }
+            });
+
+            // $('#copy_url').click(function(){   
+            //     var $temp = $("<input>");
+            //     $("body").append($temp);
+            //     $temp.val($('#show_link').text()).select();
+            //     document.execCommand("copy");
+            //     $temp.remove();
+            //     $('#show_msg').text('copied!');
+
+            // });
+            
+            $('#copy_url').click(function(){   
+                // var $temp = $('<input type="hidden" id="temp_field" />');
+                
+                // $("body").append($temp);
+
+                // $('#temp_field').val($('#show_link').text().trim()).select();
+                // throw new Error("Something went badly wrong!");
+                document.execCommand("copy");
+                navigator.clipboard.writeText($('#show_link').text().trim() );
+                // $('#temp_field').remove();
+                $('#show_msg').text('copied!');
+                setTimeout(() => {
+                    $('#show_msg').text('');
+                }, 10000);
+
+            });
+
+            $('#show_time').text($('#total_time').val());
+        });
+    </script>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v10.0" nonce="ZLsPGZPg"></script>
+    <script>
+        (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+        fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        
+    </script>
+    
+@endsection
