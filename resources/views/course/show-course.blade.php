@@ -36,7 +36,7 @@ use Carbon\Carbon;
                     {{ reduceCharIfAv($course->description ?? '', 200) }}
                 </div>
                 <div class="mt-2 text-uppercase">
-                    created by <span class="text-warning"> {{ $course->user->name ?? '' }} </span>
+                    created by <a class="text-warning"  href="#profile"> {{ $course->user->name ?? '' }} </a>
                 </div>
 
                 @if($rating_avg)
@@ -409,7 +409,7 @@ use Carbon\Carbon;
     <hr />
     @endif
     @php
-    $profile = $course->user->profile
+    $profile = $course->user->profile ?? ""
     @endphp
     @if($profile)
     <div class="mt-2 jumbotron pt-3 bg-white" id="profile">
