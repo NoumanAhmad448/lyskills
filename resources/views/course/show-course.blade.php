@@ -62,7 +62,7 @@ use Carbon\Carbon;
                     Enrollment: {{ $total_en ?? '' }}
                 </div>
                 @endif
-                @if($course && $course->lang && $course->lang->name)
+                @if($course && $course->lang && $course->lang->name ?? '')
                 <div class="m2-1">
                     Language: {{ $course->lang->name ?? '' }}
                 </div>
@@ -412,13 +412,13 @@ use Carbon\Carbon;
     $profile = $course->user->profile
     @endphp
     @if($profile)
-    <div class="mt-2 jumbotron pt-3 bg-white">
+    <div class="mt-2 jumbotron pt-3 bg-white" id="profile">
         <h2> Instructor Profile </h2>
         <div class="mt-3">
             <div class="row">
                 <div class="col-1">
                     <img height="50" width="50" class="rounded-circle object-cover" src="@if($course->user->profile_photo_path) {{ asset($course->user->profile_photo_path) }} @else
-                                    {{ $course->user()->profile_photo_url }} @endif" alt="{{ $course->user->name }}" />
+                                    {{ $course->user()->profile_photo_url }} @endif" alt="{{ $course->user->name ?? '' }}" />
                 </div>
                 <div class="col-7">
                     <div class="text-uppercase"> {{ $course->user->name ?? ''}} </div>
@@ -463,10 +463,10 @@ use Carbon\Carbon;
     <section class="row my-3">
         <div class="col-2">
             <img height="50" width="50" class="rounded-circle object-cover" src="@if($user->profile_photo_path) {{ asset($user->profile_photo_path) }} @else
-                                {{ $user->profile_photo_url }} @endif" alt="{{ $user->name }}" />
+                                {{ $user->profile_photo_url }} @endif" alt="{{ $user->name ?? '' }}" />
         </div>
         <div class="col">
-            <div style="font-weight: bold" class="text-capitalize">{{$user->name}}</div>
+            <div style="font-weight: bold" class="text-capitalize">{{$user->name ?? ''}}</div>
             
             @php if(isset($c)) { $rate = $c->rating ? $c->rating->rating: 0; }@endphp
             @if(isset($rate) && $rate > 0)            

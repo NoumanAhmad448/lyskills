@@ -118,7 +118,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <form action="{{route('c-search-page')}}" method="post">
                         <div class="searchbar mt-4 mt-md-0">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -146,7 +146,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                     </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-3">
 
                     <div class="d-md-flex align-items-md-center justify-content-md-end">
                         @if (Route::has('login'))
@@ -184,7 +184,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 
                             <a href="{{ route('login') }}" class="btn btn-info mr-1 mt-3">Log in</a>
                             @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="btn btn-outline-info mt-3">Sign Up</a>
+                            <a href="{{ route('register') }}" class="btn btn-outline-info mt-3">Become an Instructor</a>
                             @endif
                         </div>
                         @endif
