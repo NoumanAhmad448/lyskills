@@ -31,7 +31,7 @@
             <li class="mt-2"><a class="text-white" href="https://lyskills.com/page/about-us"> About Us </a></li>
             <li class="mt-2"><a class="text-white" href="https://lyskills.com/page/privacy-policy"> Privacy Policy </a>
             </li>
-            <li class="mt-2"><a class="text-white" href="https://lyskills.com/page/terms-and-conditions"> Terms &&
+            <li class="mt-2"><a class="text-white" href="https://lyskills.com/page/terms-and-conditions"> Terms &
                 Conditions
               </a></li>
           </ul>
@@ -69,7 +69,7 @@
       </div>
       <div class="row mt-3 pb-3">
         <div class="col">
-          <p class="text-center">&copy; Copyright {{date('Y')}}- Lyskills. All rights reserved.</p>
+          <p class="text-center">&copy; Copyright {{date('Y')}}- Lyskills. All Rights Are Reserved.</p>
         </div>
       </div>
     </div>

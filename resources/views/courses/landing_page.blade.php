@@ -100,7 +100,7 @@ use Illuminate\Support\Facades\Storage;
 
     <hr>
     <section class="course_img">
-        <div class=""> Course Image </div>
+        <div class="mb-2"> Course Image (size 600x590)</div>
         <div class="row">
             <div class="col-md-6">
                 @php $course_img = $course->course_image;

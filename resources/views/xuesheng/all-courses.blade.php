@@ -37,7 +37,7 @@ use App\Models\RatingModal;
                 @endphp
                  <div class="card-body" style="height: 150px">
                     <h5 class="card-title font-bold text-capitalize" style="font-size: 1.1rem;font-weight:bold"> {{ reduceCharIfAv($course->course_title ?? '', 40)}} </h5>
-                    <p class="card-text text-capitalize mb-0 mt-1"><span class=""> {{ reduceWithStripping($course->user->name,20) ?? '' }} </span>
+                    <p class="card-text text-capitalize mb-0 mt-1"><span class=""> {{ reduceWithStripping($course->user->name ?? 0,20) ?? '' }} </span>
                     </p>
                     <p class="mb-0 mt-1 @if($course->categories_selection == 'it') {{ 'text-uppercase' }} @else {{ 'text-capitalize'}} @endif">  {{ reduceWithStripping($course->categories_selection,20) ?? '' }} </p>
                     @if($rating_avg)

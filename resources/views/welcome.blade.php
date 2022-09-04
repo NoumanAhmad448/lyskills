@@ -56,7 +56,7 @@ use App\Models\RatingModal;
                 </a>
 
                 @php 
-                     $rating_avg = (int) RatingModal::where('course_id',$course->id)->avg('rating');
+                     $rating_avg = (float) RatingModal::where('course_id',$course->id)->avg('rating');
                     $rated_by_students = (int) RatingModal::where('course_id',$course->id)->count('rating');
                 @endphp
 
@@ -64,22 +64,21 @@ use App\Models\RatingModal;
                 {{-- <div class="card-body" style="/height: 180px"> --}}
                 <div class="card-body" style="height: 150px">
                     <h5 class="card-title font-bold text-capitalize" style="font-size: 1.1rem;font-weight:bold"> {{ reduceCharIfAv($course->course_title ?? '', 40)}} </h5>
-                    <p class="card-text text-capitalize mb-0 mt-1"><span class=""> {{ reduceWithStripping($course->user->name,20) ?? '' }} </span>
-                    </p>
+                    <a href="{{route('user-course', $course->slug ?? '')}}#profile" class="card-text text-capitalize mb-0 mt-1"><span class=""> {{ reduceWithStripping($course->user->name ?? 0,20) ?? '' }} </span>
+                    </a>
                     <p class="mb-0 mt-1 @if($course->categories_selection == 'it') {{ 'text-uppercase' }} @else {{ 'text-capitalize'}} @endif">  {{ reduceWithStripping($course->categories_selection,20) ?? '' }} </p>
                     @if($rating_avg)
                     <div class="d-flex align-items-center">
                         <section id="rating" class="d-flex align-items-center" style="cursor: pointer">
-                            {{$rating_avg}}
-
+                            ({{round($rating_avg,2)}})
                             <span class="fa fa-star  @if($rating_avg >= 1) {{'text-warning'}}  @endif" no="1"></span>
                             <span class="fa fa-star ml-1  @if($rating_avg >= 2) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="2"></span>
                             <span class="fa fa-star ml-1  @if($rating_avg >= 3) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="3"></span>
                             <span class="fa fa-star ml-1  @if($rating_avg >= 4) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="4"></span>
                             <span class="fa fa-star ml-1  @if($rating_avg >= 5) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="5"></span>
                             <span class="ml-1">( {{ $rated_by_students}} )</span>
-                        </section>                        
-                    </div>                    
+                        </section>
+                    </div>
                     @endif
                     <p class="card-text text-capitalize  mb-0  mt-1 d-flex font-bold"> @if($course->price->is_free)
                         {{ __('free') }}
@@ -94,7 +93,9 @@ use App\Models\RatingModal;
         </div>
         @endforeach
     </div>
-
+    <div class="d-flex justify-content-end my-3">
+        <a href="{{route('show-all-courses')}}" class="btn btn-website btn-lg">Next Courses</a>
+    </div>
 </div>
 @endif
 
@@ -106,7 +107,7 @@ use App\Models\RatingModal;
         <div class="col-md-3 mt-3">
             <div class="card text-center">
                 <a href="{{ route('user-categories',['category' => $c->value]) }}" class="p-3 btn-website font-bold" style="font-weight: bold">
-                    {{ $c->name }}
+                    {{ $c->name ?? "" }}
                 </a>
             </div>
         </div>
