@@ -1,4 +1,4 @@
-<?php 
+<?php
 use App\Models\RatingModal;
 
 ?>
@@ -31,8 +31,8 @@ use App\Models\RatingModal;
                     @if($ci) <img class="card-img-top img-fluid" src="{{ asset('storage/'.$ci->image_path)}}"
                         alt="{{ $ci->image_name }}"> @endif
                 </a>
-                @php 
-                    $rating_avg = (int) RatingModal::where('course_id',$course->id)->avg('rating');
+                @php
+                    $rating_avg = (float) RatingModal::where('course_id',$course->id)->avg('rating');
                     $rated_by_students = (int) RatingModal::where('course_id',$course->id)->count('rating');
                 @endphp
                  <div class="card-body" style="height: 150px">
@@ -65,7 +65,6 @@ use App\Models\RatingModal;
             @endif
         </div>
         @endforeach
-       
 
     </div>
     <div class="d-flex justify-content-end my-3">
