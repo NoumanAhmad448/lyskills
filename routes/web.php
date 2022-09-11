@@ -583,7 +583,7 @@ Route::post('contact-us', [HomeController::class, 'contactUsPost'])->name('conta
 
 Route::post('ckeditor/upload', [HomeController::class, 'upload'])->name('ckeditor.upload');
 // Route::get('test', function(){
-    //     return view('testing');    
+    //     return view('testing');
     // });
 Route::post('get-search', [HomeController::class, 'getSearch'])->name('get-search');
 Route::post('course-search', [HomeController::class, 'userSearch'])->name('c-search-page');

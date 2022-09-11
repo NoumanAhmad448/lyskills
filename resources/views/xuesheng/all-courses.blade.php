@@ -43,16 +43,15 @@ use App\Models\RatingModal;
                     @if($rating_avg)
                     <div class="d-flex align-items-center">
                         <section id="rating" class="d-flex align-items-center" style="cursor: pointer">
-                            {{$rating_avg}}
-
+                        ({{round($rating_avg,2)}})
                             <span class="fa fa-star  @if($rating_avg >= 1) {{'text-warning'}}  @endif" no="1"></span>
                             <span class="fa fa-star ml-1  @if($rating_avg >= 2) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="2"></span>
                             <span class="fa fa-star ml-1  @if($rating_avg >= 3) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="3"></span>
                             <span class="fa fa-star ml-1  @if($rating_avg >= 4) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="4"></span>
                             <span class="fa fa-star ml-1  @if($rating_avg >= 5) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="5"></span>
                             <span class="ml-1">( {{ $rated_by_students}} )</span>
-                        </section>                        
-                    </div>                    
+                        </section>
+                    </div>
                     @endif
                     <p class="card-text text-capitalize  mb-0  mt-1 d-flex font-bold"> @if($course->price->is_free)
                         {{ __('free') }}
