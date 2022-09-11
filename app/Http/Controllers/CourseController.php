@@ -425,7 +425,7 @@ class CourseController extends Controller
             } else {
                 $c_img = "";
             }
-            $rating_avg = (int) RatingModal::where('course_id',$course->id)->avg('rating');
+            $rating_avg = (float) RatingModal::where('course_id',$course->id)->avg('rating');
             $rated_by_students = (int) RatingModal::where('course_id',$course->id)->count('rating');
             
             $comments = Comment::with('rating')->where('course_id',$course->id)->limit(3)->get();

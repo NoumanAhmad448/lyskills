@@ -262,10 +262,9 @@ class HomeController extends Controller
                 $user = User::where('name', $keyword)->select('id')->first();
                 if ($user->count()) {
                     $courses = Course::where('user_id', $user->id)->whereNull('is_deleted')
-                    ->where('status', 'published')->    
+                    ->where('status', 'published')->
                     orderByDesc('created_at')->simplePaginate(15);
                 }
-                
             }
 
 

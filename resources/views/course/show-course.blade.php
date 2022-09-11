@@ -4,7 +4,6 @@ use App\Models\User;
 use App\Models\WishList;
 use App\Models\CourseEnrollment;
 use Carbon\Carbon;
-
 @endphp
 @extends('layouts.guest')
 
@@ -417,8 +416,8 @@ use Carbon\Carbon;
         <div class="mt-3">
             <div class="row">
                 <div class="col-1">
-                    <img height="50" width="50" class="rounded-circle object-cover" src="@if($course->user->profile_photo_path) {{ asset($course->user->profile_photo_path) }} @else
-                                    {{ $course->user()->profile_photo_url }} @endif" alt="{{ $course->user->name ?? '' }}" />
+                    <img height="50" width="50" class="rounded-circle object-cover" src="@if($course->user && $course->user->profile_photo_path) {{ asset($course->user->profile_photo_path) }} @else
+                                    {{ $course->user() ? $course->user()->profile_photo_url : '' }} @endif" alt="{{ $course->user->name ?? '' }}" />
                 </div>
                 <div class="col-7">
                     <div class="text-uppercase"> {{ $course->user->name ?? ''}} </div>
@@ -439,7 +438,7 @@ use Carbon\Carbon;
         <div style="font-size: 2rem;
         padding-left: 0.5rem;
         margin-top: 2rem;">
-            Rating Point {{ $rating_avg ?? '' }}
+            Rating Point {{ round($rating_avg, 2) ?? '' }}
         </div>
         <div class="d-flex align-items-center">
             <section id="rating" class="d-flex align-items-center" style="cursor: pointer">
@@ -462,8 +461,8 @@ use Carbon\Carbon;
     @php $user = User::where('id', $c->user_id)->first(); @endphp
     <section class="row my-3">
         <div class="col-2">
-            <img height="50" width="50" class="rounded-circle object-cover" src="@if($user->profile_photo_path) {{ asset($user->profile_photo_path) }} @else
-                                {{ $user->profile_photo_url }} @endif" alt="{{ $user->name ?? '' }}" />
+            <img height="50" width="50" class="rounded-circle object-cover" src="@if($user && $user->profile_photo_path) {{ asset($user->profile_photo_path) }} @else
+                                {{ $user ? $user->profile_photo_url : '' }} @endif" alt="{{ $user->name ?? '' }}" />
         </div>
         <div class="col">
             <div style="font-weight: bold" class="text-capitalize">{{$user->name ?? ''}}</div>
