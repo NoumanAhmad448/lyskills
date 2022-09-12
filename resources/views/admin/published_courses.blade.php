@@ -93,6 +93,7 @@
                 <th scope="col"> Change Price </th>
                 <th scope="col"> Delete </th>
                 <th scope="col"> Comments </th>
+                <th scope="col"> Students </th>
             </tr>
             </thead>
             <tbody>
@@ -107,23 +108,22 @@
                     <td class="text-capitalize"> {{ $course->course_title ?? '' }}</td>
                     <td class="text-capitalize"> {{ $course->categories_selection ?? '' }}</td>
                     <td class="text-capitalize"> {{ $course->user->name ?? '' }} </td>
-                    <td> {{ $course->user->email ?? '' }} </td>                    
+                    <td> {{ $course->user->email ?? '' }} </td>
                     @php $s = $course->status; @endphp
-                    <td> @if($s) 
+                    <td> @if($s)
                         <div class="badge @if($s == "block") {{ __('badge-danger') }} 
                         @elseif($s == "pending") {{ __('badge-warning')}} @elseif($s == "published") {{ __('badge-success')}} @elseif($s == "draft") {{__('badge-danger')}} @endif" > {{ $s ?? '' }} </div> @endif 
-                    </td>    
-                    <td> {{ $course->isPopular ? 'yes': "No" }} </td>                    
-                    <td> {{ $course->isFeatured ? 'yes': "No" }} </td>                    
-                    <td> <a href="{{route('user-course', ['slug' => $course->slug ])}}" > Link </a> </td>  
-                    <td> <a href="{{route('admin_change_price', compact('course'))}}" > Change Price </a> </td>  
+                    </td>
+                    <td> {{ $course->isPopular ? 'yes': "No" }} </td>
+                    <td> {{ $course->isFeatured ? 'yes': "No" }} </td>
+                    <td> <a href="{{route('user-course', ['slug' => $course->slug ])}}" > Link </a> </td>
+                    <td> <a href="{{route('admin_change_price', compact('course'))}}" > Change Price </a> </td>
                     <td> <div href="{{route('course_delete', ['course_id' => $course->id ])}}" class="text-danger cursor_pointer c_del_by_a"> Delete </div> </td>  
-                    <td> <a href="{{route('laoshi_de_c', ['course' => $course->id ])}}" class="cursor_pointer"> Comments </a> </td>  
-                    
+                    <td> <a href="{{route('laoshi_de_c', ['course' => $course->id ])}}" class="cursor_pointer"> Comments </a> </td>
+                    <td> <a href="{{route('xueshiXuesheng', ['course' => $course->id ])}}" class="cursor_pointer"> Enroll Students </a> </td>
                 </tr>
                 <input type="hidden" id="course_status_change" value="{{route('change_course_status')}}">
             @endforeach
-            
             </tbody>
         </table>
     </div>

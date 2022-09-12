@@ -567,13 +567,11 @@ class AdminController extends Controller
         try {
             $user_d = User::findOrFail($user);
             $course_d = Course::findOrFail($course);
-            // dd($course_d);
             $price_in_do = $course_d->price->pricing;
 
             $lyskills = new LyskillsPayment($user, $course, 'offline payment');
             $response = $lyskills->courseEnrollment($price_in_do, $course_d->user->id);
             if ($response['status'] === false) {
-                // dd($response['error']);
                 return back()->with('error', 'there is a problem in the course enrollment');
             }
             $lyskills->sendEmail($user_d->email, $user_d->name, $course_d->slug, $course_d);
@@ -583,5 +581,24 @@ class AdminController extends Controller
         } catch (Exception $e) {
             return back()->with('error', 'This action was not made successful. please try again.' . $e->getMessage());
         }
+    }
+
+    public function xueshiXuesheng($course){
+        if(Course::find($course)){
+            $students = User::where("is_student",1)->whereNull('is_admin')->whereNull('is_super_admin')->whereNull('is_blogger')->
+                select('id','name','email')->get();
+            return view("courses.course_students", compact('students','course'));
+        }
+    }
+    public function xueshiXueshengPost(Request $request){
+        if($request->action == "unenroll"){
+            CourseEnrollment::where("course_id", $request->course_id)->where("user_id",$request->student_id)->delete();
+        }else{
+            $courseEnrollment= new CourseEnrollment;
+            $courseEnrollment->course_id = $request->course_id;
+            $courseEnrollment->user_id = $request->student_id;
+            $courseEnrollment->save();
+        }
+        return back();
     }
 }
