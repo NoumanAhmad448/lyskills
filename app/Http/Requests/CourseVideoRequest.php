@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Course;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator; 
+use Illuminate\Contracts\Validation\Validator;
 
 class CourseVideoRequest extends FormRequest
 {
@@ -29,7 +29,7 @@ class CourseVideoRequest extends FormRequest
     public function rules()
     {
         return [
-            'course_vid'  => 'mimetypes:video/mp4,video/webm,video/ogg | max:1000000'
+            'course_vid'  => 'mimetypes:video/mp4,video/webm,video/ogg | max:4500000'
         ];
     }
     /**
@@ -41,13 +41,13 @@ class CourseVideoRequest extends FormRequest
     {
         return [
             'course_vid.mimes' => 'Allowed video types are mp4,webm, and ogg',
-            'course_vid.max' => 'Max File size is allowed upto 1GB',
+            'course_vid.max' => 'Max File size is allowed upto 4GB',
         ];
     }
 
 
-    protected function failedValidation(Validator $validator) { 
-        throw new HttpResponseException(response()->json(['course_vid' => $validator->errors()], 422)); 
+    protected function failedValidation(Validator $validator) {
+        throw new HttpResponseException(response()->json(['course_vid' => $validator->errors()], 422));
     }
 
 }

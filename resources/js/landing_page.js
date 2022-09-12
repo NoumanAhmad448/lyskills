@@ -97,7 +97,6 @@ $(function() {
             p_con.removeClass('d-none');
             current.attr('disabled',true);
 
-            
         $.ajax({
             xhr: function() {
                 var xhr = new window.XMLHttpRequest();
@@ -145,16 +144,15 @@ $(function() {
 
 
     $('.upload_vid').on('change',function(){
-        
             let current_file = $(this);
-            let c_f_form  = current_file.parents('.course_vid').first();                
+            let c_f_form  = current_file.parents('.course_vid').first();
             var form_data = new FormData(current_file.parents('form').first().get(0));
             let file = this.files[0];
             let file_err = $('.vid_err');
             let vid_p_con = $('.vid_p_con');
             let vid_p_bar = $('.vid_p_bar');
             var video_img = $('.video_img');
-            if(file){                    
+            if(file){
                 if(! file.type.startsWith("video")){
                     file_err.text('Only video files are allowed');
                     current_file.addClass('is-invalid');
@@ -163,8 +161,8 @@ $(function() {
                         current_file.removeClass('is-invalid');
                     },10000);
                 }
-                else if(parseInt(file.size/1024/1024) > 1024){                               
-                    file_err.text('File size cannot exceed from 1GB');
+                else if(parseInt(file.size/1024/1024) > 4096){
+                    file_err.text('File size cannot exceed from 4GB');
                     current_file.addClass('is-invalid');
                     setInterval(function(){
                         file_err.text('');
@@ -177,23 +175,23 @@ $(function() {
                     let video_url = current_file.attr('url');
                     vid_p_con.removeClass('d-none');
                     if(video_url){
-                        $.ajax({                        
+                        $.ajax({
                             url: video_url,
-                            type: 'POST', 
+                            type: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },                       
-                            data: form_data,                            
+                            },
+                            data: form_data,
                             contentType: false,
-                            processData: false,                       
+                            processData: false,
                             dataType: 'JSON',
 
                             xhr: function() {
                             var xhr = new window.XMLHttpRequest();
                             xhr.upload.addEventListener("progress", function(evt) {
-                                if (evt.lengthComputable) {                                    
-                                    var percentComplete = evt.loaded / evt.total; 
-                                    let c_progress = Math.round(percentComplete * 100); 
+                                if (evt.lengthComputable) {
+                                    var percentComplete = evt.loaded / evt.total;
+                                    let c_progress = Math.round(percentComplete * 100);
                                     vid_p_bar.attr('aria-valuenow',c_progress);
                                     vid_p_bar.css('width',c_progress+'%');
 
@@ -203,7 +201,7 @@ $(function() {
                             return xhr;
                             },
                             success: function(data){
-                                current_file.attr('disabled',false);  
+                                current_file.attr('disabled',false);
                                 vid_p_con.addClass('d-none');
 
                                 var video_path = data['video_path'];
@@ -217,16 +215,12 @@ $(function() {
 
 
                                 location.reload();
-
-                               
                             },
                             error: function(data){
                                 current_file.attr('disabled',false);
                                 vid_p_con.addClass('d-none');
-                                data = JSON.parse(data['responseText']);     
+                                data = JSON.parse(data['responseText']);
                                 let course_vid= data['course_vid']['course_vid'];
-                                // console.log(data);
-                                // console.log(course_vid);
                                 if(course_vid){
                                     file_err.text(course_vid[0]);
                                 }
@@ -236,8 +230,8 @@ $(function() {
                             }
                     });
                 }
-                }    
-            }              
+                }
+            }
         });
 
 });

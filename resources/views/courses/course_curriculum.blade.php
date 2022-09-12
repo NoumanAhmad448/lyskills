@@ -1132,7 +1132,7 @@ use App\Models\ResVideo;
                             current_file.removeClass('is-invalid');
                         },10000);
                     }
-                    else if(parseInt(file.size/1024/1024/1024) > 4){                               
+                    else if(parseInt(file.size/1024/1024/1024) > 4.2){
                         file_err.addClass('d-block').text('File size cannot exceed from 4GB');
                         current_file.addClass('is-invalid');
                         setInterval(function(){

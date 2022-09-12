@@ -24,7 +24,7 @@ $course_id = $course->id;
                                         ){
                                         echo '<i class="las la-check-circle"></i>';
                                     }
-                                @endphp 
+                                @endphp
                         @endif
                         Landing Page </a>
                 </li>
@@ -146,7 +146,7 @@ $course_id = $course->id;
 
                         }
                         @endphp
-                        @if($progress)
+                        @if(!empty($progress))
                         <div class="progress mt-3">
                             <div class="bg-info progress-bar @if($progress != 100) {{ __('progress-bar-striped')}} @endif  
                                 @if($progress == 100) {{ __('bg-info')}} @endif" role="progressbar"

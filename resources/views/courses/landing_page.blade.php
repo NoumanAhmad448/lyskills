@@ -162,7 +162,7 @@ use Illuminate\Support\Facades\Storage;
             <div class="col-md-6 align-items-center">
                 <section class="d-flex justify-content-center align-items-center flex-column h-100">
                     <div class="text-info w-100"> Please upload a video of <span class="text-danger">
-                            mp4,ogg,webm format</span> with at most 1GB size</div>
+                            mp4,ogg,webm format</span> with at most 4GB size</div>
                     <section class="img_con mt-3 w-100">
                         <form>
                             <div class="custom-file">

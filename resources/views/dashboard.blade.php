@@ -111,34 +111,33 @@ use Carbon\Carbon;
         
                                 <a class="mt-2 ml-3 btn btn-danger delete_course" id="f_{{$course_id}}"
                                 data-toggle="tooltip" data-placement="top" title="Delete Course"
-                                ><i class="las la-trash-alt"></i> Delete </a>                                           
+                                ><i class="las la-trash-alt"></i> Delete </a>
                             </form>
                         </div>
-                        
+
                         @if($course->status == "draft")
                             <div class="col-md-2 mt-4 pt-3">
-                                @php 
+                                @php
                                     $c_status = CourseStatus::where('course_id',$course->id)->first();
                                     if(isset($c_status)){
 
                                         $progress = 0;
-                                        $progress = 
-                                    (int)$c_status->target_ur_students + 
-                                    (int)$c_status->curriculum + 
+                                        $progress =
+                                    (int)$c_status->target_ur_students +
+                                    (int)$c_status->curriculum +
                                     (int)$c_status->landing_page +
-                                    (int)$c_status->pricing + 
+                                    (int)$c_status->pricing +
                                     (int)$c_status->message +
                                     (int)$c_status->course_img +
                                     (int)$c_status->course_video;
-                                    
                                 }
                                 @endphp
-                                @if($progress)
+                                @if(!empty($progress))
                                     <div class="progress">
                                         <div class="progress-bar @if($progress != 100) {{ __('progress-bar-striped')}} @endif  progress-bar-animated
-                                         @if($progress == 100) {{ __('bg-info')}} @endif" role="progressbar" 
-                                            aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100" 
-                                            style="width: {{$progress}}%"> {{$progress}}%
+                                         @if($progress == 100) {{ __('bg-info')}} @endif" role="progressbar"
+                                            aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100"
+                                            style="width: {{ $progress }}%"> {{$progress}}%
                                         </div>
                                     </div>
                                 @endif

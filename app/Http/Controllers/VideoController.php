@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 
 class VideoController extends Controller
-{   
+{
     function validate_user($course_id){
         return Course::where([['user_id',Auth::id()],['id', $course_id]])->firstOrFail();
     }
@@ -23,42 +23,38 @@ class VideoController extends Controller
         if($request->ajax()){
             $course = $this->validate_user($course_id);
             Lecture::findOrFail($lecture_id);
-            // dd('hit');
 
             $request->validate([
-                'upload_video' => 'required|max:4000000|mimetypes:video/mp4,video/webm,video/ogg'
+                'upload_video' => 'required|max:4500000|mimetypes:video/mp4,video/webm,video/ogg'
             ]);
             $file = $request->file('upload_video');
             $f_name = $file->getClientOriginalName();
             $f_mimetype = $file->getClientMimeType();
-            
+
             $path1 = $file->store('uploads','public');
-            
+
             $path = "uploads";
             $path = Storage::disk('s3')->put($path, $file);
 
-            
             $getID3 = new \getID3;
             $file = $getID3->analyze(public_path('storage/'.$path1));
-            // dd($file);
             // $file = $getID3->analyze('https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'.$path);
-            // dd($file);
+
             $time_mili = $file['playtime_seconds'];
-            // dd($time_mili);
-            // $time_mili = "30.543";
-            $duration = Carbon::parse($time_mili)->toTimeString();            
+
+            $duration = Carbon::parse($time_mili)->toTimeString();
             unlink(public_path('storage/'.$path1));
             $media = new Media;
             $media->lecture_id = $lecture_id;
-            $media->lec_name = $path;            
-            $media->f_name = $f_name;            
-            $media->course_id = $course_id;            
-            $media->f_mimetype = $f_mimetype;   
-            $media->duration = $duration ;         
-            $media->time_in_mili = $time_mili ;         
+            $media->lec_name = $path;
+            $media->f_name = $f_name;
+            $media->course_id = $course_id;
+            $media->f_mimetype = $f_mimetype;
+            $media->duration = $duration ;
+            $media->time_in_mili = $time_mili ;
             $media->save();
-            
-            $c_status = CourseStatus::where('course_id',$course_id)->first();            
+
+            $c_status = CourseStatus::where('course_id',$course_id)->first();
             if($c_status){
                 $path = 'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'. $path;
                 $c_status->curriculum = 40;
