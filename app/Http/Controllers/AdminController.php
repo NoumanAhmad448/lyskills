@@ -587,7 +587,9 @@ class AdminController extends Controller
         if(Course::find($course)){
             $students = User::where("is_student",1)->whereNull('is_admin')->whereNull('is_super_admin')->whereNull('is_blogger')->
                 select('id','name','email')->get();
-            return view("courses.course_students", compact('students','course'));
+            $course_detail  = Course::find($course);
+            $course_title = $course_detail->course_title;
+            return view("courses.course_students", compact('students','course', 'course_title'));
         }
     }
     public function xueshiXueshengPost(Request $request){

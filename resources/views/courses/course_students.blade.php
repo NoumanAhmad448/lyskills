@@ -8,6 +8,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 @endsection
 @section('content')
+<h1 class="mb-5">{{$course_title}}</h1>
 <table class="table table-striped" id="enrollement">
     <thead>
         <tr>

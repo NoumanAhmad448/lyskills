@@ -14,11 +14,11 @@
                         <option value=""> Choose Status </option>
                         <option value="p" > Published</option>
                         <option value="b" >  Block </option>
-                        <option value="pe" > Pending </option>                        
-                        <option value="mp" > Mark as Popular </option>                        
-                        <option value="rp" > Remove From Popular </option>                        
-                        <option value="mf" > Mark as Featured </option>                        
-                        <option value="rf" > Remove From Featured </option>                        
+                        <option value="pe" > Pending </option>
+                        <option value="mp" > Mark as Popular </option>
+                        <option value="rp" > Remove From Popular </option>
+                        <option value="mf" > Mark as Featured </option>
+                        <option value="rf" > Remove From Featured </option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -27,7 +27,7 @@
             </div>
             <div class="col-md-2">
                 <button type="button" class="btn btn-info my-1 my-md-0" id="update"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Update </button>
-            </div>    
+            </div>
             <div class="col-md-6">
                 <div class="row justify-content-end">
                     <div class="col-md-6">
@@ -93,11 +93,11 @@
                 <th scope="col"> Change Price </th>
                 <th scope="col"> Delete </th>
                 <th scope="col"> Comments </th>
-                <th scope="col"> Students </th>
+                <th scope="col"> Course Enrollment/unEnrollment </th>
             </tr>
             </thead>
             <tbody>
-                @foreach ($courses as $course)                
+                @foreach ($courses as $course)
                 <tr>
                     {{-- <td>
                         <div class="form-check">
@@ -111,7 +111,7 @@
                     <td> {{ $course->user->email ?? '' }} </td>
                     @php $s = $course->status; @endphp
                     <td> @if($s)
-                        <div class="badge @if($s == "block") {{ __('badge-danger') }} 
+                        <div class="badge @if($s == "block") {{ __('badge-danger') }}
                         @elseif($s == "pending") {{ __('badge-warning')}} @elseif($s == "published") {{ __('badge-success')}} @elseif($s == "draft") {{__('badge-danger')}} @endif" > {{ $s ?? '' }} </div> @endif 
                     </td>
                     <td> {{ $course->isPopular ? 'yes': "No" }} </td>
@@ -120,7 +120,7 @@
                     <td> <a href="{{route('admin_change_price', compact('course'))}}" > Change Price </a> </td>
                     <td> <div href="{{route('course_delete', ['course_id' => $course->id ])}}" class="text-danger cursor_pointer c_del_by_a"> Delete </div> </td>  
                     <td> <a href="{{route('laoshi_de_c', ['course' => $course->id ])}}" class="cursor_pointer"> Comments </a> </td>
-                    <td> <a href="{{route('xueshiXuesheng', ['course' => $course->id ])}}" class="cursor_pointer"> Enroll Students </a> </td>
+                    <td> <a href="{{route('xueshiXuesheng', ['course' => $course->id ])}}" class="cursor_pointer"> Enroll/Unenroll Students </a> </td>
                 </tr>
                 <input type="hidden" id="course_status_change" value="{{route('change_course_status')}}">
             @endforeach
