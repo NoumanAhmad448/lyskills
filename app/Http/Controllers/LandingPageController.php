@@ -129,25 +129,19 @@ class LandingPageController extends Controller
     {
         try {
             $request->validated();
-            
             $course = Course::findOrFail($course);
             $file = $request->file('course_vid');
-            // $file_path = $file->storePublicly('uploads', 's3');
+
             $file_path = 'uploads';
             $file_path = Storage::disk('s3')->put($file_path, $file);
-            
-            // dd($file_path);
+
             $f_mime_type = $file->getClientMimeType();
             $f_name = $file->getClientOriginalName();
 
             $course_vid = $course->course_vid;
             if ($course_vid) {
-                // $p_path = public_path('storage/' . $course_vid->vid_path);
                 $p_path = Storage::disk('s3')->exists($course_vid->vid_path);
-                // if ($p_path && file_exists($p_path)) {
                 if ($p_path ) {
-                    // unlink();
-                    // dd(Storage::disk('s3')->get($course_vid->vid_path));
                     Storage::disk('s3')->delete($course_vid->vid_path);
 
                 }
@@ -156,10 +150,7 @@ class LandingPageController extends Controller
                 $course_vid->vid_path = $file_path;
                 $course_vid->save();
 
-
-                // dd(gettype(Storage::get('file.jpg')));
                 return response()->json([
-                    // 'video_path' => asset('storage/' . $file_path),
                     'video_path' => Storage::disk('s3')->response($file_path),
                     'video_type' => $f_mime_type
                 ]);
@@ -173,7 +164,6 @@ class LandingPageController extends Controller
 
                 changeCourseStatus($course->id, 5, 'course_video');
                 return response()->json([
-                    // 'video_path' => asset('storage/' . $file_path),
                     'video_path' =>  Storage::disk('s3')->response($file_path),
                     'video_type' => $f_mime_type
                 ]);

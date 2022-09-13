@@ -337,6 +337,9 @@ Route::get('/get-published-courses', [AdminController::class, 'publishedCourse']
 Route::post('/all-courses-sorting', [AdminController::class, 'courseSorting'])->name('a_c_sorting');
 Route::get('/all-courses-sorting', [AdminController::class, 'viewCourse']);
 
+Route::get('/course-xuesheng/{course}', [AdminController::class, 'xueshiXuesheng'])->name("xueshiXuesheng");
+Route::post('/course-xuesheng', [AdminController::class, 'xueshiXueshengPost'])->name("xueshiXueshengPost");
+
 Route::post('/all-courses-searching', [AdminController::class, 'courseSearching'])->name('a_c_searching');
 Route::get('/all-courses-searching', [AdminController::class, 'viewCourse']);
 
