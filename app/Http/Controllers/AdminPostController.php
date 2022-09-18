@@ -42,7 +42,7 @@ class AdminPostController extends Controller
                 'upload_img' => ['required','image','mimes:jpeg,png,jpg','max:5000'],
             ]);
 
-        try {           
+        try {
 
             $data = $request->only(['title', 'message']);
             $img = $request->upload_img;

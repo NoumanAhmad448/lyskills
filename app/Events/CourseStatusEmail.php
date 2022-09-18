@@ -20,7 +20,7 @@ class CourseStatusEmail
      * @return void
      */
 
-     public $course; 
+     public $course;
     public function __construct($course)
     {
         $this->course = $course;

@@ -99,7 +99,6 @@ class AdminController extends Controller
                 }
             }
 
-            // dd($dates);
             $unique_dates = [];
             for ($i = 1; $i <= $current_day; $i++) {
                 array_push($unique_dates, [$i, 0]);
@@ -119,50 +118,6 @@ class AdminController extends Controller
                     }
                 }
             }
-            // dd($unique_dates);
-            // $unique_dates = json_encode($unique_dates);
-            // $start_date = date("Y-m-01");
-            // $end_date = date("Y-m-t");
-
-            // $begin = new \DateTime($start_date);
-            // $end = new \DateTime($end_date.' + 1 day');
-            // $interval = \DateInterval::createFromDateString('1 day');
-            // $period = new \DatePeriod($begin, $interval, $end);
-
-            // $datesPeriod = array();
-            // foreach ($period as $dt) {
-            //     $datesPeriod[$dt->format("Y-m-d")] = 0;
-            // }
-
-            // /**
-            //  * Query This Month
-            //  */
-
-            // $sql = "SELECT SUM(amount) as total_amount,
-            //       DATE(created_at) as date_format
-            //       from payments
-            //       WHERE status = 'success'
-            //       AND (created_at BETWEEN '{$start_date}' AND '{$end_date}')
-            //       GROUP BY date_format
-            //       ORDER BY created_at ASC ;";
-
-            // // $getEarnings = DB::select(DB::raw($sql));
-            // // dd($getEarnings);
-            // // $total_amount = array_pluck($getEarnings, 'total_amount');
-            // // $queried_date = array_pluck($getEarnings, 'date_format');
-
-            // // $dateWiseSales = array_combine($queried_date, $total_amount);
-
-            // // $chartData = array_merge($datesPeriod, $dateWiseSales);
-            // foreach ($chartData as $key => $salesCount){
-            //     unset($chartData[$key]);
-
-            //     $formatDate = date('d M', strtotime($key));
-            //     //$formatDate = date('d', strtotime($key));
-            //     $chartData[$formatDate] = $salesCount ? $salesCount : 0;
-            // }
-
-
             return view('admin.index', compact(
                 'title',
                 'users',
@@ -535,7 +490,7 @@ class AdminController extends Controller
     {
         try {
 
-            if (isAdmin()) {                
+            if (isAdmin()) {
                 $user = User::where('id',$id)->first();
                 if (!$user) {
                     return back()->with('error', 'user not found');
@@ -555,7 +510,7 @@ class AdminController extends Controller
 
             $title = "new_en";
             $of_ens = OfflineEnrollment::with(['user:id,name,email', 'course:course_title,id,slug'])->orderByDesc('created_at')->get();
-            
+
             return view('admin.new-en', compact('title', 'of_ens'));
         } catch (\Throwable $th) {
             return back();
