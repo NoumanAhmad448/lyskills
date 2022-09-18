@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 use App\Models\UserAnnModel;
 use App\Models\Categories;
 use Illuminate\Support\Facades\Cache;
 
 $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
+
 ?>
 
 <!DOCTYPE html>
@@ -89,10 +90,12 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
     <nav class="p-2 d-md-flex justify-content-md-between mb-2 mb-md-0">
         <div class="container-fluid">
         <div class="row">
-
+        @if(config("setting.category_menu"))
             <div class="col-md-2">
                 <div class="d-md-flex align-items-md-center">
-                    <a href="{{route('index')}}" class=""> <img src="{{asset('img/logo.jpg')}}" alt="Lyskills" width="80" class="img-fluid"/>   </a> 
+                    @if(config("setting.show_site_log"))
+                        <a href="{{route('index')}}" class=""> <img src="{{asset('img/logo.jpg')}}" alt="Lyskills" width="80" class="img-fluid"/></a>
+                    @endif
                     <div class="dropdown">
                         <div class="ml-4 cursor_pointer show-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Categories
@@ -111,6 +114,8 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                     </div>
                 </div>
             </div>
+        @endif
+        @if(config("setting.guest_search_bar"))
             <div class="col-md-6">
                 <form action="{{route('c-search-page')}}" method="post">
                     <div class="searchbar mt-4 mt-md-0">
@@ -121,6 +126,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                     </div>
                 </form>
             </div>
+        @endif
             <div class="col-md-2">
                <div class="d-md-flex justify-content-end align-items-md-center">
                 @auth
@@ -140,12 +146,14 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                       @if (Route::has('login'))
                       @auth
                       <div class="dropdown mx-3">
-                        <div class="cursor_pointer text-center  pt-2"
-                        id="user_menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img height="50" width="50" class="rounded-circle object-cover" src="@if(Auth::user()->profile_photo_path) {{ asset(Auth::user()->profile_photo_path) }} @else
-                        {{ Auth::user()->profile_photo_url }} @endif" alt="{{ Auth::user()->name }}" />
-
-                    </div>
+                        @if(config("setting.login_profile"))
+                            <div class="cursor_pointer text-center  pt-2"
+                                id="user_menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img height="50" width="50" class="rounded-circle object-cover"
+                                src="@if(Auth::user()->profile_photo_path) {{ asset(Auth::user()->profile_photo_path) }} @else
+                                {{ Auth::user()->profile_photo_url }} @endif" alt="{{ Auth::user()->name }}" />
+                            </div>
+                         @endif
                     <div class="dropdown-menu dropdown-menu-right  w-55 mr-4 border" aria-labelledby="user_menu">
                         <a class="pt-2 dropdown-item" href="{{ route('myLearning') }}"> {{__('My Learning')}}</a>
                         <a class="pt-2 dropdown-item" href="{{ route('get-wishlist-course') }}"> {{__('WishList')}}</a>

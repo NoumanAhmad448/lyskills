@@ -1,4 +1,4 @@
-@extends('layouts.guest1')
+@extends(config("setting.guest_blade"))
 @section('page-css')
 <style>
     a{

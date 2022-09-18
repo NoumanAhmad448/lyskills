@@ -8,4 +8,5 @@
         "homepage_image" => true,
         "show_courses_main_page" => true,
         "main_courses_heading" => false,
+        "guest_blade" => "layouts.guest_user",
     ];
