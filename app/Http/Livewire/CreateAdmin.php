@@ -12,6 +12,5 @@ class CreateAdmin extends Component
         return view('livewire.create-admin')
             ->extends('admin.admin_main')
             ->section('content');
-    }   
-   
+    }
 }

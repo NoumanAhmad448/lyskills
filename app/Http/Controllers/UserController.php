@@ -16,7 +16,7 @@ class UserController extends Controller
             select('id','name','email','is_student','is_instructor','created_at')->
             orderByDesc('created_at')->simplePaginate(20);
         // dd($users);
-        $title = 'user_title';   
+        $title = 'user_title';
         $order = "ai";
         $search_item = '';
         return view('admin.users',compact('users','title','order','search_item'));
@@ -28,7 +28,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
        try {
-        $title = 'user_title';      
+        $title = 'user_title';
         return view('admin.edit-user',compact('user','title'));
        } catch (\Throwable $th) {
            return back();
@@ -39,23 +39,23 @@ class UserController extends Controller
     {
         try {
             $data = $request->validated();
-        
-        if(is_xss($data['name']) || is_xss($data['email'])){            
+
+        if(is_xss($data['name']) || is_xss($data['email'])){
             abort(403);
         }else{
             $user->name = $data['name'];
             $user->email = $data['email'];
-            if(array_key_exists('student',$data)){                
+            if(array_key_exists('student',$data)){
                 $user->is_student = 1;
             }else{
                 $user->is_student = 0;
             }
-            if(array_key_exists('instructor',$data)){                
+            if(array_key_exists('instructor',$data)){
                 $user->is_instructor = 1;
             }else{
                 $user->is_instructor = 0;
             }
-            
+
             $user->save();
 
             return back()->with('status', 'Updated');
@@ -100,13 +100,12 @@ class UserController extends Controller
             case 'ae':
                 $users = User::orderBy('email')->simplePaginate(10);
                 break;
-            
             default:
                 $users = User::orderByDesc('email')->simplePaginate(10);
-                break;        
+                break;
         }
 
-        $title = 'user_title';   
+        $title = 'user_title';
         $search_item = '';
         return view('admin.users',compact('users','title','order','search_item'));
        } catch (\Throwable $th) {
@@ -121,9 +120,9 @@ class UserController extends Controller
         $search_item = removeSpace($search_item);
         $search_item = $search_item;
         $users = User::where('name','like',$search_item.'%')->orWhere('email','like', $search_item.'%')->simplePaginate(10);
-        $title = 'user_title';   
+        $title = 'user_title';
         $order = "ai";
-        
+
         return view('admin.users',compact('users','title','order','search_item'));
        } catch (\Throwable $th) {
            return back();

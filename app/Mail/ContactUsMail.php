@@ -24,7 +24,7 @@ class ContactUsMail extends Mailable
      public $country;
      public $subject;
      public $body;
-     
+
     public function __construct($name,$email,$mobile,$country,$subject,$body)
     {
         $this->name = $name;

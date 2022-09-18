@@ -24,8 +24,8 @@ class SubCategoryValidation extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:sub_categories',            
-            'sub_c' => 'required',            
+            'name' => 'required|max:255|unique:sub_categories',
+            'sub_c' => 'required',
         ];
     }
 

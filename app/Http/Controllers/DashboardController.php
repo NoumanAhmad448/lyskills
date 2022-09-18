@@ -313,14 +313,12 @@ class DashboardController extends Controller
             if (!$is_admin && $course_en) {
                 $course->is_deleted = true;
                 $course->save();
-                
-                // course deletion history
+
                 $this->delCourseHistory($course,$is_admin);
 
                 return redirect()->route('dashboard')->with('status', 'Course has been deleted successfully!');
             }
 
-            // dd('hit');
             $sections = $course->section;
             if ($sections && $sections->count()) {
                 foreach ($sections as $section) {
@@ -328,12 +326,9 @@ class DashboardController extends Controller
                 }
             }
 
-            // dd('hit');
             $course_img = $course->course_image;
             if ($course_img) {
-                // dd($course_img);
                 $img = $course_img->img_path;
-                
                 if (file_exists(asset('storage/'.$img))) {
                     unlink(public_path('storage/'. $img));
                 }
@@ -345,7 +340,6 @@ class DashboardController extends Controller
             if ($course_vid) {
                 $vid = $course_vid->vid_path;
                 if (file_exists(public_path('storage/').$vid)) {
-                    // unlink(public_path('storage/') . $vid);
                 }
                 $course_vid->delete();
             }

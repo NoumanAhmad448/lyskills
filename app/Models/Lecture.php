@@ -18,7 +18,7 @@ class Lecture extends Model
     public function course(){
         return $this->belongsTo(Course::class);
     }
-    
+
     public function description(){
         return $this->hasOne(Description::class);
     }

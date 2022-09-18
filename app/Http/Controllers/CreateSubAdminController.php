@@ -30,11 +30,11 @@ class CreateSubAdminController extends Controller
     {
         try{
             if(isSuperAdmin()){
-            $data = $request->validated();    
+            $data = $request->validated();
             $data['password'] = Hash::make($data['password']);
-            $data['email'] = $data['email']."@lyskills.com";            
+            $data['email'] = $data['email']."@lyskills.com";
             $user->update($data);
-            return redirect()->route('show_sub_admins')->with('status',"Account has been updated");            
+            return redirect()->route('show_sub_admins')->with('status',"Account has been updated");
         }
     }
         catch(\Exception $e){

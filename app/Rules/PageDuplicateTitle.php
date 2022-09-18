@@ -26,7 +26,7 @@ class PageDuplicateTitle implements Rule
      */
     public function passes($attribute, $value)
     {
-        return !(Page::where('title',$value)->first());   
+        return !(Page::where('title',$value)->first());
     }
 
     /* Get the validation error message.

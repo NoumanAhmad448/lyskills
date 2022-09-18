@@ -21,7 +21,6 @@ class HttpsProtocol
             return redirect()->secure($request->getRequestUri());
         }
 
-        return $next($request); 
-        
+        return $next($request);
     }
 }

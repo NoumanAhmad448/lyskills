@@ -11,7 +11,7 @@ class PaymentDetail extends Component
     {
         $this->payment_detail = $payment_detail;
     }
-    
+
     public function render()
     {
         return view('livewire.payment-detail');

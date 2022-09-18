@@ -316,7 +316,6 @@ class DController extends Controller
                 return back()->with('status', 'Course has been deleted successfully!');
             }
 
-            // dd('hit');
             $sections = $course->section;
             if ($sections && $sections->count()) {
                 foreach ($sections as $section) {
@@ -324,12 +323,9 @@ class DController extends Controller
                 }
             }
 
-            // dd('hit');
             $course_img = $course->course_image;
             if ($course_img) {
-                // dd($course_img);
                 $img = $course_img->img_path;
-                
                 if (file_exists(asset('storage/'.$img))) {
                     unlink(public_path('storage/'. $img));
                 }
@@ -379,9 +375,6 @@ class DController extends Controller
                     $c_en->delete();
                 }
             }
-
-            // CourseHistory::where('course_id',$course->id)->delete();
-
 
             $course->delete();
             return back()->with('status', 'Course has been deleted successfully!');

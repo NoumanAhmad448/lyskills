@@ -1,5 +1,5 @@
-<?php 
-return [ 
+<?php
+return [
     'client_id' => env('PAYPAL_LIVE_CLIENT_ID',''),
     'secret' => env('PAYPAL_LIVE_CLIENT_SECRET',''),
     'settings' => array(

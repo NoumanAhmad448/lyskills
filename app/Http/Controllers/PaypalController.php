@@ -131,7 +131,7 @@ class PaypalController extends Controller
     public function paymentSuccess(Request $request)
     {
         try {
-            $course_id = $request->session()->get('course_id');       
+            $course_id = $request->session()->get('course_id');
             if ($request->session()->exists('paypal_payment_id')) {
                 $c_id = $course_id;
                 $u_id = auth()->id();
@@ -142,7 +142,6 @@ class PaypalController extends Controller
                     $price = Pricing::where('course_id', $c_id)->first();
                     if($price){
                         $price_in_do = $price->pricing;
-                        
                     }else{
                         return Redirect::route('index');
                     }
@@ -150,12 +149,11 @@ class PaypalController extends Controller
                 CourseEnrollment::create(['course_id' => $c_id, 'user_id' => $u_id]);
                 CourseHistory::create(['course_id' => $c_id, 'user_id' => $u_id, 'pay_method' => 'Paypal',
                 'amount' => $price_in_do, 'ins_id' => $course->user->id]);
-                
                 $policy = Setting::select('payment_share_enable', 'instructor_share')->first();
                 if ($policy->count() && $policy->payment_share_enable) {
                     $earning = ((int) $policy->instructor_share * (int) $price_in_do) / 100;
                     InstructorEarning::create(['course_id' => $c_id, 'user_id' => $u_id, 'earning' => $earning, 'ins_id' => $course->user->id]);
-                    
+
                 } else {
                     $earning = (50 * (int) $price_in_do) / 100;
                     InstructorEarning::create(['course_id' => $c_id, 'user_id' => $u_id, 'earning' => $earning, 'ins_id' => $course->user->id]);
@@ -163,10 +161,10 @@ class PaypalController extends Controller
 
                 setEmailConfigForCourse();
                 $course_url = route('user-course', $course->slug);
-                
+
                 Mail::to(auth()->user()->email)->queue(new StudentEnrollmentMail(auth()->user()->name, $course->course_title, $course_url));
                 Mail::to($course->user->email)->queue(new InformInstructorMail(auth()->user()->name, $course->course_title, $course_url, $course->user->name));
-                
+
 
                 return redirect()->route('user-course', ['slug' => $course->slug])->with('status','congtratulation! you are enrolled now. please click start button and start watching the course');
             } else {

@@ -134,11 +134,7 @@ class SocialController extends Controller
     {
         try {
             $user = Socialite::driver('google')->user();
-            // name 
-            // id 
-            // email 
-            // profile photo path
-            // dd($user);
+
             $id = $user->id ?? null;
             if (!$id) {
                 return redirect()->route('register')->with('error', 'Google server error. please try again');
@@ -191,11 +187,7 @@ class SocialController extends Controller
     {
         try {
             $user = Socialite::driver('facebook')->user();
-            // name 
-            // id 
-            // email 
-            // profile photo path
-            // dd($user);
+
             $id = $user->id ?? null;
             if (!$id) {
                 return redirect()->route('register')->with('error', 'facebook server error. please try again');
@@ -248,11 +240,6 @@ class SocialController extends Controller
     {
         try {
             $user = Socialite::driver('linkedin')->user();
-            // name 
-            // id 
-            // email 
-            // profile photo path
-            // dd($user);
             $id = $user->id ?? null;
             if (!$id) {
                 return redirect()->route('register')->with('error', 'facebook server error. please try again');

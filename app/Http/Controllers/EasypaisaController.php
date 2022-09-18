@@ -35,7 +35,7 @@ class EasypaisaController extends Controller
     public function getEasypay()
     {
         $timestamp = strtotime(date("h:i:sa")) + 2*60*60;
-        $time = date('Y-m-d h:i:s', $timestamp);        
+        $time = date('Y-m-d h:i:s', $timestamp);
         // dd($time);
         $timestamp = date('Y-m-d h:i:s', strtotime(date("h:i:sa")));
         // dd($timestamp);
@@ -71,105 +71,88 @@ class EasypaisaController extends Controller
 
     public function getEasypayToken()
     {
-        // try {
-            if(!isset($_GET['slug'])){
-                abort(403);
-            }
-            $course = Course::where('slug', $_GET['slug'])->first();
-            if(!$course){
-                abort(403);
-
-
-            }
-            // dd($course);
-            $c_id = $course->id;
-            $u_id = auth()->id();
-            $price_in_do = (int)$course->price->pricing;
-                CourseEnrollment::create(['course_id' => $c_id, 'user_id' => $u_id]);
-                CourseHistory::create(['course_id' => $c_id, 'user_id' => $u_id, 'pay_method' => 'Easypaisa',
-                'amount' => $price_in_do, 'ins_id' => $course->user->id]);
-                
-                $policy = Setting::select('payment_share_enable', 'instructor_share')->first();
-                if ($policy->count() && $policy->payment_share_enable) {
-                    $earning = ((int) $policy->instructor_share * (int) $price_in_do) / 100;
-                    InstructorEarning::create(['course_id' => $c_id, 'user_id' => $u_id, 'earning' => $earning, 'ins_id' => $course->user->id]);
-                    
-                } else {
-                    $earning = (50 * (int) $price_in_do) / 100;
-                    InstructorEarning::create(['course_id' => $c_id, 'user_id' => $u_id, 'earning' => $earning, 'ins_id' => $course->user->id]);
-                }
-
-                setEmailConfigForCourse();
-                $course_url = route('user-course', $course->slug);
-                
-                Mail::to(auth()->user()->email)->queue(new StudentEnrollmentMail(auth()->user()->name, $course->course_title, $course_url));
-                Mail::to($course->user->email)->queue(new InformInstructorMail(auth()->user()->name, $course->course_title, $course_url, $course->user->name));
-                
-
-                return redirect()->route('user-course', ['slug' => $course->slug])->with('status','congtratulation! you are enrolled now. please click start button and start watching the course');
-        // } catch (\Throwable $th) {
-        //     dd($th->getMessage());
-        // }
+    if(!isset($_GET['slug'])){
+        abort(403);
     }
-    
-    
+    $course = Course::where('slug', $_GET['slug'])->first();
+    if(!$course){
+        abort(403);
+
+
+    }
+    $c_id = $course->id;
+    $u_id = auth()->id();
+    $price_in_do = (int)$course->price->pricing;
+        CourseEnrollment::create(['course_id' => $c_id, 'user_id' => $u_id]);
+        CourseHistory::create(['course_id' => $c_id, 'user_id' => $u_id, 'pay_method' => 'Easypaisa',
+        'amount' => $price_in_do, 'ins_id' => $course->user->id]);
+
+        $policy = Setting::select('payment_share_enable', 'instructor_share')->first();
+        if ($policy->count() && $policy->payment_share_enable) {
+            $earning = ((int) $policy->instructor_share * (int) $price_in_do) / 100;
+            InstructorEarning::create(['course_id' => $c_id, 'user_id' => $u_id, 'earning' => $earning, 'ins_id' => $course->user->id]);
+
+        } else {
+            $earning = (50 * (int) $price_in_do) / 100;
+            InstructorEarning::create(['course_id' => $c_id, 'user_id' => $u_id, 'earning' => $earning, 'ins_id' => $course->user->id]);
+        }
+
+        setEmailConfigForCourse();
+        $course_url = route('user-course', $course->slug);
+
+        Mail::to(auth()->user()->email)->queue(new StudentEnrollmentMail(auth()->user()->name, $course->course_title, $course_url));
+        Mail::to($course->user->email)->queue(new InformInstructorMail(auth()->user()->name, $course->course_title, $course_url, $course->user->name));
+
+        return redirect()->route('user-course', ['slug' => $course->slug])->with('status','congtratulation! you are enrolled now. please click start button and start watching the course');
+    }
+
     public function getHashKeyEn(Request $request)
     {
         try{
             $sampleString = $request->str;
             $c_d_t = date("Y-m-d").'T'.date("h:i:s");
-            // $sampleString['postBackURL'] = route('get-token-pay');
             $sampleString .= $c_d_t;
-            // $sampleString = http_build_query ($sampleString);
-            
-            // $sampleString = json_encode($sampleString);
-            // echo $sampleString; 
-            // die();
-            
+
             $hashKey = 'L3L9LHA58FE7BCU3';
             $cipher = "aes-128-ecb";
             $crypttext = openssl_encrypt($sampleString, $cipher, $hashKey,OPENSSL_RAW_DATA);
             $hashRequest = base64_encode($crypttext);
-            
+
             return response()->json(['param' => $hashRequest, 'ss' => $sampleString]);
         }
-        
+
         catch(\Throwable $e){
             echo "something went wrong ". $e->getMessage();
         }
     }
-    
-    
-        public function getJazz(){
-           return view('jaxxcash/jaxxcash');
-        }
-        
-        
-        public function jazzcashCallBack(Request $request){
-            dd($request->all())   ;
-        }
+
+    public function getJazz(){
+        return view('jaxxcash/jaxxcash');
+    }
+
+    public function jazzcashCallBack(Request $request){
+        dd($request->all())   ;
+    }
 
 
-        public function getStarted($course)
-        {
-            try{
-                $slug = $course;
-                $course = Course::where('slug' ,$course)->first();
-                if(!$course){
-                    abort(403);
-                }
-
-                $price = $course->price->pricing;
-                $pkr_c = $this->getPayment();
-                $price = round($price * $pkr_c, 2);
-                $timestamp = strtotime(date("h:i:sa")) + 2*60*60;
-                $time = date('Y-m-d h:i:s', $timestamp);
-                return view('easypaisa.send-request-easypaisa',compact('price','time','slug'));
+    public function getStarted($course)
+    {
+        try{
+            $slug = $course;
+            $course = Course::where('slug' ,$course)->first();
+            if(!$course){
+                abort(403);
             }
-            catch(\Throwable $e){
-                return back();
-            }
+
+            $price = $course->price->pricing;
+            $pkr_c = $this->getPayment();
+            $price = round($price * $pkr_c, 2);
+            $timestamp = strtotime(date("h:i:sa")) + 2*60*60;
+            $time = date('Y-m-d h:i:s', $timestamp);
+            return view('easypaisa.send-request-easypaisa',compact('price','time','slug'));
         }
-    
-    
+        catch(\Throwable $e){
+            return back();
+        }
+    }
 }

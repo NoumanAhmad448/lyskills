@@ -12,10 +12,9 @@ class InstructorNotification extends Component
      * @return void
      */
 
-    
     public function __construct()
     {
-        
+
     }
 
     /**

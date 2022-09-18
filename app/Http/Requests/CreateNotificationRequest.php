@@ -33,7 +33,7 @@ class CreateNotificationRequest extends FormRequest
     {
         return [
             'message.required' => 'Please provide the required message for your instructors',
-            'message.string' => 'Your message must be only english alphebets',            
+            'message.string' => 'Your message must be only english alphebets',
         ];
     }
 }

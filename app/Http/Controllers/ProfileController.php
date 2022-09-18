@@ -25,7 +25,7 @@ class ProfileController extends Controller
     /**
      * save instructor profile
      * @return user profile
-     * @param Request 
+     * @param Request
      */
 
     public function saveProfile(IProfileRequest $request)

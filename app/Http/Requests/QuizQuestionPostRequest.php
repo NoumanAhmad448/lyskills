@@ -34,9 +34,6 @@ class QuizQuestionPostRequest extends FormRequest
             'ans4' => 'bail|required|max:1000',
             'reason_ans' => 'bail|nullable|max:1000',
             'ans'=> 'bail|required|in:a1,a2,a3,a4'
-
-
-            
         ];
     }
 

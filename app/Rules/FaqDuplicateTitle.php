@@ -26,7 +26,7 @@ class FaqDuplicateTitle implements Rule
      */
     public function passes($attribute, $value)
     {
-        return !(Faq::where('title',$value)->first());   
+        return !(Faq::where('title',$value)->first());
     }
 
     /**

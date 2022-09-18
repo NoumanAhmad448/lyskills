@@ -35,7 +35,7 @@ class PublicAnn extends Mailable  implements ShouldQueue
     public function build()
     {
         return $this->from(getAdminEmail())->subject($this->subject)->
-            markdown('emails.public-ann',[                
+            markdown('emails.public-ann',[
                 'body' => $this->body,
                 'name' => $this->name
             ]);

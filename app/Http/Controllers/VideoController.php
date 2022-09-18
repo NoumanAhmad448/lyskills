@@ -80,19 +80,14 @@ class VideoController extends Controller
             $this->validate_user($course_id);
             $media = Media::findOrFail($media_id);
             $lec_id = $media->lecture_id;
-            
+
             if($media){
                 $file_name = $media->lec_name;
                 if($file_name){
-                    // $f_path = public_path('storage/'.$file_name);
-                    // $f_path = public_path('storage/'.$file_name);
                     $f_path = Storage::disk('s3')->exists($file_name);
 
-                    // if(file_exists($f_path)){
                     if($f_path){
-                        // unlink($f_path);
-                                            Storage::disk('s3')->delete($f_path);
-
+                        Storage::disk('s3')->delete($f_path);
                     }
                     $media->delete();
                     return response()->json([
@@ -102,7 +97,6 @@ class VideoController extends Controller
                 }else{
                     return response()->json([
                         'error' => 'video was not deleted because of some issues'
-                                   
                     ]);
                 }
             }
@@ -111,7 +105,7 @@ class VideoController extends Controller
 
     public function delete_uploaded_video(Request $request,$lec_id)
     {
-        if($request->ajax()){            
+        if($request->ajax()){
             $lec = ResVideo::findOrFail($lec_id);
             $this->validate_user($lec->lecture->course->id);
             if($lec){
@@ -133,7 +127,6 @@ class VideoController extends Controller
                 }else{
                     return response()->json([
                         'error' => 'video was not deleted because of some issues'
-                                   
                     ]);
                 }
             }
@@ -146,24 +139,22 @@ class VideoController extends Controller
             $request->validate([
                 'upload_b_vid.*' => 'required|max:4000000|mimetypes:video/mp4,video/webm,video/ogg'
             ]);
-           
-            $course = Course::findOrFail($course);            
-            
+
+            $course = Course::findOrFail($course);
             $files = $request->file('upload_b_vid');
-        
-            foreach ($files as $file) {   
+
+            foreach ($files as $file) {
                 $f_name = $file->getClientOriginalName();
                 $f_mimetype = $file->getClientMimeType();
-                
+
                 $path = $file->store('uploads','public');
-                $media = new Media;                
-                $media->lec_name = $path;            
-                $media->f_name = $f_name;            
-                $media->f_mimetype = $f_mimetype;            
-                $media->course_id = $course->id;            
+                $media = new Media;
+                $media->lec_name = $path;
+                $media->f_name = $f_name;
+                $media->f_mimetype = $f_mimetype;
+                $media->course_id = $course->id;
                 $media->save();
             }
-            
             return response()->json(
                'All video files have been saved'
             );
