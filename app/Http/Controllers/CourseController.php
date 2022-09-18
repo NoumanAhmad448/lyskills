@@ -657,17 +657,14 @@ class CourseController extends Controller
     public function myLearning()
     {
         try {
-            
             $title = "My Learning";
             $courses_list = CourseEnrollment::where('user_id', auth()->id())->distinct()->pluck('course_id');
-            
+
             if ($courses_list) {
                 $courses = Course::orderByDesc('created_at')->findOrFail($courses_list);
-                
             }
             return view('xuesheng.my-learning', compact('title', 'courses'));
         } catch (\Throwable $th) {
-           
         }
     }
 
@@ -728,25 +725,9 @@ class CourseController extends Controller
             }
 
             $course_d = Course::findOrFail($course)->select('id', 'user_id', 'slug')->first();
-            // if(isCurrentUserAdmin() || auth()->id() == $course_d->user_id || isCurrentUserBlogger()){
-            //     return back()->with('error','operation not allowed');
-            // }
 
-            // dd('hit');
             $user = auth()->id();
-            // $price_in_do = $course_d->price->pricing;
-            // dd($price);
             CourseEnrollment::create(['course_id' => $course, 'user_id' => $user]);
-
-            // $lyskills = new LyskillsPayment($user,$course,'coupon');
-            // $response = $lyskills->courseEnrollment($price_in_do,$course_d->user->id,true);
-            // if($response['status'] === false){            
-            //     return back()->with('error','there is a problem in the course enrollment');
-            // }
-
-            // $user_d = User::findOrFail($user);     
-
-            // $lyskills->sendEmail($user_d->email,$user_d->name,$course_d->slug,$course_d);        
 
             return back()->with('status', 'Congtratulation! you are enrolled in this course now');
         } catch (Exception $e) {
@@ -758,8 +739,6 @@ class CourseController extends Controller
     {
         try {
 
-            // $course1 = $request->course;            
-            // dd($course);
             $course_d = Course::findOrFail($course);
 
             if (isCurrentUserAdmin() || auth()->id() == $course_d->user_id || isCurrentUserBlogger()) {
@@ -786,17 +765,16 @@ class CourseController extends Controller
 
     public function ratingCourse(Request $request)
     {
-        
         try {
             $rating_no = $request->rating_no;
             $course_slug = $request->course;
             $course = Course::where('slug',$course_slug)->first();
-            
+
             if(!$course){
                 abort(403);
             }
             $c_id = $course->id;
-            $user_id = auth()->id();            
+            $user_id = auth()->id();
             $rating_modal = RatingModal::where([['student_id', '=', $user_id], ['course_id' , '=' , $c_id]])->first();
             if($rating_modal){
                 $rating_modal->rating = $rating_no;
@@ -825,24 +803,20 @@ class CourseController extends Controller
 
     }
 
-    public function downloadCert($course_name){        
-
-        // $course_name .= $course_name;
-        // $course_name .= $course_name;
-        
+    public function downloadCert($course_name){
         $cert_no = rand();
         $date = Carbon::now()->toDateString();
-        
+
         $d = ['course' => $course_name, 'cert_no' => $cert_no, 'date' => $date, 'name' => auth()->user()->name];
-        
+
         $path = asset('img/certificate.jpg');
-        
+
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         $img = 'data:image/' . $type . ';base64,' . base64_encode($data);
         $d['img'] = $img;
         return PDF::loadView("course.certificate", $d)->setPaper('a4', 'landscape')->setWarnings(false)->                
-                        stream('certificate.pdf');        
+                        stream('certificate.pdf');
     }
 
     public function comment($course_name)
@@ -866,13 +840,11 @@ class CourseController extends Controller
 
     public function commentPost(Request $request)
     {
-        
-       
             $request->validate([
                 'course_slug' => ['required','max:255',new IsScriptAttack],
                 'message' => 'required',
-            ]);    
-    try {   
+            ]);
+    try {
             Comment::create(['course_id' => $request->course_slug, 'user_id' => auth()->id(), 'comment' => $request->message]);
             return back();
         } catch (\Throwable $th) {
@@ -888,8 +860,6 @@ class CourseController extends Controller
 
     public function commentUpdate(Request $request)
     {
-        
-        // dd($request->comm_id);
         $co = Comment::where('id',$request->comm_id)->first();
         $co->comment = $request->new_msg;
         $co->save();

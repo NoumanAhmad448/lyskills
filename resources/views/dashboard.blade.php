@@ -60,7 +60,7 @@ use Carbon\Carbon;
                             @if($course->slug)
                                 <a href="{{ route('user-course', ['slug' => $course->slug ]) }}" target="_blank" class="text-dark">
                             @endif
-                                <img src="{{asset('storage/'.$course_img->image_path)}}" alt="{{$course_img->image_name}}" width="150" class="img-fluid img-thumbnail" />
+                                <img src="{{config('setting.s3Url').$course_img->image_path}}" alt="{{$course_img->image_name}}" width="150" class="img-fluid img-thumbnail" />
                             @if($course->slug)
                                 </a>
                             @endif                            

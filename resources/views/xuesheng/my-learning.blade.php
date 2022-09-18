@@ -29,7 +29,7 @@ use App\Models\RatingModal;
                 <div class="card fix-height" style="width: 18rem;" data-aos="zoom-out-up"
                 data-aos-anchor-placement="bottom-bottom">
                     <a href="{{route('user-course', ['slug' => $course->slug])}}">
-                        @if($ci) <img class="card-img-top img-fluid" src="{{ asset('storage/'.$ci->image_path)}}" alt="{{ $ci->image_name }}"> @endif
+                        @if($ci) <img class="card-img-top img-fluid" src="{{ config('setting.s3Url').$ci->image_path}}" alt="{{ $ci->image_name }}"> @endif
                     </a>
                     @php 
                     $rating_avg = (int) RatingModal::where('course_id',$course->id)->avg('rating');

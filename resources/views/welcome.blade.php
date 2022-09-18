@@ -51,7 +51,7 @@ use App\Models\RatingModal;
             <div class="card fix-height" style="">
                 <a href="{{route('user-course', ['slug' => $course->slug])}}">
                     @if($course->course_image) <img class="card-img-top img-fluid"
-                        src="{{ asset('storage/'.$course->course_image->image_path)}}"
+                        src="{{config('setting.s3Url').$course->course_image->image_path}}"
                         alt="{{ $course->course_image->image_name }}"> @endif
                 </a>
 

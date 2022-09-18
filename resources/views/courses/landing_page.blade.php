@@ -109,7 +109,7 @@ use Illuminate\Support\Facades\Storage;
                 $path = $course_img->image_path;
                 }
                 @endphp
-                <img src="@if($path) {{asset('storage/'.$path)}} @else {{asset('img/thumbnail.jpg')}} @endif"
+                <img src="@if($path) {{config('setting.s3Url').$path}} @else {{asset('img/thumbnail.jpg')}} @endif"
                     alt="Course Thumbnail" class="img-fluid course_img" width="750" height="450" />
             </div>
             <div class="col-md-6">

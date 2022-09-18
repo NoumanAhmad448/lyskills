@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Mail;
 
 class LyskillsPayment {
 
-    private $c_id; 
-    private $u_id; 
+    private $c_id;
+    private $u_id;
     private $method;
 
     public function __construct($user_id,$course_id,$method)
@@ -45,10 +45,9 @@ class LyskillsPayment {
             return array('status' => false, 'error' => $e->getMessage());
         }
     }
-    
-    
+
     public function sendEmail($email,$name,$slug,$course)
-    {        
+    {
         setEmailConfigForCourse();
         $course_url = route('user-course',$slug);
         // dd($course->user->email);

@@ -9,7 +9,6 @@ use App\Http\Requests\CourseVideoRequest;
 use App\Models\Categories;
 use App\Models\Course;
 use App\Models\CourseImage;
-use App\Models\CourseStatus;
 use App\Models\CourseVideo;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -75,24 +74,31 @@ class LandingPageController extends Controller
             $manager = new ImageManager();
             $image = $manager->make($file)->resize(300, 200);
 
-
-            // $path = $file->store('img','public');
             $name = $file->getClientOriginalName();
-            $path = 'img/' . time() . uniqid() . explode(' ', $name)[0];
-            $save_path = public_path('storage/img');
-            if (!file_exists($save_path)) {
-                mkdir($save_path);
+            $path = "storage/img/".time() . uniqid() . str_replace(' ', '-',$name);
+
+            // $save_path = public_path('storage/img');
+            // if (!file_exists($save_path)) {
+            //     mkdir($save_path);
+            // }
+
+            // $image->save(public_path('storage/' . $path));
+            $dir_path = "storage/img";
+            if(!Storage::disk("s3")->exists($dir_path)) {
+                Storage::disk("s3")->makeDirectory($dir_path, 0775, true);
             }
-            $image->save(public_path('storage/' . $path));
+
+            Storage::disk("s3")->put($path, $image->stream()->__toString());
+
             $extension = $file->extension();
             $course = Course::findOrFail($course);
             $course_img = $course->course_image;
-            // dd($course_img);
             if ($course_img) {
-                $prev_p = public_path('storage/' . $course_img->image_path);
+                $prev_p = $course_img->image_path;
 
                 if ($prev_p) {
-                    unlink($prev_p);
+                    // unlink($prev_p);
+                    Storage::disk("s3")->delete($prev_p);
                 }
                 $course_img->image_path = $path;
                 $course_img->image_name = $name;
@@ -101,7 +107,7 @@ class LandingPageController extends Controller
 
                 return response()->json([
                     'status' => 'saved',
-                    'img_path' => asset('storage/' . $path)
+                    'img_path' => config("setting.s3Url").$path,
                 ]);
             }
 
@@ -117,9 +123,12 @@ class LandingPageController extends Controller
 
             return response()->json([
                 'status' => 'saved',
-                'img_path' => asset('storage/' . $path)
+                'img_path' => config("setting.s3Url").$path,
             ]);
         } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ]);
             return back()->with('error', 'this action cannot be performed now. plz try again later ');
         }
     }

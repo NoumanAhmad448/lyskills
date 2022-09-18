@@ -25,8 +25,6 @@ class AdminFaqController extends Controller
 
     public function createFaq()
     {
-
-        
         try {
             $title = "create_faq";
             return view('admin.create_faq', compact('title'));
@@ -48,7 +46,7 @@ class AdminFaqController extends Controller
             $data = $request->only(['title', 'message']);
             $img = $request->upload_img;
             $f_name = $img->getClientOriginalName();
-            $path = $img->store('img','public');            
+            $path = $img->store('img','public');
             $data['f_name'] =  $f_name;
             $data['upload_img'] = $path;
 
