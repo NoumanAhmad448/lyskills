@@ -3,7 +3,7 @@
     use App\Models\Media; 
     
 ?>
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 
 @section('page-css')
 <style>

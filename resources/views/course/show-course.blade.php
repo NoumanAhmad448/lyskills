@@ -5,7 +5,7 @@ use App\Models\WishList;
 use App\Models\CourseEnrollment;
 use Carbon\Carbon;
 @endphp
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 
 @section('page-css')
 <meta property="og:url" content="{{route('user-course' , ['slug' => $course->slug])}}" />

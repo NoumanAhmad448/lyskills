@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use App\Models\UserAnnModel;
 use App\Models\Categories;
@@ -89,6 +89,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
         </div>
     </div>
     @endif
+    @if(config('setting.guest_header'))
     <nav class="p-2 d-md-flex justify-content-md-between mb-2 mb-md-0">
         <div class="container-fluid">
             <div class="row">
@@ -199,13 +200,16 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                 </div>
             </div>
     </nav>
+    @endif
     <!-- main Content -->
     <main>
         @yield('content')
     </main>
 
 
-    @include('footer')
+    @if(config('setting.guest_footer'))
+        @include('footer')
+    @endif
 </body>
 
 </html>

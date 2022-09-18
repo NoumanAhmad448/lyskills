@@ -150,7 +150,7 @@ class CategoriesController extends Controller
                     $desc = __('description.default');
                     break;
             }
-            return view('category.show', compact('c', 'courses', 'title', 'desc'));
+            return view(config("setting.show_blade"), compact('c', 'courses', 'title', 'desc'));
         } catch (Exception $e) {
             return back()->with('error', 'this action cannot be done now please try again');
         }

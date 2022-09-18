@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 @section('content')
 
 <div class="jumbotron bg-static-website text-center text-white text-uppercase">
