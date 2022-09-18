@@ -42,7 +42,6 @@ class AdminRequest extends FormRequest
         return [
             'email.required' => 'Please write your username',
             'password.required' => 'Please type your password',
-            
         ];
     }
 

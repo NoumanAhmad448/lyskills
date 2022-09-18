@@ -20,13 +20,10 @@ class Course extends Model
      */
     public function getSlugOptions() : SlugOptions
     {
-        
         return SlugOptions::create()
             ->generateSlugsFrom('course_title')
             ->saveSlugsTo('slug')
-            // ->doNotGenerateSlugsOnUpdate()
-            // ->preventOverwrite();
-            ;            
+            ;
     }
 
     public function user()
@@ -48,7 +45,7 @@ class Course extends Model
     {
         return $this->hasOne(CourseImage::class);
     }
-    
+
     public function course_vid()
     {
         return $this->hasOne(CourseVideo::class);

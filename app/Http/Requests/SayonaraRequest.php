@@ -16,7 +16,7 @@ class SayonaraRequest extends FormRequest
     {
         $course = Course::find($this->route('course'));
 
-        return $course && $this->user()->id == $course->user_id;   
+        return $course && $this->user()->id == $course->user_id;
     }
 
     /**

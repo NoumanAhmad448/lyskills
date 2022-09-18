@@ -53,12 +53,9 @@ class PaymentController extends Controller
         try {
 
             $course = Course::where('slug', $slug)->where('status', 'published')->firstOrFail();
-            // dd($course);
-            
+
             $payment_method = $request->payment_method;
-            // dd($payment_method);
             $price_in_do = $course->price->pricing;
-            // dd($course->price->pricing * 100 );
             if ($payment_method !== NULL) {
 
                 $request->user()->charge(
@@ -68,25 +65,19 @@ class PaymentController extends Controller
                 $u_id = auth()->id();
                 $c_id = $course->id;
 
-                // dd('HIT');
                 CourseEnrollment::create(['course_id' => $c_id, 'user_id' => $u_id]);
                 CourseHistory::create(['course_id' => $c_id, 'user_id' => $u_id, 'pay_method' => 'Stripe', 'amount' => $price_in_do, 'ins_id' => $course->user->id]);
 
                 $policy = Setting::first();
-                // dd($policy);
-                
+
                 if ($policy->count() && $policy['payment_share_enable']) {
                     $earning = (((int) $policy['instructor_share']) * $price_in_do) / 100;
-                    // dd($earning);
                     InstructorEarning::create(['course_id' => $c_id, 'user_id' => $u_id, 'earning' => $earning, 'ins_id' => $course->user->id]);
                     // dd('HIT');
                 } else {
                     $earning = (50 * $price_in_do) / 100;
                     InstructorEarning::create(['course_id' => $c_id, 'user_id' => $u_id, 'earning' => $earning, 'ins_id' => $course->user->id]);
                 }
-                
-                
-                // dd('hit');
 
                 setEmailConfigForCourse();
                 $course_url = route('user-course', $slug);
@@ -127,10 +118,6 @@ class PaymentController extends Controller
                 $course_history->load(['course:id,course_title', 'user:id,name']);
             }
             $t_earning = InstructorEarning::where('ins_id', auth()->id())->sum('earning');
-            // $t_enrollment = CourseEnrollment::where('user_id',auth()->id())->count();
-            // dd($t_enrollment);
-            // $m_earning = InstructorEarning::where('ins_id',auth()->id())->sum('earning');
-            // $m_enrollment = InstructorEarning::where('ins_id',auth()->id())->sum('earning');
 
             return view('laoshi.kuai_history', compact('title', 'course_history', 't_earning'));
         } catch (\Throwable $th) {
@@ -180,12 +167,12 @@ class PaymentController extends Controller
     public function enrollment($course)
     {
         try {
-            
+
             if (isAdmin()) {
                 Course::where('id',$course)->whereNull('is_deleted')->where('status','published')->firstOrFail();
                 $title = "Enrollment History";
                 $users = CourseEnrollment::with('user:id,name,email')->where('course_id', $course)->select('id', 'user_id')->get();                
-                
+
                 $total_enrollment = CourseEnrollment::where('course_id', $course)->count();
                 return view('admin.course-enrollment-page', compact('users', 'title', 'total_enrollment'));
             }

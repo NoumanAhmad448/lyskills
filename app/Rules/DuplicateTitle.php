@@ -26,7 +26,7 @@ class DuplicateTitle implements Rule
      */
     public function passes($attribute, $value)
     {
-        return !(Post::where('title',$value)->first());   
+        return !(Post::where('title',$value)->first());
     }
 
     /**

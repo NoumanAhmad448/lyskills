@@ -7,9 +7,9 @@ use Livewire\Component;
 
 class EditAdmin extends Component
 {
-    public $user;    
+    public $user;
     public function mount($user)
-    {        
+    {
         $this->user = User::select('id','name','email')->where('id',$user)->first();
     }
     public function render()

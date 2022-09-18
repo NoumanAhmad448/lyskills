@@ -27,7 +27,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'dev'),
-    
+
     'email' => env('MAIL_FROM_ADDRESS', ''),
 
     /*
@@ -138,8 +138,6 @@ return [
 
     'providers' => [
 
-        
-
         Barryvdh\DomPDF\ServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
@@ -201,7 +199,7 @@ return [
         // 'Recaptcha' => Mostafaznv\Recaptcha\Facades\Recaptcha::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class, 
+        'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         "Slugify" => Cocur\Slugify\Bridge\Laravel\SlugifyFacade::class,
         // "Socialite" => Laravel\Socialite\Facades\Socialite::class,
         'App' => Illuminate\Support\Facades\App::class,
@@ -240,8 +238,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        
-
     ],
 
 ];

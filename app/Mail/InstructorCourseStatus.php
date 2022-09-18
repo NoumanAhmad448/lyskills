@@ -10,9 +10,9 @@ use Illuminate\Queue\SerializesModels;
 class InstructorCourseStatus extends Mailable
 {
     use Queueable, SerializesModels;
-    public $course_name; 
-    public $author; 
-    public $status; 
+    public $course_name;
+    public $author;
+    public $status;
 
 
     /**
@@ -24,7 +24,7 @@ class InstructorCourseStatus extends Mailable
     {
         $this->course_name = $course_name;
         $this->author = $author;
-        $this->status = $status; 
+        $this->status = $status;
     }
 
     /**

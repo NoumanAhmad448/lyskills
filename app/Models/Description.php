@@ -12,6 +12,6 @@ class Description extends Model
 
     public function lecture()
     {
-        return $this->belongsTo(Lecture::class);      
+        return $this->belongsTo(Lecture::class);
     }
 }

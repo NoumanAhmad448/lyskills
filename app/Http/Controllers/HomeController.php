@@ -18,7 +18,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-// use ProtoneMedia\LaravelFFMpeg\Filters\WatermarkFactory;
 
 class HomeController extends Controller
 {
@@ -91,7 +90,6 @@ class HomeController extends Controller
 
     public function faq($slug)
     {
-        
         try {
             $title = $slug;
             $faq = Faq::where('slug', $slug)->first();
@@ -101,12 +99,11 @@ class HomeController extends Controller
             $desc = substr(trim(strip_tags($faq->message)), 0, 165);
 
             $c_img = $faq->upload_img;
-        
-            $next = FAQ::where('id',$faq->id + 1)->where('status','published')->first();            
-            $prev = FAQ::where('status','published')->find($faq->id - 1);            
+
+            $next = FAQ::where('id',$faq->id + 1)->where('status','published')->first();
+            $prev = FAQ::where('status','published')->find($faq->id - 1);
             return view('public_post.view_faq', compact('faq', 'title', 'next', 'prev', 'desc', 'c_img'));
         } catch (\Throwable $th) {
-            //throw $th;
         }
     }
 
@@ -286,20 +283,16 @@ class HomeController extends Controller
 
     public function convertVideo()
     {
-        $path = 'uploads/Lecture-1.mp4';  
-    
+        $path = 'uploads/Lecture-1.mp4';
+
     try {
 
         $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(10);
         $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start);
 
         FFMpeg::fromDisk('public_path')->open($path)
-        // ->addFilter(function (VideoFilters $filters) use($clipFilter) {
-        //     $filters->resize(new \FFMpeg\Coordinate\Dimension(300, 300));
-        //     $clipFilter;
-        // })
         ->addWatermark(function(WatermarkFactory $watermark) {
-            $watermark->openUrl('https://lyskills.com/img/logo.jpg')                
+            $watermark->openUrl('https://lyskills.com/img/logo.jpg')
                 ->right(25)
                 ->bottom(25)
                 ->width(100)
@@ -308,12 +301,11 @@ class HomeController extends Controller
                 ->quality(100)
                 ;
         })
-        ->export()  
+        ->export()
         ->toDisk('public')
         ->inFormat(new \FFMpeg\Format\Video\X264)
-        ->save('uploads/'.'abf.mp4');  
-        
-        dd('hit');
+        ->save('uploads/'.'abf.mp4');
+
     } catch (\Throwable $th) {
         dd($th->getMessage());
     }

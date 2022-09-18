@@ -16,7 +16,4 @@ class BloggerSettingRequest extends FormRequest
         return isAdmin();
     }
 
-   
-
-    
 }
