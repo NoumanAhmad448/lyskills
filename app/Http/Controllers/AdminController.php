@@ -104,16 +104,12 @@ class AdminController extends Controller
                 array_push($unique_dates, [$i, 0]);
             }
 
-            // dd($unique_dates);
             if ($dates) {
                 foreach ($dates as $key) {
                     $d = $key[0];
-                    // dd($d);
                     foreach ($unique_dates as $uni_d) {
                         if ($uni_d[0] == $d) {
-                            // dd($key[1]);
                             $uni_d[1] += (int)$key[1];
-                            // dd($uni_d);
                         }
                     }
                 }
