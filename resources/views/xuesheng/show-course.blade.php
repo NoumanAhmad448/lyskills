@@ -28,14 +28,14 @@ use App\Models\RatingModal;
                         <div class="col-md-3">
                             @php $ci = $course->course_image; @endphp
                             <a href="{{route('user-course', ['slug' => $course->slug])}}">
-                                @if($ci) <img class="card-img-top" src="{{ asset('storage/'.$ci->image_path)}}" alt="{{ $ci->image_name }}"> @endif
+                                @if($ci) <img class="card-img-top" src="{{ config('setting.s3Url').$ci->image_path}}" alt="{{ $ci->image_name }}"> @endif
                             </a>
                         </div>
                         <div class="col-md-9 p-3">
                             {{-- <h3 class="card-title font-bold text-capitalize"><a href="{{route('user-course', ['slug' => $course->slug])}}">
                                  {{ $course->course_title ?? ''}} </h3>
                             </a>
-                            <p class="card-text text-capitalize mt-1"> By <span class="font-bold"> {{ $course->user->name ?? '' }} </span> </p>
+                            <p class="card-text text-capitalize mt-1"> By <span class="font-bold"> @if($course->user){{ $course->user->name ?? '' }}@endif </span> </p>
                             <p class="card-text text-capitalize mt-1"> Category {{ $course->categories_selection ?? '' }} </p>
                             <p class="card-text text-capitalize mt-1"> @if($course->price->is_free)  {{ __('free') }}
                                 @else ${{ $course->price->pricing ?? '' }}   @endif </p>                     --}}
@@ -45,7 +45,7 @@ use App\Models\RatingModal;
                             @endphp
                               <div class="card-body" style="height: 150px">
                                 <h5 class="card-title font-bold text-capitalize" style="font-size: 1.1rem;font-weight:bold"> {{ reduceCharIfAv($course->course_title ?? '', 40)}} </h5>
-                                <p class="card-text text-capitalize mb-0 mt-1"><span class=""> {{ reduceWithStripping($course->user->name,20) ?? '' }} </span>
+                                <p class="card-text text-capitalize mb-0 mt-1"><span class=""> @if(!empty($course->user)){{ reduceWithStripping($course->user->name,20) ?? '' }}@endif </span>
                                 </p>
                                 <p class="mb-0 mt-1 @if($course->categories_selection == 'it') {{ 'text-uppercase' }} @else {{ 'text-capitalize'}} @endif">  {{ reduceWithStripping($course->categories_selection,20) ?? '' }} </p>
                                 @if($rating_avg)

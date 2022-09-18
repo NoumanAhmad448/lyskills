@@ -21,7 +21,7 @@ use App\Models\Course;
                     @if($course->slug)
                     <div class="card" style="width: 18rem;">
                         <a href="{{route('user-course', ['slug' => $course->slug])}}">
-                            @if($ci) <img class="card-img-top" src="{{ asset('storage/'.$ci->image_path)}}" alt="{{ $ci->image_name }}"> @endif
+                            @if($ci) <img class="card-img-top" src="{{ asset('config('setting.s3Url').$ci->image_path}}" alt="{{ $ci->image_name }}"> @endif
                         </a>
                             <div class="card-body">
                                 <h5 class="card-title font-bold text-capitalize"> {{ $course->course_title ?? ''}} </h5>

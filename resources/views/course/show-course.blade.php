@@ -11,7 +11,7 @@ use Carbon\Carbon;
 <meta property="og:url" content="{{route('user-course' , ['slug' => $course->slug])}}" />
 <meta property="og:type" content="website" />
 <meta property="og:image"
-    content="@if(empty($c_img))  {{asset('img/logo.jpg')}} @else  {{ asset('storage/'.$c_img) }} @endif" />
+    content="@if(empty($c_img))  {{asset('img/logo.jpg')}} @else  {{ config('setting.s3Url').$c_img }} @endif" />
 @endsection
 
 
