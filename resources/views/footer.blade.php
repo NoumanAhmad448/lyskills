@@ -146,7 +146,7 @@
              version          : 'v9.0'
            });
          };
-      
+
          (function(d, s, id) {
          var js, fjs = d.getElementsByTagName(s)[0];
          if (d.getElementById(id)) return;
@@ -155,6 +155,17 @@
          fjs.parentNode.insertBefore(js, fjs);
        }(document, 'script', 'facebook-jssdk'));
   });
+</script>
+
+<script>
+  $(function(){
+    $("#close_user_notification").click(function(){
+      localStorage.setItem("closed_user_notification", true)
+    })
+  })
+  if(localStorage.getItem("closed_user_notification")){
+    $("#close_user_notification").click()
+  }
 </script>
 
 <!-- Your Chat Plugin code -->

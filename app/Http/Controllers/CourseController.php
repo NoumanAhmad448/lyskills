@@ -427,15 +427,15 @@ class CourseController extends Controller
             }
             $rating_avg = (float) RatingModal::where('course_id',$course->id)->avg('rating');
             $rated_by_students = (int) RatingModal::where('course_id',$course->id)->count('rating');
-            
-            $comments = Comment::with('rating')->where('course_id',$course->id)->limit(3)->get();
-            // dd($comments);
 
-            return view('course.show-course', compact('comments','course', 'title', 'total_en', 'desc', 'c_img','rating_avg',
-                    'rated_by_students'            
+            $comments = Comment::with('rating')->where('course_id',$course->id)->limit(3)->get();
+
+            return view(config("setting.show_course_blade"), compact('comments','course', 'title', 'total_en', 'desc', 'c_img','rating_avg',
+                    'rated_by_students'
         ));
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            if(config('app.debug'))
+                dd($th->getMessage());
         }
     }
 

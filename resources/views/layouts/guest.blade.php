@@ -73,7 +73,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
     </section>' !!}
     @php Cache::store('file')->put('isLoaderLoaded', true, 3600); @endphp
     @endif
-    @if(isset($ann) && $ann->count())
+    @if(isset($ann) && $ann->count() && config("setting.user_notification"))
     <div class="container-fluid font-bold text-center">
         <div class="row">
             <div class="col-12">
@@ -81,7 +81,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                 <div class="alert alert-info mb-1 alert-dismissible fade show font-bold" role="alert"
                 style="font-weight: bold"
                 > {{ $ann -> message ?? ''}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <button type="button" id="close_user_notification" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

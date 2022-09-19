@@ -3,7 +3,9 @@ use App\Models\RatingModal;
 ?>
 @extends(config('setting.guest_blade'))
 @section('page-css')
-{{-- <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> --}}
+@if(config("setting.aos_css"))
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+@endif
     <style>
         /* fix-height */
         @media all and (min-width: 576px) {
