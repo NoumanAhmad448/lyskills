@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 
 @section('content')
     <div class="container-fluid">
@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    @if(isset($posts) && $posts->count()) 
+    @if(isset($posts) && $posts->count())
 
     @foreach($posts as $post)
         <div class="container-fluid">

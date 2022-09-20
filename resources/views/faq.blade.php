@@ -1,4 +1,4 @@
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 
 @section('content')
     <div class="container-fluid">

@@ -1,7 +1,7 @@
 <?php 
 use App\Models\User;
 ?>
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 
 
 @section('content')

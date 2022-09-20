@@ -2,7 +2,7 @@
 use App\Models\RatingModal;
 
 ?>
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 @section('page-css')
     <style>        
         @media all and (min-width: 576px) {

@@ -2,7 +2,7 @@
 use App\Models\RatingModal;
 
 ?>
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 @section('page-css')
 {{-- <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> --}}
     <style>

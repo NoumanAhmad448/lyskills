@@ -5,7 +5,7 @@ use App\Models\WishList;
 use App\Models\CourseEnrollment;
 use Carbon\Carbon;
 @endphp
-@extends('layouts.guest')
+@extends(config('setting.guest_blade'))
 
 @section('page-css')
 <meta property="og:url" content="{{route('user-course' , ['slug' => $course->slug])}}" />
@@ -16,20 +16,22 @@ use Carbon\Carbon;
 
 
 @section('content')
+@if(config('setting.course_banner'))
 <section class="my-1 bg-static">
     <div class="container">
         <div class="row">
             <div class="col-md-10 p-4 py-5">
                 @include('session_msg')
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-white text-dark">
-                        @if($course->categories_selection) <li class="breadcrumb-item text-capitalize"> <a
-                                href="{{route('user-categories', ['category' => $course->categories_selection] )}}">
-                                {{ $course->categories_selection ?? ''  }} </a> </li> @endif
-                        <li class="breadcrumb-item active" aria-current="page"> {{ $course->slug ?? '' }} </li>
-                    </ol>
-                </nav>
-
+                @if(config("setting.course_nav"))
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb bg-white text-dark">
+                            @if($course->categories_selection) <li class="breadcrumb-item text-capitalize"> <a
+                                    href="{{route('user-categories', ['category' => $course->categories_selection] )}}">
+                                    {{ $course->categories_selection ?? ''  }} </a> </li> @endif
+                            <li class="breadcrumb-item active" aria-current="page"> {{ $course->slug ?? '' }} </li>
+                        </ol>
+                    </nav>
+                @endif
                 <h1 class="text-capitalize" style="font-weight: bold!important"> {{ $course->course_title ?? '' }} </h1>
                 <div class="mt-2" class="text-justify">
                     {{ reduceCharIfAv($course->description ?? '', 200) }}
@@ -56,7 +58,7 @@ use Carbon\Carbon;
                 <div class="mt-2">
                     Last updated {{ Carbon::parse($course->updated_at)->toDateString() ?? '' }}
                 </div>
-                @if(!empty($total_en))
+                @if(!empty($total_en) && config("setting.course_enrollment_count"))
                 <div class="m2-1">
                     Enrollment: {{ $total_en ?? '' }}
                 </div>
@@ -71,50 +73,54 @@ use Carbon\Carbon;
 
                 <div class="mt-2">
                     <section class="d-flex">
-                        <form action="{{route('wishlist-course-post', ['slug' => $course->slug])}}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-light">
-                                @auth
-                                @if(WishList::where('user_id' , auth()->id())->where('c_id', $course->id)->first())
-                                <i class="fa fa-heart" aria-hidden="true"></i>
-                                @else
-                                <i class="fa fa-heart-o text-website" aria-hidden="true"></i>
-                                @endif
-                                @endauth
-                                @guest
-                                <i class="fa fa-heart-o text-website" aria-hidden="true"></i>
-                                @endguest
-                                Wishlist
-                            </button>
-                        </form>
-
-                        <div link="{{route('user-course' , ['slug' => $course->slug ])}}" id="share_course"
-                            class="btn btn-light ml-2"> <i class="fa fa-share-square-o" aria-hidden="true"></i>
-                            Share
-                        </div>
-                        {{-- <a href="" class="btn btn-light ml-2"> <i class="fa fa-gift" aria-hidden="true"></i>
-                                Gift Course
-                            </a> --}}
+                        @if(config("setting.course_desc_wishlist_btn"))
+                            <form action="{{route('wishlist-course-post', ['slug' => $course->slug])}}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-light">
+                                    @auth
+                                    @if(WishList::where('user_id' , auth()->id())->where('c_id', $course->id)->first())
+                                    <i class="fa fa-heart" aria-hidden="true"></i>
+                                    @else
+                                    <i class="fa fa-heart-o text-website" aria-hidden="true"></i>
+                                    @endif
+                                    @endauth
+                                    @guest
+                                    <i class="fa fa-heart-o text-website" aria-hidden="true"></i>
+                                    @endguest
+                                    Wishlist
+                                </button>
+                            </form>
+                        @endif
+                        @if(config('setting.course_desc_share_btn'))
+                            <div link="{{route('user-course' , ['slug' => $course->slug ])}}" id="share_course"
+                                class="btn btn-light ml-2"> <i class="fa fa-share-square-o" aria-hidden="true"></i>
+                                Share
+                            </div>
+                        @endif
+                        @if(config('setting.course_desc_gift_btn'))
+                            <a href="" class="btn btn-light ml-2"> <i class="fa fa-gift" aria-hidden="true"></i>
+                                    Gift Course
+                            </a>
+                        @endif
                     </section>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
+@endif
 
 <div class="d-md-none">
     <div class="border">
-        <?php 
-                $c_vid = $course->course_vid;
-            ?>
+        <?php
+            $c_vid = $course->course_vid;
+        ?>
         @if($c_vid && $c_vid->vid_path)
-        <video controls class="w-100">
-            <source src="{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{ $c_vid->vid_path }}"
-                type="{{$c_vid->video_type ?? '' }}">
-            <!--<source src="@if(file_exists(public_path('storage/'.$c_vid->vid_path))){{asset('storage/'.$c_vid->vid_path)}}@else{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$c_vid->vid_path}}@endif" type="{{$c_vid->video_type ?? '' }}">                        -->
-            Your browser does not support the video tag.
-        </video>
+            <video controls class="w-100">
+                <source src="{{config('setting.s3Url')}}{{ $c_vid->vid_path }}"
+                    type="{{$c_vid->video_type ?? '' }}">
+                Your browser does not support the video tag
+            </video>
         @endif
         <div class="px-2">
             @php $price = $course->price; @endphp
@@ -288,117 +294,119 @@ use Carbon\Carbon;
                 @endif
             </div>
             <hr />
-            <div class="course_content">
-                <section class="my-4  ml-4 d-flex justify-content-between align-items-center">
-                    <h2 class=""> Course Content </h2>
-                    <div id="show_time"> </div>
-                </section>
+            @if(config("setting.show_hide_course_content"))
+                <div class="course_content">
+                    <section class="my-4  ml-4 d-flex justify-content-between align-items-center">
+                        <h2 class=""> Course Content </h2>
+                        <div id="show_time"> </div>
+                    </section>
 
-                <div class="accordion mt-2" id="course_content">
-                    <div class="card">
-                        @php $sections = $course->sections;
-                        $total_time = 0;
-                        @endphp
+                    <div class="accordion mt-2" id="course_content">
+                        <div class="card">
+                            @php $sections = $course->sections;
+                            $total_time = 0;
+                            @endphp
 
-                        @if (isset($sections) && $sections->count())
-                        @foreach ($sections as $sec)
-                        <div class="card-header" id="headingOne">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link btn-block text-left font-bold text-dark text-capitalize"
-                                        style="font-size: 1.2rem;" type="button" data-toggle="collapse"
-                                        data-target="#section{{$sec->id}}" aria-expanded="true"
-                                        aria-controls="collapseOne">
-                                        {{ $sec->section_title ?? '' }}
+                            @if (isset($sections) && $sections->count())
+                            @foreach ($sections as $sec)
+                            <div class="card-header" id="headingOne">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h2 class="mb-0">
+                                        <button class="btn btn-link btn-block text-left font-bold text-dark text-capitalize"
+                                            style="font-size: 1.2rem;" type="button" data-toggle="collapse"
+                                            data-target="#section{{$sec->id}}" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            {{ $sec->section_title ?? '' }}
+                                        </button>
+                                    </h2>
+                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                        data-target="#section{{$sec->id}}" aria-expanded="true" aria-controls="collapseOne">
+                                        <i class="fa fa-angle-double-down" aria-hidden="true"></i>
                                     </button>
-                                </h2>
-                                <button class="btn btn-link" type="button" data-toggle="collapse"
-                                    data-target="#section{{$sec->id}}" aria-expanded="true" aria-controls="collapseOne">
-                                    <i class="fa fa-angle-double-down" aria-hidden="true"></i>
-                                </button>
-                            </div>
+                                </div>
 
-                        </div>
-                        <div id="section{{$sec->id}}" class="collapse show @if($sec->section_no == 1 )  @endif"
-                            aria-labelledby="headingOne" data-parent="#course_content">
-                            <div class="card-body">
-                                @php $lectures = Lecture::where('course_id', $course->id)->where('sec_no',
-                                $sec->section_no)->get();
-                                @endphp
-                                @if($lectures->count())
-                                @foreach ($lectures as $lec)
-                                <section class="d-flex justify-content-between">
-                                    <div> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
-                                        {{ $lec->lec_name ?? '' }} </div>
-                                    @php if($lec->count()) { $media = $lec->media;}
-                                    if($media){ $total_time += $media->time_in_mili;}
+                            </div>
+                            <div id="section{{$sec->id}}" class="collapse show @if($sec->section_no == 1 )  @endif"
+                                aria-labelledby="headingOne" data-parent="#course_content">
+                                <div class="card-body">
+                                    @php $lectures = Lecture::where('course_id', $course->id)->where('sec_no',
+                                    $sec->section_no)->get();
                                     @endphp
-                                    <div> @if($media) {{ $media->duration ?? '' }} @endif</div>
+                                    @if($lectures->count())
+                                    @foreach ($lectures as $lec)
+                                    <section class="d-flex justify-content-between">
+                                        <div> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
+                                            {{ $lec->lec_name ?? '' }} </div>
+                                        @php if($lec->count()) { $media = $lec->media;}
+                                        if($media){ $total_time += $media->time_in_mili;}
+                                        @endphp
+                                        <div> @if($media) {{ $media->duration ?? '' }} @endif</div>
 
-                                </section>
-                                {{-- @php $res_video = $lec->res_vid; @endphp --}}
-                                {{-- @if($res_video)
-                                                        <div> 
-                                                            <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
-                                                            {{ $res_video->f_name ?? '' }}
+                                    </section>
+                                    {{-- @php $res_video = $lec->res_vid; @endphp --}}
+                                    {{-- @if($res_video)
+                                                            <div>
+                                                                <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
+                                                                {{ $res_video->f_name ?? '' }}
+                                </div>
+                                @endif
+                                @php $article = $lec->article; @endphp
+                                @if($article)
+                                <div>
+                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                    {{ reduceCharIfAv($article->article_txt ?? '' , 50) }}
+                                </div>
+                                @endif
+                                @php $ex_res = $lec->ex_res; @endphp
+                                @if($ex_res)
+                                <div>
+                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                    {{ $ex_res->title ?? ''  }}
+                                </div>
+                                @endif
+                                @php $other_file = $lec->other_file; @endphp
+                                @if($other_file)
+                                <div>
+                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                    {{ $other_file->saved_f_name ?? ''  }}
+                                </div>
+                                @endif --}}
+                                {{-- @php $assign = $lec->assign; @endphp
+                                                        @if($assign->count())
+                                                            @foreach ($assign as $ass)
+                                                                <div>
+                                                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
+                                                                    {{ $ass->title ?? ''  }}
                             </div>
+                            @endforeach
                             @endif
-                            @php $article = $lec->article; @endphp
-                            @if($article)
+                            @php $quizzs = $lec->quizzs; @endphp
+                            @if($quizzs->count())
+                            @foreach ($quizzs as $q)
                             <div>
                                 <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                {{ reduceCharIfAv($article->article_txt ?? '' , 50) }}
+                                {{ $q->title ?? ''  }}
                             </div>
-                            @endif
-                            @php $ex_res = $lec->ex_res; @endphp
-                            @if($ex_res)
-                            <div>
-                                <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                {{ $ex_res->title ?? ''  }}
-                            </div>
-                            @endif
-                            @php $other_file = $lec->other_file; @endphp
-                            @if($other_file)
-                            <div>
-                                <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                {{ $other_file->saved_f_name ?? ''  }}
-                            </div>
+                            @endforeach
                             @endif --}}
-                            {{-- @php $assign = $lec->assign; @endphp
-                                                    @if($assign->count())
-                                                        @foreach ($assign as $ass)
-                                                            <div> 
-                                                                <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                                                {{ $ass->title ?? ''  }}
-                        </div>
-                        @endforeach
-                        @endif
-                        @php $quizzs = $lec->quizzs; @endphp
-                        @if($quizzs->count())
-                        @foreach ($quizzs as $q)
-                        <div>
-                            <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                            {{ $q->title ?? ''  }}
-                        </div>
-                        @endforeach
-                        @endif --}}
 
 
-                        @endforeach
-                        @endif
+                            @endforeach
+                            @endif
+                        </div>
                     </div>
+                    @endforeach
+                    @endif
+
+                    @php $total_time = Carbon::parse($total_time)->toTimeString(); @endphp
+                    <input type="hidden" id="total_time" value="{{$total_time}}">
+
                 </div>
-                @endforeach
-                @endif
-
-                @php $total_time = Carbon::parse($total_time)->toTimeString(); @endphp
-                <input type="hidden" id="total_time" value="{{$total_time}}">
-
-            </div>
+            @endif
         </div>
     </div>
 
-    @if($course->description)
+    @if($course->description && config("setting.show_hide_course_desc"))
     <div class="mt-2 jumbotron bg-white pt-3">
         <h2> Description </h2>
         <div id="course_desc" class="mt-3 text-justify">
@@ -466,9 +474,8 @@ use Carbon\Carbon;
         </div>
         <div class="col">
             <div style="font-weight: bold" class="text-capitalize">{{$user->name ?? ''}}</div>
-            
             @php if(isset($c)) { $rate = $c->rating ? $c->rating->rating: 0; }@endphp
-            @if(isset($rate) && $rate > 0)            
+            @if(isset($rate) && $rate > 0)
                 <div class="d-flex align-items-center">
                     <section id="rating" class="d-flex align-items-center" style="cursor: pointer">
                         <span class="fa fa-star       @if($rate >= 1) {{ 'text-warning'}} @endif" no="1"></span>
@@ -476,7 +483,7 @@ use Carbon\Carbon;
                         <span class="fa fa-star ml-1  @if($rate >= 3) {{ 'text-warning'}} @endif" style="text-size: 1.3rem;" no="3"></span>
                         <span class="fa fa-star ml-1  @if($rate >= 4) {{ 'text-warning'}} @endif" style="text-size: 1.3rem;" no="4"></span>
                         <span class="fa fa-star ml-1  @if($rate >= 5) {{ 'text-warning'}} @endif" style="text-size: 1.3rem;" no="5"></span>
-                    </section>               
+                    </section>
                 </div>
             @endif
             <div class="mb-2">{{$c->comment}}</div>
@@ -487,12 +494,12 @@ use Carbon\Carbon;
 </div>
 <div class="col-md-4 d-none d-md-block">
     <div class="border p-1">
-        <?php 
-                        $c_vid = $course->course_vid;
-                    ?>
-        @if($c_vid && $c_vid->vid_path)
+        <?php
+            $c_vid = $course->course_vid;
+        ?>
+        @if($c_vid && $c_vid->vid_path && config("setting.show_course_video"))
         <video controls class="w-100">
-            <source src="{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{ $c_vid->vid_path }}"
+            <source src="{{config('setting.s3Url')}}{{ $c_vid->vid_path }}"
                 type="{{$c_vid->video_type ?? '' }}">
             <!--<source src="@if(file_exists(public_path('storage/'.$c_vid->vid_path))){{asset('storage/'.$c_vid->vid_path)}}@else{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$c_vid->vid_path}}@endif" type="{{$c_vid->video_type ?? '' }}">                        -->
             Your browser does not support the video tag.
@@ -573,7 +580,7 @@ use Carbon\Carbon;
                 @if($quizzes)
                 <div> {{ $quizzes }} Quizzes </div>
                 @endif
-                @if($total_time)
+                @if(!empty($total_time) && $total_time)
                 <i class="fa fa-star-o" aria-hidden="true"></i> total time {{ $total_time }}
                 @endif
                 @php $ass = $course->assignments->count(); @endphp
@@ -581,6 +588,7 @@ use Carbon\Carbon;
                 <div> {{ $ass }} Assignments </div>
                 @endif
             </div>
+            @if(config('setting.show_hide_coupon'))
             <section class="apply_coupon my-3">
                 <form action="{{route('coupon')}}" method="post">
                     @csrf
@@ -598,6 +606,7 @@ use Carbon\Carbon;
                 {{-- </div> --}}
                 {{-- </div> --}}
             </section>
+            @endif
         </div>
 
     </div>

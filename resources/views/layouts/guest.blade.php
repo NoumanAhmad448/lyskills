@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use App\Models\UserAnnModel;
 use App\Models\Categories;
@@ -13,12 +13,11 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php 
-        if($_SERVER['SERVER_NAME'] == 'lyskills.org'){        
+    <?php
+        if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
             echo '<meta name="robots" content="noindex">';
         }
-    
-        ?>
+    ?>
     <title id="seo_title"> @if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif </title>
     <meta id="seo_desc" name="description"
         content="@if(isset($desc) && $desc !== '' ) {{ $desc }} @else {{__('description.default')}}  @endif">
@@ -74,7 +73,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
     </section>' !!}
     @php Cache::store('file')->put('isLoaderLoaded', true, 3600); @endphp
     @endif
-    @if(isset($ann) && $ann->count())
+    @if(isset($ann) && $ann->count() && config("setting.user_notification"))
     <div class="container-fluid font-bold text-center">
         <div class="row">
             <div class="col-12">
@@ -82,7 +81,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                 <div class="alert alert-info mb-1 alert-dismissible fade show font-bold" role="alert"
                 style="font-weight: bold"
                 > {{ $ann -> message ?? ''}}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <button type="button" id="close_user_notification" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -90,34 +89,39 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
         </div>
     </div>
     @endif
+    @if(config('setting.guest_header'))
     <nav class="p-2 d-md-flex justify-content-md-between mb-2 mb-md-0">
         <div class="container-fluid">
             <div class="row">
-
                 <div class="col-md-2">
                     <div class="d-md-flex align-items-md-center">
+                        @if(config("setting.show_site_log"))
                         <a href="{{route('index')}}" class=""> <img src="{{asset('img/logo.jpg')}}" alt="Lyskills"
-                                width="80" class="img-fluid" /> </a>
-                        <div class="dropdown">
-                            <div class="ml-4 cursor_pointer show-dropdown" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                Categories
-                            </div>
-                            <div class="dropdown-menu categories_menu">
-                                @php
-                                $cs = Categories::all();
-                                @endphp
+                        width="80" class="img-fluid" /> </a>
+                        @endif
+                @if(config("setting.category_menu"))
+                    <div class="dropdown">
+                        <div class="ml-4 cursor_pointer show-dropdown" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            Categories
+                        </div>
+                        <div class="dropdown-menu categories_menu">
+                            @php
+                            $cs = Categories::all();
+                            @endphp
 
-                                @foreach ($cs as $c )
-                                <a class="dropdown-item"
-                                    href="{{ route('user-categories',['category' => $c->value]) }}">
-                                    {{ $c->name }}
-                                </a>
-                                @endforeach
-                            </div>
+                            @foreach ($cs as $c )
+                            <a class="dropdown-item"
+                                href="{{ route('user-categories',['category' => $c->value]) }}">
+                                {{ $c->name }}
+                            </a>
+                            @endforeach
                         </div>
                     </div>
+                @endif
                 </div>
+            </div>
+                @if(config("setting.guest_search_bar"))
                 <div class="col-md-5">
                     <form action="{{route('c-search-page')}}" method="post">
                         <div class="searchbar mt-4 mt-md-0">
@@ -131,6 +135,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                     </form>
 
                 </div>
+                @endif
                 <div class="col-md-2">
                     <div class="d-md-flex justify-content-end align-items-md-center">
                         @auth
@@ -152,12 +157,13 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                         @if (Route::has('login'))
                         @auth
                         <div class="dropdown mx-3">
-                            <div class="cursor_pointer text-center  pt-2" id="user_menu" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                <img height="40" width="40" class="rounded-circle object-cover" src="@if(Auth::user()->profile_photo_path) {{ asset(Auth::user()->profile_photo_path) }} @else
-                        {{ Auth::user()->profile_photo_url }} @endif" alt="{{ Auth::user()->name }}" />
-
-                            </div>
+                            @if(config("setting.login_profile"))
+                                <div class="cursor_pointer text-center  pt-2" id="user_menu" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <img height="40" width="40" class="rounded-circle object-cover" src="@if(Auth::user()->profile_photo_path) {{ asset(Auth::user()->profile_photo_path) }} @else
+                                        {{ Auth::user()->profile_photo_url }} @endif" alt="{{ Auth::user()->name }}" />
+                                </div>
+                            @endif
                             <div class="dropdown-menu dropdown-menu-right  w-55 mr-4 border"
                                 aria-labelledby="user_menu">
                                 <a style="font-size: 0.9rem !important" class="pt-2  dropdown-item" href="{{ route('myLearning') }}">
@@ -194,13 +200,16 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                 </div>
             </div>
     </nav>
+    @endif
     <!-- main Content -->
     <main>
         @yield('content')
     </main>
 
 
-    @include('footer')
+    @if(config('setting.guest_footer'))
+        @include('footer')
+    @endif
 </body>
 
 </html>

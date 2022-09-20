@@ -26,22 +26,25 @@
 </head>
 <body class="d-flex flex-column" style="min-height: 90%">
     <nav class="navbar bg-website">
-        <a class="navbar-brand text-white" href="{{route('a_home')}}"> 
-            {{-- <img src="{{asset('img/logo.jpg')}}" alt="lyskills" class="img-fluid" width="60"/> --}}
-            Lyskills
-         </a>            
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">        
-                <a class="nav-link text-white" href="{{route('index')}}" target="_blank"> 
-                    <i class="fa fa-home" aria-hidden="true"></i> Home </a>
-            </li>   
-        </ul>        
+        @if(config("setting.show_site_log"))
+            <a class="navbar-brand text-white" href="{{route('a_home')}}">
+                Lyskills
+            </a>
+         @endif
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link text-white" href="{{route('a_logout')}}"> 
+                <a class="nav-link text-white" href="{{route('index')}}" target="_blank">
+                    <i class="fa fa-home" aria-hidden="true"></i> Home </a>
+            </li>
+        </ul>
+        @if(config("setting.login_profile"))
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{route('a_logout')}}">
                     <i class="fa fa-sign-out" aria-hidden="true"></i> Logout </a>
-            </li>   
-        </ul>    
+            </li>
+        </ul>
+        @endif
     </nav>
     <div class="container-fluid mt-3">
         <div class="row">

@@ -6,7 +6,7 @@ use Carbon\Carbon;
 @endphp
 {{-- <x-app-layout>     --}}
     @extends('layouts.dashboard_header')
-    @section('page-css')        
+    @section('page-css')
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     @endsection
     @section('header')
@@ -19,24 +19,24 @@ use Carbon\Carbon;
 
     @section('content')
        @if (isset($ann) && $ann->count())
-       <div class="container-fluid mt-5 text-center font-bold">           
-           @foreach ($ann as $a)            
-                <div style="font-weight: bold"class="alert alert-warning alert-dismissible fade show" role="alert"> {{ $a->message ?? '' }} 
+       <div class="container-fluid mt-5 text-center font-bold">
+           @foreach ($ann as $a)
+                <div style="font-weight: bold"class="alert alert-warning alert-dismissible fade show" role="alert"> {{ $a->message ?? '' }}
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
-                </div>               
-           @endforeach    
+                </div>
+           @endforeach
            {{ $ann->links() }}
         </div>
        @endif
-       
+
         <div class="container-fluid my-2">
-            <div class="d-flex justify-content-end">                
+            <div class="d-flex justify-content-end">
                 <div class="form-inline">
                     <form action="{{route('create_course')}}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-primary btn-lg create_course" 
+                        <button type="submit" class="btn btn-primary btn-lg create_course"
                             data-toggle="tooltip" data-placement="top" title="Create Course"
 
                         > New Course </button>
@@ -44,18 +44,17 @@ use Carbon\Carbon;
                 </div>
             </div>
         </div>
-       
+
         @include('session_msg')
-       
+
         <div class="container-fluid">
             @foreach ($courses as $course)
                 <div class="row p-3 mt-3 border mb-2">
-                    
                     <div class="col-md-12">
                         <div class="row">
                         <div class="col-md-2">
                             @php $course_img = $course->course_image @endphp
-                            
+
                             @if($course_img)
                             @if($course->slug)
                                 <a href="{{ route('user-course', ['slug' => $course->slug ]) }}" target="_blank" class="text-dark">
@@ -63,18 +62,18 @@ use Carbon\Carbon;
                                 <img src="{{config('setting.s3Url').$course_img->image_path}}" alt="{{$course_img->image_name}}" width="150" class="img-fluid img-thumbnail" />
                             @if($course->slug)
                                 </a>
-                            @endif                            
+                            @endif
                             @endif
                         </div>
-                        <div class="col-md-3 d-flex align-items-center">                            
-                            
-                            <h4 class="text-capitalize"> 
+                        <div class="col-md-3 d-flex align-items-center">
+
+                            <h4 class="text-capitalize">
                                 @if($course->slug)
                                     <a href="{{ route('user-course', ['slug' => $course->slug ]) }}" target="_blank" class="text-dark" style="font-size: 1.2rem">
                                 @endif
-                                @php $course_title = $course->course_title; 
+                                @php $course_title = $course->course_title;
                                     // if($course_title && strlen($course_title) > 20){
-                                    //   echo substr($course_title , 0, 20) . '...';   
+                                    //   echo substr($course_title , 0, 20) . '...';
                                     // }else 
                                     if($course_title){
                                         echo $course_title;

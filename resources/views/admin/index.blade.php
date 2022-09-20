@@ -7,23 +7,23 @@
         <h1> Admin </h1>
         <div class="row">
             <div class="col-md-3">
-                <div class="card" >                    
+                <div class="card" >
                     <div class="card-body text-center">
                       <h5 class="card-title"> User </h5>
-                      <p class="card-text"> {{ $users ?? ''}} </p>                      
+                      <p class="card-text"> {{ $users ?? ''}} </p>
                     </div>
                   </div>
             </div>
             <div class="col-md-3">
-                <div class="card" >                    
+                <div class="card" >
                     <div class="card-body text-center">
                       <h5 class="card-title"> Articles </h5>
-                      <p class="card-text"> {{ $articles ?? ''}} </p>                      
+                      <p class="card-text"> {{ $articles ?? ''}} </p>
                     </div>
                   </div>
             </div>
             <div class="col-md-3">
-                <div class="card" >                    
+                <div class="card" >
                     <div class="card-body text-center">
                          <h5 class="card-title"> Assignments </h5>
                       <p class="card-text"> {{ $assignments ?? ''}} </p>                      
