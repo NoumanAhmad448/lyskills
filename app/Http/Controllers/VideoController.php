@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Models\Lecture;
 use App\Models\ResVideo;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,6 +22,7 @@ class VideoController extends Controller
     public function upload_video($course_id,$lecture_id,Request $request)
     {
         if($request->ajax()){
+            try{
             $course = $this->validate_user($course_id);
             Lecture::findOrFail($lecture_id);
 
@@ -31,6 +33,8 @@ class VideoController extends Controller
             $f_name = $file->getClientOriginalName();
             $f_mimetype = $file->getClientMimeType();
 
+            ini_set('memory_limit','5096M');
+
             $path1 = $file->store('uploads','public');
 
             $path = "uploads";
@@ -40,7 +44,7 @@ class VideoController extends Controller
             $file = $getID3->analyze(public_path('storage/'.$path1));
             // $file = $getID3->analyze('https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'.$path);
 
-            $time_mili = $file['playtime_seconds'];
+            $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
 
             $duration = Carbon::parse($time_mili)->toTimeString();
             unlink(public_path('storage/'.$path1));
@@ -69,6 +73,13 @@ class VideoController extends Controller
                 'delete' => route('delete_video',['course_id'=>$course_id, 'media_id' => $media->id]),
                 'f_name' => reduceCharIfAv($f_name,30)
             ]);
+        }catch(Exception $d){
+            $err_message = "Something went wrong ";
+            $err_message .= config("app.debug") ? $d->getMessage() : "";
+            return response()->json([
+                'err' => $err_message,
+            ]);
+        }
 
         }else{
             abort(403);

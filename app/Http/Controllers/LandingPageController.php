@@ -134,6 +134,8 @@ class LandingPageController extends Controller
             $course = Course::findOrFail($course);
             $file = $request->file('course_vid');
 
+            ini_set('memory_limit','5096M');
+
             $file_path = 'uploads';
             $file_path = Storage::disk('s3')->put($file_path, $file);
 

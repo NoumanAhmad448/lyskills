@@ -1079,8 +1079,7 @@ use App\Models\ResVideo;
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                
-                            </div>                            
+                            </div>
                             </div>
                     </section>
                     `);
@@ -1115,14 +1114,14 @@ use App\Models\ResVideo;
 
             } );
 
-            
+
             $('.sec-container').on( 'change', '.upload_video', function(){
                 let current_file = $(this);
-                let c_f_form  = current_file.parents('.upload_video_form');                
+                let c_f_form  = current_file.parents('.upload_video_form');
                 var form_data = new FormData(c_f_form[0]);
                 let file = this.files[0];
-                if(file){                    
-                    let file_err = current_file.parent().find('.file_err');                    
+                if(file){
+                    let file_err = current_file.parent().find('.file_err');
                     var f_type = file.type;
                     if( f_type !== "video/mp4" && f_type !== "video/ogg" && f_type !=="video/webm"){
                         file_err.addClass('d-block').text('Only MP4, OGG, WEBM formats are allowed');
@@ -1151,25 +1150,25 @@ use App\Models\ResVideo;
                             aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         `);
-                        let progress_bar =  main_parent.find('.p_bar');                        
+                        let progress_bar =  main_parent.find('.p_bar');
                         if(video_url){
-                            $.ajax({                        
+                            $.ajax({
                                 url: video_url,
-                                type: 'POST', 
+                                type: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },                       
-                                data: form_data,                            
+                                },
+                                data: form_data,
                                 contentType: false,
-                                processData: false,                       
+                                processData: false,
                                 dataType: 'JSON',
 
                                 xhr: function() {
                                 var xhr = new window.XMLHttpRequest();
                                 xhr.upload.addEventListener("progress", function(evt) {
-                                    if (evt.lengthComputable) {                                    
-                                        var percentComplete = evt.loaded / evt.total; 
-                                        let c_progress = Math.round(percentComplete * 100); 
+                                    if (evt.lengthComputable) {
+                                        var percentComplete = evt.loaded / evt.total;
+                                        let c_progress = Math.round(percentComplete * 100);
                                         progress_bar.attr('aria-valuenow',c_progress);
                                         progress_bar.css('width',c_progress+'%');
 
@@ -1179,45 +1178,56 @@ use App\Models\ResVideo;
                                 return xhr;
                                 },
                                 success: function(data){
-                                    current_file.attr('disabled',false);  
-                                    let path = data['path'];  
-                                    let upload_vid = current_file.parents('.upload_video_con').first();
-                                    let media = data['media']; 
-                                    let video_btn = current_file.parents('.upload_video_con').prev('.lecture_container').find('.lec_content').first();                                    
-                                    video_btn.removeClass('lec_content').addClass('v_c_vid');
+                                    current_file.attr('disabled',false);
+                                    if(data['err']){
+                                        alert(data['err'])
+                                    }else{
+                                        let path = data['path'];
+                                        let upload_vid = current_file.parents('.upload_video_con').first();
+                                        let media = data['media'];
+                                        let video_btn = current_file.parents('.upload_video_con').prev('.lecture_container').find('.lec_content').first();
+                                        video_btn.removeClass('lec_content').addClass('v_c_vid');
 
-                                    upload_vid.replaceWith(`<section class="lecture_vid row p-3">
-                                            <div class="col-md-9">
-                                                <div class="d-flex">
-                                                    <video width="500" height="240" controls oncontextmenu="return false;">
-                                                         <source src="${path}" type="${media['f_mimetype']}">
-                                                    </video>                                                    
+                                        upload_vid.replaceWith(`<section class="lecture_vid row p-3">
+                                                <div class="col-md-9">
+                                                    <div class="d-flex">
+                                                        <video width="500" height="240" controls oncontextmenu="return false;">
+                                                            <source src="${path}" type="${media['f_mimetype']}">
+                                                        </video>
+                                                    </div>
+                                                    <section class="mt-2">
+                                                        <h3 class="d-none d-md-block ml-3"> ${data['f_name']} </h3>
+                                                        <form url="${data['delete']}">
+                                                            <button type="button" class="btn btn-danger del_media"> Delete lecture </button>
+                                                        </form>
+                                                    </section>
                                                 </div>
-                                                <section class="mt-2">
-                                                    <h3 class="d-none d-md-block ml-3"> ${data['f_name']} </h3>  
-                                                    <form url="${data['delete']}">                                                          
-                                                        <button type="button" class="btn btn-danger del_media"> Delete lecture </button>
-                                                    </form>
-                                                </section>                                         
-                                            </div>                                            
-                                        </section>
-                                    `);
-                                   
+                                            </section>
+                                        `);
+                                    }
                                 },
                                 error: function(data){
                                     progress_bar.parent().remove();
                                     current_file.attr('disabled',false);
-                                    let show_err = c_f_form.children('.video_err');       
-                                    data = JSON.parse(data['responseText'])['errors'];                
-                                    show_err.removeClass('d-none').addClass('d-block').text(data['upload_video']);
-                                    setTimeout(function() {
-                                        show_err.addClass('d-none').removeClass('d-block');                                        
-                                    }, 15000);
+                                    let show_err = c_f_form.children('.video_err');
+                                    let res = JSON.parse(data);
+                                    $(".progress").each(function(){
+                                        $(this).hide()
+                                    })
+                                    if(res['err']){
+                                        alert(res['err'])
+                                    }else{
+                                        data = JSON.parse(data['responseText'])['errors'];
+                                        show_err.removeClass('d-none').addClass('d-block').text(data['upload_video']);
+                                        setTimeout(function() {
+                                            show_err.addClass('d-none').removeClass('d-block');
+                                        }, 15000);
+                                    }
                                 }
                         });
                     }
-                    }    
-                }              
+                    }
+                }
             });
 
             $('.sec-container').on( 'change', '.edit_video', function(){
