@@ -1,6 +1,7 @@
 <?php
     return [
         "s3Url" => "https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/",
+        "no_reply_email_pass" => "30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ",
         "show_site_log" => true,
         "login_profile" => true,
         "guest_search_bar" => true,

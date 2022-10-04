@@ -140,7 +140,7 @@ if (!function_exists('setEmailConfigForCourse')){
      function setEmailConfigForCourse(){
         config(['mail.mailers.host' => getCourseEmail()]);
         config(['mail.mailers.username' => getCourseEmail()]);
-        config(['mail.mailers.password' => 'BurraqEngineering65$']);
+        config(['mail.mailers.password' => config("setting.no_reply_email_pass")]);
         config(['mail.from.address' => getCourseEmail()]);
         // config(['mail.from.name' => 'Instructor '.$i_name. ' From Lyskills']);
 
