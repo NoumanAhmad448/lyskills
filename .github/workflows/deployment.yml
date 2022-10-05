@@ -16,10 +16,16 @@ jobs:
         ftp-username: ${{secrets.FTP_USERNAME}}
         ftp-password: ${{secrets.FTP_PASS}}
     - uses: actions/checkout@v3
+
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: clear cache
+      run: php artisan config:cache
+
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
     - name: db connection
       env:
         DB_CONNECTION: ${{secrets.DB_CONNECTION}}
@@ -28,16 +34,14 @@ jobs:
         DB_DATABASE: ${{secrets.DB_DATABASE}}
         DB_USERNAME: ${{secrets.DB_USERNAME}}
         DB_HOST: ${{secrets.DB_HOST}}
-      run: php artisan key:generate
+      run: |
+        php artisan key:generate
+        php artisan migrate
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
+
     - name: npm dependecies
       run: npm install && npm run prod
-    - name: run migrations
-      run: php artisan migrate
-    - name: clear cache
-      run: php artisan config:cache
-    - name: config routing
-      run: php artisan config:route
+
     - name: config routing
       run: php artisan config:route
