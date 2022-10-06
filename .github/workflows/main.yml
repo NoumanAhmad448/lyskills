@@ -9,21 +9,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: SamKirkland/FTP-Deploy-Action@4.3.2
+    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
-        server: ${{secrets.FTP_SERVER}}
-        username: ${{secrets.FTP_USERNAME}}
-        password: ${{secrets.FTP_PASS}}
-    - uses: actions/checkout@v2
+        php-version: '7.4'
+        ftp-server: ${{secrets.FTP_SERVER}}
+        ftp-username: ${{secrets.FTP_USERNAME}}
+        ftp-password: ${{secrets.FTP_PASS}}
+        local-dir: toupload
+    - uses: actions/checkout@v3
 
     # - name: Copy .env
     #   run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
     # - name: clear cache
     #   run: php artisan config:cache
+    - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{secrets.FTP_SERVER}}
+          username: ${{secrets.FTP_USERNAME}}
+          password: ${{secrets.FTP_PASS}}
+          server-dir: public_html/
 
     - name: Install Dependencies
-      run: composer update && composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
     # - name: db connection
     #   env:
