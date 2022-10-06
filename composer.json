@@ -27,7 +27,8 @@
         "livewire/livewire": "^2.0",
         "paypal/paypal-checkout-sdk": "1.0.1",
         "paypal/rest-api-sdk-php": "^1.14",
-        "spatie/laravel-sluggable": "^2.6"
+        "spatie/laravel-sluggable": "^2.6",
+        "dragon-code/laravel-migration-actions": "^2.9"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
