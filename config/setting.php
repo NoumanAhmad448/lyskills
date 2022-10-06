@@ -35,4 +35,5 @@
         "show_hide_coupon" => true,
         "show_hide_course_content" => true,
         "show_hide_course_desc" => true,
+        "dir_path" => "storage/img",
     ];

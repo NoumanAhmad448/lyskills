@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UploadData;
 use App\Http\Requests\PostRequest;
 use App\Models\Faq;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Cocur\Slugify\Slugify;
 use App\Rules\FaqDuplicateTitle;
 use Exception;
+use Intervention\Image\ImageManager;
 
 class AdminFaqController extends Controller
 {
@@ -46,7 +48,12 @@ class AdminFaqController extends Controller
             $data = $request->only(['title', 'message']);
             $img = $request->upload_img;
             $f_name = $img->getClientOriginalName();
-            $path = $img->store('img','public');
+
+            $manager = new ImageManager();
+            $image = $manager->make($img)->resize(500, 500);
+            $uploadData = new UploadData();
+            $path = $uploadData->upload($image->stream()->__toString(), $f_name);
+
             $data['f_name'] =  $f_name;
             $data['upload_img'] = $path;
 
@@ -65,7 +72,7 @@ class AdminFaqController extends Controller
 
             return redirect()->route('admin_v_faq')->with('status', 'Faq has been created');
         } catch (\Throwable $th) {
-            return back();
+            return back()->with('error', "unable to process it".config("app.debug") ? $th->getMessage(): "");
         }
     }
     public function changeStatus(PostRequest $request, Faq $faq)
@@ -128,7 +135,12 @@ class AdminFaqController extends Controller
             $img = $request->upload_img;
             if ($img) {
                 $f_name = $img->getClientOriginalName();
-                $path = $img->store('img');
+
+                $manager = new ImageManager();
+                $image = $manager->make($img)->resize(500, 500);
+                $uploadData = new UploadData();
+                $path = $uploadData->upload($image->stream()->__toString(), $f_name);
+
                 $data['f_name'] =  $f_name;
                 $data['upload_img'] = $path;
             }

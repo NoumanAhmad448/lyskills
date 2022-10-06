@@ -33,7 +33,7 @@
               <div class="alert alert-danger">{{ $message }}</div>
           @enderror
         </div>
-        <img src="{{ asset('storage/'.$page->upload_img) }}" alt="Lyskills" width="100" height="50" class="img-fluid mb-1"/>
+        <img src="{{ config('setting.s3Url').$page->upload_img }}" alt="Lyskills" width="100" height="50" class="img-fluid mb-1"/>
         <div class="form-group">
             <input type="file" class="d-none" id="upload_img" name="upload_img">
             <label class="btn btn-info" for="upload_img"> <i class="fa fa-upload" aria-hidden="true"></i> Upload Image </label>
