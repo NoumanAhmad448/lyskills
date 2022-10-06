@@ -17,8 +17,8 @@ jobs:
         ftp-password: ${{secrets.FTP_PASS}}
     - uses: actions/checkout@v3
 
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+    # - name: Copy .env
+    #   run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
     # - name: clear cache
     #   run: php artisan config:cache

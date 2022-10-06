@@ -1,6 +1,6 @@
 /node_modules
 /public/hot
-/public/storage
+/public/storage/*
 /storage/*.key
 /vendor
 .env
@@ -10,3 +10,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+/storage/app/*
+storage/logs/laravel.log
