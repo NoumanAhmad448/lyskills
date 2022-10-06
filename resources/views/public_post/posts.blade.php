@@ -19,7 +19,7 @@
             <div class="row my-5">
                 <div class="col-md-4 offset-md-2">
                     <a href="{{route('public_posts', ['slug' => $post->slug])}}"> <img id="post-img" class="" width="" height=""
-                        src="{{asset('storage/'.$post->upload_img)}}"  /> </a>
+                        src="{{config('setting.s3Url').$post->upload_img}}"  /> </a>
                 </div>
                 <div class="col-md-5 d-flex align-items-center flex-column">
                     <a href="{{route('public_posts', ['slug' => $post->slug])}}" class="text-primary">
@@ -36,10 +36,10 @@
         </div>
     @endforeach
 
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end mb-5 pr-3">
         {{ $posts->links()}}
     </div>
-    @else 
+    @else
     <div class="text-center">
         No Post Available
     </div>

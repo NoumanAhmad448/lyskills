@@ -172,7 +172,7 @@ use App\Models\RatingModal;
         <div class="row">
             <div class="col-md-12">
                 <div class="d-flex justify-content-end">
-                    <a href="{{route('public_faq')}}" class="btn btn-lg btn-primary">All FAQ </a>
+                    <a href="{{route('public_faq')}}" class="btn btn-lg btn-website">All FAQ </a>
                 </div>
             </div>
             <div class="col-md-8 offset-md-2">

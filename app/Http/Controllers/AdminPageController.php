@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UploadData;
 use App\Http\Requests\PostRequest;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Cocur\Slugify\Slugify;
 use App\Rules\PageDuplicateTitle;
+use Intervention\Image\ImageManager;
 
 class AdminPageController extends Controller
 {
@@ -46,9 +48,12 @@ class AdminPageController extends Controller
             $data = $request->only(['title', 'message']);
             $img = $request->upload_img;
             if ($img) {
-
                 $f_name = $img->getClientOriginalName();
-                $path = $img->store('img');
+                $manager = new ImageManager();
+                $image = $manager->make($img)->resize(500, 500);
+                $uploadData = new UploadData();
+                $path = $uploadData->upload($image->stream()->__toString(), $f_name);
+
                 $data['f_name'] =  $f_name;
                 $data['upload_img'] = $path;
             }
@@ -68,7 +73,7 @@ class AdminPageController extends Controller
 
             return redirect()->route('admin_v_page')->with('status', 'Page has been created');
         } catch (\Throwable $th) {
-            return back();
+            return back()->with('error', "unable to process it".config("app.debug") ? $th->getMessage(): "");
         }
     }
     public function changeStatus(PostRequest $request, Page $page)
@@ -131,7 +136,12 @@ class AdminPageController extends Controller
             $img = $request->upload_img;
             if ($img) {
                 $f_name = $img->getClientOriginalName();
-                $path = $img->store('img');
+
+                $manager = new ImageManager();
+                $image = $manager->make($img)->resize(500, 500);
+                $uploadData = new UploadData();
+                $path = $uploadData->upload($image->stream()->__toString(), $f_name);
+
                 $data['f_name'] =  $f_name;
                 $data['upload_img'] = $path;
             }
@@ -149,7 +159,7 @@ class AdminPageController extends Controller
 
             return redirect()->route('admin_edit_page', compact('page'))->with('status', 'Page has been updated');
         } catch (\Throwable $th) {
-            return back();
+            return back()->with('error', "unable to process it".config("app.debug") ? $th->getMessage(): "");
         }
     }
 }

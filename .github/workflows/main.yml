@@ -9,14 +9,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+    - uses: SamKirkland/FTP-Deploy-Action@4.3.2
       with:
         php-version: '7.4'
         ftp-server: ${{secrets.FTP_SERVER}}
         ftp-username: ${{secrets.FTP_USERNAME}}
         ftp-password: ${{secrets.FTP_PASS}}
         local-dir: toupload
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
 
     # - name: Copy .env
     #   run: php -r "file_exists('.env') || copy('.env.example', '.env');"

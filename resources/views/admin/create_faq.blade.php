@@ -71,7 +71,7 @@
 
                 reader.onload = function (e) {
                     $('.img')
-                        .attr('src', reader.result).removeClass('d-none');                        
+                        .attr('src', reader.result).removeClass('d-none');
                 };
 
                 reader.readAsDataURL(input.files[0]);

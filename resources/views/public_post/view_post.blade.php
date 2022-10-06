@@ -5,7 +5,7 @@
             color: #00f;
         }
     </style>
-     <meta property="og:type"          content="website" />         
+     <meta property="og:type"          content="website" />
      <meta property="og:image"         content="@if(isset($c_img) &&  empty($c_img))  {{asset('img/logo.jpg')}} @else {{ asset('storage/'.$c_img) }} @endif" />
 @endsection
 @section('content')
@@ -17,18 +17,18 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-8 offset-md-2">            
+        <div class="col-md-8 offset-md-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item text-primary"><a href="{{ route('all_public_posts')}}">Posts</a></li>
                     <li class="breadcrumb-item" aria-current="page"> {{ $post->slug }}</li>
                 </ol>
               </nav>
-            <img src="{{asset('storage/'.$post->upload_img)}}" alt="{{ $post->f_name }}" class="w-100 img-fluid mb-4">
+            <img src="{{config('setting.s3Url').$post->upload_img}}" alt="{{ $post->f_name }}" class="w-100 img-fluid mb-4">
         </div>
         <div class="col-md-8 offset-md-2">
             {!! $post->message !!}
-        </div>        
+        </div>
     </div>
 </div>
 
@@ -38,7 +38,7 @@
         <div class="col-4 offset-2">
             @if(isset($prev) && $prev)  <a href="{{$prev->slug}}" class="btn btn-primary"> Previous Post </a> @endif
         </div>
-        <div class="col-4">            
+        <div class="col-4">
             <div class="d-flex justify-content-end">
                 @if(isset($next) && $next)  <a href="{{$next->slug}}" class="btn btn-primary"> Next Post </a> @endif
             </div>
