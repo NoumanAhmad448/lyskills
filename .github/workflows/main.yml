@@ -11,11 +11,9 @@ jobs:
     steps:
     - uses: SamKirkland/FTP-Deploy-Action@4.3.2
       with:
-        php-version: '7.4'
-        ftp-server: ${{secrets.FTP_SERVER}}
-        ftp-username: ${{secrets.FTP_USERNAME}}
-        ftp-password: ${{secrets.FTP_PASS}}
-        local-dir: toupload
+        server: ${{secrets.FTP_SERVER}}
+        username: ${{secrets.FTP_USERNAME}}
+        password: ${{secrets.FTP_PASS}}
     - uses: actions/checkout@v2
 
     # - name: Copy .env
