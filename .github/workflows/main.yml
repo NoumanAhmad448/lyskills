@@ -23,7 +23,7 @@ jobs:
     #   run: php artisan config:cache
 
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      run: composer update && composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
     # - name: db connection
     #   env:
