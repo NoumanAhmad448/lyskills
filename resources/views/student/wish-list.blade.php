@@ -9,7 +9,7 @@
     @if($courses->count())
     <div class="row">
         @foreach ($courses as $c)
-        @php $course = Course::where('id',$c->c_id)->first();
+        @php $course = Courses::where('id',$c->c_id)->first();
         if(!$course){
         continue;
         }
