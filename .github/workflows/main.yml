@@ -31,17 +31,17 @@ jobs:
         password: ${{secrets.FTP_PASS}}
         server-dir: /
 
-    - name: clear cache
-      run: php artisan config:cache
+    # - name: clear cache
+    #   run: php artisan config:cache
 
     - name: Install Dependencies
       run: |
         composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
         composer update
-    - name: Clear Cache & run migrations
-      run: |
-        php artisan key:generate
-        php artisan migrate
+    # - name: Clear Cache & run migrations
+    #   run: |
+    #     php artisan key:generate
+    #     php artisan migrate
 
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
@@ -49,5 +49,5 @@ jobs:
     - name: npm dependecies
       run: npm install && npm run prod
 
-    - name: config routing
-      run: php artisan config:route
+    # - name: config routing
+    #   run: php artisan config:route
