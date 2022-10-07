@@ -134,7 +134,7 @@ use App\Models\RatingModal;
                 <h2 class="my-2"> Recent Post </h2>
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
-                        <img src="{{asset('storage/'.$post->upload_img)}}" alt="{{$post->f_name ?? '' }}"
+                        <img src="{{config('setting.s3Url').$post->upload_img}}" alt="{{$post->f_name ?? '' }}"
                             class="img-fluid" />
                     </div>
                 </div>
@@ -179,7 +179,7 @@ use App\Models\RatingModal;
                 <h2 class="my-2"> Recent FAQ </h2>
                 <div class="row">
                     <div class="col-md-8 offset-md-2">
-                        <img src="{{asset('storage/'.$faq->upload_img)}}" alt="{{$faq->f_name ?? '' }}" class="img-fluid" />
+                        <img src="{{config('setting.s3Url').$faq->upload_img}}" alt="{{$faq->f_name ?? '' }}" class="img-fluid" />
                     </div>
                 </div>
                 <h3 class="text-center mt-2 text-uppercase">
