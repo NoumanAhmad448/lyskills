@@ -23,6 +23,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "Buffer": "0.0.0"
+        "Buffer": "0.0.0",
+        "dplayer": "^1.27.0"
     }
 }

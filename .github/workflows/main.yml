@@ -31,8 +31,8 @@ jobs:
         password: ${{secrets.FTP_PASS}}
         server-dir: /
 
-    # - name: clear cache
-    #   run: php artisan config:cache
+    - name: clear cache
+      run: php artisan config:cache
 
     - name: Install Dependencies
       run: |
