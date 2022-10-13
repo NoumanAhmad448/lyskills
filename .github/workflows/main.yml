@@ -31,6 +31,9 @@ jobs:
         password: ${{secrets.FTP_PASS}}
         server-dir: /
 
+    - name: change current path to PHP
+      run: cd /home/usmansaleem234/public_html
+
     - name: clear cache
       run: php artisan config:cache
 
