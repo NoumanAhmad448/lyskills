@@ -29,24 +29,26 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if(Schema::hasTable('socials')){
+        if($_SERVER['HTTP_HOST'] == "lyskills.com"){
+            if(Schema::hasTable('socials')){
             $social = Social::first();
             if($social){
                 $social->setSocialMedia();
             }
-        }
+            }
 
-        if(Schema::hasTable('config_settings')){
-            $settings = ConfigSetting::all();
-            if($settings){
-                foreach ($settings as $setting){
-                    config(["setting.".$setting->key => false]);
+            if(Schema::hasTable('config_settings')){
+                $settings = ConfigSetting::all();
+                if($settings){
+                    foreach ($settings as $setting){
+                        config(["setting.".$setting->key => false]);
+                    }
                 }
             }
-        }
 
-        if(trim(config('app.env')) === "developement"){
-            URL::forceScheme('http');
+            if(trim(config('app.env')) === "developement"){
+                URL::forceScheme('http');
+            }
         }
 
     }
