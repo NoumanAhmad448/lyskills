@@ -34,17 +34,17 @@ jobs:
     # - name: change current path to PHP
     #   run: cd /home/usmansaleem234/public_html
 
-    - name: clear cache
-      run: php artisan config:cache
+    # - name: clear cache
+    #   run: php artisan config:cache
 
     - name: Install Dependencies
       run: |
         composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-    # - name: Clear Cache & run migrations
-    #   run: |
-    #     php artisan key:generate
-    #     php artisan migrate
+    - name: Clear Cache & run migrations
+      run: |
+        php artisan key:generate
+        php artisan migrate
 
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
