@@ -41,13 +41,14 @@ jobs:
       run: |
         composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+      
     - name: Clear Cache & run migrations
       run: |
         php artisan key:generate
         php artisan migrate
 
-    - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
 
     - name: npm dependecies
       run: npm install && npm run prod
