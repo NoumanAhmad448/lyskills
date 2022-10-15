@@ -43,11 +43,11 @@ jobs:
 
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
-      
-    - name: Clear Cache & run migrations
-      run: |
-        php artisan key:generate
-        php artisan migrate
+
+    # - name: Clear Cache & run migrations
+    #   run: |
+    #     php artisan key:generate
+    #     php artisan migrate
 
 
     - name: npm dependecies
