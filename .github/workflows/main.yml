@@ -17,13 +17,13 @@ jobs:
                     file_uploads = On,max_execution_time = 300,max_input_time = 600, max_input_vars = 10000,memory_limit = 4500M
 
 
-    # - name: Sync files
-    #   uses: SamKirkland/FTP-Deploy-Action@4.0.0
-    #   with:
-    #     server: ${{secrets.FTP_SERVER}}
-    #     username: ${{secrets.FTP_USERNAME}}
-    #     password: ${{secrets.FTP_PASS}}
-    #     server-dir: /
+    - name: Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{secrets.FTP_SERVER}}
+        username: ${{secrets.FTP_USERNAME}}
+        password: ${{secrets.FTP_PASS}}
+        server-dir: /
 
     # - name: change current path to PHP
     #   run: cd /home/usmansaleem234/public_html
