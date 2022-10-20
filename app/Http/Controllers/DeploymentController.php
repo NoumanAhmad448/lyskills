@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Support\Facades\Artisan;
 
 class DeploymentController extends Controller
@@ -15,8 +16,14 @@ class DeploymentController extends Controller
     }
     public function liveDeployment()
     {
-        Artisan::call("key:generate");
-        $this->clearCache();
-        Artisan::call("migrate");
+        try{
+            Artisan::call("key:generate");
+            $this->clearCache();
+            Artisan::call("migrate");
+        }catch(Exception $e){
+            if($_REQUEST[config("setting.show_errors_label")] == 1){
+                dd($e->getMessage());
+            }
+        }
     }
 }
