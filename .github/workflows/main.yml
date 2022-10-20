@@ -1,35 +1,29 @@
-name: deployment piplines
+name: Lyskills Deployment
 
 on:
   push:
     branches: [ "master" ]
 jobs:
   laravel-deployment:
-
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3
+
     - uses: shivammathur/setup-php@v2
       with:
         php-version: '7.4'
-    - uses: actions/checkout@v3
+        ini-values: upload_max_filesize=80000M, post_max_size = 80000M, allow_url_fopen = On, display_errors = Off,enable_dl = Off,
+                    file_uploads = On,max_execution_time = 300,max_input_time = 600, max_input_vars = 10000,memory_limit = 4500M
 
-    # - name: Cache Composer packages
-    #   id: composer-cache
-    #   uses: actions/cache@v2
+
+    # - name: Sync files
+    #   uses: SamKirkland/FTP-Deploy-Action@4.0.0
     #   with:
-    #     path: vendor
-    #     key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-    #     restore-keys: |
-    #       ${{ runner.os }}-php-
-
-    - name: Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: ${{secrets.FTP_SERVER}}
-        username: ${{secrets.FTP_USERNAME}}
-        password: ${{secrets.FTP_PASS}}
-        server-dir: /
+    #     server: ${{secrets.FTP_SERVER}}
+    #     username: ${{secrets.FTP_USERNAME}}
+    #     password: ${{secrets.FTP_PASS}}
+    #     server-dir: /
 
     # - name: change current path to PHP
     #   run: cd /home/usmansaleem234/public_html
@@ -37,12 +31,12 @@ jobs:
     # - name: clear cache
     #   run: php artisan config:cache
 
-    - name: Install Dependencies
-      run: |
-        composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    # - name: Install Dependencies
+    #   run: |
+    #     composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-    - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
+    # - name: Directory Permissions
+    #   run: chmod -R 777 storage bootstrap/cache
 
     # - name: Clear Cache & run migrations
     #   run: |
@@ -50,8 +44,8 @@ jobs:
     #     php artisan migrate
 
 
-    - name: npm dependecies
-      run: npm install && npm run prod
+    # - name: npm dependecies
+    #   run: npm install && npm run prod
 
     # - name: config routing
     #   run: php artisan config:route
