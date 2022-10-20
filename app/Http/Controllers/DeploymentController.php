@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Artisan;
 
 class DeploymentController extends Controller
@@ -14,14 +15,15 @@ class DeploymentController extends Controller
         Artisan::call("view:cache");
         dd("config, view, route are cached successfully");
     }
-    public function liveDeployment()
+    public function liveDeployment(Request $req)
     {
         try{
             // Artisan::call("key:generate");
             $this->clearCache();
             Artisan::call("migrate");
         }catch(Exception $e){
-            if($_REQUEST[config("setting.show_errors_label")] == 1){
+            $show_errors = config("setting.show_errors_label");
+            if($_GET[$show_errors] == 1){
                 dd($e->getMessage());
             }
         }

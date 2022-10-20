@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -28,7 +27,7 @@ class TestingMail extends Mailable
      */
     public function build()
     {
-        return $this->from(getCourseEmail(),config('app.name'))->
-            subject('Contact Us Form ' .$this->subject)->markdown('emails.testing_email');
+        return $this->from(getAdminEmail())->
+            subject('Contact Us Form - Testing')->markdown('emails.testing_email');
     }
 }

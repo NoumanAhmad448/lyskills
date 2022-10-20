@@ -2,7 +2,7 @@
 # hi nomi
 
 This is just a testing email. Please ignore
-@component('mail::button', ['url' => ''])
+@component('mail::button', ['url' => 'www.google.com'])
 Button Text
 @endcomponent
 

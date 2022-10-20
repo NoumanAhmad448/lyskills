@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\TestingMail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class SendEmailToUser extends Command
 {
@@ -13,7 +14,7 @@ class SendEmailToUser extends Command
      *
      * @var string
      */
-    protected $signature = 'send:email';
+    protected $signature = 'create:dir';
 
     /**
      * The console command description.
@@ -39,7 +40,12 @@ class SendEmailToUser extends Command
      */
     public function handle()
     {
-        Mail::to("nouman.laravel@gmail.com")->send(new TestingMail);
+        try{
+            mkdir(app_path("new_dir"));
+
+        }catch(\Exception $e){
+            dd($e->getMessage());
+        }
         return 0;
     }
 }
