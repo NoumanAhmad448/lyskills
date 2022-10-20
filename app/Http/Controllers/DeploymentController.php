@@ -17,7 +17,7 @@ class DeploymentController extends Controller
     public function liveDeployment()
     {
         try{
-            Artisan::call("key:generate");
+            // Artisan::call("key:generate");
             $this->clearCache();
             Artisan::call("migrate");
         }catch(Exception $e){
