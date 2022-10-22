@@ -1,5 +1,5 @@
 # For local developement
-1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
+1. install xampp (Required PHP version -> 7.4.3) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
 2. Go to .env file and change the DB connection
 3. You are following either of track for db data
     1. One
