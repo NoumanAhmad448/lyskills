@@ -9,7 +9,7 @@
 @endsection 
 @section('message')
     <div class="mt-3">
-        We are sorry to see to reach at this page. Do not worry, this is not a problem from you side. There is some problem 
+        We are sorry to see you at this page. Do not worry, this is not a problem from you side. There is some problem 
         in our website, we are working on it. Meanwhile, if you have anything to inform us further, please feel free to contact us. 
     </div>
     <section class="d-flex justify-content-center mt-3">

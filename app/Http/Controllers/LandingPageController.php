@@ -27,7 +27,11 @@ class LandingPageController extends Controller
                 abort(403);
             }
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
     public function store_landing_page(LandingPage $request, $course)
