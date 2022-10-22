@@ -34,10 +34,6 @@ use Carbon\Carbon;
 
 class CourseController extends Controller
 {
-
-
-
-
     public function index($id, $course_id)
     {
         try {
@@ -46,97 +42,36 @@ class CourseController extends Controller
                 if (!$course) {
                     abort(404);
                 }
-                // $course_type = $course->course_type;
                 $course_title = $course->course_title;
                 return view('courses.course_title_selection', compact('id', 'course_id', 'course_title'));
-
-                // return view('courses.course_instruction',compact('id','course_id','course_type'));
             } else if ($id == 2) {
-                // $course = Course::where('id',$course_id)->where('user_id',Auth::id())->first();
-                // if(!$course){
-                //     abort(404);
-                // }
-
-                // $course_title = $course->course_title;
-                // return view('courses.course_title_selection',compact('id','course_id','course_title'));
-                // dd("hit");
                 $categories = Categories::all();
                 return view('courses.course_categories_selection', compact('id', 'course_id', 'categories'));
             }
-            // else if($id == 3 ){
-            //     $categories = Categories::all();
-            //     return view('courses.course_categories_selection',compact('id','course_id','categories'));
-            // }
-            // else if($id == 4 ){
-            //     $course = Course::where('id',$course_id)->where('user_id',Auth::id())->first();
-            //     if(!$course){
-            //         abort(404);
-            //     }
-            //     $course_time = $course->time_selection;
-            //     return view('courses.course_time_selection',compact('id','course_id','course_time'));
-            // }
             else {
                 abort(404);
             }
-        } catch (\Throwable $th) {
-            return back();
         }
-    }
+        catch (\Throwable $th) {
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
+        }
 
+    }
 
     public function storeCourseDetail($id, $course_id, Request $request)
     {
         try {
-            // if($id  == 1){
-
-            //     $course_type = $request->input('course');
-            //     $practice = $request->input('practice');   
-
-            //     if($course_type){
-            //         $course = Course::findOrFail($course_id);
-
-            //         $course->course_type = $course_type;
-            //         $course->user_id =  Auth::id();
-
-
-            //         $course->save();
-
-            //         $id += 1;
-            //         $course_id = $course->id;
-            //         return redirect()->route('courses_instruction',['id' => $id , 'course_id' => $course_id]);
-
-
-            //     }else if($practice){
-            //         $course = Course::findOrFail($course_id);
-            //         $practice = $request->input('practice');   
-            //         $course->course_type = $practice;
-            //         $course->user_id =  Auth::id();
-
-
-            //         $course->save();
-            //         $id += 1;
-            //         $course_id = $course->id;
-            //         return redirect()->route('courses_instruction',['id' => $id , 'course_id' => $course_id]);
-
-            //     }else{                
-            //         return back()->with(['id'=> $id, 'course_id' => $course_id]);
-            //     }
-
-
-            // }
-
             if ($id == 2) {
-                // dd('hit');
                 $validatedData = $request->validate([
                     'course_title' => ['required', 'max:60'],
                 ]);
 
-
                 $course = Course::findOrFail($course_id);
                 $course->update($validatedData);
-
-
-
 
                 return redirect()->route('courses_instruction', ['id' => $id, 'course_id' => $course_id]);
             } else if ($id == 3) {
@@ -147,31 +82,21 @@ class CourseController extends Controller
                     ],
                 ]);
 
-
                 $course = Course::findOrFail($course_id);
                 $course->update($validatedData);
 
-
-                // return redirect()->route('courses_instruction',['id' => $id , 'course_id' => $course_id]);
                 return redirect()->route('courses_dashboard', compact('course_id'));
             }
-            // else if($id == 5){
-            //     // time_selection
-            //     $validatedData = $request->validate([
-            //         'time_selection' => ['required', Rule::in(['option1', 'option2', 'option3', 'option4'])                
-            //         ],                
-            //         ]);
-
-
-            //     $course = Course::findOrFail($course_id);
-            //     $course->update($validatedData);
-
-
-            //     return redirect()->route('courses_dashboard',compact('course_id'));
-
-            // }
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
+            }
         }
     }
 
@@ -179,8 +104,6 @@ class CourseController extends Controller
     {
         try {
             $course = new Course;
-
-
             $course->user_id =  Auth::id();
             $course->status = 'draft';
             $course->save();
@@ -193,15 +116,18 @@ class CourseController extends Controller
             } else {
                 return back()->with('error', 'server error');
             }
-        } catch (\Throwable $e) {
-            return back()->with('error', 'server error');
+        } catch (\Throwable $th) {
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error', 'server error');
+            }
         }
-       
+
     }
 
     public function changeStatus(Request $request)
     {
-            // dd('hit');
             $course_no = $request->course_no;
             $status = $request->status;
 
@@ -267,17 +193,23 @@ class CourseController extends Controller
                     abort(403);
                     break;
             }
-        
     }
 
 
     private function sendEmail($course)
     {
-
         try {
             CourseStatusEmail::dispatch($course);
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
+            }
         }
     }
     public function showPC()
@@ -287,7 +219,15 @@ class CourseController extends Controller
             $title = 'p_courses';
             return view('admin.show_p_courses', compact('title', 'courses'));
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
+            }
         }
     }
 
@@ -298,7 +238,15 @@ class CourseController extends Controller
             $title = 'f_courses';
             return view('admin.show_f_courses', compact('title', 'courses'));
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
+            }
         }
     }
 
@@ -309,7 +257,15 @@ class CourseController extends Controller
             $courses = Course::with('user')->where('status', 'pending')->simplePaginate(10);
             return view('admin.new_courses', compact('title', 'courses'));
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
+            }
         }
     }
 
@@ -321,7 +277,15 @@ class CourseController extends Controller
                 return view('admin.change-course-price', compact('course', 'title'));
             }
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
+            }
         }
     }
     public function changePricePost(Course $course, Request $request)
@@ -342,7 +306,11 @@ class CourseController extends Controller
                 }
             }
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
 
@@ -352,8 +320,11 @@ class CourseController extends Controller
             $title = 'c_status';
             return view('courses.change-course-status-setting', compact('title', 'course'));
         } catch (\Throwable $th) {
-            //throw $th;
-        }
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }        }
     }
 
     public function PostSetting(Course $course)
@@ -366,7 +337,11 @@ class CourseController extends Controller
                 return back()->with('status', 'Course has been unpublished. After making changing, you  may resubmit it again.');
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
 
@@ -379,7 +354,11 @@ class CourseController extends Controller
                 return redirect()->route('dashboard')->with('status', 'Course ' . reduceCharIfAv($course->course_title, 10) . ' has deleted');
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
 
@@ -403,7 +382,11 @@ class CourseController extends Controller
 
             return back()->with('status', 'course url has been updated and it will not be updated in future');
         } catch (\Throwable $th) {
-            //throw $th;
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
 
@@ -445,7 +428,7 @@ class CourseController extends Controller
         try {
             $title = "course content";
             $id = auth()->id();
-            
+
             $course = Course::with(['rating' =>  function($query) use($id){
                 $query->where('student_id', (string)$id)->orderBy('created_at','desc');
             }])->where('slug', $slug)->first();
@@ -453,7 +436,6 @@ class CourseController extends Controller
             if (!$course) {
                 abort(404);
             }
-            // dd($video);
             $media = Media::where('lec_name', 'uploads/' . $video)->first();
             if (!$media) {
                 abort(404);
@@ -505,7 +487,11 @@ class CourseController extends Controller
             }
             return view('laoshi.public-announcement', compact('title', 'courses'));
         } catch (\Throwable $th) {
-            //throw $th;
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
     public function publicAnnPost(CourseAnnRequest $request)
@@ -566,15 +552,15 @@ class CourseController extends Controller
                 }
             }
 
-            // dd($c_titles);
             return view('xuesheng.contact_with_ins', compact('title', 'c_titles'));
         } catch (\Throwable $th) {
-            //throw $th;
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }
         }
     }
     public function contactInsPost(Request $request)
     {
-        // dd($request->all());
         try {
             $request->validate([
                 'course' => ['required', new IsScriptAttack],
@@ -582,7 +568,6 @@ class CourseController extends Controller
             ]);
 
             $r_user_id = Course::where('slug', $request->course)->where('status', "published")->first()->user()->value('id');
-            // dd($r_user_id);
             $s_user_id = auth()->id();
             Chat::create(['f_user_id' => $s_user_id, 'r_user_id' => $r_user_id, 'message' => $request->body]);
             $available = ChatInfo::where('user_id', $s_user_id)->where('ins_id', $r_user_id)->first();
@@ -590,9 +575,12 @@ class CourseController extends Controller
                 ChatInfo::create(['user_id' => $s_user_id, 'ins_id' => $r_user_id]);
             }
 
-            return back();
-        } catch (Exception $e) {
-            return back()->with('error', 'something is going wrong. Please report this error to us.');
+        } catch (Exception $th) {
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error', 'something went wrong.');
+            }
         }
     }
 
@@ -603,7 +591,11 @@ class CourseController extends Controller
             $all_inss = ChatInfo::where('user_id', auth()->id())->select('ins_id')->get();
             return view('xuesheng.chat-history', ['title' => $title, 'all_inss' => $all_inss]);
         } catch (\Throwable $th) {
-            //throw $th;
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
     public function emailToIns()
@@ -612,19 +604,20 @@ class CourseController extends Controller
             $title = "Email to Instructor";
             $c_titles = [];
             $c_enrollment = CourseEnrollment::where('user_id', auth()->id())->select('course_id')->get();
-            // dd($c_enrollment);
             if ($c_enrollment->count()) {
                 foreach ($c_enrollment as $en) {
-                    // dd($en->course->select('course_title'));
                     $course = $en->course()->where('status', 'published')->first();
                     $course_title = $course['slug'];
-                    // dd($course_title);
                     array_push($c_titles, $course_title);
                 }
             }
             return view('xuesheng.send-email-to-ins', compact('title', 'c_titles'));
         } catch (\Throwable $th) {
-            //throw $th;
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
 
@@ -638,19 +631,21 @@ class CourseController extends Controller
             ]);
 
             $ins = Course::where('slug', $request->course)->where('status', "published")->first()->user()->select('email', 'name')->first();
-            // dd($ins);
 
             $user = auth()->user();
             $u_name = $user->name;
             $u_email = $user->email;
-            // dd($u_email);
             setEmailConfigViaStudent();
 
             Mail::to($ins['email'])->queue(new StudentEmail($u_name, $u_email, $request->course, $request->subject, $request->body, $ins['name']));
             return back()->with('status', 'Your Email has been sent to your instructor. If instructor wants to contact with you. He/She will respond 
         back to you on your email address.');
-        } catch (Exception $e) {
-            return back()->with('error', 'there is something wrong going on. please try again');
+        } catch (Exception $th) {
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error', 'there is something wrong going on. please try again');
+            }
         }
     }
 
@@ -665,6 +660,11 @@ class CourseController extends Controller
             }
             return view('xuesheng.my-learning', compact('title', 'courses'));
         } catch (\Throwable $th) {
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
 
@@ -689,7 +689,11 @@ class CourseController extends Controller
 
             return back()->with('status', 'your request has been received. please be patience! we will contact you soon');
         } catch (\Throwable $th) {
-            //throw $th;
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
     public function getCerti(Request $request)
@@ -705,7 +709,7 @@ class CourseController extends Controller
             $name = auth()->user()->name;
             return view('xuesheng.get_cert', compact('title', 'name'));
         } catch (Exception $e) {
-            return back()->with('error', 'this action cannot be performed now. plz try again');
+            return back()->with('error', config("setting.err_msg"));
         }
     }
 
@@ -731,7 +735,7 @@ class CourseController extends Controller
 
             return back()->with('status', 'Congtratulation! you are enrolled in this course now');
         } catch (Exception $e) {
-            return back()->with('error', 'this action cannot be done now');
+            return back()->with('error', config("setting.err_msg"));
         }
     }
 
@@ -745,8 +749,6 @@ class CourseController extends Controller
                 return back()->with('error', 'operation not allowed');
             }
 
-
-
             $user = auth()->id();
 
             $lyskills = new LyskillsPayment($user, $course, 'free');
@@ -757,8 +759,12 @@ class CourseController extends Controller
             $lyskills->sendEmail($user_d->email, $user_d->name, $course_d->slug, $course_d);
 
             return back()->with('status', 'Congtratulation! you are enrolled in this course now');
-        } catch (Exception $e) {
-            return back()->with('error', 'this action cannot be done now');
+        } catch (Exception $th){
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error', config("setting.err_msg"));
+            }
         }
     }
 
@@ -786,7 +792,7 @@ class CourseController extends Controller
             return response()->json(['message' => 'done']);
 
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'something went wrong '.$th->getMessage()],500);
+            return response()->json(['error' => config("setting.err_msg").$th->getMessage()],500);
         }
     }
 
@@ -800,7 +806,6 @@ class CourseController extends Controller
         return PDF::loadView()
                 ->setPaper('a4', 'landscape')->setWarnings(false)
                 ->download('certificate.pdf');
-
     }
 
     public function downloadCert($course_name){
@@ -815,40 +820,44 @@ class CourseController extends Controller
         $data = file_get_contents($path);
         $img = 'data:image/' . $type . ';base64,' . base64_encode($data);
         $d['img'] = $img;
-        return PDF::loadView("course.certificate", $d)->setPaper('a4', 'landscape')->setWarnings(false)->                
+        return PDF::loadView("course.certificate", $d)->setPaper('a4', 'landscape')->setWarnings(false)->
                         stream('certificate.pdf');
     }
 
     public function comment($course_name)
     {
         try {
-            // dd($course_name);
-        $course = Course::where('slug',$course_name)->where('status','published')->where('is_deleted',null)->first();
-        // dd($course);
-        if(!$course){
-            return redirect()->route('index');
-        }
-        $logged_user = auth()->user();
-        $comments = Comment::where('course_id', $course->id)->where('user_id',$logged_user->id)->orderByDesc('created_at')->get();
-        // dd($comments);
-        // dd($course);
-        return view('course.user-comment',compact('course','logged_user','comments'));
+            $course = Course::where('slug',$course_name)->where('status','published')->where('is_deleted',null)->first();
+            if(!$course){
+                return redirect()->route('index');
+            }
+            $logged_user = auth()->user();
+            $comments = Comment::where('course_id', $course->id)->where('user_id',$logged_user->id)->orderByDesc('created_at')->get();
+
+            return view('course.user-comment',compact('course','logged_user','comments'));
         } catch (\Throwable $th) {
-            return redirect()->route('index')->with('error','something went wrong');
+            if(config("env.debug")){
+                dd($th->getMessage());
+            }else{
+                return redirect()->route('index')->with('error',config("setting.err_msg"));
+            }
         }
     }
 
     public function commentPost(Request $request)
     {
-            $request->validate([
-                'course_slug' => ['required','max:255',new IsScriptAttack],
-                'message' => 'required',
-            ]);
-    try {
+        $request->validate([
+            'course_slug' => ['required','max:255',new IsScriptAttack],
+            'message' => 'required',
+        ]);
+        try {
             Comment::create(['course_id' => $request->course_slug, 'user_id' => auth()->id(), 'comment' => $request->message]);
-            return back();
         } catch (\Throwable $th) {
-            return back()->with('error', 'something went wrong');
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error', config("setting.err_msg"));
+            }
         }
     }
 
@@ -860,12 +869,18 @@ class CourseController extends Controller
 
     public function commentUpdate(Request $request)
     {
-        $co = Comment::where('id',$request->comm_id)->first();
-        $co->comment = $request->new_msg;
-        $co->save();
-
-        return back();
-
+       try{
+           $co = Comment::where('id',$request->comm_id)->first();
+           $co->comment = $request->new_msg;
+           $co->save();
+        }
+        catch(\Throwable $th){
+            if(config("app.env")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
+        }
     }
 
     public function readComments($course)
