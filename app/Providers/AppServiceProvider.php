@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\ConfigSetting;
 use App\Models\Social;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;

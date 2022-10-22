@@ -37,4 +37,5 @@
         "show_hide_course_desc" => true,
         "dir_path" => "storage/img",
         "show_errors_label" => "show_errors",
+        "db_helper" => "usmansaleem234_laravel.",
     ];
