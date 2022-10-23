@@ -26,7 +26,7 @@
         </div>
         @include('session_msg')
         <div class="d-flex justify-content-center">
-            <form action="{{route('admin')}}" method="post">
+            <form action="{{route('admin_a')}}" method="post">
                 @csrf
                 <div class="form-group">
                   <label for="user_name">Username</label>

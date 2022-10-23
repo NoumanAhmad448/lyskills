@@ -302,12 +302,12 @@ Route::post('instructor/course/{course}/change-the-course-url', [CourseControlle
 
 Route::get('/admin',[AdminController::class, 'admin_panel'])->name('admin');
 
-Route::post('/admin', [AdminController::class, 'login'])->name('admin');
+Route::post('/admin/post', [AdminController::class, 'login'])->name('admin_a');
 
 Route::get('/index/index', [AdminController::class, 'index'])->middleware('admin')->name('a_home');
 
-Route::get('/user_logout', [HomeController::class, 'logout'])->name('logout');
-Route::post('/user_logout', [HomeController::class, 'logout'])->name('logout_post');
+Route::get('/user_logout', [HomeController::class, 'logout'])->name('logout_user');
+Route::post('/user_logout_post', [HomeController::class, 'logout'])->name('logout_post');
 
 Route::middleware(['auth', 'admin','verified'])->group(function () {
 Route::get('/logout', [AdminController::class, 'logout'])->name('a_logout');
