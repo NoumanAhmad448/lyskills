@@ -135,14 +135,17 @@ class AdminController extends Controller
                 'enrollments'
             ));
         } catch (Exception $e) {
-            return back()->with('error', 'this is action cannot be performed now. plz try again');
+            if(config('app.debug')){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', config('setting.err_msg'));
+            }
         }
     }
 
     public function courseHistory()
     {
         $history = CourseDelHistory::orderByDesc('created_at')->get();
-        // dd($history);
         return view('admin.course_del_his', compact('history'));
     }
 
@@ -155,9 +158,13 @@ class AdminController extends Controller
 
             $request->session()->regenerateToken();
 
-            return redirect('/admin')->with('status', 'You are logged out');
+            return redirect('/admin')->with('status', config("setting.logout_msg"));
         } catch (Exception $e) {
-            return back()->with('error', 'this action is not possible now. plz try again');
+            if(config('app.debug')){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', config('setting.err_msg'));
+            }
         }
     }
     public function admin_panel()
@@ -172,8 +179,12 @@ class AdminController extends Controller
             }
             $title = 'admin';
             return view('admin', compact('title'));
-        } catch (\Throwable $th) {
-            return back();
+        } catch (\Throwable $e) {
+            if(config('app.debug')){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', config('setting.err_msg'));
+            }
         }
     }
 
@@ -185,8 +196,12 @@ class AdminController extends Controller
             $order = 'ai';
             $res = '';
             return view('admin.assignments', compact('asses', 'title', 'order', 'res'));
-        } catch (\Throwable $th) {
-            return back();
+        } catch (\Throwable $e) {
+            if(config('app.debug')){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', config('setting.err_msg'));
+            }
         }
     }
 
@@ -212,8 +227,12 @@ class AdminController extends Controller
             $title = 'Assignments';
             $res = '';
             return view('admin.assignments', compact('asses', 'title', 'order', 'res'));
-        } catch (\Throwable $th) {
-            return back();
+        } catch (\Throwable $e) {
+            if(config('app.debug')){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', config('setting.err_msg'));
+            }
         }
     }
 
@@ -233,8 +252,12 @@ class AdminController extends Controller
             $title = 'Assignments';
             $order = 'ai';
             return view('admin.assignments', compact('asses', 'title', 'order', 'res'));
-        } catch (\Throwable $th) {
-            return back();
+        } catch (\Throwable $e) {
+            if(config('app.debug')){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', config('setting.err_msg'));
+            }
         }
     }
 
@@ -242,7 +265,6 @@ class AdminController extends Controller
     {
         try {
             $title = 'courses';
-            // $courses = Course::with('user')->simplePaginate();
             $courses = Course::with('user')->get();
             $order = 'ai';
             $res = '';

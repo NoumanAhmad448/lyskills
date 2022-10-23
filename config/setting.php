@@ -39,4 +39,5 @@
         "show_errors_label" => "show_errors",
         "db_helper" => "usmansaleem234_laravel.",
         "err_msg" => "Something went wrong",
+        "logout_msg" => 'You are logged out',
     ];

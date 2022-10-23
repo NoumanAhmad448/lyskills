@@ -33,7 +33,11 @@ class StudentController extends Controller
             $courses = auth()->user()->wishLists()->select('c_id')->orderByDesc('updated_at')->simplePaginate(15);
             return view('student.wish-list', compact('title', 'courses'));
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
     public function removeFromWishlist($slug)
