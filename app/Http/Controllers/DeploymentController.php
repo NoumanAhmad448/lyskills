@@ -10,8 +10,8 @@ class DeploymentController extends Controller
     public function clearCache()
     {
         Artisan::call("config:cache");
-        Artisan::call("route:cache");
-        Artisan::call("view:cache");
+        // Artisan::call("route:cache");
+        // Artisan::call("view:cache");
         dump("config, view, route are cached successfully");
     }
     public function liveDeployment()
