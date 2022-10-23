@@ -74,10 +74,11 @@ class LandingPageController extends Controller
         try {
             $request->validated();
 
+            ini_set('memory_limit','5096M');
             $file = $request->file('course_img');
             $manager = new ImageManager();
-            $image = $manager->make($file)->resize(300, 200);
 
+            $image = $manager->make($file)->resize(300, 200);
             $name = $file->getClientOriginalName();
             $path = "storage/img/".time() . uniqid() . str_replace(' ', '-',$name);
 
