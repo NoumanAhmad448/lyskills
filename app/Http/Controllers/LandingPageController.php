@@ -123,10 +123,13 @@ class LandingPageController extends Controller
                 'img_path' => config("setting.s3Url").$path,
             ]);
         } catch (Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ]);
-            return back()->with('error', 'this action cannot be performed now. plz try again later ');
+            if(config("app.debug")){
+                dd($e->getMessage());
+            }else{
+                return response()->json([
+                    'error' => config("setting.err_msg")
+                ]);
+            }
         }
     }
 
