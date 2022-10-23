@@ -302,7 +302,7 @@ Route::post('instructor/course/{course}/change-the-course-url', [CourseControlle
 
 Route::get('/admin',[AdminController::class, 'admin_panel'])->name('admin');
 
-Route::post('/', [AdminController::class, 'login'])->name('admin');
+Route::post('/admin', [AdminController::class, 'login'])->name('admin');
 
 Route::get('/index/index', [AdminController::class, 'index'])->middleware('admin')->name('a_home');
 
