@@ -13,18 +13,19 @@ class DeploymentController extends Controller
         Artisan::call("config:cache");
         Artisan::call("route:cache");
         Artisan::call("view:cache");
-        dd("config, view, route are cached successfully");
+        dump("config, view, route are cached successfully");
     }
     public function liveDeployment(Request $req)
     {
         try{
-            // Artisan::call("key:generate");
+            Artisan::call("key:generate");
             $this->clearCache();
             Artisan::call("migrate");
-        }catch(Exception $e){
-            $show_errors = config("setting.show_errors_label");
-            if($_GET[$show_errors] == 1){
-                dd($e->getMessage());
+        }catch(Exception $th){
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }else{
+                echo config("setting.err_msg");
             }
         }
     }
