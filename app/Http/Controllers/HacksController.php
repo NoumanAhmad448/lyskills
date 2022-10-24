@@ -13,6 +13,7 @@ class HacksController extends Controller
         $req_value = $req->value == 1 ? true: false;
         $op = "INSERT";
 
+        // value = 0 means insert
         if(empty($req_value) && ConfigSetting::where('key', $req_name)->count() < 1){
             $setting = new ConfigSetting;
             $setting->key= $req_name;
@@ -20,8 +21,9 @@ class HacksController extends Controller
             $setting->save();
         }
 
+        // value = 1 means delete
         if(!empty($req_value)){
-            ConfigSetting::where('key',$req_name)->delete();
+            ConfigSetting::where('key', $req_name)->delete();
             $op = "DELETE";
         }
         return "operation $op has been successfully done";
