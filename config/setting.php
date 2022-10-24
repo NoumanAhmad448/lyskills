@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use App\Models\ConfigSetting;
-
 $site_settings = [
         "s3Url" => "https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/",
         "no_reply_email_pass" => "30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ",
@@ -43,11 +40,7 @@ $site_settings = [
         "show_errors_label" => "show_errors",
         "db_helper" => "usmansaleem234_laravel.",
         "err_msg" => "Something went wrong",
-<<<<<<< Updated upstream
-    ];
-=======
         "logout_msg" => 'You are logged out',
 ];
 
 return $site_settings;
->>>>>>> Stashed changes
