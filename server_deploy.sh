@@ -4,6 +4,9 @@ php artisan down || true
 # Install/update composer dependecies
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
 
+# Clear caches
+php artisan cache:clear
+
 # Run database migrations
 php artisan migrate --force
 
@@ -12,9 +15,6 @@ php artisan key:generate
 
 # change folder permission
 chmod -R 777 storage bootstrap/cache
-
-# Clear caches
-php artisan cache:clear
 
 # Clear and cache routes
 php artisan route:cache
