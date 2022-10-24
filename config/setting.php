@@ -1,5 +1,6 @@
 <?php
-    return [
+
+$site_settings = [
         "s3Url" => "https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/",
         "no_reply_email_pass" => "30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ",
         "show_site_log" => true,
@@ -40,4 +41,6 @@
         "db_helper" => "usmansaleem234_laravel.",
         "err_msg" => "Something went wrong",
         "logout_msg" => 'You are logged out',
-    ];
+];
+
+return $site_settings;
