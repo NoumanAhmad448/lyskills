@@ -15,14 +15,14 @@ jobs:
     #     php-version: '8.1'
         # ini-values: upload_max_filesize=80000M, post_max_size = 80000M, allow_url_fopen = On, display_errors = Off,enable_dl = Off,
                     # file_uploads = On,max_execution_time = 300,max_input_time = 600, max_input_vars = 10000,memory_limit = 4500M
-    # - name: Copy .env
-    #   run: php -r "file_exists('.env') || copy('.env.live', '.env');"
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.live', '.env');"
 
     # - name: clear cache
     #   run: php artisan config:cache
 
-    # - name: npm dependecies
-    #   run: npm install && npm run prod
+    - name: npm dependecies
+      run: npm ci
 
     # - name: Clear Cache & run migrations
     #   run: |
@@ -43,9 +43,9 @@ jobs:
     # - name: Directory Permissions
     #   run: chmod -R 777 storage bootstrap/cache
 
-    # - name: Install Dependencies
-    #   run: |
-    #       composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    - name: Install Dependencies
+      run: |
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
     - name: Running Scripts
       uses: appleboy/ssh-action@master
