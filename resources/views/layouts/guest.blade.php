@@ -182,7 +182,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                                 <a style="font-size: 0.9rem !important" class="pt-2  dropdown-item" href="{{ route('pay_his') }}">
                                     {{__('Purchase History')}}</a>
                                 <a style="font-size: 0.9rem !important" class="pt-2  dropdown-item" href="{{ route('public_faq') }}"> {{__('Help')}}</a>
-                                <a style="font-size: 0.9rem !important" class="pt-1 dropdown-item" href="{{ route('logout') }}"> {{__('Logout')}}</a>
+                                <a style="font-size: 0.9rem !important" class="pt-1 dropdown-item" href="{{ route('logout_user') }}"> {{__('Logout')}}</a>
                             </div>
                         </div>
                         @else

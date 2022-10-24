@@ -9,10 +9,10 @@
     @if($courses->count())
     <div class="row">
         @foreach ($courses as $c)
-        @php $course = Courses::where('id',$c->c_id)->first();
-        if(!$course){
-        continue;
-        }
+            @php $course = Course::where('id',$c->c_id)->first();
+            if(!$course){
+            continue;
+            }
         $ci = $course->course_image; @endphp
 
         <div class="col-md-3 my-5">
