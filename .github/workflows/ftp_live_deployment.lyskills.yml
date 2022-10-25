@@ -22,7 +22,7 @@ jobs:
     #   run: php artisan config:cache
 
     - name: npm dependecies
-      run: npm ci
+      run: npm install
 
     # - name: Clear Cache & run migrations
     #   run: |
