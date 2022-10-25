@@ -26,7 +26,6 @@ class LyskillsPayment {
 
     public function courseEnrollment($price_in_do,$ins_id,$is_free_access=false){
         try{
-            // dd($ins_id);
             CourseEnrollment::create(['course_id' => $this->c_id , 'user_id' => $this->u_id]);
             CourseHistory::create(['course_id' => $this->c_id, 'user_id' => $this->u_id, 'pay_method' => $this->method , 'amount' => $price_in_do, 'ins_id' => $ins_id]);
             if($is_free_access === false){
