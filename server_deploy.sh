@@ -26,7 +26,7 @@ php artisan config:cache
 php artisan view:cache
 
 # Install node modules
-npm ci
+npm install
 
 # Build assets using Laravel Mix
 npm run prod
