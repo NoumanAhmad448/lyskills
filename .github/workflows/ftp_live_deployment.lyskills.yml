@@ -53,6 +53,4 @@ jobs:
         username: ${{secrets.SSH_USERNAME}}
         host: ${{secrets.SERVER_IP}}
         password: ${{ secrets.SSH_PASSWORD }}
-        script: |
-            cd ${{secrets.PROJECT_PATH}}
-            chmod u+x ./server_deploy.sh && ./server_deploy.sh'
+        script: 'cd /home/usmansaleem234/public_html && chmod u+x ./server_deploy.sh && ./server_deploy.sh'
