@@ -14,7 +14,7 @@ class CreateSettingsTable extends Migration
     public function up()
     {
         Schema::create('settings', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->boolean('isDisscussion')->nullable();
             $table->boolean('payment_share_enable')->nullable()->default(0);
             $table->string('admin_share')->nullable();

@@ -14,7 +14,7 @@ class CreateWithdrawPaymentsTable extends Migration
     public function up()
     {
         Schema::create('withdraw_payments', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('b_min')->nullable();
             $table->string('b_note')->nullable();
             $table->string('p_min')->nullable();

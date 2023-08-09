@@ -14,7 +14,7 @@ class CreateLecturesTable extends Migration
     public function up()
     {
         Schema::create('lectures', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('course_id',255);
             $table->string('lec_name',255)->nullable();
             $table->string('lec_no',255)->nullable();

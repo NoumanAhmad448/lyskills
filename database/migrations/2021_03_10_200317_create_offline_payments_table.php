@@ -14,7 +14,7 @@ class CreateOfflinePaymentsTable extends Migration
     public function up()
     {
         Schema::create('offline_payments', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             
             $table->boolean('o_is_enable')->nullable();
             $table->string('o_mobile_number')->nullable();

@@ -14,7 +14,7 @@ class CreateCourseAnnouncementsTable extends Migration
     public function up()
     {
         Schema::create('course_announcements', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('course_id',20);
             $table->text('subject');
             $table->text('body');

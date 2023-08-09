@@ -14,7 +14,7 @@ class CreateInstructorAnnsTable extends Migration
     public function up()
     {
         Schema::create('instructor_anns', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('message');
             $table->timestamps();
         });

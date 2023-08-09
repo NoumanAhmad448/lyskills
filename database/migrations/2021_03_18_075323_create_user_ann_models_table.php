@@ -14,7 +14,7 @@ class CreateUserAnnModelsTable extends Migration
     public function up()
     {
         Schema::create('user_ann_models', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('message')->nullable();
             $table->timestamps();
         });
