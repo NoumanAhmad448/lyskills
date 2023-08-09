@@ -14,7 +14,7 @@ class CreateExResTable extends Migration
     public function up()
     {
         Schema::create('ex_res', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('lecture_id')->nullable();
             $table->string('title')->nullable();
             $table->string('link')->nullable();

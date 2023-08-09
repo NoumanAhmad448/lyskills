@@ -14,7 +14,7 @@ class CreateInstructorEarningsTable extends Migration
     public function up()
     {
         Schema::create('instructor_earnings', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('course_id');
             $table->string('user_id');
             $table->string('earning');

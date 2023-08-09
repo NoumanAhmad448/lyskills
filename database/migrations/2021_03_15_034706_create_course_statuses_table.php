@@ -14,7 +14,7 @@ class CreateCourseStatusesTable extends Migration
     public function up()
     {
         Schema::create('course_statuses', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->integer('course_id')->nullable();
             $table->string('target_ur_students')->nullable();
             $table->string('curriculum')->nullable();

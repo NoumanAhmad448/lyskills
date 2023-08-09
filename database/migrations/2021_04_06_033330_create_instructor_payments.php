@@ -14,7 +14,7 @@ class CreateInstructorPayments extends Migration
     public function up()
     {
         Schema::create('instructor_payments', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('user_id');
             $table->text('j_account')->nullable();
             $table->text('e_account')->nullable();

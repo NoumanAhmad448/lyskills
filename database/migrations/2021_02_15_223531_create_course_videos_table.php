@@ -14,7 +14,7 @@ class CreateCourseVideosTable extends Migration
     public function up()
     {
         Schema::create('course_videos', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('course_id')->nullable();
             $table->string('video_name')->nullable();
             $table->string('video_type')->nullable();

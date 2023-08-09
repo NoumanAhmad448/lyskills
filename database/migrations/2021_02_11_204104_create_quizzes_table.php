@@ -14,7 +14,7 @@ class CreateQuizzesTable extends Migration
     public function up()
     {
         Schema::create('quizzes', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('title')->nullable();
             $table->string('lecture_id')->nullable();
             $table->string('course_no')->nullable();

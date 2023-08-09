@@ -14,7 +14,7 @@ class CreateCourseHistoriesTable extends Migration
     public function up()
     {
         Schema::create('course_histories', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('user_id');
             $table->string('course_id');
             $table->string('pay_method');

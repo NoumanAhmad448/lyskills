@@ -14,7 +14,7 @@ class CreateSocialsTable extends Migration
     public function up()
     {
         Schema::create('socials', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->boolean('f_enable')->nullable();
             $table->string('f_app_id')->nullable();
             $table->string('f_security_key')->nullable();

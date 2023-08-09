@@ -14,7 +14,7 @@ class CreateAssDescriptionsTable extends Migration
     public function up()
     {
         Schema::create('ass_descriptions', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('ass_id')->nullable();
             $table->string('description',1000)->nullable();
             $table->timestamps();

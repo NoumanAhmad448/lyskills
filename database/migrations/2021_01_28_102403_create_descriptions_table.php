@@ -14,7 +14,7 @@ class CreateDescriptionsTable extends Migration
     public function up()
     {
         Schema::create('descriptions', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('lecture_id',255)->nullable();
             $table->string('description',1000)->nullable();           
             $table->timestamps();
