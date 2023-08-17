@@ -18,8 +18,8 @@ jobs:
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.live', '.env');"
 
-    - name: clear cache
-      run: php artisan config:cache
+    # - name: clear cache
+      # run: php artisan config:cache
 
     - name: npm dependecies
       run: npm install
@@ -29,8 +29,8 @@ jobs:
     #     php artisan key:generate
     #     php artisan migrate
 
-    - name: config routing
-      run: php artisan config:route
+    # - name: config routing
+      # run: php artisan config:route
 
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
