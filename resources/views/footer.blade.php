@@ -113,7 +113,7 @@
                               'X-CSRF-TOKEN': "{{csrf_token()}}"
                           },
                           data: {
-                              q: request.term
+                              q: request.term,
                           },
                           success: function( data ) {
                               response( data );

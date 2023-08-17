@@ -41,6 +41,9 @@ $site_settings = [
         "db_helper" => "usmansaleem234_laravel.",
         "err_msg" => "Something went wrong",
         "logout_msg" => 'You are logged out',
+        "enable_course_unenroll" => true,
+        "admin_guest_search_bar" => true,
+        "admin_email" => "anime@bypass.com",
 ];
 
 return $site_settings;

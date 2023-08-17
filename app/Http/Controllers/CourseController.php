@@ -893,4 +893,32 @@ class CourseController extends Controller
         $comms = Comment::where('course_id',$course->id)->get();
         return view('course.course-comment', compact('comms','course_name'));
     }
+    public function search_unenrolle(Request $request)
+    {
+        try
+        {
+            if($request->q && $request->course_id)
+            {
+                $users = User::where("name", 'like', "%" . $request->q . "%")->orwhere("email",$request->q)->whereNull("is_blogger")->
+                    select('name',"id", "email")->orderByDesc('created_at')->take(10)->get();
+                $data = [];
+                foreach ($users as $user) {
+                    array_push($data, ["label" => $user->name . "  - [".$user->email."]", "id" => $user->id, "email" => $user->email, 
+                    "name" => $user->name]);
+                }
+                return response()->json(["is_success"=> true, "data" => $data]);
+            }
+        }
+        catch(Exception $e)
+        {
+            if(config("app.debug"))
+            {
+                dd($e->getMessage());
+            }
+            else
+            {
+                return response()->json(["is_success" => false, "message" => __("messages.universal_err_msg")]);
+            }
+        }
+    }
 }
