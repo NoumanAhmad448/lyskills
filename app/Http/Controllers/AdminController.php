@@ -566,14 +566,34 @@ class AdminController extends Controller
         }
     }
     public function xueshiXueshengPost(Request $request){
-        if($request->action == "unenroll"){
-            CourseEnrollment::where("course_id", $request->course_id)->where("user_id",$request->student_id)->delete();
-        }else{
-            $courseEnrollment= new CourseEnrollment;
-            $courseEnrollment->course_id = $request->course_id;
-            $courseEnrollment->user_id = $request->student_id;
-            $courseEnrollment->save();
+        try{
+            if(!$request->course_id || !$request->student_id){
+                new Exception(__("messages.request_aborted_msg"));
+            }
+            if($request->action == "unenroll"){
+                CourseEnrollment::where("course_id", $request->course_id)->where("user_id",$request->student_id)->delete();
+            }else{
+                $course_enrollment = CourseEnrollment::where("course_id", $request->course_id)->where("user_id" ,$request->student_id)->first();
+                if(!$course_enrollment)
+                {
+                    $courseEnrollment= new CourseEnrollment;
+                    $courseEnrollment->course_id = $request->course_id;
+                    $courseEnrollment->user_id = $request->student_id;
+                    $courseEnrollment->save();
+                }
+            }
+            if($request->type == "ajax"){
+                return response()->json(__("messages.action_executation", ["action", $request->action]));
+            }else{
+                return back();
+            }
         }
-        return back();
+        catch (Exception $e) {
+            if(config("app.debug")){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', __("messages.universal_err_msg"));
+            }
+        }
     }
 }

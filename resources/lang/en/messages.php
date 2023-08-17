@@ -52,4 +52,15 @@ return [
     'pages' => 'Pages',
     'wishlists' => 'WishList',
     "config_success" => "configuration has been cleared",
+    "unenrolled" => "Unenroll",
+    "nceif" => "No course enrollee is found",
+    "tinue" => "There is no user enrolled in this course ",
+    "enro_his" => "Enrollment History",
+    "user_enrolled_msg" => "User has been unenrolled successfully",
+    "user_enrolled_msgs" => "User has been enrolled successfully",
+    "request_aborted_msg" => "request cannot be processed because either course or student information is missing",
+    "universal_err_msg" => "something went wrong",
+    "action_executation" => "Action :action has been performed",
+    "enroll_stu" => "Enroll new student...",
+    "confirmation_enroll" => "Do you want to enroll :this user? "
 ];
