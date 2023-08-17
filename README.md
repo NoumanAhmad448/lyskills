@@ -15,6 +15,3 @@
 5. composer install
 6. npm install
 7. php artisan serve --port=8081
-
-
-# Dockerize Version
