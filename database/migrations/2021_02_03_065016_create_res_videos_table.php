@@ -14,7 +14,7 @@ class CreateResVideosTable extends Migration
     public function up()
     {
         Schema::create('res_videos', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('lecture_id');
             $table->string('lec_path');
             $table->string('f_name');

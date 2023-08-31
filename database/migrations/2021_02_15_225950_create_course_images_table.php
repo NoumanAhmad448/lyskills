@@ -14,7 +14,7 @@ class CreateCourseImagesTable extends Migration
     public function up()
     {
         Schema::create('course_images', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('course_id')->nullable();
             $table->string('image_path')->nullable();
             $table->string('image_name')->nullable();

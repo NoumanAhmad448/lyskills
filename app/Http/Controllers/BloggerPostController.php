@@ -9,6 +9,8 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Cocur\Slugify\Slugify;
 use App\Rules\DuplicateTitle;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\Storage;
 
 class BloggerPostController extends Controller
 {
@@ -62,7 +64,8 @@ class BloggerPostController extends Controller
                 $data = $request->only(['title', 'message']);
                 $img = $request->upload_img;
                 $f_name = $img->getClientOriginalName();
-                $path = $img->store('img','public');
+
+                $path = $this->saveImage($img,$f_name);
                 $data['f_name'] =  $f_name;
                 $data['upload_img'] = $path;
 
@@ -84,7 +87,11 @@ class BloggerPostController extends Controller
                 return back();
             }
         } catch (\Throwable $th) {
-            return back()->with('error','unable to process the request');
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error','unable to process the request');
+            }
         }
     }
     public function changeStatus(Post $post)
@@ -140,10 +147,29 @@ class BloggerPostController extends Controller
                 return back();
             }
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }else{
+                return back();
+            }
         }
     }
 
+    private function saveImage($img,$f_name)
+    {
+        $manager = new ImageManager();
+
+        $image = $manager->make($img)->resize(300, 200);
+        $path = "img/".time() . uniqid() . str_replace(' ', '-',$f_name);
+
+        $dir_path = "storage/img";
+        if(!Storage::disk("s3")->exists($dir_path)) {
+            Storage::disk("s3")->makeDirectory($dir_path, 0775, true);
+        }
+
+        Storage::disk("s3")->put($path, $image->stream()->__toString());
+        return $path;
+    }
     public function updatePost(Request $request, Post $post)
     {
         try {
@@ -159,7 +185,7 @@ class BloggerPostController extends Controller
                 $img = $request->upload_img;
                 if ($img) {
                     $f_name = $img->getClientOriginalName();
-                    $path = $img->store('img','public');
+                    $path = $this->saveImage($img,$f_name);
                     $data['f_name'] =  $f_name;
                     $data['upload_img'] = $path;
                 }
@@ -180,7 +206,14 @@ class BloggerPostController extends Controller
                 return back();
             }
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.debug"))
+            {
+                dd($th->getMessage());
+            }
+            else
+            {
+                return back();
+            }
         }
     }
 }

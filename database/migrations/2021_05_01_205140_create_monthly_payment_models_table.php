@@ -14,7 +14,7 @@ class CreateMonthlyPaymentModelsTable extends Migration
     public function up()
     {
         Schema::create('monthly_payment_models', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('user_id');
             $table->string('month');
             $table->string('payment');

@@ -14,7 +14,7 @@ class CreateOtherFiles extends Migration
     public function up()
     {
         Schema::create('other_files', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('lecture_id')->nullable();
             $table->string('f_path')->nullable();
             $table->string('f_name')->nullable();

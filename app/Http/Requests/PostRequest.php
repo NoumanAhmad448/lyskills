@@ -14,7 +14,7 @@ class PostRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->is_admin;
+        return isAdmin() || ($this->user() && $this->user()->is_admin);
     }
 
     /**

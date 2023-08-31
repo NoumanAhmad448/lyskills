@@ -14,7 +14,7 @@ class CreateCourseDelHistoriesTable extends Migration
     public function up()
     {
         Schema::create('course_del_histories', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->integer('course_id');
             $table->text('course_name');
             $table->text('person_name');

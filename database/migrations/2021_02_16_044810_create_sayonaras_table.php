@@ -14,7 +14,7 @@ class CreateSayonarasTable extends Migration
     public function up()
     {
         Schema::create('sayonaras', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('course_id')->nullable();
             $table->text('congo_msg')->nullable();
             $table->text('welcome_msg')->nullable();

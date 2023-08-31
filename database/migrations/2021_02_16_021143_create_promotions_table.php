@@ -14,7 +14,7 @@ class CreatePromotionsTable extends Migration
     public function up()
     {
         Schema::create('promotions', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('course_id')->nullable();
             $table->string('coupon_code')->nullable();
             $table->timestamps();

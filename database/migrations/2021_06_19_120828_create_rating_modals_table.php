@@ -14,7 +14,7 @@ class CreateRatingModalsTable extends Migration
     public function up()
     {
         Schema::create('rating_modals', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('course_id',255);
             $table->string('student_id',191);
             $table->integer('rating');

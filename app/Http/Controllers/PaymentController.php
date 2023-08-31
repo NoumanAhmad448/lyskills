@@ -170,14 +170,19 @@ class PaymentController extends Controller
 
             if (isAdmin()) {
                 Course::where('id',$course)->whereNull('is_deleted')->where('status','published')->firstOrFail();
-                $title = "Enrollment History";
-                $users = CourseEnrollment::with('user:id,name,email')->where('course_id', $course)->select('id', 'user_id')->get();                
+                $title = "enro_his";
+                $users = CourseEnrollment::with('user:id,name,email')->where('course_id', $course)->select('id', 'user_id')->get();
 
                 $total_enrollment = CourseEnrollment::where('course_id', $course)->count();
-                return view('admin.course-enrollment-page', compact('users', 'title', 'total_enrollment'));
+                $course_id = $course;
+                return view('admin.course-enrollment-page', compact('users', 'title', 'course_id','total_enrollment'));
             }
         } catch (\Throwable $th) {
-            return back()->with('error', 'problem occured');
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error', 'problem occured');
+            }
         }
     }
 }

@@ -181,6 +181,10 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                                 <div class="dropdown-divider"></div>
                                 <a style="font-size: 0.9rem !important" class="pt-2  dropdown-item" href="{{ route('pay_his') }}">
                                     {{__('Purchase History')}}</a>
+                                @if(Auth::user()->is_blogger)
+                                    <a style="font-size: 0.9rem !important" class="pt-2  dropdown-item" href="{{ route('blogger_c_p') }}">
+                                    {{__('Create Blogs')}}</a>
+                                @endif
                                 <a style="font-size: 0.9rem !important" class="pt-2  dropdown-item" href="{{ route('public_faq') }}"> {{__('Help')}}</a>
                                 <a style="font-size: 0.9rem !important" class="pt-1 dropdown-item" href="{{ route('logout_user') }}"> {{__('Logout')}}</a>
                             </div>
@@ -201,6 +205,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
             </div>
     </nav>
     @endif
+
     <!-- main Content -->
     <main>
         @yield('content')
