@@ -1,8 +1,16 @@
+$(function () {
+    $('#date_time').datepicker();
+});
+
 $(function() {
+
+   
+
     $('.ct_btn').click(function(){
         
         let c = $(this);
         let p = c.parents('.create_btn_row').first();
+        
         if(p.nextAll('.c_con').length == 0){
             p.after(`
                 <section class="c_con" >
@@ -17,12 +25,24 @@ $(function() {
                     <label for="coupon_no">Coupon</label>
                     <input type="text" class="form-control" id="coupon_no" placeholder="Coupon" name="coupon_no">
                     <small class="form-text text-muted">write any specific word of your choice and share it with others
-                        to let them access your course free of cost. 
+                        to let them access your course at specific cost or totally free.
                     </small>
                 </div>
+                <div class="form-group">
+                    <div class="col-3">
+                        <label for="date_time">Until Valid Date?</label>
+                        <input type="datetime" class="form-control" id="date_time" name="date_time">
+                    </div>
+                    <div class="col-3">
+                        <label for="no_of_coupons">Allowed Coupons?</label>
+                        <input type="number" class="form-control" id="no_of_coupons" name="no_of_coupons">
+                    </div>
+                    <div class="col-3">
+                        <label for="percent"> Set Percentage %</label>
+                        ${percentage_select}
+                    </div>
+                </div>
                 <div class="err_msg text-danger my-2"> </div>
-                
-                
                 <button type="submit" class="btn btn-info"> Create </button>
 
                 </section>
