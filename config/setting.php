@@ -44,6 +44,7 @@ $site_settings = [
         "enable_course_unenroll" => true,
         "admin_guest_search_bar" => true,
         "admin_email" => "anime@bypass.com",
+        "coupon_form" => true,
 ];
 
 return $site_settings;
