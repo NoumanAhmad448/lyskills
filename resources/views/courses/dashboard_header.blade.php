@@ -28,10 +28,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css"
     integrity="sha512-vebUliqxrVkBy3gucMhClmyQP9On/HAWQdKDXRaAlb/FKuTbxkjPKUyqVOxAcGwFDka79eTF+YXwfke1h3/wfg=="
-    crossorigin="anonymous" /> 
-    
-    <?php 
-    if($_SERVER['SERVER_NAME'] == 'lyskills.org'){        
+    crossorigin="anonymous" />
+
+    <?php
+    if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
         echo '<meta name="robots" content="noindex">';
     }
 
@@ -43,16 +43,26 @@
      crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
      integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
-    
-    
-
+    <script src="{{ asset('js/common_functions.js') }}">
+    </script>
+    <script>
+    $(function () {
+    $('.date-picker').datepicker({
+            dateFormat: 'yy-mm-dd',
+            onClose: function(dateText, inst) {
+            $(this).datepicker('option', 'dateFormat', 'yy-mm-dd');
+        }
+    }
+    );
+    });
+</script>
 </head>
 <body class="min-vh-100 d-flex flex-column">
-
+    @include("modals.modal")
     <nav class="navbar navbar-dark bg-website text-white d-flex justify-content-between p-3">
         <div class="d-flex">
             <a href="{{route('dashboard')}}" class="text-white"> <i class="las la-angle-left"></i> <span class="d-none d-md-inline"> back to dashboard </span> </a>

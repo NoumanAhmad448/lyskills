@@ -28,7 +28,8 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/promotion.js', 'public/js')
     .js('resources/js/message.js', 'public/js')
     .js('resources/js/admin_courses.js', 'public/js')
-        
+    .js('resources/js/common_functions.js', 'public/js')
+
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
