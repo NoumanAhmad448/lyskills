@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Course;
+use Illuminate\Validation\Rule;
 
 class PromotionRequest extends FormRequest
 {
@@ -27,7 +28,7 @@ class PromotionRequest extends FormRequest
     public function rules()
     {
         return [
-            'coupon_no' => 'required|max:255',
+            'coupon_no' => 'required|max:255'
         ];
     }
 

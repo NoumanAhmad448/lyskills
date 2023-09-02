@@ -18,10 +18,16 @@ class PromotionController extends Controller
             if ($course->user_id != Auth::id()) {
                 abort(403);
             }
-
-            return view('courses.promotion', compact('course'));
+            $promotions = $course->promotion->sortByDesc(function($promotion){
+                return $promotion->id;
+            });
+            return view('courses.promotion', compact('course','promotions'));
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.debug")){
+                dd($th);
+            }else{
+                return back();
+            }
         }
     }
 
@@ -30,17 +36,55 @@ class PromotionController extends Controller
         try {
             $request->validated();
             $coupon = $request->coupon_no;
+            $is_free = $request->is_free;
 
-            if (is_xss($coupon)) {
+            $date_time = $request->date_time;
+            $no_of_coupons = $request->no_of_coupons;
+            $percentage = $request->percentage;
+
+            if ($coupon && is_xss($coupon)) {
                 abort(403);
             }
-            $course = Course::findOrFail($course);
+            if ($is_free && is_xss($is_free)) {
+                abort(403);
+            }
+            if ($percentage && is_xss($percentage)) {
+                abort(403);
+            }
+            if ($no_of_coupons && is_xss($no_of_coupons)) {
+                abort(403);
+            }
 
-            $promotion = new Promotion;
+            $course = Course::findOrFail($course);
+            if(!$is_free){
+                if(!$date_time && !$no_of_coupons && !$percentage){
+                    $is_free="on";
+                }
+            }
+            $coupon_id= $request->coupon_id;
+            if($coupon_id){
+                $promotion = Promotion::where("id",$coupon_id)->first();
+            }else{
+                $promotion = new Promotion;
+            }
             $promotion->course_id = $course->id;
             $promotion->coupon_code = $coupon;
-            $promotion->save();
+            if($is_free && $is_free=="on"){
+                $promotion->is_free=1;
+            }else{
+                if($date_time){
+                    $promotion->date_time=dateFormat($date_time);
+                }
+                if($no_of_coupons){
+                    $promotion->no_of_coupons=$no_of_coupons;
+                }
+                if($percentage){
+                    $promotion->percentage=$percentage;
+                }
+                $promotion->is_free=false;
+            }
 
+            $promotion->save();
             return response()->json([
                 'status' => 'saved',
                 'edit'  => route('updateCoupon', compact('promotion')),
@@ -48,7 +92,12 @@ class PromotionController extends Controller
                 'coupon' => $coupon
             ]);
         } catch (\Throwable $th) {
-            return back();
+            if(config("app.debug")){
+                dd($th);
+            }else{
+                return response()->json([
+                    "message" => "something went wrong"]);
+            }
         }
     }
 

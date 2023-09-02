@@ -63,7 +63,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 </head>
 
 <body style="min-height: 100vh !important" class="d-flex flex-column ">
-
+    @include("modals.modal")
     @if(!(Cache::store('file')->get('isLoaderLoaded')))
     {!!
     '<section class="d-flex justify-content-center align-items-center loading-section">
