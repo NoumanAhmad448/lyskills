@@ -16,21 +16,3 @@
 5. composer install
 6. npm install
 7. php artisan serve --port=8081
-
-
-# Server Configurations
-nano /var/log/nginx/test-django.error.log debug;
-nano  /var/log/nginx/test-django.access.log
-
-nano /etc/uwsgi/test_django.log
-nano /etc/uwsgi/sites/test_django.ini
-systemctl status uwsgi.service
-systemctl restart uwsgi
-
-netstat -na|grep LISTEN |grep :81
-cd /run/uwsgi
-
-public_html/test-django.lyskills.com/
-
-nano /etc/systemd/system/uwsgi.service
-nano  /etc/nginx/nginx.conf
