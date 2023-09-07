@@ -6,6 +6,7 @@
     "/css/course_instruction.css": "/css/course_instruction.css",
     "/css/text.css": "/css/text.css",
     "/js/bootstrap.js": "/js/bootstrap.js",
+    "/js/common_functions.js": "/js/common_functions.js",
     "/js/course_category.js": "/js/course_category.js",
     "/js/course_instruction.js": "/js/course_instruction.js",
     "/js/course_time_selection.js": "/js/course_time_selection.js",

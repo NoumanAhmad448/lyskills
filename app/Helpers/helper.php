@@ -2,6 +2,8 @@
 
 use App\Models\CourseStatus;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 
 if (!function_exists('check_input')){
      function check_input($u_input ){
@@ -158,5 +160,12 @@ if (!function_exists('isCurrentUserBlogger')){
 
     function isCurrentUserBlogger(){
        return auth()->user()->is_blogger == 1 ? true : false ;
+   }
+}
+
+if (!function_exists('dateFormat')){
+
+    function dateFormat($value){
+       return Carbon::parse($value)->format('Y-m-d');
    }
 }

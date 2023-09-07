@@ -1,8 +1,12 @@
 $(function() {
+
+   
+
     $('.ct_btn').click(function(){
         
         let c = $(this);
         let p = c.parents('.create_btn_row').first();
+        
         if(p.nextAll('.c_con').length == 0){
             p.after(`
                 <section class="c_con" >
@@ -17,12 +21,24 @@ $(function() {
                     <label for="coupon_no">Coupon</label>
                     <input type="text" class="form-control" id="coupon_no" placeholder="Coupon" name="coupon_no">
                     <small class="form-text text-muted">write any specific word of your choice and share it with others
-                        to let them access your course free of cost. 
+                        to let them access your course at specific cost or totally free.
                     </small>
                 </div>
+                <div class="form-group">
+                    <div class="col-3">
+                        <label for="date_time">Until Valid Date?</label>
+                        <input type="datetime" class="form-control" id="date_time" name="date_time">
+                    </div>
+                    <div class="col-3">
+                        <label for="no_of_coupons">Allowed Coupons?</label>
+                        <input type="number" class="form-control" id="no_of_coupons" name="no_of_coupons">
+                    </div>
+                    <div class="col-3">
+                        <label for="percent"> Set Percentage %</label>
+                        ${percentage_select}
+                    </div>
+                </div>
                 <div class="err_msg text-danger my-2"> </div>
-                
-                
                 <button type="submit" class="btn btn-info"> Create </button>
 
                 </section>
@@ -71,9 +87,12 @@ $(function() {
                         </div>
                         </div>
                     </form>
-                    
                 `);
-                c_con.remove();
+                if(!coupon_form){
+                    c_con.remove();
+                }else{
+                    show_popup("coupon has been created")
+                }
             },
             error: function(d){
                 let err = JSON.parse(d.responseText).errors;
@@ -148,5 +167,68 @@ $(function() {
     $('#promotion').removeClass('text-info').addClass('bg-website text-white');
 
 
+    $("#is_free").change(()=>{
+        if($("#is_free").is(':checked')){
+            $("#set_free").addClass("d-none").removeClass("d-block")
+        }else{
+            $("#set_free").addClass("d-block").removeClass('d-none')
+        }
+    })
 
+    $(".update-coupon").click(function(){
+        $("#update-coupon-form").modal({
+            keyboard: true,
+            focus: true,
+            show: true
+        })
+
+        $(`#modal_coupon_no`).val($(this).attr("coupon_no"))
+        $(`#modal_date_time`).val($(this).attr("date_time"))
+
+        if($(this).attr("is_free") == 1)
+        {
+            $(`#modal_is_free`).prop("checked",true)
+        }
+
+        $(`#modal_percentage`).val($(this).attr("percentage"))
+        $(`#modal_no_of_coupons`).val($(this).attr("no_of_coupons"))
+        $(`#coupon_id`).val($(this).attr("id"))
+    })
+
+    $('.coupon_update').submit(function(e){
+        e.preventDefault();
+        let data = $(this).serialize();
+        let url = $(".coupon").attr('url');
+        let c = $(this);
+        let c_con= c.find('.c_con');
+        let show_e_msg = $('.err_msg_update');
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: data,
+            success: function(d){
+                if(!coupon_form){
+                    c_con.remove();
+                }else{
+                    $("#update-coupon-form").modal("hide")
+                    show_popup("coupon has been updated")
+                }
+            },
+            error: function(d){
+                let err = JSON.parse(d.responseText).errors;
+                let p_err = err['coupon_no'];
+                if(p_err){
+                    show_e_msg.text(p_err);
+                }
+                setTimeout(() => {
+                    show_e_msg.text('');
+                }, 10000);
+
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: 'JSON'
+        });
+    });
 });

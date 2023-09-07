@@ -7,14 +7,23 @@
         Available Payment Methods
     </h1>
 </div>
-
+@auth
+    <section class="text-center text-danger h5"> Course Price:
+        ${{$extras['course_price']}}
+        @if(!empty($extras['course_discount']))
+            <br/>
+            You are receving {{$extras['course_discount']}} % discount
+            <hr/>
+        @endif
+    </section>
+@endauth
 <div class="container my-5">
     @include('session_msg')
     <div class="row">
         <div class="col-12">
             <div class="jumbotron bg-light border">
                 <section class="d-flex">
-                    @if($setting->paypal_is_enable) 
+                    @if($setting->paypal_is_enable)
                     <form action="{{ route('PaypalPost',['slug' => $slug]) }}" method="post">
                         @csrf
                             <button type="submit" class="btn btn-lg btn-website"> Pay with Paypal </button>
@@ -26,7 +35,7 @@
                     @endif
                     @if($setting->e_is_enable) <a href="{{route('haji-me', ['course' => $slug, 'randomtoken' => uniqid()])}}" class="btn btn-lg btn-website ml-4"> Pay with EasyPaisa </a>
                     @endif
-                    @if(isset($of_p_methods) && $of_p_methods && $of_p_methods->count())                    
+                    @if(isset($of_p_methods) && $of_p_methods && $of_p_methods->count())
                         <form action="{{route('offline-payment')}}" method="POST">
                             @csrf
                             <input type="hidden" name="slug" value="{{$slug}}">
