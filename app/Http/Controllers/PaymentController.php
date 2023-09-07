@@ -18,31 +18,67 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Promotion;
 
 class PaymentController extends Controller
 {
-    public function availablePayMe($slug)
+    public function couponPrice($request,$course,$extras,$updateCoupon=false)
+    {
+        if($request->session()->exists("coupon_".$course->id.auth()->id())){
+            $coupon_ob = json_decode($request->session()->get("coupon_".$course->id.auth()->id()));
+            $extras['course_price'] = $coupon_ob->final_price;
+            $extras['course_discount'] = $coupon_ob->promotion->percentage;
+            if($updateCoupon){
+                $coupon = Promotion::where('course_id', $course)->where('coupon_code', $coupon_ob->promotion->coupon_code)->first();
+                $coupon->no_of_coupons = $coupon->no_of_coupons -1;
+                $coupon->save();
+
+                // delete the session
+                $request->session()->forget("coupon_".$course->id.auth()->id());
+            }
+        }
+        return $extras;
+    }
+    public function availablePayMe(Request $request,$slug)
     {
         try {
             $title = "Available Payment Methods";
-            Course::where([['slug', $slug], ['status', 'published']])->firstOrFail();
+            $course = Course::where([['slug', $slug], ['status', 'published']])->with(["price" => function($price){
+                $price->whereNotNull("is_free");
+            }])->firstOrFail();
+            if(empty($course->price))
+            {
+                return back()->with('error','course has no price');
+            }
             $of_p_methods = OfflinePayment::first();
             $setting = Setting::select('s_is_enable', 'j_is_enable', 'e_is_enable', 'paypal_is_enable')->first();
-            return view('xuesheng.available_payment', compact('title', 'slug', 'of_p_methods', 'setting'));
+            $request = $request;
+            $request["user_id"] = auth()->id();
+            $extras = [];
+            $extras['course_price'] = $course->price->pricing;
+            $extras = $this->couponPrice($request,$course,$extras);
+            return view('xuesheng.available_payment', compact('title', 'slug', 'of_p_methods', 'setting','course',
+                        "extras"));
         } catch (\Throwable $th) {
-            return back()->with('error','this page cannot be shown now');
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error', config("setting.err_msg"));
+            }
         }
     }
 
-    public function creditPayment($slug, Request $request)
+    public function creditPayment(Request $request,$slug)
     {
         try {
             $course = Course::where('slug', $slug)->where('status', 'published')->firstOrFail();
             $title = "Credit Card";
             // $intent = $request->user()->createSetupIntent();
             // dd($intent);
-            $price = $course->price->pricing;
-            return view('xuesheng.credit-card', compact('title', 'slug', 'price', 'course'));
+            $extras = [];
+            $extras['course_price'] = $course->price->pricing;
+            $extras = $this->couponPrice($request,$course,$extras);
+            return view('xuesheng.credit-card', compact('title', 'slug','course',"extras"));
         } catch (\Throwable $th) {
             return back();
         }
@@ -56,6 +92,11 @@ class PaymentController extends Controller
 
             $payment_method = $request->payment_method;
             $price_in_do = $course->price->pricing;
+            $extras = $this->couponPrice($request,$course,[],true);
+            if(!empty($extras['course_price'])){
+                $price_in_do = $extras['course_price'];
+            }
+            dd($price_in_do);
             if ($payment_method !== NULL) {
 
                 $request->user()->charge(

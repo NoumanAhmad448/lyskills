@@ -723,20 +723,66 @@ class CourseController extends Controller
 
             $coupon = $request->coupon;
             $course = $request->course;
-            $found_coupon = Promotion::where('course_id', $course)->where('coupon_code', $coupon)->exists();
-            if ($found_coupon === false) {
+            $found_coupon = Promotion::where('course_id', $course)->where('coupon_code', $coupon);
+            if ($found_coupon->exists() === false) {
                 return back()->with('error', 'this coupon does not exist');
             }
+            $coupon = $found_coupon->first();
+            // coupon is free for life time
+            $F_COURSE_ID = 'course_id';
+            $F_USER_ID = 'user_id';
+            $course_detail = Course::where("id", $course)->with(["price" => function($price){
+                $price->whereNotNull('is_free');
+            }])->first();
 
-            $course_d = Course::findOrFail($course)->select('id', 'user_id', 'slug')->first();
-
+            if(empty($course_detail->price)){
+                return back()->with('error', 'Coupons are only for paid courses');
+            }
             $user = auth()->id();
-            CourseEnrollment::create(['course_id' => $course, 'user_id' => $user]);
+            if($coupon->is_free){
+                // check date
+                if($this->isCouponInValid($coupon)){
+                    return back()->with('error', 'This coupon is expired');
+                }
+                if($coupon->no_of_coupons && $coupon->no_of_coupons > 0)
+                {
+                    $coupon->no_of_coupons = $coupon->no_of_coupons -1;
+                    $coupon->save();
+                }
+                if(!CourseEnrollment::where($F_COURSE_ID, $course)->where($F_USER_ID , $user)->exists()){
+                    CourseEnrollment::create([$F_COURSE_ID => $course, $F_USER_ID => $user]);
+                }
 
-            return back()->with('status', 'Congtratulation! you are enrolled in this course now');
-        } catch (Exception $e) {
-            return back()->with('error', config("setting.err_msg"));
+                return back()->with('status', 'Congtratulation! you are enrolled in this course now');
+            }
+            else if($coupon->percentage)
+            {
+                if($this->isCouponInValid($coupon)){
+                    return back()->with('error', 'This coupon is expired');
+                }else{
+                    $new_price_ob = ["course_id" => $course, "course_ob" => $course_detail, "user_id" => $user, "user_ob" => auth()->user(),
+                    "promotion" => $coupon , "final_price" => (int)$course_detail->price->pricing -
+                    ($course_detail->price->pricing * ($coupon->percentage/100))];
+
+                    $request->session()->put('coupon_'.$course.$user, json_encode($new_price_ob));
+                    return redirect()->route("a_payment_methods",["slug" => $course_detail->slug]);
+                }
+            }
+            else{
+                return back()->with('error', 'There is no percentage set for this coupon. Please contact with your instructor again');
+            }
+        } catch (Exception $th) {
+            if(config("app.debug")){
+                dd($th->getMessage());
+            }else{
+                return back()->with('error', config("setting.err_msg"));
+            }
         }
+    }
+    private function isCouponInValid($coupon)
+    {
+        return ($coupon->date_time && $coupon->date_time < date("Y-m-d")) ||
+        ($coupon->no_of_coupons == "0");
     }
 
     public function enrollNow(Request $request, $course)

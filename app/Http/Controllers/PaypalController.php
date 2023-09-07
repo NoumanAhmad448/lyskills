@@ -31,7 +31,7 @@ use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
-
+use App\Http\Controllers\PaymentController;
 class PaypalController extends Controller
 {
     public $_api_context;
@@ -53,7 +53,7 @@ class PaypalController extends Controller
         return view('paypal.testing-p');
     }
 
-    public function testingPaypalPost($slug)
+    public function testingPaypalPost(Request $request,$slug)
     {
         try {
 
@@ -61,6 +61,11 @@ class PaypalController extends Controller
             if($course){
                 $p = $course->price->pricing;
                 $c_name = $course->course_title;
+                $payment = new PaymentController();
+                $extras = $payment->couponPrice($request,$course,[],true);
+                if(!empty($extras['course_price'])){
+                    $p = $extras['course_price'];
+                }
             }else{
                 abort(403);
             }

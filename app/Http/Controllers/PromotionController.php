@@ -72,16 +72,16 @@ class PromotionController extends Controller
             if($is_free && $is_free=="on"){
                 $promotion->is_free=1;
             }else{
-                if($date_time){
-                    $promotion->date_time=dateFormat($date_time);
-                }
-                if($no_of_coupons){
-                    $promotion->no_of_coupons=$no_of_coupons;
-                }
-                if($percentage){
-                    $promotion->percentage=$percentage;
-                }
                 $promotion->is_free=false;
+            }
+            if($date_time){
+                $promotion->date_time=dateFormat($date_time);
+            }
+            if($no_of_coupons){
+                $promotion->no_of_coupons=$no_of_coupons;
+            }
+            if($percentage){
+                $promotion->percentage=$percentage;
             }
 
             $promotion->save();

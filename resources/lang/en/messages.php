@@ -62,5 +62,6 @@ return [
     "universal_err_msg" => "something went wrong",
     "action_executation" => "Action :action has been performed",
     "enroll_stu" => "Enroll new student...",
-    "confirmation_enroll" => "Do you want to enroll :this user? "
+    "confirmation_enroll" => "Do you want to enroll :this user? ",
+    "coupon_expired" => "This coupon is expired",
 ];

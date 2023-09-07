@@ -14,7 +14,6 @@ use Carbon\Carbon;
     content="@if(empty($c_img))  {{asset('img/logo.jpg')}} @else  {{ config('setting.s3Url').$c_img }} @endif" />
 @endsection
 
-
 @section('content')
 @if(config('setting.course_banner'))
 <section class="my-1 bg-static">
@@ -201,21 +200,21 @@ use Carbon\Carbon;
                 <div> {{ $ass }} Assignments </div>
                 @endif
             </div>
-            <section class="apply_coupon my-3">
-                <form action="{{route('coupon')}}" method="post">
-                    @csrf
-                    <div class="d-flex">
-                        <input type="text" name="coupon" id="coupon" placeholder="Coupon" value="{{old('coupon')}}"
-                            class="@error('coupon') is-invalid @enderror form-control">
-                        <input type="hidden" name="course" value="{{$course->id}}">
-                        <button type="submit" class="btn btn-website btn-sm ml-1">
-                            Confirm
-                        </button>
-                    </div>
+                <section class="apply_coupon my-3">
+                    <form action="{{route('coupon')}}" method="post">
+                        @csrf
+                        <div class="d-flex">
+                            <input type="text" name="coupon" id="coupon" placeholder="Coupon" value="{{old('coupon')}}"
+                                class="@error('coupon') is-invalid @enderror form-control">
+                            <input type="hidden" name="course" value="{{$course->id}}">
+                            <button type="submit" class="btn btn-website btn-sm ml-1">
+                                Confirm
+                            </button>
+                        </div>
 
-                </form>
+                    </form>
 
-            </section>
+                </section>
         </div>
 
     </div>
@@ -588,7 +587,10 @@ use Carbon\Carbon;
                 <div> {{ $ass }} Assignments </div>
                 @endif
             </div>
-            @if(config('setting.show_hide_coupon'))
+            @auth
+            @if(config('setting.show_hide_coupon') && (!($enrolled_s && $enrolled_s->count()) && !allowCourseToAdmin()) &&
+             auth()->id() != $course->user_id
+            )
             <section class="apply_coupon my-3">
                 <form action="{{route('coupon')}}" method="post">
                     @csrf
@@ -607,6 +609,9 @@ use Carbon\Carbon;
                 {{-- </div> --}}
             </section>
             @endif
+            @else
+            <div class="my-2 text-danger"> Login to buy course using coupon option here </div>
+            @endauth
         </div>
 
     </div>
