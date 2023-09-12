@@ -2,8 +2,6 @@
 
 use App\Models\UserAnnModel;
 use App\Models\Categories;
-use Illuminate\Support\Facades\Cache;
-
 $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 ?>
 
@@ -42,12 +40,6 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{{asset('css/responsive.css')}}">
-    <style>
-        .loading-section {
-            height: 100vh;
-            z-index: 9999;
-        }
-    </style>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-185115352-1"></script>
     <script>
@@ -56,6 +48,8 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
         gtag('js', new Date());
 
         gtag('config', 'UA-185115352-1');
+        debug = '{{ config("app.debug") ? 1 : 0 }}'
+        debug = debug == "1" ? true : false
     </script>
 
 
@@ -64,15 +58,6 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 
 <body style="min-height: 100vh !important" class="d-flex flex-column ">
     @include("modals.modal")
-    @if(!(Cache::store('file')->get('isLoaderLoaded')))
-    {!!
-    '<section class="d-flex justify-content-center align-items-center loading-section">
-        <div id="loading" class="spinner-border text-info text-center" style="width: 90px; height: 90px" role="status" >
-            <span class="sr-only">Loading...</span>
-        </div>
-    </section>' !!}
-    @php Cache::store('file')->put('isLoaderLoaded', true, 3600); @endphp
-    @endif
     @if(isset($ann) && $ann->count() && config("setting.user_notification"))
     <div class="container-fluid font-bold text-center">
         <div class="row">

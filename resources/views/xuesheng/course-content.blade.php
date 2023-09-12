@@ -1,7 +1,6 @@
-<?php 
-    use App\Models\Lecture; 
-    use App\Models\Media; 
-    
+<?php
+    use App\Models\Lecture;
+    use App\Models\Media;
 ?>
 @extends(config('setting.guest_blade'))
 
@@ -10,9 +9,11 @@
     .rating:hover {
         color: #ffc107 !important;
     }
-    
 </style>
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack/styles/defaults.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack/styles/community-skin/video.min.css" />
+<script type="module" src="https://cdn.jsdelivr.net/npm/vidstack/dist/cdn/prod.js"></script>
 @endsection
 
 @section('content')
@@ -72,13 +73,13 @@
                     target="_blank" style="width: 281px"
                     >
                     {{-- <img src="https://media.giphy.com/media/4p1JhLCYEOEJa/giphy.gif" width="50" height="50"/> --}}
-                    Get Your Certificate 
+                    Get Your Certificate
                 </a>
                 <a href="{{route('laoshi-comment', ['course_name' => $course->slug])}}" class="btn btn-website btn-lg mt-2 ml-4"
                     target="_blank" style="width: 284px"
                     >
                     <img src="https://media.giphy.com/media/LHZyixOnHwDDy/giphy.gif" alt="nothing" width="50" height="50">
-                    Comment this Course 
+                    Comment this Course
                 </a>
             @endif
         </div>
@@ -94,14 +95,31 @@
                     class="btn btn-lg btn-website"> Next </a>
             </div>
             @endif
-            <video controls class="w-100" oncontextmenu="return false;">
-                
-                {{-- <!--<source src="{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$media->lec_name}}"--> --}}
-                    {{-- {{ dd(file_exists(public_path('storage/'.$media->lec_name)) ? 'yes yes yes ' : 'oh yeah' ) }} --}}
-                <source src="@if(file_exists(public_path('storage/'.$media->lec_name))){{asset('storage/'.$media->lec_name)}}@else{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$media->lec_name}}@endif"
-                    type="{{$media->f_mimetype ?? '' }}">
-                Your browser does not support the video tag. Please choose latest Google Chrome, Firefox , Opera Browser
-            </video>
+            <!--
+                it requires three libraries to be imported.
+                two of them are css files and one is js file
+                all of them mentioned above in @page-css
+             -->
+            <media-player
+                src="@if(file_exists(public_path('storage/'.$media->lec_name))){{asset('storage/'.$media->lec_name)}}@else{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$media->lec_name}}@endif"
+                aspect-ratio="16/9"
+                crossorigin
+                type="{{$media->f_mimetype ?? '' }}"
+                >
+                <media-outlet>
+                <media-seek-button seconds="+30">
+                    <media-tooltip position="top center">
+                        <span>Seek +30s</span>
+                    </media-tooltip>
+                </media-seek-button>
+                <media-seek-button seconds="-30">
+                <media-tooltip position="top center">
+                        <span>Seek -30s</span>
+                    </media-tooltip>
+                </media-seek-button>
+                </media-outlet>
+                <media-community-skin></media-community-skin>
+            </media-player>
 
             <div class="my-5">
                 <div class="container">
@@ -227,46 +245,10 @@
 </script>
 
 <script>
-    $(".rating").click( function(){
-        let rating_no = $(this).attr('no');
-        $.ajax({
-            headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        type: "POST",
-        url: "{{route('rating-course')}}",
-        data: {rating_no:  rating_no, course: '{{$course->slug}}'  },        
-        dataType: "json",        
-        success: function(result){
-            if(result.message){
-                $('.rating').each(function(index){
-                    if(index<rating_no){
-                        $(this).addClass('text-warning');
-                    }else{
-                        $(this).removeClass('text-warning');
-                    }
-                })
-            }            
-        }
-    });
-    });
-
-    var rating = '@if ($course->rating) {{$course->rating->rating}} @endif';
-    $('.rating').each(function(index){
-                    if(index<rating){
-                        $(this).addClass('text-warning');
-                    }else{
-                        $(this).removeClass('text-warning');
-                    }
-                });
-
-    $('#menu').click(function(){
-        if($('#list').hasClass('d-none')){
-            $('#list').removeClass('d-none');
-        }else{
-            $('#list').addClass('d-none');
-        }
-    });
+    let rating_url = "{{route('rating-course')}}"
+    let rating = '@if ($course->rating) {{$course->rating->rating}} @endif'
+    let course_slug = '{{$course->slug}}'
 </script>
+<script src="{{asset('js/course-content.js')}}"></script>
 
 @endsection

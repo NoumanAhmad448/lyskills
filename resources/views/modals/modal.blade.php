@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Cache;
+@endphp
+
 <div class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" id="pop-message">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -80,3 +84,67 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" id="show-video">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-static-website" >
+        <h5 class="modal-title" id="model_title">Course Video</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <section id="modal-body">
+                <media-player
+                src=""
+                id="video-source"
+                aspect-ratio="16/9"
+                crossorigin
+                >
+                <media-outlet>
+                <media-seek-button seconds="+30">
+                    <media-tooltip position="top center">
+                        <span>Seek +30s</span>
+                    </media-tooltip>
+                </media-seek-button>
+                <media-seek-button seconds="-30">
+                <media-tooltip position="top center">
+                        <span>Seek -30s</span>
+                    </media-tooltip>
+                </media-seek-button>
+                </media-outlet>
+                <media-community-skin></media-community-skin>
+                </media-player>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="d-flex justify-content-center align-items-center loading-section loader">
+    <div id="loading" class="spinner-border text-info text-center" style="width: 90px; height: 90px" role="status" >
+        <span class="sr-only">Loading...</span>
+    </div>
+</section>
+
+<div class="modal fade" tabindex="-1" id="submitCourseModal" data-backdrop="static" data-keyboard="false" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-static-website">
+        <h5 class="modal-title "> Course Status </h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
