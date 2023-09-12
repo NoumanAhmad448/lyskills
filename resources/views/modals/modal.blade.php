@@ -100,7 +100,6 @@ use Illuminate\Support\Facades\Cache;
                 src=""
                 id="video-source"
                 aspect-ratio="16/9"
-                crossorigin
                 oncontextmenu="return false;"
                 >
                 <media-outlet>
@@ -123,7 +122,7 @@ use Illuminate\Support\Facades\Cache;
   </div>
 </div>
 
-<section class="d-flex justify-content-center align-items-center loading-section loader">
+<section class="d-flex justify-content-center align-items-center loader loading-section loader">
     <div id="loading" class="spinner-border text-info text-center" style="width: 90px; height: 90px" role="status" >
         <span class="sr-only">Loading...</span>
     </div>
