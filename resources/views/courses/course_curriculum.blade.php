@@ -2,11 +2,10 @@
 @section('page-css')
     {{-- <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" /> --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
 @endsection
 
 @php
-$course_id  = $course->id;    
+$course_id  = $course->id;
 use App\Models\Lecture;
 use App\Models\Description;
 use App\Models\ResVideo;
@@ -17,18 +16,18 @@ use App\Models\ResVideo;
     <div class="bg-white col-md-9 mt-3">
         <div class="row border-bottom">
             <div class="col-md-6 p-2 p-md-4">
-                <h1> 
+                <h1>
                     Course Curriculum
                 </h1>
             </div>
-            <div class="col-md-6 p-0 pr-1 p-md-4">                
+            <div class="col-md-6 p-0 pr-1 p-md-4">
                 {{-- <button type="button" class="btn website-outline float-right" data-toggle="modal" data-target="#bulk" >
                         Bulk Uploader
                 </button> --}}
             </div>
         </div>
         <div class="p-3">
-            {{-- If you’re intending to offer your course for free, the total length of video content must be less than 2 hours. --}}
+            {{-- If you're intending to offer your course for free, the total length of video content must be less than 2 hours. --}}
         </div>
         <div class="alert alert-success success font-weight-bold d-none text-center"></div>
         <div class="text-center">
@@ -110,11 +109,11 @@ use App\Models\ResVideo;
                                             <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">                                                
                                                 @if($media)
                                                     <div class="v_c_vid  btn website-outline" >
-                                                        <i class="las la-caret-down"></i> Video    
+                                                        <i class="las la-caret-down"></i> Video
                                                      </div>
                                                 @else
                                                 <div class="lec_content btn website-outline" video_url="{{route('upload_video',['course_id' => $course_id, 'lecture_id' => $lec_id])}}">
-                                                    <i class="las la-plus"></i>  Video  
+                                                    <i class="las la-plus"></i>  Video
                                                 </div>
                                                 @endif
                                                 @if($desc)
@@ -127,12 +126,11 @@ use App\Models\ResVideo;
                                                 </div>
                                                 @endif
                                                 @if($should_show_res)
-                                                    <div class="added_res btn website-outline ml-md-2 mt-2 mt-md-0 " 
+                                                    <div class="added_res btn website-outline ml-md-2 mt-2 mt-md-0 "
                                                     ex_res_url="{{route('ex_res',['lec_id' => $lec_id])}}"
                                                     article_url="{{route('article',['lec_id' => $lec_id])}}"
                                                     other_files_url="{{route('other_files',['lec_id' => $lec_id])}}"
                                                     >
-                                                        
                                                         <i class="las la-caret-down"></i>  Resource
                                                     </div>
                                                 @else
@@ -140,25 +138,31 @@ use App\Models\ResVideo;
                                                         article_url="{{route('article',['lec_id' => $lec_id])}}"
                                                          ex_res_url="{{route('ex_res',['lec_id' => $lec_id])}}"
                                                          other_files_url="{{route('other_files',['lec_id' => $lec_id])}}"
-                                                        
                                                         >
                                                         <i class="las la-plus"></i>  Resource
                                                     </div>
                                                 @endif
-                                            </div>                                   
+                                            </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                     @if($media)
                                         <section class="lecture_vid row p-3 d-none">
                                             <div class="col-md-12">
+                                            <div class="form-check my-3">
+                                                        <input class="form-check-input is_free" type="checkbox"
+                                                            @if ($media->is_free){{"checked"}} @endif
+                                                            url="{{route("update-lecture-status",["media_id" => $media->id])}}">
+                                                        <label class="form-check-label" for="set_free">
+                                                            set video free
+                                                        </label>
+                                                    </div>
                                                 <div class="d-flex">
                                                     <video width="500" height="240" controls preload="auto" oncontextmenu="return false;">
-                                                        <source src="{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$media->lec_name}} " type="{{$media->f_mimetype ?? ''}}">
+                                                        <source src="{{config('setting.s3Url')}}{{$media->lec_name}} " type="{{$media->f_mimetype ?? ''}}">
                                                     </video>
-                                                    
-                                                </div>   
+                                                </div>
                                                 <section class="mt-2">
-                                                    <h3 class="d-none d-md-block ml-3"> {{$media->f_name ?? ''}} </h3>  
+                                                    <h3 class="d-none d-md-block ml-3"> {{$media->f_name ?? ''}} </h3>
                                                     <section class="d-flex upload_video_con">
                                                         <form url="{{route('delete_video',['course_id' => $course_id, 'media_id' => $media->id])}}" >                                                          
                                                             <button type="button" class="btn btn-danger del_media"> Delete lecture </button>
@@ -168,9 +172,9 @@ use App\Models\ResVideo;
                                                             <label for="edit_video"  class="btn btn-website"> Edit lecture </label>
                                                         </form>
                                                     </section>
-                                                </section>                                      
+                                                </section>
                                             </div>
-                                           
+
                                         </section>
                                     @endif
                                     @if($desc)
@@ -211,7 +215,7 @@ use App\Models\ResVideo;
                                             @if($other_file)
                                             <div class="other_res_show website-outline btn pt-3 text-center res_hover_view py-md-2 font-weight-normal"><i class="las la-caret-down"></i>  Other Files </div>   
                                             @else
-                                            <div class="other_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"> Other Files </div>   
+                                            <div class="other_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"> Other Files </div>
                                             @endif
                                         </div>
                                     @endif
@@ -220,19 +224,18 @@ use App\Models\ResVideo;
                                         <section class="uploaded_video row p-3 d-none">
                                             <div class="col-md-9">
                                                 <div class="d-flex">
-                                                    <video width="500" height="240" controls oncontextmenu="return false;">                                                        
+                                                    <video width="500" height="240" controls oncontextmenu="return false;">
                                                         @php $vid_path= $res->lec_path; @endphp
-                                                        <source src="{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$vid_path}}" type="{{$res->f_mimetype}}">
-                                                    </video>                                                    
+                                                        <source src="{{config('setting.s3Url')}}{{$vid_path}}" type="{{$res->f_mimetype}}">
+                                                    </video>
                                                 </div>
                                                 <section class="mt-2">
-                                                    <h3 class="d-none d-md-block ml-3"> {{$res->f_name}} </h3>  
-                                                    <form url="{{route('delete_uploaded_video',$res->id)}}">                                                          
+                                                    <h3 class="d-none d-md-block ml-3"> {{$res->f_name}} </h3>
+                                                    <form url="{{route('delete_uploaded_video',$res->id)}}">
                                                         <button type="button" class="btn btn-danger del_uploaded_vid"> Delete lecture </button>
                                                     </form>
-                                                </section>                                         
+                                                </section>
                                             </div>
-                                          
                                         </section>
                                     @endif
                                     @if($article )
@@ -541,7 +544,7 @@ use App\Models\ResVideo;
                 <p class="text-danger p-1"> Max all videos size 4GB </p>
               </form>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -1059,22 +1062,28 @@ use App\Models\ResVideo;
                         html('<i class="las la-times"></i>Video');
                                 // <a class="nav-link vid_upload_op" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Add from Library</a>
                     lecture_container.after(`
-                    <section class="upload_video_con bg-white p-2 p-md-4 border">                        
+                    <section class="upload_video_con bg-white p-2 p-md-4 border">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link active vid_upload" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Upload video</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                            </li>                           
+                            </li>
                         </ul>
                             <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <form class="upload_video_form">
                                     <div class="d-none alert alert-danger video_err text-center"> </div>
+                                    <div class="form-check my-3">
+                                        <input class="form-check-input" type="checkbox" id="set_free" name="set_free">
+                                        <label class="form-check-label" for="set_free">
+                                            set video free
+                                        </label>
+                                    </div>
                                     <div class="custom-file mt-3">
                                         <input type="file" name="upload_video" class="custom-file-input upload_video" id="custom_file" video_url ="${$(this).attr('video_url')}">
                                         <label class="custom-file-label" for="custom_file"> Upload Video </label>
-                                        <div class="d-none invalid-feedback file_err"></div>                            
+                                        <div class="d-none invalid-feedback file_err"></div>
                                     </div>
                                 </form>
                             </div>
@@ -1119,6 +1128,7 @@ use App\Models\ResVideo;
                 let current_file = $(this);
                 let c_f_form  = current_file.parents('.upload_video_form');
                 var form_data = new FormData(c_f_form[0]);
+                console.log(form_data)
                 let file = this.files[0];
                 if(file){
                     let file_err = current_file.parent().find('.file_err');
@@ -1190,6 +1200,14 @@ use App\Models\ResVideo;
 
                                         upload_vid.replaceWith(`<section class="lecture_vid row p-3">
                                                 <div class="col-md-9">
+                                                <div class="form-check my-3">
+                                                        <input class="form-check-input" type="checkbox" id="set_free" name="set_free"
+                                                        ${data['media']['is_free'] ? "checked" : ''}
+                                                        >
+                                                        <label class="form-check-label" for="set_free">
+                                                            set video free
+                                                        </label>
+                                                    </div>
                                                     <div class="d-flex">
                                                         <video width="500" height="240" controls oncontextmenu="return false;">
                                                             <source src="${path}" type="${media['f_mimetype']}">
@@ -1374,7 +1392,7 @@ use App\Models\ResVideo;
                                     let upload_vid = current_file.parents('.up_vid_res').first();
                                     let media = data['media']; 
                                     let res = current_file.parents('.up_vid_res').prev('.resources');
-                                    let video_btn = res.find('.video_res_can').first();                                    
+                                    let video_btn = res.find('.video_res_can').first();
                                     video_btn.removeClass('video_res_can').addClass('uploaded_res_video_close').html('<i class="las la-times"></i>Uploaded Video');
                                     res.prev('.lecture_container').find('.lec_more_close').removeClass('lec_more_close').addClass('added_res_cancel');
                                     upload_vid.replaceWith(`<section class="uploaded_video row p-3">
@@ -1382,19 +1400,17 @@ use App\Models\ResVideo;
                                                 <div class="d-flex">
                                                     <video width="500" height="240" controls oncontextmenu="return false;">
                                                          <source src="${path}" type="${media['f_mimetype']}">
-                                                    </video>                                                    
+                                                    </video>
                                                 </div>
                                                 <section class="mt-2">
-                                                    <h3 class="d-none d-md-block ml-3"> ${data['f_name']} </h3>  
-                                                    <form url="${data['delete']}">                                                          
+                                                    <h3 class="d-none d-md-block ml-3"> ${data['f_name']} </h3>
+                                                    <form url="${data['delete']}">
                                                         <button type="button" class="btn btn-danger del_uploaded_vid"> Delete lecture </button>
                                                     </form>
-                                                </section>                                         
+                                                </section>
                                             </div>
-                                            
                                         </section>
                                     `);
-                                   
                                 },
                                 error: function(data){
                                     progress_bar.parent().remove();
@@ -1439,22 +1455,22 @@ use App\Models\ResVideo;
                 if(lec_desc_cancel){
                     lec_desc_cancel.click();
                 }
-                
+
                 let added_res_cancel  = lec_container.find('.added_res_cancel');
                 if(added_res_cancel){
                     added_res_cancel.click();
                 }
-                
+
                 lec_vid.removeClass('d-none');
 
             } );
             $('.sec-container').on( 'click', '.lec_content_show', function(){
                 let lec_container = $(this).parents('.lecture_container').first();
                 let lec_vid = lec_container.nextAll('.lecture_vid, .upload_video_con').first();
-              
+
                 $(this).html('<i class="las las la-times"></i> Video').removeClass('website-outline lec_content_show').
                     addClass('btn-danger v_c_p_can');
-                
+
                 let desc = lec_container.find('.lec_desc_update_cancel');
                 if(desc){
                     desc.click();
@@ -1469,7 +1485,7 @@ use App\Models\ResVideo;
                 if(lec_desc_cancel){
                     lec_desc_cancel.click();
                 }
-                
+
                 let added_res_cancel  = lec_container.find('.added_res_cancel');
                 if(added_res_cancel){
                     added_res_cancel.click();
@@ -1478,7 +1494,7 @@ use App\Models\ResVideo;
                 if(lec_desc_p_cancel){
                     lec_desc_p_cancel.click();
                 }
-                
+
                 lec_vid.removeClass('d-none');
 
             } );
@@ -1521,26 +1537,26 @@ use App\Models\ResVideo;
                             }).done(function(d){
                                 let success_msg = d['status'];
                                 let video_url = d['video_url'];
-                                if(video_url){                            
+                                if(video_url){
 
                                     let lec_con = form.parents('.lecture_vid');
-                                    if(lec_con){                                        
+                                    if(lec_con){
                                         let lecture_container = lec_con.prevAll('.lecture_container').first();
                                         if(lecture_container){
                                             let v_c_can = lecture_container.find('.v_c_can');
                                             if(v_c_can){
                                                 v_c_can.html('<i class="las la-plus"></i> Video').removeClass('btn-danger v_c_can').addClass('lec_content website-outline').attr('video_url',video_url);
                                             }else{
-                                                let v_c_p_can = lecture_container.find('.v_c_p_can');                                                
+                                                let v_c_p_can = lecture_container.find('.v_c_p_can');
                                                 if(v_c_p_can){
                                                     v_c_p_can.html('<i class="las la-plus"></i> Video').removeClass('btn-danger v_c_p_can')
                                                     .addClass('lec_content_show website-outline').attr('video_url',video_url);
                                                 }
                                             }
-                                            form.parents('.lecture_vid').first().remove();                                
+                                            form.parents('.lecture_vid').first().remove();
                                         }
-                                    }                                        
-                                } 
+                                    }
+                                }
                                 alert(success_msg);
                                 location.reload();
 
@@ -3583,7 +3599,7 @@ use App\Models\ResVideo;
 
             });
 
-            
+
             $('.sec-container').on( 'click', '.edit_quiz', function(e){
                 let cu_el = $(this);
                 let url = cu_el.attr('quiz_edit_url');
@@ -3953,5 +3969,37 @@ use App\Models\ResVideo;
             });
     </script>
     {{-- <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script> --}}
+    <script>
+        $(".is_free").change(function(){
+            url =  $(this).attr("url")
+            set_free = $(this).is(":checked")
+            set_free = set_free ? 1 : 0
+            body = {
+                set_free: set_free
+            }
+            if(debug){
+                console.log(body)
+            }
+
+            $.ajax({
+                    url: url,
+                    type: "post",
+                    data:  body,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    dataType: 'json'
+                })
+                .done(function(e){
+                    show_popup(`video has set ${set_free ? "free" : "restricted"}`)
+                    $("#close-modal").removeAttr("onclick")
+                })
+                .fail(function(){
+                    console.error(err)
+
+                })
+
+        })
+    </script>
 
 @endsection

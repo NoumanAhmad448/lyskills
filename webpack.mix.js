@@ -29,6 +29,8 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/message.js', 'public/js')
     .js('resources/js/admin_courses.js', 'public/js')
     .js('resources/js/common_functions.js', 'public/js')
+    .js('resources/js/course-content.js', 'public/js')
+    .js('resources/js/course/show-course.js', 'public/js/course')
 
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),

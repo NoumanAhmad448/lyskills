@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> @if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif </title>        
+    <title> @if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif </title>
     <meta name="description" content="@if(isset($desc)) {{ $desc }} @else {{__('description.default')}}  @endif">
     <meta property="og:title" content="@if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif">
     <meta property="og:description" content="@if(isset($desc)) {{ $desc }} @else {{__('description.default')}}  @endif">
@@ -29,7 +29,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css"
     integrity="sha512-vebUliqxrVkBy3gucMhClmyQP9On/HAWQdKDXRaAlb/FKuTbxkjPKUyqVOxAcGwFDka79eTF+YXwfke1h3/wfg=="
     crossorigin="anonymous" />
-
     <?php
     if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
         echo '<meta name="robots" content="noindex">';
@@ -59,6 +58,8 @@
     }
     );
     });
+    debug = '{{ config("app.debug") ? 1 : 0 }}'
+    debug = debug == "1" ? true : false
 </script>
 </head>
 <body class="min-vh-100 d-flex flex-column">

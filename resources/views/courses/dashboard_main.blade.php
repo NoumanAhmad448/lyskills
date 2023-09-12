@@ -105,7 +105,6 @@ $course_id = $course->id;
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-info" href="{{route('promotion',compact('course'))}}" id="promotion">
-                            
                             {{-- <i --}}
                                 {{-- class="las la-film"></i> --}}
                                 <i class="las la-check-circle"></i>
@@ -148,19 +147,15 @@ $course_id = $course->id;
                         @endphp
                         @if(!empty($progress))
                         <div class="progress mt-3">
-                            <div class="bg-info progress-bar @if($progress != 100) {{ __('progress-bar-striped')}} @endif  
+                            <div class="bg-info progress-bar @if($progress != 100) {{ __('progress-bar-striped')}} @endif
                                 @if($progress == 100) {{ __('bg-info')}} @endif" role="progressbar"
                                 aria-valuenow="{{$progress}}" aria-valuemin="0" aria-valuemax="100"
-                                style="width: {{$progress}}%"> {{$progress}}%
+                                style="width: {{ $progress }}%"> {{$progress}}%
                             </div>
                         </div>
                         @endif
                     </div>
                 @endif
-
-
-
-
 
                 @if(isset($course) && $course && $course->status != "published")
                 <div id="sub_course" class="btn btn-info btn-md-lg mt-5"

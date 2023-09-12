@@ -19,6 +19,42 @@ class VideoController extends Controller
     function validate_user($course_id){
         return Course::where([['user_id',Auth::id()],['id', $course_id]])->firstOrFail();
     }
+    public function set_video_free(Request $request, $media_id)
+    {
+        try{
+            $media = Media::where("id",$media_id)->first();
+            if(!empty($media)){
+            $set_free = !empty($request->set_free) ? 1 : 0;
+            $media->is_free = $set_free;
+            $media->save();
+            $debug = "";
+            if(config("app.debug")){
+                $debug = ["media_id" => $media->id,
+                "set_free" => $media->set_free,
+                "old_set_free" => $set_free
+            ];
+            }
+            return response()->json([
+                'success' => true,
+                "media_title" => $media->lec_name,
+                "debug" => $debug
+            ]);
+            }else{
+                return response()->json([
+                    'err' => config("setting.err_msg",400),
+                ]);
+            }
+        }
+        catch(Exception $e){
+            if(config("app.debug")){
+                dd($e->getMessage());
+            }else{
+                return response()->json([
+                    'err' => config("setting.err_msg",400),
+                ]);
+            }
+        }
+    }
     public function upload_video($course_id,$lecture_id,Request $request)
     {
         if($request->ajax()){
@@ -47,7 +83,7 @@ class VideoController extends Controller
             $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
 
             $duration = Carbon::parse($time_mili)->toTimeString();
-            unlink(public_path('storage/'.$path1));
+            // unlink(public_path('storage/'.$path1));
             $media = new Media;
             $media->lecture_id = $lecture_id;
             $media->lec_name = $path;
@@ -56,6 +92,7 @@ class VideoController extends Controller
             $media->f_mimetype = $f_mimetype;
             $media->duration = $duration ;
             $media->time_in_mili = $time_mili ;
+            $media->is_free = !empty($request->set_free) ? 1 : 0;
             $media->save();
 
             $c_status = CourseStatus::where('course_id',$course_id)->first();
@@ -103,7 +140,7 @@ class VideoController extends Controller
                     $media->delete();
                     return response()->json([
                         'status' => 'video has been deleted',
-                        'video_url' => route('upload_video',['course_id' => $course_id, 'lecture_id' => $lec_id])                                    
+                        'video_url' => route('upload_video',['course_id' => $course_id, 'lecture_id' => $lec_id])
                     ]);
                 }else{
                     return response()->json([
@@ -133,7 +170,7 @@ class VideoController extends Controller
                     $lec->delete();
                     return response()->json([
                         'status' => 'video has been deleted',
-                        'upload_video_url' => route('upload_vid_res',['lec_id' => $lec->lecture->id])                                    
+                        'upload_video_url' => route('upload_vid_res',['lec_id' => $lec->lecture->id])
                     ]);
                 }else{
                     return response()->json([

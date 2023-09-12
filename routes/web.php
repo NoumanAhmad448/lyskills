@@ -514,8 +514,7 @@ Route::get('blogger-logout', [BloggerFaqController::class, 'logout'])->name('b_l
 Route::get('categories/{category}', [CategoriesController::class, 'showCategory'])->name('user-categories');
 Route::get('course/{slug}', [CourseController::class, 'showCourse'])->name('user-course');
 Route::get('show-all-courses', [CourseController::class, 'showAllCourses'])->name('show-all-courses');
-
-
+Route::post('update-lecture-status/{media_id}', [VideoController::class, 'set_video_free'])->name('update-lecture-status');
 
 Route::middleware(['verified','auth'])->group(function () {
 
