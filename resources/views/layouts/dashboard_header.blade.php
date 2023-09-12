@@ -32,6 +32,7 @@
         @yield('page-css')
     </head>
     <body>
+    @include("modals.modal")
         <div class="d-flex justify-content-between align-items-center px-4 pt-4">
                 {{-- @livewire('navigation-dropdown') --}}
                 @if(config("setting.show_site_log"))
@@ -89,12 +90,12 @@
         </div>
 
         {{-- @stack('modals') --}}
-        
         {{-- @livewireScripts --}}
 
 
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
         @yield('page-js')
+        <script src="{{asset('js/main.js')}}"></script>
     </body>
 </html>

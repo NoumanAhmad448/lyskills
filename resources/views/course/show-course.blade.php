@@ -12,6 +12,9 @@ use Carbon\Carbon;
 <meta property="og:type" content="website" />
 <meta property="og:image"
     content="@if(empty($c_img))  {{asset('img/logo.jpg')}} @else  {{ config('setting.s3Url').$c_img }} @endif" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack/styles/defaults.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack/styles/community-skin/video.min.css" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/vidstack/dist/cdn/prod.js"></script>
 @endsection
 
 @section('content')
@@ -334,12 +337,19 @@ use Carbon\Carbon;
                                     @if($lectures->count())
                                     @foreach ($lectures as $lec)
                                     <section class="d-flex justify-content-between">
-                                        <div> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
+                                        <div class="w-50"> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
                                             {{ $lec->lec_name ?? '' }} </div>
                                         @php if($lec->count()) { $media = $lec->media;}
                                         if($media){ $total_time += $media->time_in_mili;}
                                         @endphp
-                                        <div> @if($media) {{ $media->duration ?? '' }} @endif</div>
+                                        @if($media)
+                                            @if($media->is_free)
+                                            <div class="show_popup" style="cursor: pointer"
+                                             url="{{config('setting.s3Url')}}{{ $media->lec_name }}"
+                                             > <i class="fa fa-eye mr-2" aria-hidden="true"></i></div>
+                                            @endif
+                                        <div> {{ $media->duration ?? '' }}</div>
+                                        @endif
 
                                     </section>
                                     {{-- @php $res_video = $lec->res_vid; @endphp --}}
@@ -497,12 +507,26 @@ use Carbon\Carbon;
             $c_vid = $course->course_vid;
         ?>
         @if($c_vid && $c_vid->vid_path && config("setting.show_course_video"))
-        <video controls class="w-100">
-            <source src="{{config('setting.s3Url')}}{{ $c_vid->vid_path }}"
-                type="{{$c_vid->video_type ?? '' }}">
-            <!--<source src="@if(file_exists(public_path('storage/'.$c_vid->vid_path))){{asset('storage/'.$c_vid->vid_path)}}@else{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$c_vid->vid_path}}@endif" type="{{$c_vid->video_type ?? '' }}">                        -->
-            Your browser does not support the video tag.
-        </video>
+            <media-player
+                src="{{config('setting.s3Url')}}{{ $c_vid->vid_path }}"
+                aspect-ratio="16/9"
+                id="vid01"
+                oncontextmenu="return false;"
+                >
+                <media-outlet>
+                <media-seek-button seconds="+30">
+                    <media-tooltip position="top center">
+                        <span>Seek +30s</span>
+                    </media-tooltip>
+                </media-seek-button>
+                <media-seek-button seconds="-30">
+                <media-tooltip position="top center">
+                        <span>Seek -30s</span>
+                    </media-tooltip>
+                </media-seek-button>
+                </media-outlet>
+                <media-community-skin></media-community-skin>
+            </media-player>
         @endif
         <div class="px-2">
             @php $price = $course->price; @endphp
@@ -670,8 +694,8 @@ use Carbon\Carbon;
             </div>
             </section>
         </div>
-        {{-- <div class="modal-footer">                
-                    <button type="button" class="btn btn-website" data-dismiss="modal">Close</button>              
+        {{-- <div class="modal-footer">
+                    <button type="button" class="btn btn-website" data-dismiss="modal">Close</button>
                 </div> --}}
     </div>
 </div>
@@ -696,66 +720,22 @@ use Carbon\Carbon;
 @endsection
 
 @section('script')
-<script>
-    $(function(){
-            $('#share_course').click(function(){
-                let url  = $(this).attr('link');
-                if(url){
-                    $('#show_link').text(url);
-                    $('#course_share_modal').modal('show');
-                }
-            });
-
-            // $('#copy_url').click(function(){   
-            //     var $temp = $("<input>");
-            //     $("body").append($temp);
-            //     $temp.val($('#show_link').text()).select();
-            //     document.execCommand("copy");
-            //     $temp.remove();
-            //     $('#show_msg').text('copied!');
-
-            // });
-
-            $('#copy_url').click(function(){   
-                // var $temp = $('<input type="hidden" id="temp_field" />');
-                
-                // $("body").append($temp);
-
-                // $('#temp_field').val($('#show_link').text().trim()).select();
-                // throw new Error("Something went badly wrong!");
-                document.execCommand("copy");
-                navigator.clipboard.writeText($('#show_link').text().trim() );
-                // $('#temp_field').remove();
-                $('#show_msg').text('copied!');
-                setTimeout(() => {
-                    $('#show_msg').text('');
-                }, 10000);
-
-            });
-            $('#show_time').text($('#total_time').val());
-        });
-</script>
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v10.0"
     nonce="ZLsPGZPg"></script>
 <script>
-    (function(d, s, id) {
+    (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
         js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
         fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-        
+    }(document, 'script', 'facebook-jssdk'));
 
-        var rating = '{{$rating_avg}}';
-        $('.rating').each(function(index){
-                        if(index<rating){
-                            $(this).addClass('text-warning');
-                        }else{
-                            $(this).removeClass('text-warning');
-                        }
-                    });
+    var rating = '{{$rating_avg}}';
+</script>
+<script src="{{asset('js/course/show-course.js')}}">
 </script>
 
 @endsection
+
