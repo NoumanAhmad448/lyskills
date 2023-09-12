@@ -282,7 +282,7 @@ a{
         height: 200px;
     }
 }
-.loader {
+.loader{
     z-index: 9999 !important;
     position: fixed !important;
     top: 0 !important;
