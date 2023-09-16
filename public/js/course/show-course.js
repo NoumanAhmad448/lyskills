@@ -157,6 +157,9 @@ $(function () {
     }, 10000);
   });
   $('#show_time').text($('#total_time').val());
+  $('#show-video').on('hidden.bs.modal', function (e) {
+    $("#video-source").attr("src", "");
+  });
 });
 
 /***/ }),

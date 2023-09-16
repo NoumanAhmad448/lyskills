@@ -290,3 +290,6 @@ a{
     width: 100% !important;
     height: 100% !important;
 }
+.cursor-p{
+    cursor: pointer !important;
+}
