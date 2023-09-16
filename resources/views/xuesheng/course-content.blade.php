@@ -105,7 +105,9 @@
                 aspect-ratio="16/9"
                 crossorigin
                 type="{{$media->f_mimetype ?? '' }}"
-                oncontextmenu="return false;"
+                @if(empty($media->is_download))
+                    {!!'oncontextmenu="return false"'!!}
+                @endif
                 >
                 <media-outlet>
                 <media-seek-button seconds="+30">
