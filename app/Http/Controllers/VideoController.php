@@ -25,7 +25,12 @@ class VideoController extends Controller
             $media = Media::where("id",$media_id)->first();
             if(!empty($media)){
             $set_free = !empty($request->set_free) ? 1 : 0;
+            $set_download = !empty($request->set_download) ? 1 : 0;
+
             $media->is_free = $set_free;
+
+            $media->is_download = $set_download;
+
             $media->save();
             $debug = "";
             if(config("app.debug")){
@@ -93,6 +98,7 @@ class VideoController extends Controller
             $media->duration = $duration ;
             $media->time_in_mili = $time_mili ;
             $media->is_free = !empty($request->set_free) ? 1 : 0;
+            $media->is_download = !empty($request->set_download) ? 1 : 0;
             $media->save();
 
             $c_status = CourseStatus::where('course_id',$course_id)->first();

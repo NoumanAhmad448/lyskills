@@ -8,6 +8,7 @@
     "/js/bootstrap.js": "/js/bootstrap.js",
     "/js/common_functions.js": "/js/common_functions.js",
     "/js/course-content.js": "/js/course-content.js",
+    "/js/course/course_curriculum.js": "/js/course/course_curriculum.js",
     "/js/course/show-course.js": "/js/course/show-course.js",
     "/js/course_category.js": "/js/course_category.js",
     "/js/course_instruction.js": "/js/course_instruction.js",
