@@ -519,7 +519,6 @@ use Carbon\Carbon;
                 src="{{config('setting.s3Url')}}{{ $c_vid->vid_path }}"
                 aspect-ratio="16/9"
                 id="vid01"
-                oncontextmenu="return false;"
                 >
                 <media-outlet>
                 <media-seek-button seconds="+30">
