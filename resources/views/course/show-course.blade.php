@@ -336,19 +336,27 @@ use Carbon\Carbon;
                                     @endphp
                                     @if($lectures->count())
                                     @foreach ($lectures as $lec)
-                                    <section class="d-flex justify-content-between">
-                                        <div class="w-50"> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
-                                            {{ $lec->lec_name ?? '' }} </div>
-                                        @php if($lec->count()) { $media = $lec->media;}
-                                        if($media){ $total_time += $media->time_in_mili;}
-                                        @endphp
+                                    <section class="row">
+                                        <?php
+                                            if($lec->count()) { $media = $lec->media;}
+                                            if($media){ $total_time += $media->time_in_mili;}
+                                            $is_media_free = $media && $media->is_free;
+                                            $col =  $is_media_free ? 'col-9' : 'col-10';
+                                        ?>
+                                        <div class="{{$col}}"> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
+                                            <span class="@if($is_media_free) cursor-p text-info show_popup @endif">
+                                                {{ $lec->lec_name ?? '' }}
+                                            </span>
+                                        </div>
                                         @if($media)
                                             @if($media->is_free)
-                                            <div class="show_popup" style="cursor: pointer"
-                                             url="{{config('setting.s3Url')}}{{ $media->lec_name }}"
-                                             > <i class="fa fa-eye mr-2" aria-hidden="true"></i></div>
-                                            @endif
-                                        <div> {{ $media->duration ?? '' }}</div>
+                                                <div class="show_popup col-1 cursor-p"
+                                                url="{{config('setting.s3Url')}}{{ $media->lec_name }}"
+                                                > <i class="fa fa-eye mr-2" aria-hidden="true"></i></div>
+                                             @endif
+                                            <div class="col-2">
+                                                {{ $media->duration ?? '' }}
+                                            </div>
                                         @endif
 
                                     </section>
