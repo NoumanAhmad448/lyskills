@@ -174,6 +174,8 @@ $(function () {
       console.log(body);
     }
 
+    $('.loading-section').addClass('loader').fadeIn();
+    $('#loading').fadeIn();
     $.ajax({
       url: url,
       type: "post",
@@ -183,8 +185,12 @@ $(function () {
       },
       dataType: 'json'
     }).done(function (e) {
+      $('#loading', '.loading-section').fadeOut();
+      $('.loading-section').removeClass('loader').fadeOut();
       show_popup("Requested operation has been performed");
     }).fail(function () {
+      $('#loading', '.loading-section').fadeOut();
+      $('.loading-section').removeClass('loader').fadeOut();
       console.error(err);
     });
   });
