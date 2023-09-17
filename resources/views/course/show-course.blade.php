@@ -344,7 +344,9 @@ use Carbon\Carbon;
                                             $col =  $is_media_free ? 'col-9' : 'col-10';
                                         ?>
                                         <div class="{{$col}}"> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
-                                            <span class="@if($is_media_free) cursor-p text-info show_popup @endif">
+                                            <span class="@if($is_media_free) cursor-p text-info show_popup @endif"
+                                            url="{{config('setting.s3Url')}}{{ $media->lec_name }}"
+                                            >
                                                 {{ $lec->lec_name ?? '' }}
                                             </span>
                                         </div>

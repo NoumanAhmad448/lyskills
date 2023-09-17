@@ -100,7 +100,6 @@ use Illuminate\Support\Facades\Cache;
                 src=""
                 id="video-source"
                 aspect-ratio="16/9"
-                download
                 >
                 <media-outlet>
                 <media-seek-button seconds="+30">
