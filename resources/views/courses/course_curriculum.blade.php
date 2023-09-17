@@ -15,15 +15,25 @@ use App\Models\ResVideo;
 @section('content')
 <div class="bg-white col-md-9 mt-3">
     <div class="row border-bottom">
-        <div class="col-md-6 p-2 p-md-4">
+        <div class="col-md-8 p-2 p-md-4 d-flex justify-content-between">
             <h1>
                 Course Curriculum
             </h1>
         </div>
-        <div class="col-md-6 p-0 pr-1 p-md-4">
+        <div class="col-md-4 p-0 pr-1 p-md-4 float-right">
             {{-- <button type="button" class="btn website-outline float-right" data-toggle="modal" data-target="#bulk" >
                         Bulk Uploader
                 </button> --}}
+            @if($total_media)
+                <div class="form-check my-3">
+                    <input class="form-check-input set_videos_down" type="checkbox" id="set_all_video"
+                            @if($is_vid_downable) checked @endif
+                            url='{{route("setVidDown",["course" => $course])}}'>
+                    <label class="form-check-label" for="set_all_video">
+                        Set All Videos downloadable
+                    </label>
+                </div>
+            @endif
         </div>
     </div>
     <div class="p-3">
@@ -569,20 +579,18 @@ use App\Models\ResVideo;
                                             <i class="las la-plus"></i>
                                             Add Title
                                         </div>
-                                    </div>    
+                                    </div>
                                     <div class="col-md-1">
                                         <div class="text-danger cursor_pointer close_sec icon-sm float-right">
-                                            <i class="las la-trash-alt"></i>                                           
+                                            <i class="las la-trash-alt"></i>
                                         </div>
-                                    </div>                                  
-                                </div>    
-                            </div>  
+                                    </div>
+                                </div>
+                            </div>
                             <span class="mt-2 ml-2 website-color add_material" >
                                 <i class="las la-plus-circle icon-sm"></i>
-                            </span>          
-                                    
+                            </span>
                         </section>
-               
                          </div>`);
             } else {
                 console.error('Element with class name section does not exist');
@@ -1593,14 +1601,13 @@ use App\Models\ResVideo;
                                     <p class="font-weight-normal text-center"> This description will be shown in the end of provided video. From this, students
                                         will be able to get an idea about the lecture </p>
                                     <div class="form-group">
-                                        <textarea class="form-control desc_detail" 
+                                        <textarea class="form-control desc_detail"
                                          name="lec_desc" id="lec_desc" rows="5" cols="50" placeholder="Put all possible detail of related video"></textarea>
 
                                     </div>
                                     <div class="alert alert-danger d-none text-center desc_err_msg"></div>
-                                    
                                     <button type="button" class="btn bg-static-website add_desc_btn">
-                                        Add Description 
+                                        Add Description
                                     </button>
                                 </form>
                             </div>
@@ -1786,11 +1793,11 @@ use App\Models\ResVideo;
             let vid_url = $(this).attr('res_vid');
             if (parent && vid_url) {
                 // <div class="video_res pt-3 text-center res_hover_view py-md-2 font-weight-normal " upload_video_url ="${vid_url}"> Upload Video </div>
-                parent.after(`                        
-                        <div class="container resources bg-white d-md-flex justify-content-md-between py-2 p-md-4 border">    
+                parent.after(`
+                        <div class="container resources bg-white d-md-flex justify-content-md-between py-2 p-md-4 border">
                             <div class="article_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"  > Article </div>
                             <div class="external_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"  > External Resource </div>
-                            <div class="other_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"  > Other Files </div>   
+                            <div class="other_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"  > Other Files </div>
                         </div>
                     `);
                 $(this).removeClass('lec_more website-outline').addClass('lec_more_close btn-danger').html('<i class="las la-times"></i>Resources');
@@ -1872,16 +1879,16 @@ use App\Models\ResVideo;
                                 <form class="up_video_form" >
                                     <div class="d-none alert alert-danger video_err text-center"> </div>
                                     <div class="custom-file mt-3">
-                                        <input type="file" name="upload_video" class="custom-file-input upload_video_res" 
+                                        <input type="file" name="upload_video" class="custom-file-input upload_video_res"
                                         id="custom_file" video_url ="${video_url}">
                                         <label class="custom-file-label" for="custom_file"> Upload Video </label>
-                                        <div class="d-none invalid-feedback file_err"></div>                            
+                                        <div class="d-none invalid-feedback file_err"></div>
                                     </div>
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 abcdef
-                            </div>                            
+                            </div>
                         </div>
                     </section>
                     `);
@@ -2049,7 +2056,7 @@ use App\Models\ResVideo;
                                 </div>
                             </div>
                             <span class="float-right font-weight-normal"> allowed 1500 characters</span>
-                            <button type="submit" class="btn btn-info"> <i class="las la-save"></i> Save Article </button>                            
+                            <button type="submit" class="btn btn-info"> <i class="las la-save"></i> Save Article </button>
                         </form>
                     </section>
                     `);
@@ -2162,14 +2169,14 @@ use App\Models\ResVideo;
                         <p class="text-white bg-info px-2 py-1"> Provide the link that you think might help your students to understand the lecture more clearly </p>
                         <form ex_res_url="${ex_res_url}" class="ex_url_form">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="ex_res_title" name="ex_res_title" placeholder="Title">                                
+                                <input type="text" class="form-control" id="ex_res_title" name="ex_res_title" placeholder="Title">
                                 <span class="font-weight-normal"> Title must have max 60 words</span>
                             </div>
                             <div class="form-group">
-                                <input type="url" class="form-control" id="ex_res_link" name="ex_res_link" placeholder="YouTube link">  
+                                <input type="url" class="form-control" id="ex_res_link" name="ex_res_link" placeholder="YouTube link">
                                 <span class="font-weight-normal"> The above provided link must be youtube link otherwise your video will not be shown to others</span>                              
                             </div>
-                            <button type="submit" class="btn btn-info"> <i class="las la-save"></i> Save Link </button>                            
+                            <button type="submit" class="btn btn-info"> <i class="las la-save"></i> Save Link </button>
                         </form>
                     </section>
                     `);
@@ -2287,10 +2294,10 @@ use App\Models\ResVideo;
                                 <div class="custom-file">
                                     <input type="file" other_files_url="${other_files_url}" class="custom-file-input upload_ot_file" id="upload_ot_file" name="upload_ot_file">
                                     <label class="custom-file-label" for="upload_ot_file">Upload file</label>
-                                </div>            
-                            </div>  
+                                </div>
+                            </div>
                             <div class="d-none text-danger file_err"></div>
-                            <div class="font-weight-normal text-danger"> *Pdf and ZIP files are allowed</div>                            
+                            <div class="font-weight-normal text-danger"> *Pdf and ZIP files are allowed</div>
                         </form>
                     </section>
                     `);
@@ -2478,11 +2485,11 @@ use App\Models\ResVideo;
                                     <div class="custom-file">
                                         <input type="file" other_files_url="${data['other_files_url']}" class="custom-file-input upload_ot_file" id="upload_ot_file" name="upload_ot_file">
                                         <label class="custom-file-label" for="upload_ot_file">Upload file</label>
-                                    </div>            
-                                </div>  
+                                    </div>
+                                </div>
                                 <div class="d-none text-danger file_err"></div>
-                                <div class="font-weight-normal text-danger"> *Pdf,docx,ppt files are allowed</div>                            
-                            </form> 
+                                <div class="font-weight-normal text-danger"> *Pdf,docx,ppt files are allowed</div>
+                            </form>
 
                             `);
                             alert(data['status']);
@@ -2549,15 +2556,15 @@ use App\Models\ResVideo;
                                             <div class="ass_title ml-md-3 font-weight-normal"> ${ ass_title.length > 30 ? ass_title.substr(0,30)+'...' : ass_title }</div>
                                             <div title_edit="${title_edit_url}" class="assign_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer"> <i class="las la-pencil-alt"></i> </div>
                                             <form action="${delete_assign_url}" method="post" >
-                                                   @csrf 
-                                                   @method('delete')    
+                                                   @csrf
+                                                   @method('delete')
                                             <div class="assign_del ml-md-3 text-danger d-inline d-md-block cursor_pointer" /> <i class="las la-trash-alt"></i> </div>
                                             </form>
                                         </section>
                                     </div>
                                     <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
                                         <div class="add_desc btn website-outline " desc_url="${msg['add_assign_desc']}">
-                                            <i class="las la-plus"></i>  Description  
+                                            <i class="las la-plus"></i>  Description
                                         </div>
                                         <div class="btn website-outline add_assign  ml-2" assign_url="${msg['add_ass']}">
                                             <i class="las la-plus"></i>  Assignment
@@ -2565,10 +2572,9 @@ use App\Models\ResVideo;
                                         <div class="add_sol btn website-outline ml-md-2 mt-2 mt-md-0 " sol_url="${msg['add_sol']}">
                                             <i class="las la-plus"></i>  Solution
                                         </div>
-                                    </div>                                   
+                                    </div>
                                 </div>
                             </div>
-                                        
                         `);
 
                     alert(msg['status']);
@@ -2610,9 +2616,9 @@ use App\Models\ResVideo;
                         <section class="lec_small_container d-md-flex align-items-md-center">
                             <div class="ass_title ml-md-3 font-weight-normal"> ${reduceTextLen(ass_title)} </div>
                             <div title_edit="${url}" class=" assign_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer"> <i class="las la-pencil-alt"></i> </div>
-                            <form action="${del_url}" method="post" >    
+                            <form action="${del_url}" method="post" >
                                 @csrf
-                                @method('delete')                            
+                                @method('delete')
                                 <div class="assign_del ml-md-3 text-danger d-inline d-md-block cursor_pointer"> <i class="las la-trash-alt"></i> </div>
                             </form>
                         </section>
@@ -2650,20 +2656,18 @@ use App\Models\ResVideo;
                             <div class="ass_desc_con bg-white border p-2 p-md-5">
                                 <form desc_form_url="${desc_url}">
                                     <h3> Description of Assignment </h3>
-                                    <p class="font-weight-normal"> The provided description will help your students 
+                                    <p class="font-weight-normal"> The provided description will help your students
                                     to understand the assignment more clearly. please try your best to convince your students by providing them
                                     more details about the assignment to better understand it </p>
                                     <div class="form-group">
-                                        <textarea class="form-control ass_desc_detail" 
+                                        <textarea class="form-control ass_desc_detail"
                                          name="ass_desc_detail" id="ass_desc_detail" rows="3" cols="50" placeholder="Description of Assignment"></textarea>
 
                                     </div>
                                     <div class="alert alert-danger d-none text-center ass_err_msg"></div>
-                                    
                                     <button type="button" class="btn bg-static-website add_ass_desc">
-                                        <i class="las la-plus"></i> Add Description 
+                                        <i class="las la-plus"></i> Add Description
                                     </button>
-                                    
                                 </form>
                             </div>
                     `);
@@ -2776,17 +2780,16 @@ use App\Models\ResVideo;
                             <h3 class="text-center"> Upload Assignment Document </h3>
                             <p class="text-info px-2 py-1 font-weight-normal"> Please make a comprehensive PDF file that contains all possible guide for the student to solve your assignment. Please refer to the 
                             lecture if you feel so. 
-                            
                              </p>
                             <form>
                                 <div class="form-group">
                                     <div class="custom-file">
                                         <input type="file" other_files_url="${other_files_url}" class="custom-file-input ass_file" id="ass_file" name="ass_file">
                                         <label class="custom-file-label" for="upload_ot_file">Upload file</label>
-                                    </div>            
+                                    </div>
                                 </div>  
                                 <div class="d-none text-danger file_err"></div>
-                                <div class="font-weight-normal text-danger"> *Only Pdf files are allowed</div>                            
+                                <div class="font-weight-normal text-danger"> *Only Pdf files are allowed</div>
                             </form>
                         </section>
                         `);

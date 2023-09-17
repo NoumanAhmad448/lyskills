@@ -635,3 +635,5 @@ Route::middleware('auth')->post('instructor/comments/delete', [CourseController:
 
 Route::middleware('auth')->get('laoshi-de/comments/{course}', [CourseController::class, 'readComments'])->name('laoshi_de_c');
 
+Route::middleware('auth')->post('set-all-videos-downlabable/{course}', [CourseController::class, 'setVidDown'])->name('setVidDown');
+

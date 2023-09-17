@@ -967,4 +967,38 @@ class CourseController extends Controller
             }
         }
     }
+    public function setVidDown(Request $request, $course){
+        try{
+            $course_id = $course;
+            $course = Course::where("id",$course_id)->first();
+            if(!empty($course)){
+                $set_free = !empty($request->set_free) ? 1 : 0;
+                Media::where("course_id", $course_id)->update(["is_download" => $set_free]);
+                $debug = "";
+                if(config("app.debug")){
+                    $debug = [
+                    "course_id" => $course_id,
+                    "old_set_free" => $set_free
+                ];
+                }
+                return response()->json([
+                    'success' => true,
+                    "debug" => $debug
+                ]);
+            }else{
+                return response()->json([
+                    'err' => config("setting.err_msg",400),
+                ]);
+            }
+        }
+        catch(Exception $e){
+            if(config("app.debug")){
+                dd($e->getMessage());
+            }else{
+                return response()->json([
+                    'err' => config("setting.err_msg",400),
+                ]);
+            }
+        }
+    }
 }

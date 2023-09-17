@@ -11,6 +11,7 @@ use App\Models\CourseStatus;
 use App\Models\InstructorAnn;
 use App\Models\InstructorEarning;
 use App\Models\Lecture;
+use App\Models\Media;
 use App\Models\Section;
 use App\Models\ResVideo;
 use App\Models\User;
@@ -132,7 +133,11 @@ class DashboardController extends Controller
         $course = $this->validate_user($course_id);
         $section = Section::where('course_id', $course_id)
             ->get();
-        return view('courses.course_curriculum', compact('course', 'section'));
+        $total_media = Media::where("course_id", $course_id)->count();
+        $download_count = Media::where("course_id", $course_id)->where("is_download",1)->count();
+
+        $is_vid_downable = $total_media == $download_count;
+        return view('courses.course_curriculum', compact('course', 'section',"total_media","is_vid_downable"));
     }
 
     public function course_curriculum_post(Request $request, $course_id)
