@@ -161,6 +161,35 @@ function reduceTextLen(input_txt) {
   return input_txt;
 }
 
+$(function () {
+  $("body").on("change", "#set_all_video", function () {
+    url = $(this).attr("url");
+    set_free = $(this).is(":checked") ? 1 : 0;
+    body_part = {
+      set_free: set_free
+    };
+    body = body_part;
+
+    if (debug) {
+      console.log(body);
+    }
+
+    $.ajax({
+      url: url,
+      type: "post",
+      data: body,
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      dataType: 'json'
+    }).done(function (e) {
+      show_popup("Requested operation has been performed");
+    }).fail(function () {
+      console.error(err);
+    });
+  });
+});
+
 /***/ }),
 
 /***/ 20:
