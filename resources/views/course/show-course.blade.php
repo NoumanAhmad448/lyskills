@@ -160,7 +160,7 @@ use Carbon\Carbon;
             @if ($course->slug )
             @if($course->lecture)
             @if( $course->lecture->media)
-            @if($course->lecture->media->lec_name)
+            @if($course->lecture && $course->lecture->media && $course->lecture->media->lec_name)
             @if(allowCourseToAdmin()
             || auth()->id() == $course->user_id || ($enrolled_s && $enrolled_s->count()))
             <a href="{{route('video-page', ['slug' => $course->slug, 
@@ -345,7 +345,9 @@ use Carbon\Carbon;
                                         ?>
                                         <div class="{{$col}}"> <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
                                             <span class="@if($is_media_free) cursor-p text-info show_popup @endif"
-                                            url="{{config('setting.s3Url')}}{{ $media->lec_name }}"
+                                            @if($media)
+                                                url="{{config('setting.s3Url')}}{{ $media->lec_name }}"
+                                            @endif
                                             >
                                                 {{ $lec->lec_name ?? '' }}
                                             </span>
