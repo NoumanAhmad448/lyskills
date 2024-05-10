@@ -152,7 +152,7 @@ use Illuminate\Support\Facades\Storage;
                 @if($vid_path)
                 <?php //echo Storage::disk('s3')->url($vid_path) ?>
                 <video width="450" height="350" controls>
-                    <source src="{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$vid_path}}" type="{{$course_vid->video_type}}">
+                    <source src="{{config('setting.s3Url')}}{{$vid_path}}" type="{{$course_vid->video_type}}">
                 </video>
                 @else
                 <img src="{{asset('img/thumbnail.jpg')}}" alt="Course Thumbnail" class="img-fluid video_img" width="750"
