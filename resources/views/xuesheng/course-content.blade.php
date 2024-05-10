@@ -190,7 +190,7 @@
                     </h3>
                     <video controls class="w-100" oncontextmenu="return false;">
                         <source
-                            src="{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$extra_vid->lec_path}}"
+                            src="{{config('setting.s3Url')}}{{$extra_vid->lec_path}}"
                             type="{{$extra_vid->f_mimetype ?? '' }}">
                         Your browser does not support the video tag. Please choose latest Google Chrome, Firefox , Opera
                         Browser

@@ -1,7 +1,7 @@
 <?php
 
 $site_settings = [
-        "s3Url" => "https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/",
+        "s3Url" => "http://lyskills-by-us-yes-that-us.s3.ap-south-1.amazonaws.com/",
         "no_reply_email_pass" => "30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ",
         "show_site_log" => true,
         "login_profile" => true,

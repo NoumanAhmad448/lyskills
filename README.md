@@ -16,3 +16,20 @@
 5. composer install
 6. npm install
 7. php artisan serve --port=8081
+
+## Troubleshooting
+```
+mysql -h 127.0.0.1 -P 3306 -u usmansaleem234_lyskills_root5 -p
+```
+```
+
+mysql -h 203.161.43.113 -P 3306 -u usmansaleem234_lyskills_root5 -p
+```
+
+```
+php artisan config:clear
+```
+```
+
+php artisan config:cache
+```

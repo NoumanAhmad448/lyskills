@@ -103,7 +103,7 @@ class VideoController extends Controller
 
             $c_status = CourseStatus::where('course_id',$course_id)->first();
             if($c_status){
-                $path = 'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'. $path;
+                $path = config('setting.s3Url'). $path;
                 $c_status->curriculum = 40;
                 $c_status->save();
             }
