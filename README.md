@@ -33,3 +33,20 @@ php artisan config:clear
 
 php artisan config:cache
 ```
+
+
+how to change WHM password
+1. Go VPS by logging to namecheap > dashboard > Go to domain > open VPS
+2. Root/Admin password
+3. change (wait for 10-15 minutes)
+4. new password should pop up
+
+
+
+change s3 bucket
+1. https://laravel-news.com/using-aws-s3-for-laravel-storage
+POV: To find the URL, upload something in bucket and open it in new tab
+
+How to fix 'The file failed to upload.' error using any validation for image upload - Laravel 5.7 
+1. Login to WHM > search ``` PHP INI editor``` > Choose php81 > update the setting according to cpanel ``` INI editor```
+
