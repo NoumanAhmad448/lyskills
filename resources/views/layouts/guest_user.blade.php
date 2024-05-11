@@ -150,8 +150,13 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                             <div class="cursor_pointer text-center  pt-2"
                                 id="user_menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img height="50" width="50" class="rounded-circle object-cover"
-                                src="@if(Auth::user()->profile_photo_path) {{ asset(Auth::user()->profile_photo_path) }} @else
-                                {{ Auth::user()->profile_photo_url }} @endif" alt="{{ Auth::user()->name }}" />
+                                        src="@if(Auth::user()->profile_photo_path && !config("setting.store_img_s3"))
+                                        {{ asset(Auth::user()->profile_photo_path) }}
+                                @elseif(config("setting.store_img_s3"))
+                                        {{config('s3Url')}}{{ Auth::user()->profile_photo_url }}
+                                @else
+                                        {{ Auth::user()->profile_photo_url }}
+                                @endif" alt="{{ Auth::user()->name }}" />
                             </div>
                          @endif
                     <div class="dropdown-menu dropdown-menu-right  w-55 mr-4 border" aria-labelledby="user_menu">
