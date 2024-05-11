@@ -7,9 +7,12 @@ use App\Models\Profile;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 class ProfileController extends Controller
 {
+    private $image_path = "storage/profile/";
+
     public function getProfile()
     {
         try {
@@ -27,6 +30,23 @@ class ProfileController extends Controller
      * @return user profile
      * @param Request
      */
+
+    private function saveProfileImage($image, $imageName){
+        ini_set('memory_limit','5096M');
+        $file = $image;
+        $manager = new ImageManager();
+
+        $image = $manager->make($file);
+
+        $path = $this->image_path.time() . uniqid() . str_replace(' ', '-',$imageName);
+        if(!Storage::disk("s3")->exists($this->image_path)) {
+            Storage::disk("s3")->makeDirectory($this->image_path, 0775, true);
+        }
+
+        Storage::disk("s3")->put($path, $image->stream()->__toString());
+
+        return $path;
+    }
 
     public function saveProfile(IProfileRequest $request)
     {
@@ -62,9 +82,9 @@ class ProfileController extends Controller
         try {
             $path = 'storage/img/';
             $folderPath = public_path('storage/img/');
-            if (!file_exists($folderPath)) {
-                mkdir($folderPath);
-            }
+            // if (!file_exists($folderPath)) {
+            //     mkdir($folderPath);
+            // }
 
             $image_parts = explode(";base64,", $request->image);
             $image_type_aux = explode("image/", $image_parts[0]);
@@ -76,8 +96,11 @@ class ProfileController extends Controller
             $imageFullPath = $folderPath . $imageName;
             $path = $path . $imageName;
 
-            file_put_contents($imageFullPath, $image_base64);
-
+            if(config("setting.store_img_s3")){
+                $path = $this->saveProfileImage($image_base64,$imageName);
+            }else{
+                file_put_contents($imageFullPath, $image_base64);
+            }
 
             $user = User::findOrFail(auth()->id());
             $user->profile_photo_path = $path;
@@ -85,7 +108,11 @@ class ProfileController extends Controller
 
             return response()->json(['success' => 'Crop Image Uploaded Successfully']);
         } catch (Exception $e) {
-            return back()->with('error', 'this action cannot be performed now.plz try again. ' . $e->getMessage());
+            if(config("app.debug")){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', config("setting.err_msg"));
+        }
         }
     }
 }
