@@ -45,6 +45,7 @@ $site_settings = [
         "admin_guest_search_bar" => true,
         "admin_email" => "anime@bypass.com",
         "coupon_form" => true,
+        "store_img_s3" => true,
 ];
 
 return $site_settings;
