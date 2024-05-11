@@ -446,15 +446,7 @@ use Carbon\Carbon;
             <div class="row">
                 <div class="col-1 mr-3 mb-1">
                     <img height="50" width="50" class="rounded-circle object-cover"
-                     src="@if($course->user && $course->user->profile_photo_path)
-                        @if(!config("setting.store_img_s3")))
-                            {{ asset($course->user->profile_photo_path) }}
-                        @else
-                            {{config('s3Url')}}{{ Auth::user()->profile_photo_url }}
-                        @endif
-                      @else
-                            {{ $course->user() ? $course->user()->profile_photo_url : '' }}
-                    @endif"
+                     src="@include("modals.course_user_profile")"
                     alt="{{ $course->user->name ?? '' }}" />
                 </div>
                 <div class="col-7">

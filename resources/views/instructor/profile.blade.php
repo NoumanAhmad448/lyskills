@@ -106,18 +106,12 @@
             <hr/>
             <div class="d-flex justify-content-center my-5">
                 <img
-                src="@if(Auth::user()->profile_photo_path && !config("setting.store_img_s3"))
-                        {{ asset(Auth::user()->profile_photo_path) }}
-                @elseif(config("setting.store_img_s3"))
-                         {{config('s3Url')}}{{ Auth::user()->profile_photo_url }}
-                @else
-                        {{ Auth::user()->profile_photo_url }}
-                @endif"
+                src="@include("modals.profile_logo")"
                  alt="profile" class="img-fluid" width="200" >
             </div>
             <div class="d-flex justify-content-center">
                     <input type="file" name="image" id="customFile" class="image custom-file-input d-none">
-                    <label class="btn btn-website btn-lg" for="customFile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Profile </label>                  
+                    <label class="btn btn-website btn-lg" for="customFile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Profile </label>
             </div>
             <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
