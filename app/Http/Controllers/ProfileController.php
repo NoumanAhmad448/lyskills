@@ -82,9 +82,9 @@ class ProfileController extends Controller
         try {
             $path = 'storage/img/';
             $folderPath = public_path('storage/img/');
-            // if (!file_exists($folderPath)) {
-            //     mkdir($folderPath);
-            // }
+            if (!file_exists($folderPath)) {
+                mkdir($folderPath);
+            }
 
             $image_parts = explode(";base64,", $request->image);
             $image_type_aux = explode("image/", $image_parts[0]);
