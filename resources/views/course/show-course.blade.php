@@ -444,16 +444,25 @@ use Carbon\Carbon;
         <h2> Instructor Profile </h2>
         <div class="mt-3">
             <div class="row">
-                <div class="col-1">
-                    <img height="50" width="50" class="rounded-circle object-cover" src="@if($course->user && $course->user->profile_photo_path) {{ asset($course->user->profile_photo_path) }} @else
-                                    {{ $course->user() ? $course->user()->profile_photo_url : '' }} @endif" alt="{{ $course->user->name ?? '' }}" />
+                <div class="col-1 mr-3 mb-1">
+                    <img height="50" width="50" class="rounded-circle object-cover"
+                     src="@if($course->user && $course->user->profile_photo_path)
+                        @if(!config("setting.store_img_s3")))
+                            {{ asset($course->user->profile_photo_path) }}
+                        @else
+                            {{config('s3Url')}}{{ Auth::user()->profile_photo_url }}
+                        @endif
+                      @else
+                            {{ $course->user() ? $course->user()->profile_photo_url : '' }}
+                    @endif"
+                    alt="{{ $course->user->name ?? '' }}" />
                 </div>
                 <div class="col-7">
                     <div class="text-uppercase"> {{ $course->user->name ?? ''}} </div>
                     <div class="text-capitalize"> {{ $profile->headline ?? ''}} </div>
                 </div>
             </div>
-            <div class="mt-1">
+            <div class="mt-1 text-justify">
                 {{ $profile->bio ?? '' }}
             </div>
         </div>

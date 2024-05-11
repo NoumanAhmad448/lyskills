@@ -105,9 +105,17 @@
             </div>
             <hr/>
             <div class="d-flex justify-content-center my-5">
-                <img src="@if(auth()->user()->profile_photo_path) {{ asset(auth()->user()->profile_photo_path) }} @else  {{asset('img/profile.png')}}@endif" alt="profile" class="img-fluid" width="200" >
+                <img
+                src="@if(Auth::user()->profile_photo_path && !config("setting.store_img_s3"))
+                        {{ asset(Auth::user()->profile_photo_path) }}
+                @elseif(config("setting.store_img_s3"))
+                         {{config('s3Url')}}{{ Auth::user()->profile_photo_url }}
+                @else
+                        {{ Auth::user()->profile_photo_url }}
+                @endif"
+                 alt="profile" class="img-fluid" width="200" >
             </div>
-            <div class="d-flex justify-content-center">                
+            <div class="d-flex justify-content-center">
                     <input type="file" name="image" id="customFile" class="image custom-file-input d-none">
                     <label class="btn btn-website btn-lg" for="customFile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Profile </label>                  
             </div>
