@@ -23,7 +23,7 @@ $targeting_students = json_decode($course->targeting_student);
         <section id="learnable_skills_sec">
             <label for="learnable_skills">What will students learn in your course?</label>
 
-            <div class="d-none alert alert-danger" id="learnable_skills_err"> </div>
+            <div class="d-none show_message show_message-danger" id="learnable_skills_err"> </div>
 
             @if ($learable_skill)
             @foreach ($learable_skill as $ls)                    
@@ -56,7 +56,7 @@ $targeting_students = json_decode($course->targeting_student);
 
         <section id="course_requirement_sec">
             <label for="course_requirement" class="mt-5">Course Requirements and Prerequisite</label>
-            <div class="d-none alert alert-danger" id="course_requirement_err"> </div>
+            <div class="d-none show_message show_message-danger" id="course_requirement_err"> </div>
             @if ($course_requirement)
                 @foreach ($course_requirement as $cr)
                     <div class="input-group input-group-lg">
@@ -87,7 +87,7 @@ $targeting_students = json_decode($course->targeting_student);
         </div>
         <section id="targeting_students_sec">
             <label for="targeting_students" class="mt-5"> Who are target Audience</label>
-            <div class="alert alert-danger d-none" id="targeting_students_err"> </div>
+            <div class="show_message show_message-danger d-none" id="targeting_students_err"> </div>
 
             @if ($targeting_students)
                 @foreach ($targeting_students as $ts)
@@ -189,7 +189,7 @@ $targeting_students = json_decode($course->targeting_student);
                     },
                     dataType: 'JSON',
                     success: function(message) {
-                        alert(message['status']);
+                        show_message(message['status']);
                     },
                     error: function(data){
                         let errors = JSON.parse(data.responseText)['errors'];
@@ -200,7 +200,7 @@ $targeting_students = json_decode($course->targeting_student);
                         }else if ("targeting_student" in errors){
                             target_errs.addClass("text-danger").text(errors['targeting_student'][0]);
                         }else{
-                            alert('There is an error while saving your data');
+                            show_message('There is an error while saving your data');
                         }
                         setTimeout(() => {
                             l_errs.removeClass('text-danger').text('');

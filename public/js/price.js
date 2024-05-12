@@ -126,19 +126,19 @@ $(function () {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function success(data) {
-          alert(data['status']);
+          show_message(data['status']);
         },
         error: function error(d) {
-          var errors = JSON.parse(d.responseText).errors;
-          var pricing = errors['pricing'];
+          if (typeof d == "json") {
+            var errors = JSON.parse(d.responseText).errors;
+            var pricing = errors['pricing'];
 
-          if (pricing) {
-            err.text(pricing);
+            if (pricing) {
+              show_message(pricing);
+            }
+          } else {
+            show_message(err_msg);
           }
-
-          setTimeout(function () {
-            err.text('');
-          }, 10000);
         }
       });
     }

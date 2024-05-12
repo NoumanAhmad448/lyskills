@@ -47,7 +47,7 @@
                     response = JSON.stringify(response);
                     if(response){
                         $(`#user_${user_id}`).remove()
-                        alert("{{ __('messages.user_enrolled_msg') }}")
+                        show_message("{{ __('messages.user_enrolled_msg') }}")
                         location.reload()
                     }else{
                         console.error(response)
@@ -102,7 +102,7 @@
                 .then(function (response) {
                     response = JSON.stringify(response);
                     if(response){
-                        alert("{{ __('messages.user_enrolled_msgs') }}")
+                        show_message("{{ __('messages.user_enrolled_msgs') }}")
                         location.reload()
                     }else{
                         console.error(response)

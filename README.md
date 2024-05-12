@@ -1,3 +1,11 @@
+## Development
+1. Turn on xampp
+2. ```php artisan serve --port=8081```
+3. ```npm run watch```
+
+## Development Guildlines
+1. Add all global setting constants in ```custom_lib .blade.php```
+
 # For Local developement
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
 2. download node 16.18.0

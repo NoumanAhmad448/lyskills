@@ -158,14 +158,14 @@ $(function () {
       data: data,
       success: function success(d) {
         c_con.attr('value', d['coupon']);
-        alert('updated');
+        show_message('updated');
       },
       error: function error(d) {
         var err = JSON.parse(d.responseText).errors;
         var p_err = err['coupon_no'];
 
         if (p_err) {
-          alert(p_err);
+          show_message(p_err);
         }
       },
       headers: {
@@ -182,7 +182,7 @@ $(function () {
         url: url,
         type: 'delete',
         success: function success(d) {
-          alert(d['status']);
+          show_message(d['status']);
           edit_coupon.remove();
         },
         headers: {

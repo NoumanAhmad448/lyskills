@@ -56,7 +56,7 @@
         $(function(){            
             $('#s_info_user').addClass('bg-website text-white').removeClass('text-dark font-weight-bold');
             $('.del-not').click(function(){
-                $('.alert').fadeOut();
+                $('.show_message').fadeOut();
                 if(confirm("Do you want to delete this notification?")){
                     let el = $(this);
                     let url = $(this).attr('link');
@@ -68,7 +68,7 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             success: function(){        
-                                alert('deleted');
+                                show_message('deleted');
                                 el.parents('.con').first().remove();
                             }
                         })
@@ -77,7 +77,7 @@
             });
         
         setTimeout(() => {
-            $('.alert').fadeOut();
+            $('.show_message').fadeOut();
         }, 10000);
 
         });

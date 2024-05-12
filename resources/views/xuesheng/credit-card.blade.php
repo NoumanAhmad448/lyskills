@@ -72,12 +72,12 @@
           );
 
           if (error) {
-              alert(error.message);
+              show_message(error.message);
           } else if(paymentMethod){
               $('#payment_method').val(paymentMethod.id);
               $('#paymentForm').submit();
           }else{
-            alert('Something is going wrong. please try again');
+            show_message('Something is going wrong. please try again');
           }
       });
   </script>

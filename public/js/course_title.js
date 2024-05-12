@@ -94,7 +94,7 @@
 /***/ (function(module, exports) {
 
 $("#title_box").keyup(function () {
-  // alert('working');
+  // show_message('working');
   var text_len = $(this).val().length;
   var title = $('#title');
   var count_char = $('.count_char').text(); // console.log(count_char);

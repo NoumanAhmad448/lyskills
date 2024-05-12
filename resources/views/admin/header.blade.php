@@ -4,23 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> @if(isset($title)){{ __('messages.'.$title) }} @else {{ __("messages.admin") }} @endif </title>        
+    <title> @if(isset($title)){{ __('messages.'.$title) }} @else {{ __("messages.admin") }} @endif </title>
     <meta name="description" content="@if(isset($desc)) {{ $desc }} @else {{__('description.default')}}  @endif">
     <link rel="canonical" href="{{ url()->current() }}">
     <link rel="shortcut icon" href="{{asset('img/favicon.png')}}">
-    <?php 
-    if($_SERVER['SERVER_NAME'] == 'lyskills.org'){        
+    <?php
+    if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
         echo '<meta name="robots" content="noindex">';
     }
 
     ?>
-    <link rel="stylesheet" href="{{asset('css/text.css')}}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-            integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" 
-            crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    @include("lib.custom_lib")
 
     @yield('page-css')
 </head>

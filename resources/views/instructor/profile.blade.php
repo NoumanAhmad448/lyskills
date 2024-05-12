@@ -22,7 +22,7 @@
                                   <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
                                    aria-describedby="user name" placeholder="Name" value="@if($user){{$user->name}}@else{{old('name')}}@endif" />
                                   @error('name')
-                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    <div class="show_message show_message-danger">{{ $message }}</div>
                                 @enderror
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                                   <input type="text" class="form-control @error('headline') is-invalid @enderror" id="headline" name="headline"
                                    aria-describedby="user headline" placeholder="Professional title" value="@if($profile){{$profile->headline}}@else{{old('headline')}}@endif" />
                                   @error('headline')
-                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    <div class="show_message show_message-danger">{{ $message }}</div>
                                 @enderror
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                                   <textarea class="form-control @error('bio') is-invalid @enderror" id="bio" name="bio" rows="10"
                                    aria-describedby="user bio" placeholder="Professional title">@if($profile){{$profile->bio}}@else{{old('bio')}}@endif</textarea>
                                   @error('bio')
-                                    <div class="alert alert-danger">{{ $message }}</div>
+                                    <div class="show_message show_message-danger">{{ $message }}</div>
                                 @enderror
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                                   <input type="text" class="form-control @error('website') is-invalid @enderror" id="website" name="website" 
                                    aria-describedby="user website" placeholder="website URL" value="@if($profile){{$profile->website}}@else{{old('website')}}@endif" />
                                     @error('website')
-                                      <div class="alert alert-danger">{{ $message }}</div>
+                                      <div class="show_message show_message-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                   <input type="text" class="form-control @error('facebook') is-invalid @enderror" id="facebook" name="facebook" 
                                    aria-describedby="user facebook" placeholder="facebook URL" value="@if($profile){{$profile->facebook}}@else{{old('facebook')}}@endif" />
                                     @error('facebook')
-                                      <div class="alert alert-danger">{{ $message }}</div>
+                                      <div class="show_message show_message-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                                   <input type="text" class="form-control @error('twitter') is-invalid @enderror" id="twitter" name="twitter" 
                                    aria-describedby="user twitter" placeholder="twitter URL" value="@if($profile){{$profile->twitter}}@else{{old('twitter')}}@endif" />
                                     @error('twitter')
-                                      <div class="alert alert-danger">{{ $message }}</div>
+                                      <div class="show_message show_message-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
                                   <input type="text" class="form-control @error('Linkedin') is-invalid @enderror" id="linkedin" name="linkedin" 
                                    aria-describedby="user Linkedin" placeholder="Linkedin URL" value="@if($profile){{$profile->Linkedin}}@else{{old('linkedin')}}@endif" />
                                     @error('linkedin')
-                                      <div class="alert alert-danger">{{ $message }}</div>
+                                      <div class="show_message show_message-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                                   <input type="text" class="form-control @error('youtube') is-invalid @enderror" id="youtube" name="youtube" 
                                    aria-describedby="user youtube" placeholder="Youtube URL" value="@if($profile){{$profile->youtube}}@else{{old('youtube')}}@endif" />
                                     @error('youtube')
-                                      <div class="alert alert-danger">{{ $message }}</div>
+                                      <div class="show_message show_message-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
         $(function(){
             $('input, textarea').click(function(){
                 $('input, textarea').removeClass('is-invalid');
-                $('.alert').fadeOut();
+                $('.show_message').fadeOut();
             });            
         });
         </script>
@@ -215,7 +215,7 @@
                 success: function(data){
                 // console.log(data);
                     $modal.modal('hide');
-                    alert(data.success);
+                    show_message(data.success);
                     location.reload();
 
                 }

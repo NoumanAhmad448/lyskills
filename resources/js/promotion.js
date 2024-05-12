@@ -124,13 +124,13 @@ $(function() {
             data: data,
             success: function(d){
                 c_con.attr('value',d['coupon']);
-                alert('updated');
+                show_message('updated');
             },
             error: function(d){
                 let err = JSON.parse(d.responseText).errors;
                 let p_err = err['coupon_no'];
                 if(p_err){
-                    alert(p_err);
+                    show_message(p_err);
                 }
             },
             headers: {
@@ -149,7 +149,7 @@ $(function() {
             url: url,
             type: 'delete',
             success: function(d){
-                alert(d['status']);
+                show_message(d['status']);
                 edit_coupon.remove();
             },
             

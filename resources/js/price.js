@@ -32,18 +32,19 @@ $(function() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function( data ) {
-                alert(data['status']);
+                show_message(data['status']);
             },
             error: function(d){
-                let errors = JSON.parse(d.responseText).errors;
-                let pricing= errors['pricing'];
-                if(pricing){
-                    err.text(pricing);
+                if(typeof d == "json"){
+                    let errors = JSON.parse(d.responseText).errors;
+                    let pricing= errors['pricing'];
+                    if(pricing){
+                        show_message(pricing);
+                    }
+                }else{
+                    show_message(err_msg)
                 }
-                setTimeout(() => {
-                    err.text('');
-                }, 10000);
-            }       
+            }
         });
         }
     });

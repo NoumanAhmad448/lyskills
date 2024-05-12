@@ -125,7 +125,7 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
           success: function success(d) {
-            alert(d);
+            show_message(d);
             location.reload();
           },
           error: function error(d) {
@@ -134,10 +134,10 @@ $(function () {
           }
         });
       } else {
-        alert("Please select a course");
+        show_message("Please select a course");
       }
     } else {
-      alert('Please choose the status');
+      show_message('Please choose the status');
     }
   });
   $('.course_no').change(function () {
