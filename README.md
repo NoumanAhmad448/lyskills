@@ -27,6 +27,7 @@
 7. php artisan serve --port=8081
 
 ## Troubleshooting
+mysql connection
 ```
 mysql -h 127.0.0.1 -P 3306 -u usmansaleem234_lyskills_root5 -p
 ```
@@ -34,7 +35,7 @@ mysql -h 127.0.0.1 -P 3306 -u usmansaleem234_lyskills_root5 -p
 
 mysql -h 203.161.43.113 -P 3306 -u usmansaleem234_lyskills_root5 -p
 ```
-
+Laravel cache clear
 ```
 php artisan config:clear
 ```
@@ -59,3 +60,27 @@ POV: To find the URL, upload something in bucket and open it in new tab
 How to fix 'The file failed to upload.' error using any validation for image upload - Laravel 5.7 
 1. Login to WHM > search ``` PHP INI editor``` > Choose php81 > update the setting according to cpanel ``` INI editor```
 
+apache server
+1. apache status
+```
+ systemctl status httpd
+```
+apache configuration file validation command
+```
+apachectl configtest
+```
+
+apache configration command
+```
+apachectl -V | grep SERVER_CONFIG_FILE
+```
+
+php configration file location for apache server
+```
+php --ini
+```
+
+```
+nano /opt/cpanel/ea-php80/root/etc/php.ini
+
+```
