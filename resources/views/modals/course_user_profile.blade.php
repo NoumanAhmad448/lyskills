@@ -2,7 +2,7 @@
     @if (!config('setting.store_img_s3'))
         {{ asset($course->user->profile_photo_path) }}
     @else
-        {{ config('setting.s3Url') }}{{ Auth::user()->profile_photo_path }}
+        {{ config('setting.s3Url') }}{{ $course->user->profile_photo_path }}
     @endif
 @else
     {{ $course->user() ? $course->user()->profile_photo_url : '' }}
