@@ -38,6 +38,7 @@ $modal.on('shown.bs.modal', function () {
 }).on('hidden.bs.modal', function () {
     cropper.destroy();
     cropper = null;
+    $(".image").val(null)
 });
 $("#crop").click(function () {
     canvas = cropper.getCroppedCanvas({

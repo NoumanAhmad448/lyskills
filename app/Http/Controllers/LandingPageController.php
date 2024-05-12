@@ -74,7 +74,7 @@ class LandingPageController extends Controller
         try {
             $request->validated();
 
-            ini_set('memory_limit','5096M');
+            ini_set('memory_limit','9096M');
             $file = $request->file('course_img');
             $manager = new ImageManager();
 
@@ -142,7 +142,7 @@ class LandingPageController extends Controller
             $course = Course::findOrFail($course);
             $file = $request->file('course_vid');
 
-            ini_set('memory_limit','5096M');
+            ini_set('memory_limit','8096M');
 
             $file_path = 'uploads';
             $file_path = Storage::disk('s3')->put($file_path, $file);

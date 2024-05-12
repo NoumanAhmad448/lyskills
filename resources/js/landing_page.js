@@ -136,7 +136,7 @@ $(function() {
                 p_bar.css('width',0+'%')
                 p_con.addClass('d-none');
                 current.attr('disabled',false);
-
+                $('.upload_img').val(null)
                 popup_message(d)
             }
         });
@@ -233,10 +233,8 @@ $(function() {
                                 }else{
                                     popup_message(err_msg)
                                 }
-
-                                setTimeout(function() {
-                                    file_err.text('');
-                                }, 10000);
+                                // reset already selected image
+                                $('.upload_vid').val(null)
                             }
                     });
                 }

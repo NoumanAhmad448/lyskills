@@ -220,6 +220,7 @@ $(function () {
           p_bar.css('width', 0 + '%');
           p_con.addClass('d-none');
           current.attr('disabled', false);
+          $('.upload_img').val(null);
           popup_message(d);
         }
       });
@@ -300,11 +301,10 @@ $(function () {
                 popup_message(course_vid);
               } else {
                 popup_message(err_msg);
-              }
+              } // reset already selected image
 
-              setTimeout(function () {
-                file_err.text('');
-              }, 10000);
+
+              $('.upload_vid').val(null);
             }
           });
         }
