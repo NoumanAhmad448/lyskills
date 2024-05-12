@@ -16,6 +16,7 @@ $(function(){
 })
 $(function() {
     var search = $( "#search_course" );
+    if(search && search.length > 0){
       search.autocomplete({
           source: function( request, response ) {
               $.ajax({
@@ -39,6 +40,7 @@ $(function() {
             search.parents('form').submit();
           }
       });
+    }
 })
 
 $(function(){

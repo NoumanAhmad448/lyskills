@@ -32,6 +32,7 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/course-content.js', 'public/js')
     .js('resources/js/course/show-course.js', 'public/js/course')
     .js('resources/js/course/course_curriculum.js', 'public/js/course')
+    .js('resources/js/profile.js', 'public/js')
 
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),

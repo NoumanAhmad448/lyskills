@@ -108,29 +108,32 @@ $(function () {
 });
 $(function () {
   var search = $("#search_course");
-  search.autocomplete({
-    source: function source(request, response) {
-      $.ajax({
-        url: "{{route('get-search')}}",
-        type: "post",
-        dataType: "json",
-        headers: {
-          'X-CSRF-TOKEN': "{{csrf_token()}}"
-        },
-        data: {
-          q: request.term
-        },
-        success: function success(data) {
-          response(data);
-        }
-      });
-    },
-    minLength: 2,
-    select: function select(event, ui) {
-      search.val(ui.item.label);
-      search.parents('form').submit();
-    }
-  });
+
+  if (search && search.length > 0) {
+    search.autocomplete({
+      source: function source(request, response) {
+        $.ajax({
+          url: "{{route('get-search')}}",
+          type: "post",
+          dataType: "json",
+          headers: {
+            'X-CSRF-TOKEN': "{{csrf_token()}}"
+          },
+          data: {
+            q: request.term
+          },
+          success: function success(data) {
+            response(data);
+          }
+        });
+      },
+      minLength: 2,
+      select: function select(event, ui) {
+        search.val(ui.item.label);
+        search.parents('form').submit();
+      }
+    });
+  }
 });
 $(function () {
   window.fbAsyncInit = function () {

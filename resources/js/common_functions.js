@@ -35,6 +35,16 @@ window.popup_message = function(d){
         }else if(Array.isArray(d) && d.length > 1){
             show_message(text=d[0])
         }
+        else if(typeof d == "object"){
+            if(d["course_img"]){
+                if(Array.isArray(d["course_img"])){
+                    show_message(text= d["course_img"][0])
+                }
+                else if(typeof d == "string"){
+                    show_message(text=d["course_img"])
+                }
+            }
+        }
 
     }else if(typeof d === "string"){
         show_message(text=d)
