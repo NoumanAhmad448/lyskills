@@ -54,7 +54,7 @@ $("#crop").click(function () {
             $.ajax({
                 type: "POST",
                 dataType: "json",
-                url: "{{route('upload_profile')}}",
+                url: upload_profile,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },

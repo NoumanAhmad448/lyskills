@@ -146,6 +146,9 @@
         </div>
     @endsection
     @section('page-js')
+        <script>
+            let upload_profile = "{{route('upload_profile')}}";
+        </script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
         <script src="{{asset('js/profile.js')}}"></script>
