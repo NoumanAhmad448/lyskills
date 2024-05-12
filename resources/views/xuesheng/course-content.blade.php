@@ -45,7 +45,7 @@
                 @foreach ($lectures as $lec)
                 @php $video = $lec->media; @endphp
 
-                @if($video && $video->lec_name[1])
+                @if($video && $video->lec_name && $video->lec_name[1])
                 <li class=" list-group-item mt-2 py-2 pl-3 @if($video->id === $media->id) bg-static-website @endif">
                     <section class="d-flex justify-content-between">
                         <a class="text-capitalize d-block @if($video->id === $media->id) text-white @endif"
