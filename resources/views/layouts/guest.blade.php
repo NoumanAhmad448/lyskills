@@ -51,8 +51,6 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
         debug = '{{ config("app.debug") ? 1 : 0 }}'
         debug = debug == "1" ? true : false
     </script>
-
-
     @yield('page-css')
 </head>
 
@@ -110,10 +108,11 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                 <div class="col-md-5">
                     <form action="{{route('c-search-page')}}" method="post">
                         <div class="searchbar mt-4 mt-md-0">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}"
+                            />
                             <input class="search_input" type="text" name="search_course" id="search_course"
                                 placeholder="Search Your Favorite Course...">
-                            <button type="submit" class="search_icon btn"><i class="fa fa-search"
+                            <button type="submit" class="search_icon btn"><i class="fa fa-search"s
                                     aria-hidden="true"></i>
                             </button>
                         </div>

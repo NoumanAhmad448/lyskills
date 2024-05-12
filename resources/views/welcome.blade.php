@@ -25,11 +25,12 @@ use App\Models\RatingModal;
 </section> --}}
 @include('session_msg')
 @if(config("setting.homepage_image"))
-<div class="container-fluid" >
+<div class="container-fluid mt-3">
     <div class="row">
         <div class="col-md-10 offset-md-1">
             <section style="position: relative">
-                <img src="{{asset('img/student.jpg')}}" alt="student" class="img-fluid"/>
+                <img src="{{asset('img/student.jpg')}}" alt="student" class="img-fluid" id="student_img"
+                style="box-shadow: 0px 10px 10px 3px #605f5b;"/>
             <a href="{{route('register')}}" class="btn  btn-outline-website d-none"
                     style="position: absolute; top: 0;left: 0;"> Become an Instructor </a>
             </section>
@@ -51,7 +52,7 @@ use App\Models\RatingModal;
             @foreach ($courses as $course)
             <div class="col-12 col-md mt-2">
                 @if($course->slug)
-                <div class="card fix-height" style="">
+                <div class="card fix-height" style="box-shadow: 0px 1px 1px 1px #bbb8af;">
                     <a href="{{route('user-course', ['slug' => $course->slug])}}">
                         @if($course->course_image) <img class="card-img-top img-fluid"
                             src="{{config('setting.s3Url').$course->course_image->image_path}}"
@@ -144,7 +145,7 @@ use App\Models\RatingModal;
                 <div class="mt-2">
                     {!! reduceWithStripping($post->message,300) !!}
                 </div>
-                <a href="{{route('public_posts',['slug' => $post->slug])}}" class="btn btn-primary my-2 float-right"> Read
+                <a href="{{route('public_posts',['slug' => $post->slug])}}" class="btn btn-website my-2 float-right"> Read
                     More </a>
             </div>
         </div>
@@ -188,7 +189,7 @@ use App\Models\RatingModal;
                 <div class="mt-2">
                     {!! reduceWithStripping($faq->message,300) !!}
                 </div>
-                <a href="{{route('public_faqs',['slug' => $faq->slug])}}" class="btn btn-primary my-2 float-right"> Read
+                <a href="{{route('public_faqs',['slug' => $faq->slug])}}" class="btn btn-website my-2 float-right"> Read
                     More </a>
             </div>
         </div>
