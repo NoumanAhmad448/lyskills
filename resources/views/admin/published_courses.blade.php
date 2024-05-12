@@ -188,7 +188,7 @@
                     $('#del-course-btn').attr('action',link);
                     $('#course-delete').modal('show');
                 }else{
-                    alert('there is some error');
+                    show_message('there is some error');
                 }
             });
         });

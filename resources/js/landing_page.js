@@ -1,5 +1,5 @@
 $(function() {
-    $('#lang ,#select_category, #select_level ').select2();            
+    $('#lang ,#select_category, #select_level ').select2();
 
     $( ".landing_form" ).on( "submit", function(e) {
         e.preventDefault();
@@ -68,8 +68,6 @@ $(function() {
 
     $('#landing_page').removeClass('text-info').addClass('bg-website text-white');
 
-   
-
     $('.upload_img').on('change',function(){
         let url = $(this).attr('url');
         let con = $(this).parents('.img_con').first();
@@ -103,11 +101,12 @@ $(function() {
 
                 xhr.upload.addEventListener("progress", function(evt) {
                 if (evt.lengthComputable) {
-                    var percentComplete = evt.loaded / evt.total;
+                    let percentComplete = evt.loaded / evt.total;
                     percentComplete = parseInt(percentComplete * 100);
                         p_bar.attr('aria-valuenow',percentComplete);
                         p_bar.text(percentComplete+'%');
                         p_bar.css('width',percentComplete+'%')
+                        p_bar.css('display','block')
                 }
                 }, false);
 
@@ -132,10 +131,13 @@ $(function() {
 
             },
             error: function(d){
-                var d = JSON.parse(d.responseText).errors;
+                p_bar.attr('aria-valuenow',0);
+                p_bar.text(0+'%');
+                p_bar.css('width',0+'%')
                 p_con.addClass('d-none');
                 current.attr('disabled',false);
 
+                popup_message(d)
             }
         });
 
@@ -219,11 +221,19 @@ $(function() {
                             error: function(data){
                                 current_file.attr('disabled',false);
                                 vid_p_con.addClass('d-none');
-                                data = JSON.parse(data['responseText']);
-                                let course_vid= data['course_vid']['course_vid'];
-                                if(course_vid){
-                                    file_err.text(course_vid[0]);
+                                vid_p_bar.attr('aria-valuenow',0);
+                                vid_p_bar.css('width',0+'%');
+
+                                vid_p_bar.html('<b> Uploading  ' + 0 + '% </b>');
+
+                                if(typeof data == "json"){
+                                    data = JSON.parse(data['responseText']);
+                                    let course_vid= data['course_vid']['course_vid'];
+                                    popup_message(course_vid)
+                                }else{
+                                    popup_message(err_msg)
                                 }
+
                                 setTimeout(function() {
                                     file_err.text('');
                                 }, 10000);

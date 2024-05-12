@@ -13,7 +13,7 @@
         <link rel="shortcut icon" href="{{asset('img/favicon.png')}}">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&amp;display=swap" rel="stylesheet">
-
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <!-- Styles -->
         {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
         {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}

@@ -109,7 +109,7 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           },
           success: function success(d) {
-            alert(d['status']);
+            show_message(d['status']);
             del.parents('.u_record').first().remove();
           }
         });

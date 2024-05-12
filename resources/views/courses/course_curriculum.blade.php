@@ -39,10 +39,10 @@ use App\Models\ResVideo;
     <div class="p-3">
         {{-- If you're intending to offer your course for free, the total length of video content must be less than 2 hours. --}}
     </div>
-    <div class="alert alert-success success font-weight-bold d-none text-center"></div>
+    <div class="show_message show_message-success success font-weight-bold d-none text-center"></div>
     <div class="text-center">
         @if (session('status'))
-        <div class="alert alert-success">
+        <div class="show_message show_message-success">
             {{ session('status') }}
         </div>
         @endif
@@ -195,7 +195,7 @@ use App\Models\ResVideo;
                             <textarea class="form-control desc_detail" name="lec_desc" id="lec_desc" rows="5" cols="50" placeholder="Put all possible detail of related video">{{$desc->description}}</textarea>
 
                         </div>
-                        <div class="alert alert-danger d-none text-center desc_err_msg"></div>
+                        <div class="show_message show_message-danger d-none text-center desc_err_msg"></div>
 
                         <button type="button" class="btn bg-static-website add_desc_btn">Save Description</button>
 
@@ -339,7 +339,7 @@ use App\Models\ResVideo;
                             <textarea class="form-control ass_desc_detail" name="ass_desc_detail" id="ass_desc_detail" rows="10" cols="50" placeholder="Description of Assignment">{{$ass_desc->description??''}}</textarea>
 
                         </div>
-                        <div class="alert alert-danger d-none text-center ass_err_msg"></div>
+                        <div class="show_message show_message-danger d-none text-center ass_err_msg"></div>
 
                         <button type="button" class="btn bg-static-website add_ass_desc">Save Description</button>
 
@@ -438,7 +438,7 @@ use App\Models\ResVideo;
                     </div>
                     <div class="row q_b_con">
                         <div class="col-12">
-                            <div class="alert alert-danger d-none err_msg text-center"> </div>
+                            <div class="show_message show_message-danger d-none err_msg text-center"> </div>
                             <div class="btn btn-lg btn-info float-right create_quiz" quiz_url="{{route('add_quizzs', compact('quiz'))}}"> <i class="las la-pencil-alt"></i> Create Quiz </div>
                         </div>
                     </div>
@@ -614,7 +614,7 @@ use App\Models\ResVideo;
                      <input type="text" class="form-control d-inline-block"
                      maxlength="70"
                      required placeholder="Section Title" value="${parent_text}" >
-                     <div class="alert alert-danger d-none mt-1 err_msg">  </div>
+                     <div class="show_message show_message-danger d-none mt-1 err_msg">  </div>
                      <div class="d-flex justify-content-end mt-1">
                         <div class="btn website-outline mr-2 cancel"  onclick="cancel(event)" prev_val="${parent_text}" > cancel </div>
                         <button type="submit" class="btn website add_sec_title" > {{ __('Save') }} </button>
@@ -634,7 +634,7 @@ use App\Models\ResVideo;
                 let get_title_val = lec_name.text().trim();
                 c_lec_small_container.replaceWith(`<form class="c_lec_small_form w-100 mt-md-5">
                         <input type="text" class="form-control"  placeholder="Section Title" value="${get_title_val}" >
-                        <div class="alert alert-danger d-none mt-1 err_msg">  </div>
+                        <div class="show_message show_message-danger d-none mt-1 err_msg">  </div>
                         <div class="d-flex justify-content-end mt-1">
                             <div class="btn website-outline mr-2 cancel" get_input_val="${get_title_val}" > cancel </div>
                             <button type="submit" class="btn website add_sec_title" > Save </button>
@@ -822,7 +822,7 @@ use App\Models\ResVideo;
                             <div class="form-group">
                                 <label for="lec_name">Enter Lecture Title</label>
                                 <input type="text" class="form-control lec_name"  placeholder="Enter a title">
-                                <div class="alert alert-danger d-none lec_err mt-2"></div>
+                                <div class="show_message show_message-danger d-none lec_err mt-2"></div>
                             </div>
                             <div class="d-flex justify-content-end align-items-center">
                                 <button type="button" class="cancel_lec cursor_pointer mr-2 btn btn-danger"> Cancel </button>
@@ -957,7 +957,7 @@ use App\Models\ResVideo;
 
             current_elem.replaceWith(`<form class="section_title_form">
                      <input type="text" class="form-control d-inline-block" required maxlength="70" placeholder="Section Title" value="" >
-                     <div class="alert alert-danger d-none mt-1 err_msg">  </div>
+                     <div class="show_message show_message-danger d-none mt-1 err_msg">  </div>
                      <div class="d-flex justify-content-end mt-1">
                         <div class="btn website-outline mr-2 cancel_title"  onclick="cancel_title(event)" prev_val="Section Title" > cancel </div>
                         <button type="submit" class="btn website add_sec_title" > Add </button>
@@ -1078,7 +1078,7 @@ use App\Models\ResVideo;
                             <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <form class="upload_video_form">
-                                    <div class="d-none alert alert-danger video_err text-center"> </div>
+                                    <div class="d-none show_message show_message-danger video_err text-center"> </div>
                                     <div class="form-check my-3">
                                         <input class="form-check-input" type="checkbox" id="set_free" name="set_free">
                                         <label class="form-check-label" for="set_free">
@@ -1200,7 +1200,7 @@ use App\Models\ResVideo;
                             success: function(data) {
                                 current_file.attr('disabled', false);
                                 if (data['err']) {
-                                    alert(data['err'])
+                                    show_message(data['err'])
                                 } else {
                                     let path = data['path'];
                                     let upload_vid = current_file.parents('.upload_video_con').first();
@@ -1256,7 +1256,7 @@ use App\Models\ResVideo;
                                     $(this).hide()
                                 })
                                 if (res['err']) {
-                                    alert(res['err'])
+                                    show_message(res['err'])
                                 } else {
                                     data = JSON.parse(data['responseText'])['errors'];
                                     show_err.removeClass('d-none').addClass('d-block').text(data['upload_video']);
@@ -1281,9 +1281,9 @@ use App\Models\ResVideo;
             if (file) {
                 var f_type = file.type;
                 if (f_type !== "video/mp4" && f_type !== "video/ogg" && f_type !== "video/webm") {
-                    alert('Only MP4, OGG, WEBM formats are allowed');
+                    show_message('Only MP4, OGG, WEBM formats are allowed');
                 } else if (parseInt(file.size / 1024 / 1024 / 1024) > 4) {
-                    alert("File size cannot exceed from 4GB");
+                    show_message("File size cannot exceed from 4GB");
                 } else {
                     current_file.attr('disabled', true);
                     let video_url = form.attr('url');
@@ -1332,7 +1332,7 @@ use App\Models\ResVideo;
                                 progress_bar.parent().remove();
                             },
                             error: function(data) {
-                                alert('somethingw went wrong');
+                                show_message('somethingw went wrong');
                                 progress_bar.parent().remove();
                                 current_file.attr('disabled', false);
 
@@ -1576,7 +1576,7 @@ use App\Models\ResVideo;
                                     }
                                 }
                             }
-                            alert(success_msg);
+                            show_message(success_msg);
                             location.reload();
 
 
@@ -1605,7 +1605,7 @@ use App\Models\ResVideo;
                                          name="lec_desc" id="lec_desc" rows="5" cols="50" placeholder="Put all possible detail of related video"></textarea>
 
                                     </div>
-                                    <div class="alert alert-danger d-none text-center desc_err_msg"></div>
+                                    <div class="show_message show_message-danger d-none text-center desc_err_msg"></div>
                                     <button type="button" class="btn bg-static-website add_desc_btn">
                                         Add Description
                                     </button>
@@ -1733,7 +1733,7 @@ use App\Models\ResVideo;
                             desc_btn_.removeClass('lec_desc_cancel').addClass('lec_desc_update_cancel').html('<i class="las la-caret-down"></i> Description');
                         }
                         if (status) {
-                            alert(status);
+                            show_message(status);
                         }
 
                     },
@@ -1877,7 +1877,7 @@ use App\Models\ResVideo;
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <form class="up_video_form" >
-                                    <div class="d-none alert alert-danger video_err text-center"> </div>
+                                    <div class="d-none show_message show_message-danger video_err text-center"> </div>
                                     <div class="custom-file mt-3">
                                         <input type="file" name="upload_video" class="custom-file-input upload_video_res"
                                         id="custom_file" video_url ="${video_url}">
@@ -1957,10 +1957,10 @@ use App\Models\ResVideo;
                                 html('Upload Video').removeClass('btn-danger uploaded_res_video_close').addClass('video_res website-outline').attr('video_url', video_url);
                                 form.parents('.uploaded_video').first().remove();
                             }
-                            alert(success_msg);
+                            show_message(success_msg);
 
                         }).fail(function(d) {
-                            alert('Your video was not deleted because of technical problem. Please try again.');
+                            show_message('Your video was not deleted because of technical problem. Please try again.');
                             console.log(d.responseText);
                         });
                     }
@@ -2099,7 +2099,7 @@ use App\Models\ResVideo;
                 });
 
                 request.done(function(msg) {
-                    alert(msg['status']);
+                    show_message(msg['status']);
                 });
 
                 request.fail(function(err) {
@@ -2109,9 +2109,9 @@ use App\Models\ResVideo;
                         let errs = err_ob['errors'];
                         let article_text = errs.article_text;
                         if (article_text) {
-                            alert(article_text[0]);
+                            show_message(article_text[0]);
                         } else {
-                            alert(errs);
+                            show_message(errs);
                         }
                     }
                 });
@@ -2217,7 +2217,7 @@ use App\Models\ResVideo;
                 });
 
                 request.done(function(msg) {
-                    alert(msg['status']);
+                    show_message(msg['status']);
                 });
 
                 request.fail(function(err) {
@@ -2228,11 +2228,11 @@ use App\Models\ResVideo;
                         let ex_res_title = errs.ex_res_title;
                         let ex_res_link = errs.ex_res_link;
                         if (ex_res_title) {
-                            alert(ex_res_title[0]);
+                            show_message(ex_res_title[0]);
                         } else if (ex_res_link) {
-                            alert(ex_res_link[0]);
+                            show_message(ex_res_link[0]);
                         } else {
-                            alert(errs);
+                            show_message(errs);
                         }
                     }
                 });
@@ -2400,7 +2400,7 @@ use App\Models\ResVideo;
                                 data = JSON.parse(data['responseText']);
                                 let err_msg = data['message'];
                                 if (err_msg) {
-                                    alert(err_msg);
+                                    show_message(err_msg);
                                 }
                             }
                         });
@@ -2492,7 +2492,7 @@ use App\Models\ResVideo;
                             </form>
 
                             `);
-                            alert(data['status']);
+                            show_message(data['status']);
 
                         }
                     });
@@ -2577,14 +2577,14 @@ use App\Models\ResVideo;
                             </div>
                         `);
 
-                    alert(msg['status']);
+                    show_message(msg['status']);
 
                 }).
                 fail(function(err) {
                     let errs = JSON.parse(err.responseText).errors;
                     let title_err = errs.ass_title;
                     if (title_err) {
-                        alert(title_err[0]);
+                        show_message(title_err[0]);
                     }
                 });
 
@@ -2624,13 +2624,13 @@ use App\Models\ResVideo;
                         </section>
                         `);
 
-                    alert(data['status']);
+                    show_message(data['status']);
 
 
                 },
                 error: function(returned_data, upcomingStatus) {
                     let errors = JSON.parse(returned_data.responseText)['errors'];
-                    alert(errors['updated_title'][0]);
+                    show_message(errors['updated_title'][0]);
 
                 }
 
@@ -2664,7 +2664,7 @@ use App\Models\ResVideo;
                                          name="ass_desc_detail" id="ass_desc_detail" rows="3" cols="50" placeholder="Description of Assignment"></textarea>
 
                                     </div>
-                                    <div class="alert alert-danger d-none text-center ass_err_msg"></div>
+                                    <div class="show_message show_message-danger d-none text-center ass_err_msg"></div>
                                     <button type="button" class="btn bg-static-website add_ass_desc">
                                         <i class="las la-plus"></i> Add Description
                                     </button>
@@ -2710,7 +2710,7 @@ use App\Models\ResVideo;
                     success: function(data) {
                         let status = data['status'];
                         if (status) {
-                            alert(status);
+                            show_message(status);
                         }
 
                         form.find('.ass_desc_detail').val(data['ass_desc_detail']);
@@ -2907,7 +2907,7 @@ use App\Models\ResVideo;
                                 data = JSON.parse(data['responseText']);
                                 let err_msg = data['ass_file'];
                                 if (err_msg) {
-                                    alert(err_msg[0]);
+                                    show_message(err_msg[0]);
                                 }
                             }
                         });
@@ -2938,7 +2938,7 @@ use App\Models\ResVideo;
                         dataType: 'json',
 
                         success: function(msg) {
-                            alert(msg['status']);
+                            show_message(msg['status']);
                         }
 
                     });
@@ -3096,7 +3096,7 @@ use App\Models\ResVideo;
                                 data = JSON.parse(data['responseText']);
                                 let err_msg = data['ass_file'];
                                 if (err_msg) {
-                                    alert(err_msg[0]);
+                                    show_message(err_msg[0]);
                                 }
                             }
                         });
@@ -3127,7 +3127,7 @@ use App\Models\ResVideo;
                         dataType: 'json',
 
                         success: function(msg) {
-                            alert(msg['status']);
+                            show_message(msg['status']);
                         }
 
                     });
@@ -3212,7 +3212,7 @@ use App\Models\ResVideo;
                     let errs = JSON.parse(err.responseText).errors;
                     let title_err = errs.quiz_title;
                     if (title_err) {
-                        alert(title_err[0]);
+                        show_message(title_err[0]);
                     }
                 });
 
@@ -3293,12 +3293,12 @@ use App\Models\ResVideo;
                         </section>
                         `);
 
-                    alert(data['status']);
+                    show_message(data['status']);
 
                 },
                 error: function(returned_data, upcomingStatus) {
                     let errors = JSON.parse(returned_data.responseText)['errors'];
-                    alert(errors['quiz_title'][0]);
+                    show_message(errors['quiz_title'][0]);
 
                 }
 
@@ -3331,7 +3331,7 @@ use App\Models\ResVideo;
                                          name="quiz_desc_detail" id="quiz_desc_detail" rows="10" cols="50" placeholder="Description of Quiz"></textarea>
 
                                     </div>
-                                    <div class="alert alert-danger d-none text-center err_msg"></div>
+                                    <div class="show_message show_message-danger d-none text-center err_msg"></div>
                                     
                                     <button type="button" class="btn bg-static-website add_quiz_desc">
                                         <i class="las la-plus"></i> Add Description 
@@ -3391,13 +3391,13 @@ use App\Models\ResVideo;
 
 
                         if (status) {
-                            alert(status);
+                            show_message(status);
                         }
 
                     },
                     error: function(data) {
                         let desc_err = JSON.parse(data.responseText)['errors'];
-                        alert(desc_err['quiz_desc_detail']);
+                        show_message(desc_err['quiz_desc_detail']);
 
 
                     }
@@ -3427,7 +3427,7 @@ use App\Models\ResVideo;
                             </div>
                             <div class="row q_b_con">
                                 <div class="col-12">
-                                    <div class="alert alert-danger d-none err_msg text-center"> </div>
+                                    <div class="show_message show_message-danger d-none err_msg text-center"> </div>
                                     <div class="btn btn-lg btn-info float-right create_quiz" quiz_url="${quiz_url}"> <i class="las la-pencil-alt"></i> Create Quiz </div>                            
                                 </div>
                             </div>
@@ -3564,7 +3564,7 @@ use App\Models\ResVideo;
                                     </div>
                                 `);
                         quiz_f.remove();
-                        alert(data['status']);
+                        show_message(data['status']);
 
                     },
                     error: function(data) {
@@ -3707,7 +3707,7 @@ use App\Models\ResVideo;
                     success: function(data) {
                         let quiz = data['quiz'];
                         quiz_con.find('.q-name').first().text(data['quiz_title']);
-                        alert(data['status']);
+                        show_message(data['status']);
 
                     },
                     error: function(data) {
@@ -3776,7 +3776,7 @@ use App\Models\ResVideo;
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
-                        alert(data['status']);
+                        show_message(data['status']);
                         c_el.parents('.quiz-q-list').first().remove();
 
                     }
@@ -3860,9 +3860,9 @@ use App\Models\ResVideo;
                 }
             }
             if (up_err) {
-                alert('Only MP4,webm and ogg files are allowed. Please choose one of them');
+                show_message('Only MP4,webm and ogg files are allowed. Please choose one of them');
             } else if (v_size > 4) {
-                alert('Total size allowed is 4GB');
+                show_message('Total size allowed is 4GB');
             } else {
                 var progress_bar = $(this).parents('form').first().find('#show_progress');
                 var p_parent = progress_bar.parent();
@@ -3900,7 +3900,7 @@ use App\Models\ResVideo;
                         p_parent.addClass('d-none');
                         form.prop('disabled', false);
 
-                        alert(data);
+                        show_message(data);
                     },
 
                     error: function(data) {
@@ -3909,7 +3909,7 @@ use App\Models\ResVideo;
                         progress_bar.html('<b> Uploading  ' + 0 + '% </b>');
                         p_parent.addClass('d-none');
                         form.prop('disabled', false);
-                        alert('Only MP4,webm and ogg files are allowed. Please choose one of them');
+                        show_message('Only MP4,webm and ogg files are allowed. Please choose one of them');
 
                     }
                 });
@@ -3930,7 +3930,7 @@ use App\Models\ResVideo;
 
 
         setTimeout(function() {
-            $('.alert').fadeOut()
+            $('.show_message').fadeOut()
         }, 5000);
 
     });

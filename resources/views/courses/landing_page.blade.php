@@ -197,10 +197,9 @@ use Illuminate\Support\Facades\Storage;
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script>
     // $(document).ready(function() {
-        
 
-    // });  
-    
+
+    // })
 </script>
 <script src="{{asset('js/landing_page.js')}}">
 </script>
@@ -211,7 +210,6 @@ use Illuminate\Support\Facades\Storage;
 
         });
 
-        
         setTimeout(() => {
                 $('.alert').fadeOut();
             }, 5000);

@@ -38,7 +38,7 @@ $(document).ready(function() {
     });
 
     $("#course_requirement_btn").click(function() {
-        // alert('working');
+        // show_message('working');
         let course_requirement_err = $("#course_requirement_err");
         let course_requirement_sec = $('#course_requirement_sec input');
         let existed_elem = Boolean(course_requirement_sec.length);
@@ -75,7 +75,7 @@ $(document).ready(function() {
     });
 
     $("#targeting_students_btn").click(function() {
-        // alert('working');
+        // show_message('working');
         let targeting_students_err = $("#targeting_students_err");
         let targeting_students_sec = $('#targeting_students_sec input');
         let existed_elem = Boolean(targeting_students_sec.length);

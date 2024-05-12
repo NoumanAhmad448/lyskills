@@ -93,6 +93,8 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 window.show_popup = function (message) {
   $("#modal-body").html(message);
   $("#pop-message").modal({
@@ -100,6 +102,42 @@ window.show_popup = function (message) {
     focus: true,
     show: true
   });
+};
+
+window.show_message = function () {
+  var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "your message";
+  var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Info";
+  var icon = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+  var button = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "ok";
+  swal({
+    title: title,
+    text: text,
+    icon: icon,
+    button: button
+  });
+};
+
+window.popup_message = function (d) {
+  if (debug) {
+    console.error(d);
+    console.error(_typeof(d));
+  }
+
+  if (Array.isArray(d)) {
+    show_message(text = d[0]);
+  } else if (_typeof(d) === "object") {
+    show_message(text = err_msg);
+  } else if (typeof d === "json") {
+    var d = JSON.parse(d.responseText).errors;
+
+    if (typeof d == "string") {
+      show_message(text = d);
+    } else if (Array.isArray(d) && d.length > 1) {
+      show_message(text = d[0]);
+    }
+  } else if (typeof d === "string") {
+    show_message(text = d);
+  }
 };
 
 /***/ }),

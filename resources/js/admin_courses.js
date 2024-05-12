@@ -30,7 +30,7 @@ $(function(){
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                         ,success: d => {
-                              alert(d);
+                              show_message(d);
                               location.reload();
                         },error: d => {
                             errors = JSON.parse(d.responseText)['errors'];
@@ -38,10 +38,10 @@ $(function(){
                         }
                     });
                 }else{
-                    alert("Please select a course");
+                    show_message("Please select a course");
                 }
             }else{
-                alert('Please choose the status');
+                show_message('Please choose the status');
             }
         });
 

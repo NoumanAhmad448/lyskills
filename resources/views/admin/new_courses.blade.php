@@ -90,7 +90,7 @@
                             dataType: 'json',
                             data: {'course_no': course_no, 'status': status ,'_token': '{{csrf_token()}}'}
                             ,success: d => {
-                                  alert(d);
+                                  show_message(d);
                                   location.reload();
                             },error: d => {
                                 errors = JSON.parse(d.responseText)['errors'];
@@ -98,10 +98,10 @@
                             }
                         });
                     }else{
-                        alert("Please select a course");
+                        show_message("Please select a course");
                     }
                 }else{
-                    alert('Please choose the status');
+                    show_message('Please choose the status');
                 }
             });
 

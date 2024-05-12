@@ -193,6 +193,7 @@ $(function () {
               p_bar.attr('aria-valuenow', percentComplete);
               p_bar.text(percentComplete + '%');
               p_bar.css('width', percentComplete + '%');
+              p_bar.css('display', 'block');
             }
           }, false);
           return xhr;
@@ -214,9 +215,12 @@ $(function () {
           current.attr('disabled', false);
         },
         error: function error(d) {
-          var d = JSON.parse(d.responseText).errors;
+          p_bar.attr('aria-valuenow', 0);
+          p_bar.text(0 + '%');
+          p_bar.css('width', 0 + '%');
           p_con.addClass('d-none');
           current.attr('disabled', false);
+          popup_message(d);
         }
       });
     }
@@ -286,11 +290,16 @@ $(function () {
             error: function error(data) {
               current_file.attr('disabled', false);
               vid_p_con.addClass('d-none');
-              data = JSON.parse(data['responseText']);
-              var course_vid = data['course_vid']['course_vid'];
+              vid_p_bar.attr('aria-valuenow', 0);
+              vid_p_bar.css('width', 0 + '%');
+              vid_p_bar.html('<b> Uploading  ' + 0 + '% </b>');
 
-              if (course_vid) {
-                file_err.text(course_vid[0]);
+              if (typeof data == "json") {
+                data = JSON.parse(data['responseText']);
+                var course_vid = data['course_vid']['course_vid'];
+                popup_message(course_vid);
+              } else {
+                popup_message(err_msg);
               }
 
               setTimeout(function () {

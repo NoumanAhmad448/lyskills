@@ -113,7 +113,7 @@ $(document).ready(function () {
     }
   });
   $("#course_requirement_btn").click(function () {
-    // alert('working');
+    // show_message('working');
     var course_requirement_err = $("#course_requirement_err");
     var course_requirement_sec = $('#course_requirement_sec input');
     var existed_elem = Boolean(course_requirement_sec.length);
@@ -132,7 +132,7 @@ $(document).ready(function () {
     }
   });
   $("#targeting_students_btn").click(function () {
-    // alert('working');
+    // show_message('working');
     var targeting_students_err = $("#targeting_students_err");
     var targeting_students_sec = $('#targeting_students_sec input');
     var existed_elem = Boolean(targeting_students_sec.length);
