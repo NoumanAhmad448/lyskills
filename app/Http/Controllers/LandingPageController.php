@@ -14,6 +14,8 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
+use App\Helpers\helper\php_config;
+use App\Helpers\helper\server_logs;
 
 class LandingPageController extends Controller
 {
@@ -72,11 +74,7 @@ class LandingPageController extends Controller
     public function course_img(CourseImageUpload $request, $course)
     {
         try {
-            if(config("app.debug")){
-                dump("before =>".ini_get("memory_limit"));
-                dump("-----------------------");
-            }
-            ini_set('memory_limit','8096M');
+            php_config();
             $request->validated();
 
             $file = $request->file('course_img');
@@ -120,7 +118,6 @@ class LandingPageController extends Controller
             $course_img->image_ex = $extension;
             $course_img->save();
 
-
             changeCourseStatus($course->id, 5, 'course_img');
 
             return response()->json([
@@ -128,16 +125,7 @@ class LandingPageController extends Controller
                 'img_path' => config("setting.s3Url").$path,
             ]);
         } catch (Exception $e) {
-            if(config("app.debug")){
-                dump($e->getMessage());
-                dump("-----------------------");
-                dump($request->all());
-                dump("-----------------------");
-                dump("After=>".ini_get("memory_limit"));
-                dump("-----------------------");
-            }else{
-                return response()->json(['error', config("setting.err_msg")],500);
-            }
+            return server_logs($e=[true,$e], $request=[true,$request],$config=true);
         }
     }
 
@@ -145,13 +133,7 @@ class LandingPageController extends Controller
     public function course_vid(CourseVideoRequest $request, $course)
     {
         try {
-
-            if(config("app.debug")){
-                dump("before =>".ini_get("memory_limit"));
-                dump("-----------------------");
-            }
-            ini_set('memory_limit','8096M');
-
+            php_config();
             $request->validated();
             $course = Course::findOrFail($course);
             $file = $request->file('course_vid');
@@ -194,10 +176,7 @@ class LandingPageController extends Controller
             }
         } catch (\Throwable $e) {
             if(config("app.debug")){
-                dump($request->all());
-                dump("-----------------------");
-                dump("After=>".ini_get("memory_limit"));
-                dump("-----------------------");
+                server_logs($e=[true,$e], $request=[true,$request],$config=true);
             }else{
                 return response()->json(['course_vid', config("setting.err_msg")],500);
             }

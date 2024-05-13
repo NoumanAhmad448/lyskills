@@ -169,3 +169,39 @@ if (!function_exists('dateFormat')){
        return Carbon::parse($value)->format('Y-m-d');
    }
 }
+if (!function_exists('php_config')){
+
+    function php_config(){
+        if(config("app.debug")){
+            dump("memory_limit =>".ini_get("memory_limit"));
+            dump("-----------------------");
+            dump("upload_max_filesize =>".ini_get("upload_max_filesize"));
+            dump("-----------------------");
+        }
+        ini_set('memory_limit','8096M');
+        ini_set('upload_max_filesize','2000M');
+   }
+}
+if (!function_exists('server_logs')){
+    function server_logs($e=array(),$request=array(), $config=false, $response_status=500,
+            $return_response=true){
+        if(config("app.debug")){
+            if(count($e) > 1 && $e[0]){
+                dump($e[1]->getMessage());
+                dump("-----------------------");
+            }
+            if(count($request) > 1 && $request[0]){
+                dump($request[1]->all());
+                dump("-----------------------");
+            }
+            if($config){
+                dump("memory_limit".ini_get("memory_limit"));
+                dump("-----------------------");
+                dump("upload_max_filesize=>".ini_get("upload_max_filesize"));
+                dump("-----------------------");
+            }
+        }else if($return_response){
+            return response()->json(['error', config("setting.err_msg"),$response_status]);
+        }
+   }
+}

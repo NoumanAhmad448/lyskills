@@ -12,7 +12,8 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use App\Helpers\helper\php_config;
+use App\Helpers\helper\server_logs;
 
 class VideoController extends Controller
 {
@@ -62,6 +63,7 @@ class VideoController extends Controller
     }
     public function upload_video($course_id,$lecture_id,Request $request)
     {
+        php_config();
         if($request->ajax()){
             try{
             $course = $this->validate_user($course_id);
@@ -73,8 +75,6 @@ class VideoController extends Controller
             $file = $request->file('upload_video');
             $f_name = $file->getClientOriginalName();
             $f_mimetype = $file->getClientMimeType();
-
-            ini_set('memory_limit','5096M');
 
             $path1 = $file->store('uploads','public');
 
@@ -117,11 +117,7 @@ class VideoController extends Controller
                 'f_name' => reduceCharIfAv($f_name,30)
             ]);
         }catch(Exception $d){
-            $err_message = "Something went wrong ";
-            $err_message .= config("app.debug") ? $d->getMessage() : "";
-            return response()->json([
-                'err' => $err_message,
-            ]);
+            return server_logs($e=[true,$d], $request=[true,$request],$config=true);
         }
 
         }else{

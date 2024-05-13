@@ -9,6 +9,10 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
+use App\Helpers\helper\php_config;
+use App\Helpers\helper\server_logs;
+use Illuminate\Support\Facades\Auth;
+
 class ProfileController extends Controller
 {
     private $image_path = "storage/profile/";
@@ -18,9 +22,10 @@ class ProfileController extends Controller
         try {
             $title = "profile";
             $user = User::select('name', 'id')->findOrFail(auth()->id());
-
+            $extra = [];
+            $extra['upload_msg'] = Auth::user()->profile_photo_path ? "Update" : "Upload";
             $profile = $user->profile;
-            return view('instructor.profile', compact('title', 'user', 'profile'));
+            return view('instructor.profile', compact('title', 'user', 'profile','extra'));
         } catch (\Throwable $th) {
             return back();
         }
@@ -81,11 +86,7 @@ class ProfileController extends Controller
     {
         try {
             $path = 'storage/img/';
-            if(config("app.debug")){
-                dump("before =>".ini_get("memory_limit"));
-                dump("-----------------------");
-            }
-            ini_set('memory_limit','5096M');
+            php_config();
 
             $folderPath = public_path('storage/img/');
             if(!config("setting.store_img_s3")){
@@ -102,11 +103,8 @@ class ProfileController extends Controller
                 $image_base64 = base64_decode($image_parts[1]);
             }else{
                 if(config("app.debug")){
-                    dump($request->all());
-                    dump("-----------------------");
-                    dump("After =>".ini_get("memory_limit"));
-                    dump("-----------------------");
-                    dd($image_parts);
+                    server_logs($request=[true,$request],$config=true);
+                    dump($image_parts);
                 }else{
                     return response()->json(['error', config("setting.err_msg")],500);
                 }
@@ -127,18 +125,9 @@ class ProfileController extends Controller
             $user->profile_photo_path = $path;
             $user->save();
 
-            return response()->json(['success' => 'Image Uploaded Successfully']);
+            return response()->json(['success' => 'Image Uploaded Successfully'],200);
         } catch (Exception $e) {
-            if(config("app.debug")){
-                dump("After =>".ini_get("memory_limit"));
-                dump("-----------------------");
-                dump($e->getMessage());
-                dump("-----------------------");
-                dump($request->all());
-                dd("-----------------------");
-            }else{
-                return response()->with('error', config("setting.err_msg"));
-            }
+            return server_logs($e=[true,$e], $request=[true,$request],$config=true);
         }
     }
 }
