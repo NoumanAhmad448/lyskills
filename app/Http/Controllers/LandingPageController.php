@@ -14,9 +14,6 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
-use App\Helpers\helper\php_config;
-use App\Helpers\helper\server_logs;
-
 class LandingPageController extends Controller
 {
     public function landing_page(Course $course)

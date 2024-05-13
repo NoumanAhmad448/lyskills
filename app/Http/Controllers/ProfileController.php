@@ -9,8 +9,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
-use App\Helpers\helper\php_config;
-use App\Helpers\helper\server_logs;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -103,7 +101,7 @@ class ProfileController extends Controller
                 $image_base64 = base64_decode($image_parts[1]);
             }else{
                 if(config("app.debug")){
-                    server_logs($request=[true,$request],$config=true);
+                    server_logs($e=[false,''],$request=[true,$request],$config=true);
                     dump($image_parts);
                 }else{
                     return response()->json(['error', config("setting.err_msg")],500);
