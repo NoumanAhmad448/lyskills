@@ -49,6 +49,9 @@ $("#crop").click(function () {
         url = URL.createObjectURL(blob);
         var reader = new FileReader();
         reader.readAsDataURL(blob);
+        // show loader
+        $('.loading-section').addClass('loader').fadeIn();
+        $('#loading').fadeIn()
         reader.onloadend = function () {
             var base64data = reader.result;
             $.ajax({
@@ -60,11 +63,17 @@ $("#crop").click(function () {
                 },
                 data: { 'image': base64data },
                 success: function (data) {
+                    // hide loader
+                    $('#loading', '.loading-section').fadeOut();
+                    $('.loading-section').removeClass('loader').fadeOut();
                     $modal.modal('hide');
                     show_message(data.success);
                     location.reload();
                 },
                 error: function (d) {
+                    // hide loader
+                    $('#loading', '.loading-section').fadeOut();
+                    $('.loading-section').removeClass('loader').fadeOut();
                     $modal.modal('hide');
                     popup_message(d)
                 }

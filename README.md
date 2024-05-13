@@ -1,11 +1,18 @@
 ## Development
 1. Turn on xampp
-2. ```php artisan serve --port=8081```
-3. ```npm run watch```
+2. PHP server
+```
+php artisan serve --port=8080
+```
+3. Turn on npm server
+```
+npm run watch
+```
 
 ## Development Guildlines
 1. Add all global setting constants in ```custom_lib .blade.php```
 2. custom javascript functions in ```common_functions.js```
+3. show loader on user request ```profile.js``` and search for ```hide loader``` & ```show loader```
 
 # For Local developement
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
@@ -37,10 +44,11 @@ mysql -h 203.161.43.113 -P 3306 -u usmansaleem234_lyskills_root5 -p
 ```
 Laravel cache clear
 ```
+cd /home/usmansaleem234/public_html &&
 php artisan config:clear
 ```
 ```
-
+cd /home/usmansaleem234/public_html &&
 php artisan config:cache
 ```
 

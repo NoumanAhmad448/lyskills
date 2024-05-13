@@ -82,14 +82,24 @@ class ProfileController extends Controller
         try {
             $path = 'storage/img/';
             $folderPath = public_path('storage/img/');
-            if (!file_exists($folderPath)) {
-                mkdir($folderPath);
+            if(!config("setting.store_img_s3")){
+                if (!file_exists($folderPath)) {
+                    mkdir($folderPath);
+                }
             }
 
             $image_parts = explode(";base64,", $request->image);
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
-            $image_base64 = base64_decode($image_parts[1]);
+            if(count($image_parts) > 1){
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+            }else{
+                if(config("app.debug")){
+                    dd($image_parts);
+                }else{
+                    return response()->with('error', config("setting.err_msg"));
+                }
+            }
 
             $imageName = uniqid() . '.png';
 
@@ -106,12 +116,12 @@ class ProfileController extends Controller
             $user->profile_photo_path = $path;
             $user->save();
 
-            return response()->json(['success' => 'Crop Image Uploaded Successfully']);
+            return response()->json(['success' => 'Image Uploaded Successfully']);
         } catch (Exception $e) {
             if(config("app.debug")){
                 dd($e->getMessage());
             }else{
-                return back()->with('error', config("setting.err_msg"));
+                return response()->with('error', config("setting.err_msg"));
         }
         }
     }

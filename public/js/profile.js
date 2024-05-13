@@ -149,7 +149,10 @@ $("#crop").click(function () {
   canvas.toBlob(function (blob) {
     url = URL.createObjectURL(blob);
     var reader = new FileReader();
-    reader.readAsDataURL(blob);
+    reader.readAsDataURL(blob); // show loader
+
+    $('.loading-section').addClass('loader').fadeIn();
+    $('#loading').fadeIn();
 
     reader.onloadend = function () {
       var base64data = reader.result;
@@ -164,11 +167,17 @@ $("#crop").click(function () {
           'image': base64data
         },
         success: function success(data) {
+          // hide loader
+          $('#loading', '.loading-section').fadeOut();
+          $('.loading-section').removeClass('loader').fadeOut();
           $modal.modal('hide');
           show_message(data.success);
           location.reload();
         },
         error: function error(d) {
+          // hide loader
+          $('#loading', '.loading-section').fadeOut();
+          $('.loading-section').removeClass('loader').fadeOut();
           $modal.modal('hide');
           popup_message(d);
         }
