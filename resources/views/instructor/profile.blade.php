@@ -111,7 +111,8 @@
             </div>
             <div class="d-flex justify-content-center">
                     <input type="file" name="image" id="customFile" class="image custom-file-input d-none">
-                    <label class="btn btn-website btn-lg" for="customFile"><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload Profile </label>
+                    <label class="btn btn-website btn-lg" for="customFile">
+                    <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{$extra['upload_msg'] ?? ''}} Profile </label>
             </div>
             <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
