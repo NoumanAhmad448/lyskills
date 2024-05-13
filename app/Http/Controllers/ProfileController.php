@@ -81,6 +81,12 @@ class ProfileController extends Controller
     {
         try {
             $path = 'storage/img/';
+            if(config("app.debug")){
+                dump("before =>".ini_get("memory_limit"));
+                dump("-----------------------");
+            }
+            ini_set('memory_limit','5096M');
+
             $folderPath = public_path('storage/img/');
             if(!config("setting.store_img_s3")){
                 if (!file_exists($folderPath)) {
@@ -100,7 +106,7 @@ class ProfileController extends Controller
                     dump("-----------------------");
                     dd($image_parts);
                 }else{
-                    return response()->with('error', config("setting.err_msg"));
+                    return response()->json(['error', config("setting.err_msg")],500);
                 }
             }
 
@@ -122,10 +128,13 @@ class ProfileController extends Controller
             return response()->json(['success' => 'Image Uploaded Successfully']);
         } catch (Exception $e) {
             if(config("app.debug")){
-                dd($e->getMessage());
+                dump($e->getMessage());
+                dump("-----------------------");
+                dump($request->all());
+                dd("-----------------------");
             }else{
                 return response()->with('error', config("setting.err_msg"));
-        }
+            }
         }
     }
 }
