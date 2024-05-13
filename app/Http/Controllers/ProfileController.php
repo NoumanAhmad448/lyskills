@@ -104,6 +104,8 @@ class ProfileController extends Controller
                 if(config("app.debug")){
                     dump($request->all());
                     dump("-----------------------");
+                    dump("After =>".ini_get("memory_limit"));
+                    dump("-----------------------");
                     dd($image_parts);
                 }else{
                     return response()->json(['error', config("setting.err_msg")],500);
@@ -128,6 +130,8 @@ class ProfileController extends Controller
             return response()->json(['success' => 'Image Uploaded Successfully']);
         } catch (Exception $e) {
             if(config("app.debug")){
+                dump("After =>".ini_get("memory_limit"));
+                dump("-----------------------");
                 dump($e->getMessage());
                 dump("-----------------------");
                 dump($request->all());
