@@ -89,12 +89,15 @@ class ProfileController extends Controller
             }
 
             $image_parts = explode(";base64,", $request->image);
+
             if(count($image_parts) > 1){
                 $image_type_aux = explode("image/", $image_parts[0]);
                 $image_type = $image_type_aux[1];
                 $image_base64 = base64_decode($image_parts[1]);
             }else{
                 if(config("app.debug")){
+                    dump($request->all());
+                    dump("-----------------------");
                     dd($image_parts);
                 }else{
                     return response()->with('error', config("setting.err_msg"));
