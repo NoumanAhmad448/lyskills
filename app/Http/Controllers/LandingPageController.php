@@ -72,9 +72,13 @@ class LandingPageController extends Controller
     public function course_img(CourseImageUpload $request, $course)
     {
         try {
+            if(config("app.debug")){
+                dump("before =>".ini_get("memory_limit"));
+                dump("-----------------------");
+            }
+            ini_set('memory_limit','8096M');
             $request->validated();
 
-            ini_set('memory_limit','9096M');
             $file = $request->file('course_img');
             $manager = new ImageManager();
 
@@ -125,11 +129,14 @@ class LandingPageController extends Controller
             ]);
         } catch (Exception $e) {
             if(config("app.debug")){
-                dd($e->getMessage());
+                dump($e->getMessage());
+                dump("-----------------------");
+                dump($request->all());
+                dump("-----------------------");
+                dump("After=>".ini_get("memory_limit"));
+                dump("-----------------------");
             }else{
-                return response()->json([
-                    'error' => config("setting.err_msg")
-                ]);
+                return response()->json(['error', config("setting.err_msg")],500);
             }
         }
     }
@@ -138,11 +145,16 @@ class LandingPageController extends Controller
     public function course_vid(CourseVideoRequest $request, $course)
     {
         try {
+
+            if(config("app.debug")){
+                dump("before =>".ini_get("memory_limit"));
+                dump("-----------------------");
+            }
+            ini_set('memory_limit','8096M');
+
             $request->validated();
             $course = Course::findOrFail($course);
             $file = $request->file('course_vid');
-
-            ini_set('memory_limit','8096M');
 
             $file_path = 'uploads';
             $file_path = Storage::disk('s3')->put($file_path, $file);
@@ -181,7 +193,14 @@ class LandingPageController extends Controller
                 ]);
             }
         } catch (\Throwable $e) {
-            return response()->json(['course_vid', ['Your video was not uploaded due to some issue. Please try again '.$e->getMessage()]],500);
+            if(config("app.debug")){
+                dump($request->all());
+                dump("-----------------------");
+                dump("After=>".ini_get("memory_limit"));
+                dump("-----------------------");
+            }else{
+                return response()->json(['course_vid', config("setting.err_msg")],500);
+            }
         }
     }
 }
