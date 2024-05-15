@@ -15,7 +15,10 @@ npm run watch
 3. show loader on user request ```profile.js``` and search for ```hide loader``` & ```show loader```
 4. server logs ```server_logs``` function in ```helper.php```
 5. server configuration ```php_config``` function in ```helper.php```
-
+6. whm password
+```
+JE8op77NtzY34X9cAx
+```
 # For Local developement
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
 2. download node 16.18.0
