@@ -28,9 +28,11 @@
                 </thead>
                 <tbody>
                 @foreach ($of_ens as $post)
+                @php $name = $post->user->name; $email = $post->user->email; $course_title = $post->course && $post->course->course_title ? $post->course->course_title: '';
+                       $user = $post->user && $post->user->id ? $post->user->id : '' ;
+                       $course = $post->course && $post->course->id ? $post->course->id : ''; @endphp
+                    @if($course_title)
                     <tr>
-                       @php $name = $post->user->name; $email = $post->user->email; $course_title = $post->course && $post->course->course_title ? $post->course->course_title: '';
-                       $user = $post->user->id; $course = $post->course->id; @endphp
                         <td>
                             <form action="{{route('n_en_p',compact('user','course'))}}" method="post">
                                 @csrf
@@ -50,6 +52,7 @@
                             <a href="{{route('user-course', ['slug' => $post->course->slug]) }}"> Link </a>
                         </td>
                     </tr>
+                    @endif
                 @endforeach
                 </tbody>
             </table>
