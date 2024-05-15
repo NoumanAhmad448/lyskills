@@ -5,10 +5,9 @@
 
 
 @section('content')
-    <h1> 
+    <h1>
         New Offline Enrollment Requests
     </h1>
-    
 
      @include('session_msg')
 
@@ -18,36 +17,36 @@
                 <thead>
                 <tr>
                     <th scope="col">Mark</th>
-                   
+
                     <th scope="col"> Name </th>
                     <th scope="col"> Email </th>
                     <th scope="col"> Course </th>
-                    <th scope="col"> Date </th>                    
-                    <th scope="col"> Link </th>                    
-                    
+                    <th scope="col"> Date </th>
+                    <th scope="col"> Link </th>
+
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($of_ens as $post)
                     <tr>
-                       @php $name = $post->user->name; $email = $post->user->email; $course_title = $post->course->course_title; 
+                       @php $name = $post->user->name; $email = $post->user->email; $course_title = $post->course && $post->course->course_title ? $post->course->course_title: '';
                        $user = $post->user->id; $course = $post->course->id; @endphp
                         <td>
                             <form action="{{route('n_en_p',compact('user','course'))}}" method="post">
                                 @csrf
-                                <input type="checkbox" name="status" class="change_status" /> 
+                                <input type="checkbox" name="status" class="change_status" />
                             </form>
                         </td>
-                        
+
                         <td> {{ $name }}</td>
                         <td> {{ $email }} </td>
-                        
+
                         <td> {{ $course_title }}</td>
-                        <td> 
+                        <td>
                             {{$post->created_at}}
                         </td>
-                       
-                        <td> 
+
+                        <td>
                             <a href="{{route('user-course', ['slug' => $post->course->slug]) }}"> Link </a>
                         </td>
                     </tr>
@@ -61,13 +60,12 @@
                 <div > no new enrollment found </div>
             </div>
     @endif
-     
 @endsection
 
 
 @section('page-js')
-    <script>  
-        $(function(){  
+    <script>
+        $(function(){
             $('#n_en').addClass('bg-website text-white').removeClass('text-dark font-weight-bold');
             setTimeout(() => {
                 $('.alert').fadeOut();
@@ -77,7 +75,7 @@
                 if(confirm('Are you sure to change the status of your post?')){
                     $(this).parents('form').first().submit();
                 }
-            });            
+            });
         });
     </script>
 @endsection
