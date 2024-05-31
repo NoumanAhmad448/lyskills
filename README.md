@@ -17,12 +17,21 @@ npm run watch
 5. server configuration ```php_config``` function in ```helper.php```
 6. whm password
 ```
-JE8op77NtzY34X9cAx
+4mEK10gw5n9d5BtEWN
 ```
-# For Local developement
+7. DB password
+```
+BurraqLyskillsEngineering65$
+```
+8. Checkout storage on server
+```
+df -hi
+```
+
+## Local Setup (Development)
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
 2. download node 16.18.0
-2. Go to .env file and change the DB connectio
+2. Go to .env file and change the DB connection
 3. Create a database <b>usmansaleem234_lyskills_new</b>
 4. You need to follow of either mentioned path
     1. One
