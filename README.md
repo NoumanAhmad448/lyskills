@@ -17,12 +17,21 @@ npm run watch
 5. server configuration ```php_config``` function in ```helper.php```
 6. whm password
 ```
-JE8op77NtzY34X9cAx
+4mEK10gw5n9d5BtEWN
 ```
-# For Local developement
+7. DB password
+```
+BurraqLyskillsEngineering65$
+```
+8. Checkout storage on server
+```
+df -hi
+```
+
+## Local Setup (Development)
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
 2. download node 16.18.0
-2. Go to .env file and change the DB connectio
+2. Go to .env file and change the DB connection
 3. Create a database <b>usmansaleem234_lyskills_new</b>
 4. You need to follow of either mentioned path
     1. One
@@ -39,12 +48,117 @@ JE8op77NtzY34X9cAx
 7. php artisan serve --port=8081
 
 ## Troubleshooting
+.env file
+```
+nano /home/usmansaleem234/public_html/.env
+```
+laravel logs
+```
+cd /home/usmansaleem234/public_html/storage/logs
+```
+mysql configuration file finder
+```
+which mysqld
+```
+```
+/usr/sbin/mysqld --verbose --help | grep -A 1 "Default options"
+```
+
+mysql config
+```
+nano /etc/my.cnf
+```
+find mysql log file path
+```
+my_print_defaults --mysqld | grep log-error
+```
+
+or
+```
+mariadbd --print-defaults
+```
+[more](https://mariadb.com/kb/en/error-log/#finding-the-error-log)
+
+```
+nano /var/lib/mysql/server1.nctest.net.err
+```
+OR detailed mysql logs by default PS: to find find datadir & hostname. Full path will be datadir/hostname.err
+```
+nano /var/lib/mysql/server1.lyskills.com.err
+```
+General logs
+```
+nano /var/lib/mysql/err.log
+```
+
+delete multiple lines in nano
+```
+use CTRL+Shift+6 to mark the beginning of your block
+move cursor with arrow keys to end of your block, the text will be highlighted.
+use CTRL+K to cut/delete block.
+```
+
+hostname finder
+```
+hostname
+```
+value
+```
+server1.lyskills.com
+```
+datadir finder
+```
+mysql -uusmansaleem234_lyskills_root5 -p -e 'SHOW VARIABLES WHERE Variable_Name LIKE "%dir"'
+```
+OR login to mysql and run the following
+```
+select @@datadir;
+```
+OR
+```
+mysqld --verbose --help | grep ^datadir
+```
+
 mysql connection
 ```
 mysql -h 127.0.0.1 -P 3306 -u usmansaleem234_lyskills_root5 -p
 ```
+password
+```
+BurraqLyskillsEngineering65$
 ```
 
+mysql configuration
+```
+systemctl status mysql
+```
+or
+
+```
+journalctl -xe
+```
+```
+systemctl start mysql
+```
+
+```
+nano /etc/my.cnf
+```
+change group ownership/permission
+```
+chgrp user_name file/folder
+```
+change user ownership/permission
+```
+chown user_name file/folder
+```
+change permission
+```
+chmod 666/777/+rwx/-rwx/+rw/-rw/ file/folder
+```
+
+
+```
 mysql -h 203.161.43.113 -P 3306 -u usmansaleem234_lyskills_root5 -p
 ```
 Laravel cache clear
@@ -58,7 +172,7 @@ php artisan config:cache
 ```
 
 
-how to change WHM password
+### How to change WHM password
 1. Go VPS by logging to namecheap > dashboard > Go to domain > open VPS
 2. Root/Admin password
 3. change (wait for 10-15 minutes)
@@ -66,14 +180,14 @@ how to change WHM password
 
 
 
-change s3 bucket
+### Change s3 bucket
 1. https://laravel-news.com/using-aws-s3-for-laravel-storage
 POV: To find the URL, upload something in bucket and open it in new tab
 
 How to fix 'The file failed to upload.' error using any validation for image upload - Laravel 5.7 
 1. Login to WHM > search ``` PHP INI editor``` > Choose php81 > update the setting according to cpanel ``` INI editor```
 
-apache server
+### apache server
 1. apache status
 ```
  systemctl status httpd
@@ -81,6 +195,9 @@ apache server
 apache configuration file validation command
 ```
 apachectl configtest
+```
+```
+nano conf/httpd.conf
 ```
 
 apache configration command
@@ -96,4 +213,22 @@ php --ini
 ```
 nano /opt/cpanel/ea-php80/root/etc/php.ini
 
+```
+
+
+
+## Fresh Laravel Project
+```Back Up on the server```
+1. Fetch SSH connections
+2. Verify PHP version, composer version && node JS
+3. Verify apache/nginx version
+4. Verify mysql connection
+5. Create FTP access
+6. Local setup laravel
+7. Change .htaccess/php.ini/user.ini configuration in the main folder of laravel
+8. Setup PHP configuration from PHP INI editor on the server
+9. Setup Git & Github repo
+10. Update ```script``` in
+```
+ftp_live_deployment.lyskills.yml
 ```

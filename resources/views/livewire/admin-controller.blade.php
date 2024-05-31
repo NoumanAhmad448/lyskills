@@ -17,8 +17,8 @@
                     <th scope="col">#</th>
                     <th scope="col">name</th>
                     <th scope="col">email</th>
-                    @if(isSuperAdmin())('super_admin') <th scope="col">edit</th> @endif
-                    @if(isSuperAdmin())('super_admin') <th scope="col">delete</th> @endif
+                    @if(isSuperAdmin()) <th scope="col">edit</th> @endif
+                    @if(isSuperAdmin()) <th scope="col">delete</th> @endif
                 </tr>
             </thead>
             <tbody>
