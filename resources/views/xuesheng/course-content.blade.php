@@ -101,7 +101,7 @@
                 all of them mentioned above in @page-css
              -->
             <media-player
-                src="@if(file_exists(public_path('storage/'.$media->lec_name))){{asset('storage/'.$media->lec_name)}}@else{{'https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'}}{{$media->lec_name}}@endif"
+                src="@if(file_exists(public_path('storage/'.$media->lec_name))){{asset('storage/'.$media->lec_name)}}@else{{config('setting.s3Url')}}{{$media->lec_name}}@endif"
                 aspect-ratio="16/9"
                 type="{{$media->f_mimetype ?? '' }}"
                 @if(empty($media->is_download))
