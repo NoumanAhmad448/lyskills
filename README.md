@@ -56,6 +56,18 @@ laravel logs
 ```
 cd /home/usmansaleem234/public_html/storage/logs
 ```
+
+create symbolink/link/shortcut in differnt folder
+*PS: * bash is original path, /bin/sh is target path
+```
+sudo ln -sf bash /bin/sh
+```
+
+check if mysql server is running or not
+```
+ss -ae | grep mysql
+```
+
 mysql configuration file finder
 ```
 which mysqld
@@ -129,6 +141,9 @@ BurraqLyskillsEngineering65$
 ```
 
 mysql configuration
+```
+systemctl daemon-reload && systemctl restart mysql
+```
 ```
 systemctl status mysql
 ```
@@ -214,6 +229,10 @@ php --ini
 nano /opt/cpanel/ea-php80/root/etc/php.ini
 
 ```
+namecheap
+Refer [namecheap](./namecheap.issues.md)
+<br/>
+issues [lyskills issues](./issues.server.md)
 
 
 
