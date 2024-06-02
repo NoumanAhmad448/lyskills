@@ -27,6 +27,7 @@ BurraqLyskillsEngineering65$
 ```
 df -hi
 ```
+9. cloudflare setup for extra security
 
 ## Local Setup (Development)
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
