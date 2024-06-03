@@ -178,8 +178,10 @@ if (!function_exists('php_config')){
             dump("upload_max_filesize =>".ini_get("upload_max_filesize"));
             dump("-----------------------");
         }
-        ini_set('memory_limit','8096M');
-        ini_set('upload_max_filesize','2000M');
+
+        ini_set('upload_max_filesize',config("setting.memory_limit"));
+        ini_set('upload_max_filesize',config("setting.upload_max_filesize"));
+        set_time_limit(config("setting.set_time_limit"));
    }
 }
 if (!function_exists('server_logs')){
