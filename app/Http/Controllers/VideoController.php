@@ -86,7 +86,10 @@ class VideoController extends Controller
             $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
 
             $duration = Carbon::parse($time_mili)->toTimeString();
-            // unlink(public_path('storage/'.$path1));
+            if(file_exists(public_path('storage/'.$path1))){
+                // @ supress the error
+                @unlink(public_path('storage/'.$path1));
+            }
             $media = new Media;
             $media->lecture_id = $lecture_id;
             $media->lec_name = $path;

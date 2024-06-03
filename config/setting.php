@@ -46,6 +46,9 @@ $site_settings = [
         "admin_email" => "anime@bypass.com",
         "coupon_form" => true,
         "store_img_s3" => true,
+        "set_time_limit" => 60000,
+        "upload_max_filesize" => '2000M',
+        "memory_limit" => '8096M',
 ];
 
 return $site_settings;
