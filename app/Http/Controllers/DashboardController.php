@@ -334,9 +334,9 @@ class DashboardController extends Controller
             $course_img = $course->course_image;
             if ($course_img) {
                 $img = $course_img->img_path;
-                if (file_exists(asset('storage/'.$img))) {
-                    unlink(public_path('storage/'. $img));
-                }
+                // if (file_exists(asset('storage/'.$img))) {
+                //     unlink(public_path('storage/'. $img));
+                // }
                 $course_img->delete();
             }
 
@@ -344,8 +344,8 @@ class DashboardController extends Controller
             $course_vid = $course->course_vid;
             if ($course_vid) {
                 $vid = $course_vid->vid_path;
-                if (file_exists(public_path('storage/').$vid)) {
-                }
+                // if (file_exists(public_path('storage/').$vid)) {
+                // }
                 $course_vid->delete();
             }
 
@@ -387,7 +387,11 @@ class DashboardController extends Controller
 
             $this->delCourseHistory($course,$is_admin);
             $course->delete();
-            return redirect()->route('dashboard')->with('status', 'Course has been deleted successfully!');
+            if($is_admin){
+                return redirect()->route('a_courses')->with('status', 'Course has been deleted successfully!');
+            }else{
+                return redirect()->route('dashboard')->with('status', 'Course has been deleted successfully!');
+            }
         } catch (\Throwable $e) {
             return back()->with('error', 'this action cannot be done now '.$e->getMessage());
         }
