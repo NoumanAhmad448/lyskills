@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 
 class CourseController extends Controller
@@ -849,7 +849,7 @@ class CourseController extends Controller
         $course_name = "";
         $d = ['course' => $course_name, 'cert_no' => $cert_no, 'date' => $date, 'name' => auth()->user()->name];
         return view('course.certificate', $d);
-        return Pdf::loadView()
+        return PDF::loadView()
                 ->setPaper('a4', 'landscape')->setWarnings(false)
                 ->download('certificate.pdf');
     }
