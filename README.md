@@ -33,21 +33,43 @@ df -hi
 ## Local Setup (Development)
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
 2. download node 16.18.0
-2. Go to .env file and change the DB connection
-3. Create a database <b>usmansaleem234_lyskills_new</b>
-4. You need to follow of either mentioned path
+2. Copy
+```
+.env.dev
+``` 
+to
+```
+.env
+```
+file and change the DB connection
+1. Create a database <b>usmansaleem234_lyskills_new</b>
+2. You need to follow of either mentioned path
     1. One
         1. run
            1. usmansaleem234_lyskills_new.sql
            2.  <b>user_ann_models.sql</b>
         file locally. These files are avaiable in the source code, path /
-        3. Add primary key manually in every table or create a alter query and try changing table name and primary key column
+        2. Add primary key manually in every table or create a alter query and try changing table name and primary key column
     2. Second
         1. php artisan migrate
         2. Get dump from someone else and upload
-5. composer install
-6. npm install
-7. php artisan serve --port=8081
+3. Visit ```storage/framework``` folder and create
+```
+views
+```
+folder
+4. Run
+```
+composer install
+```
+5. Run
+```
+npm install
+```
+6. Finally😍😍😍 Run
+```
+php artisan serve --port=8081
+```
 
 ## Troubleshooting
 .env file
@@ -237,6 +259,28 @@ Refer [namecheap](./namecheap.issues.md)
 issues [lyskills issues](./issues.server.md)
 
 
+
+
+<!----------------------------------------------------------------------------->
+## Change PHP version in xampp
+1. download ```thread safe``` php version from ```php.net```
+2. make sure php folder has following files
+```
+C:/xampp/php/php8apache2_4.dll
+```
+<br/>
+```
+C:/xampp/php/php8ts.dll
+```
+<br/>
+3. replace ```php.ini-development``` to ```php.ini```
+4. Open ```php.ini``` file and enable all possible extensions using previous ```php.ini``` files
+5. Replace following line ```curl.cainfo="C:\xampp\apache\bin\curl-ca-bundle.crt"```
+6. Add ```extension_dir = "ext"```
+7. restart apache server and make sure all settings are updated in ```http://localhost/dashboard/phpinfo.php```
+8. Update php version in ```composer.json```
+9. Run ```composer update```
+10. restart ```artisan serve```
 
 ## Fresh Laravel Project
 ```Back Up on the server```
