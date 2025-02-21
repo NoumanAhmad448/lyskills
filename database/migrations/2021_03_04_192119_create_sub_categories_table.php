@@ -13,13 +13,15 @@ class CreateSubCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('categories_id')->nullable();
-            $table->string('name',255)->nullable();
-            $table->string('value')->nullable();        
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('sub_categories')) {
+            Schema::create('sub_categories', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('categories_id')->nullable();
+                $table->string('name',255)->nullable();
+                $table->string('value')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

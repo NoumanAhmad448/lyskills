@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Categories;
+use Database\Seeders\CategoriesSeeder;
 
 class DatabaseTest extends TestCase
 {
@@ -50,5 +51,23 @@ class DatabaseTest extends TestCase
     {
         $businessCategory = Categories::factory()->businessCategory()->create();
         $this->assertDatabaseHas('categories', ['id' => $businessCategory->id, 'name' => 'Business', 'value' => 'business']);
+    }
+
+    /** @test */
+    public function categories_are_seeded_correctly()
+    {
+        // Run the seeder
+        $this->seed(CategoriesSeeder::class);
+
+        // Assert the categories exist
+        $this->assertDatabaseHas('categories', [
+            'name' => 'Information Technology',
+            'value' => 'it'
+        ]);
+
+        $this->assertDatabaseHas('categories', [
+            'name' => 'Business',
+            'value' => 'business'
+        ]);
     }
 } 

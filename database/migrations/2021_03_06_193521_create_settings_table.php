@@ -13,8 +13,9 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->increments('id');
+        if (!Schema::hasTable('settings')) {
+            Schema::create('settings', function (Blueprint $table) {
+                $table->increments('id');
             $table->boolean('isDisscussion')->nullable();
             $table->boolean('payment_share_enable')->nullable()->default(0);
             $table->string('admin_share')->nullable();
@@ -32,12 +33,13 @@ class CreateSettingsTable extends Migration
             $table->string('paypal_email')->nullable();
             $table->string('p_live_key')->nullable();
             $table->string('p_publish_key')->nullable();
-            $table->boolean('bank_is_enable')->nullable();            
-            $table->boolean('isBlog')->nullable();            
-            $table->boolean('isFaq')->nullable();            
+            $table->boolean('bank_is_enable')->nullable();
+            $table->boolean('isBlog')->nullable();
+            $table->boolean('isFaq')->nullable();
             $table->timestamps();
         });
     }
+}
 
     /**
      * Reverse the migrations.
