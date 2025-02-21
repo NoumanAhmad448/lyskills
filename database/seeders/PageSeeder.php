@@ -11,4 +11,4 @@ class PageSeeder extends Seeder
     {
         Page::factory()->count(3)->create();
     }
-} 
+}

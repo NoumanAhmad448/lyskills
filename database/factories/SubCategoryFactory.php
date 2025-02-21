@@ -17,7 +17,7 @@ class SubCategoryFactory extends Factory
         return [
             'name' => ucwords($name),
             'value' => Str::slug($name),
-            'category_id' => Categories::factory(),
+            'categories_id' => Categories::factory(),
             'description' => $this->faker->sentence(),
             'status' => 'active',
             'created_at' => now(),

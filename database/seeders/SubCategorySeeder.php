@@ -16,7 +16,7 @@ class SubCategorySeeder extends Seeder
     public function run()
     {
         // Get IT category or create it if doesn't exist
-        $itCategory = Categories::where('value', 'it')->first() ?? 
+        $itCategory = Categories::where('value', 'it')->first() ??
             Categories::factory()->create([
                 'name' => 'Information Technology',
                 'value' => 'it'
@@ -27,17 +27,17 @@ class SubCategorySeeder extends Seeder
             [
                 'name' => 'Frontend Development',
                 'value' => 'frontend-development',
-                'category_id' => $itCategory->id
+                'categories_id' => $itCategory->id
             ],
             [
                 'name' => 'Backend Development',
                 'value' => 'backend-development',
-                'category_id' => $itCategory->id
+                'categories_id' => $itCategory->id
             ],
             [
                 'name' => 'Full Stack Development',
                 'value' => 'full-stack-development',
-                'category_id' => $itCategory->id
+                'categories_id' => $itCategory->id
             ]
         ];
 
@@ -53,7 +53,7 @@ class SubCategorySeeder extends Seeder
             SubCategory::factory()
                 ->count(2)
                 ->create([
-                    'category_id' => $category->id
+                    'categories_id' => $category->id
                 ]);
         }
 
@@ -61,7 +61,7 @@ class SubCategorySeeder extends Seeder
         SubCategory::factory()
             ->inactive()
             ->create([
-                'category_id' => $itCategory->id
+                'categories_id' => $itCategory->id
             ]);
     }
 } 

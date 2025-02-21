@@ -18,7 +18,7 @@ class FaqFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title),
             'message' => $this->faker->paragraphs(3, true),
-            'user_id' => User::factory(),
+            'email' => User::factory()->create()->email,
             'status' => 'published',
             'upload_img' => 'faqs/default.jpg',
             'f_name' => 'default.jpg',
@@ -27,4 +27,4 @@ class FaqFactory extends Factory
             'updated_at' => now()
         ];
     }
-} 
+}

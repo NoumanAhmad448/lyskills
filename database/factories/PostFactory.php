@@ -13,12 +13,14 @@ class PostFactory extends Factory
 
     public function definition()
     {
+        $user = User::factory()->create();
         $title = $this->faker->sentence();
+
         return [
             'title' => $title,
             'slug' => Str::slug($title),
             'message' => $this->faker->paragraphs(3, true),
-            'user_id' => User::factory(),
+            'email' => $user->email,
             'status' => 'published',
             'upload_img' => 'posts/default.jpg',
             'f_name' => 'default.jpg',
