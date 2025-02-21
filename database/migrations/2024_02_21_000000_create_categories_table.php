@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('media',function($table){
-            $table->boolean('is_free')->nullable();
-        });
+        if (Schema::hasTable('categories')) {
+            Schema::table('categories', function (Blueprint $table) {
+                $table->text('description')->nullable();
+                $table->enum('status', ['active', 'inactive'])->default('active');
+            });
+        }
     }
 
     /**
@@ -25,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('media', function (Blueprint $table) {
-            $table->dropColumn(['is_free']);
-        });
+        Schema::dropIfExists('categories');
     }
-};
+}; 

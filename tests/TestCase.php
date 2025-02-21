@@ -13,10 +13,13 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Optional: You can add additional checks
         if (env('DB_DATABASE') !== 'usmansaleem234_lyskills_new_testing') {
             throw new \Exception('Not using testing database! Current DB: ' . env('DB_DATABASE'));
         }
+
+        // Seed the database for testing
+        $this->seed();
     }
 }

@@ -13,18 +13,19 @@ class CreateOfflinePaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('offline_payments', function (Blueprint $table) {
-            $table->increments('id');
-            
+        if (!Schema::hasTable('offline_payments')) {
+            Schema::create('offline_payments', function (Blueprint $table) {
+                $table->increments('id');
+
             $table->boolean('o_is_enable')->nullable();
             $table->string('o_mobile_number')->nullable();
             $table->string('o_note')->nullable();
-            
+
             $table->boolean('e_is_enable')->nullable();
             $table->string('e_mobile_number')->nullable();
             $table->string('e_account_name')->nullable();
             $table->string('e_note')->nullable();
-            
+
             $table->boolean('j_is_enable')->nullable();
             $table->string('j_mobile_number')->nullable();
             $table->string('j_account_name')->nullable();
@@ -39,9 +40,10 @@ class CreateOfflinePaymentsTable extends Migration
             $table->string('b_branch_address')->nullable();
             $table->string('b_iban')->nullable();
             $table->string('b_note')->nullable();
-            
-            $table->timestamps();
-        });
+
+                $table->timestamps();
+            });
+        }
     }
 
     /**
