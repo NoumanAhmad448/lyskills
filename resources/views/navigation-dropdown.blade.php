@@ -33,7 +33,7 @@
                                 
                                 <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none
                                      focus:border-gray-300 transition duration-150 ease-in-out">
-                                    <img class="h-12 w-12 rounded-full object-cover" src="@if(Auth::user()->profile_photo_path) {{ asset(Auth::user()->profile_photo_path) }} @else
+                                    <img class="h-12 w-12 rounded-full object-cover" src="@if(auth() && Auth::user() && Auth::user()->profile_photo_path) {{ asset(Auth::user()->profile_photo_path) }} @else
                                     {{ Auth::user()->profile_photo_url }} @endif" alt="{{ Auth::user()->name }}" />
                                 </button>
 

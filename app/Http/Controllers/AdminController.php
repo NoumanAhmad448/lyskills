@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Nouman\LyskillsPayment;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\AdminSendEmailRequest;
@@ -31,6 +32,8 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use App\Helpers\UploadData;
 
 class AdminController extends Controller
 {
@@ -589,6 +592,76 @@ class AdminController extends Controller
             }
         }
         catch (Exception $e) {
+            if(config("app.debug")){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', __("messages.universal_err_msg"));
+            }
+        }
+    }
+
+    public function homepage()
+    {
+        try {
+            $title = 'homepage';
+            $desc = 'Manage home page settings';
+            
+            $settings = Setting::first();
+            
+            return view('admin.homepage.index', compact('title', 'desc', 'settings'));
+        } catch (Exception $e) {
+            if(config("app.debug")){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', __("messages.universal_err_msg"));
+            }
+        }
+    }
+
+    public function homepageUpdate(Request $request)
+    {
+        try {
+            $request->validate([
+                'homepage_photo' => [
+                    'nullable',
+                    'image',
+                    'mimes:jpeg,png,jpg',
+                    'max:5000'
+                ]
+            ], [
+                'homepage_photo.image' => __('homepage.validation.photo.image'),
+                'homepage_photo.mimes' => __('homepage.validation.photo.mimes'),
+                'homepage_photo.max' => __('homepage.validation.photo.max')
+            ]);
+
+            $settings = Setting::first() ?? new Setting();
+
+            if ($request->hasFile('homepage_photo')) {
+                $img = $request->homepage_photo;
+                $f_name = $img->getClientOriginalName();
+
+                // Resize image
+                $manager = new ImageManager();
+                $image = $manager->make($img)->resize(1200, 600);
+
+                // Use the UploadData helper
+                $uploadData = new UploadData();
+                $path = $uploadData->upload($image->stream()->__toString(), $f_name);
+
+                // Delete old photo if exists
+                if ($settings->homepage_photo) {
+                    Storage::disk('s3')->delete($settings->homepage_photo);
+                }
+
+                // Update settings
+                $settings->homepage_photo = $path;
+                $settings->homepage_photo_name = $f_name;
+                $settings->homepage_photo_updated_at = now();
+                $settings->save();
+            }
+
+            return back()->with('status', __("messages.action_executation", ["action" => "Homepage update"]));
+        } catch (Exception $e) {
             if(config("app.debug")){
                 dd($e->getMessage());
             }else{

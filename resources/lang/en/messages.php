@@ -64,4 +64,11 @@ return [
     "enroll_stu" => "Enroll new student...",
     "confirmation_enroll" => "Do you want to enroll :this user? ",
     "coupon_expired" => "This coupon is expired",
+    'errors' => [
+        'unauthorized' => 'Unauthorized access',
+        'upload_failed' => 'Failed to upload file'
+    ],
+    'success' => [
+        'photo_updated' => 'Homepage photo updated successfully'
+    ]
 ];

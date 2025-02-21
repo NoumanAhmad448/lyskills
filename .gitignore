@@ -13,3 +13,4 @@ yarn-error.log
 /storage/app/*
 /storage/logs/laravel.log
 storage/*
+.env.testing
