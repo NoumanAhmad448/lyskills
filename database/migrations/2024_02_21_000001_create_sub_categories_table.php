@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('sub_categories')) {
-            Schema::create('sub_categories', function (Blueprint $table) {
-                $table->id();
-                $table->foreignId('category_id')->constrained()->onDelete('cascade');
-                $table->string('name');
-                $table->string('value')->unique();
+        if (Schema::hasTable('sub_categories')) {
+            Schema::table('sub_categories', function (Blueprint $table) {
                 $table->text('description')->nullable();
                 $table->enum('status', ['active', 'inactive'])->default('active');
-                $table->timestamps();
             });
         }
     }
