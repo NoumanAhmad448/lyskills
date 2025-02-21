@@ -3,8 +3,20 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use RefreshDatabase;  // This will ensure fresh database for each test
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        // Optional: You can add additional checks
+        if (env('DB_DATABASE') !== 'usmansaleem234_lyskills_new_testing') {
+            throw new \Exception('Not using testing database! Current DB: ' . env('DB_DATABASE'));
+        }
+    }
 }

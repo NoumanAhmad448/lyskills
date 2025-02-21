@@ -31,7 +31,7 @@ class CreateCoursesTable extends Migration
             $table->text('slug')->nullable();        
             $table->boolean('has_u_update_url')->nullable();        
             $table->boolean('is_deleted')->nullable();        
-            $table->int('lang_id')->nullable();        
+            $table->integer('lang_id')->nullable();        
             $table->timestamps();
         });
     }

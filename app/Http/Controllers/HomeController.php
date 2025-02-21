@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Article;
+use App\Models\RatingModal;
 
 class HomeController extends Controller
 {
@@ -32,7 +34,11 @@ class HomeController extends Controller
             $courses = Course::where('status', 'published')->whereNull('is_deleted')->with(['price:id,course_id,pricing,is_free', 'user:id,name', 'course_image'])->select('id', 'user_id', 'course_title', 'categories_selection', 'slug')->orderByDesc('created_at')->paginate(20);
             return view(config("setting.welcome_blade"), compact('title', 'desc', 'cs', 'post', 'faq', 'courses'));
         } catch (Exception $e) {
-            return back()->with('error', 'action cannot be performed now');
+            if(config("app.debug")){
+                dd($e->getMessage());
+            }else{
+                return back()->with('error', __("messages.universal_err_msg"));
+            }
         }
     }
 

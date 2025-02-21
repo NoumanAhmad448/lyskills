@@ -26,12 +26,12 @@
                 <div class="card" >
                     <div class="card-body text-center">
                          <h5 class="card-title"> Assignments </h5>
-                      <p class="card-text"> {{ $assignments ?? ''}} </p>                      
+                      <p class="card-text"> {{ $assignments ?? ''}} </p>
                     </div>
                   </div>
             </div>
             <div class="col-md-3">
-                <div class="card" >                    
+                <div class="card" >
                     <div class="card-body text-center">
                          <h5 class="card-title"> Courses </h5>
                       <p class="card-text"> {{ $courses ?? ''}} </p>                      

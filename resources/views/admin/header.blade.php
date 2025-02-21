@@ -109,6 +109,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-dark " href="{{route('admin.homepage')}}" id="homepage"> 
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            Home Page Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <div class="nav-link text-dark cursor_pointer" id="a_setting"> <i class="fa fa-cog" aria-hidden="true"></i>
                             Setting 
                         </div>
