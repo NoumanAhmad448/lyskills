@@ -194,16 +194,29 @@ class HomeControllerTest extends TestCase
         ]);
 
         $response = $this->get('/user-search?search_course=PHP');
-        
+
         $response->assertRedirect(route('s-search-page', ['keyword' => 'PHP']));
     }
 
     /** @test */
-    public function xss_attempts_are_blocked()
+    public function xss_attempts_are_sanitized()
     {
-        $response = $this->get('/show-search-course/<script>alert("xss")</script>');
-        
-        $response->assertStatus(403);
+        $maliciousInputs = [
+            '<script>alert("xss")</script>',
+            'javascript:alert("xss")',
+            '<img src="x" onerror="alert(\'xss\')">',
+            '<svg onload="alert(\'xss\')">',
+            '"onclick="alert(\'xss\')"'
+        ];
+
+        foreach ($maliciousInputs as $input) {
+            $response = $this->get('/show-search-course/' . $input);
+            
+            // Check that the output is properly escaped
+            $response->assertDontSee($input, false);
+            $response->assertSee(htmlspecialchars($input, ENT_QUOTES, 'UTF-8'), false);
+            $response->assertStatus(200);
+        }
     }
 
     /** @test */
@@ -214,7 +227,7 @@ class HomeControllerTest extends TestCase
         ]);
 
         $response = $this->get('/faqs');
-        
+
         $response->assertStatus(200);
         $response->assertViewHas('faqs');
         $response->assertViewHas('title', 'faq');

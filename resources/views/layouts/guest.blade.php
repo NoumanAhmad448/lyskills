@@ -9,12 +9,6 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
-    <?php
-        if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
-            echo '<meta name="robots" content="noindex">';
-        }
-    ?>
     <title id="seo_title"> @if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif </title>
     <meta id="seo_desc" name="description"
         content="@if(isset($desc) && $desc !== '' ) {{ $desc }} @else {{__('description.default')}}  @endif">

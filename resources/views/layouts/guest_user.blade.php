@@ -14,11 +14,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
         <link rel="stylesheet" href="{{asset('css/responsive.css')}}">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <?php
-        if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
-            echo '<meta name="robots" content="noindex">';
-        }
-        ?>
+
         <title id="seo_title"> @if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif </title>
         <meta id="seo_desc" name="description" content="@if(isset($desc) && $desc !== '' ) {{ $desc }} @else {{__('description.default')}}  @endif">
         <meta property="og:title" content="@if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif">

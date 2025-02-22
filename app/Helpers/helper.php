@@ -14,7 +14,7 @@ if (!function_exists('check_input')){
 
 if (!function_exists('is_xss')){
      function is_xss($u_input ){
-        return strip_tags($u_input) !== $u_input;
+        return strip_tags($u_input) != $u_input;
     }
 }
 

@@ -14,7 +14,7 @@ class CourseFactory extends Factory
 
     public function definition()
     {
-        $title = $this->faker->sentence();
+        $title = $this->faker->sentence(2);
         return [
             'course_title' => $title,
             'slug' => Str::slug($title),

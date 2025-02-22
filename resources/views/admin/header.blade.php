@@ -8,12 +8,7 @@
     <meta name="description" content="@if(isset($desc)) {{ $desc }} @else {{__('description.default')}}  @endif">
     <link rel="canonical" href="{{ url()->current() }}">
     <link rel="shortcut icon" href="{{asset('img/favicon.png')}}">
-    <?php
-    if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
-        echo '<meta name="robots" content="noindex">';
-    }
 
-    ?>
     @include("lib.custom_lib")
 
     @yield('page-css')
