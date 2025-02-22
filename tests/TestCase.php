@@ -15,7 +15,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         // Optional: You can add additional checks
-        if (env('DB_DATABASE') !== 'usmansaleem234_lyskills_new_testing') {
+        if (env('DB_DATABASE') !== config('database.testing_db')) {
             throw new \Exception('Not using testing database! Current DB: ' . env('DB_DATABASE'));
         }
 
