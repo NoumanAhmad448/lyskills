@@ -48,6 +48,7 @@ use App\Http\Livewire\CreateBlogger;
 use App\Http\Livewire\EditAdmin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\EasypaisaController;
+use App\Http\Controllers\InstructorAuthController;
 
 // Route::get('go-live-with-nouman', [HomeController::class, 'aritsanLive']);
 
@@ -637,3 +638,16 @@ Route::middleware('auth')->get('laoshi-de/comments/{course}', [CourseController:
 
 Route::middleware('auth')->post('set-all-videos-downlabable/{course}', [CourseController::class, 'setVidDown'])->name('setVidDown');
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/homepage', [AdminController::class,'homepage'])->name('admin.homepage');
+    Route::post('/admin/homepage/update', [AdminController::class,'homepageUpdate'])->name('admin.homepage.update');
+});
+
+// Instructor Authentication Routes
+Route::get('/instructor/register', [InstructorAuthController::class, 'showRegister'])
+    ->name('instructor.register');
+Route::post('/instructor/register', [InstructorAuthController::class, 'register']);
+
+Route::get('/instructor/login', [InstructorAuthController::class, 'showLogin'])
+    ->name('instructor.login');
+Route::post('/instructor/login', [InstructorAuthController::class, 'login']);

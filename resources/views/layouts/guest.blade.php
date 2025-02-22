@@ -9,12 +9,6 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-
-    <?php
-        if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
-            echo '<meta name="robots" content="noindex">';
-        }
-    ?>
     <title id="seo_title"> @if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif </title>
     <meta id="seo_desc" name="description"
         content="@if(isset($desc) && $desc !== '' ) {{ $desc }} @else {{__('description.default')}}  @endif">
@@ -109,13 +103,13 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                 <div class="col-md-2">
                     <div class="d-md-flex justify-content-end align-items-md-center">
                         @auth
-                        <a href="{{route('dashboard')}}" class="ml-3 mt-4 mt-md-0"> {{ __('Instructor')}} </a>
+                        <a href="{{route('dashboard')}}" class="ml-3 mt-4 mt-md-0"> {{ 'Instructor'}} </a>
                         <a href="{{route('get-wishlist-course')}}" class="ml-3 text-website" style="font-size: 2rem"
                             title="wishlist courses">
                             <i class="fa fa-heart" aria-hidden="true"></i>
                         </a>
                         @else
-                        <a href="{{route('dashboard')}}" class="ml-3 mt-5 mt-md-3 text-dark">
+                        <a href="{{route('instructor.register')}}" class="ml-3 mt-5 mt-md-3 text-dark">
                             {{ __('Teach on Lyskills')}} </a>
                         @endif
                     </div>
@@ -164,7 +158,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 
                             <a href="{{ route('login') }}" class="btn btn-info mr-1 mt-3">Log in</a>
                             @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="btn btn-outline-info mt-3">Become an Instructor</a>
+                            <a href="{{ route('register') }}" class="btn btn-outline-info mt-3">{{ __('homepage.instructor.title') }}</a>
                             @endif
                         </div>
                         @endif

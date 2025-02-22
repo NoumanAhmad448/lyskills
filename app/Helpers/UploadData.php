@@ -6,14 +6,19 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadData{
     private $dir_path = "";
-    private $default_setting = ["isImage" => true, "isVideo" => false, "imageStoragePath" => "storage/img/"
-                , "videoStoragePath" => "upload/"];
+    private $default_setting = [
+        "isImage" => true, 
+        "isVideo" => false, 
+        "imageStoragePath" => "storage/img/",
+        "videoStoragePath" => "upload/"
+    ];
 
     public function __construct(){
         $this->dir_path = config("setting.dir_path");
     }
 
-    public function upload($object, $file_name, $params=[]){
+    public function upload($object, $file_name, $params=[])
+    {
         if(!empty($params)){
             if(!empty($params['isVideo'])){
                 $default_setting['isVideo'] = true;
@@ -26,7 +31,14 @@ class UploadData{
         // upload image
         if($this->default_setting['isImage']){
             $path = $this->default_setting['imageStoragePath'].time() . uniqid() . str_replace(' ', '-',$file_name);
-            Storage::disk("s3")->put($path, $object);
+            
+            // Check environment
+            if(config('app.env') === 'local') {
+                Storage::disk('public')->put($path, $object);
+            } else {
+                Storage::disk("s3")->put($path, $object);
+            }
+            
             return $path;
         }
     }
@@ -37,8 +49,9 @@ class UploadData{
         }
 
         if(!empty($this->dir_path)){
-            if(!Storage::disk("s3")->exists($this->dir_path)) {
-                Storage::disk("s3")->makeDirectory($this->dir_path, 0775, true);
+            $disk = config('app.env') === 'local' ? 'public' : 's3';
+            if(!Storage::disk($disk)->exists($this->dir_path)) {
+                Storage::disk($disk)->makeDirectory($this->dir_path, 0775, true);
             }
         }
     }

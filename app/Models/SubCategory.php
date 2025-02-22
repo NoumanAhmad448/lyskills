@@ -11,6 +11,9 @@ class SubCategory extends Model
     protected $fillable = ['categories_id','name','value'];
 
 
+    /**
+     * Get the category that owns the sub-category.
+     */
     public function category()
     {
         return $this->belongsTo(Categories::class, 'categories_id');

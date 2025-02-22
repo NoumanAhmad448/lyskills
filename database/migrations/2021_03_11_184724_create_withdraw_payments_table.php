@@ -13,18 +13,20 @@ class CreateWithdrawPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('withdraw_payments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('b_min')->nullable();
-            $table->string('b_note')->nullable();
-            $table->string('p_min')->nullable();
-            $table->string('p_note')->nullable();
+        if (!Schema::hasTable('withdraw_payments')) {
+            Schema::create('withdraw_payments', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('b_min')->nullable();
+                $table->string('b_note')->nullable();
+                $table->string('p_min')->nullable();
+                $table->string('p_note')->nullable();
             $table->string('e_min')->nullable();
             $table->string('e_note')->nullable();
-            $table->string('j_min')->nullable();
-            $table->string('j_note')->nullable();            
-            $table->timestamps();
-        });
+                $table->string('j_min')->nullable();
+                $table->string('j_note')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -8,12 +8,7 @@
     <meta name="description" content="@if(isset($desc)) {{ $desc }} @else {{__('description.default')}}  @endif">
     <link rel="canonical" href="{{ url()->current() }}">
     <link rel="shortcut icon" href="{{asset('img/favicon.png')}}">
-    <?php
-    if($_SERVER['SERVER_NAME'] == 'lyskills.org'){
-        echo '<meta name="robots" content="noindex">';
-    }
 
-    ?>
     @include("lib.custom_lib")
 
     @yield('page-css')
@@ -106,6 +101,12 @@
                         <a class="nav-link text-dark " href="{{route('admin_show_medias')}}" id="a_media"> 
                             <i class="fa fa-video-camera" aria-hidden="true"></i>
                             Media Manager
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark " href="{{route('admin.homepage')}}" id="homepage"> 
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            Home Page Settings
                         </a>
                     </li>
                     <li class="nav-item">
