@@ -1,3 +1,80 @@
+<h3 align="center">
+Lyskills
+</h3>
+<p align="center">
+    A platform for learning and practicing skills
+</p>
+
+<div align="center">
+
+<a href="https://github.com/NoumanAhmad448/lyskills/stargazers">
+    <img src="https://img.shields.io/github/stars/hiyouga/LLaMA-Factory?style=social" alt="GitHub Repo stars"/>
+</a>
+<a href="https://github.com/NoumanAhmad448/DebugEval/commits/master">
+    <img src="https://img.shields.io/github/last-commit/NoumanAhmad448/DebugEval" alt="GitHub last commit"/>
+</a>
+<a href="https://github.com/NoumanAhmad448/lyskills/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/hiyouga/LLaMA-Factory?color=orange" alt="GitHub contributors"/>
+</a>
+<a href="https://github.com/NoumanAhmad448/lyskills/actions/workflows/tests.yml">
+    <img src="https://github.com/NoumanAhmad448/lyskills/actions/workflows/tests.yml/badge.svg" alt="GitHub workflow"/>
+</a>
+<a href="https://pypi.org/project/llamafactory/">
+    <img src="https://img.shields.io/pypi/v/llamafactory" alt="PyPI"/>
+</a>
+<a href="https://scholar.google.com/scholar?cites=12620864006390196564">
+    <img src="https://img.shields.io/badge/citation-238-green" alt="Citation"/>
+</a>
+<a href="https://github.com/NoumanAhmad448/lyskills/pulls">
+    <img src="https://img.shields.io/badge/PRs-welcome-blue" alt="GitHub pull request"/>
+</a>
+<div>
+
+A **Video-Based Learning Management System (LMS)** is a specialized platform designed to deliver, manage, and track educational courses and training programs primarily through video content. It is widely used in online education, corporate training, and skill development to provide an engaging and flexible learning experience.
+
+---
+
+#### **Core Features of a Video-Based LMS:**
+
+1. **Video Content Management**:
+   - Upload, organize, and stream video lectures, tutorials, and demonstrations.
+   - Support for multiple video formats (e.g., MP4, WebM, MOV).
+   - Adaptive streaming for smooth playback across devices.
+
+2. **Course Creation and Management**:
+   - Create structured courses with video modules, quizzes, and assignments.
+   - Add supplementary materials like PDFs, slides, and external links.
+   - Set prerequisites and completion rules for course progression.
+
+3. **Interactive Learning Tools**:
+   - **Quizzes and Assessments**: Embed quizzes within or after videos to test knowledge.
+   - **Annotations and Comments**: Allow learners to add timestamped comments or questions.
+   - **Polls and Surveys**: Engage learners with interactive polls during video playback.
+
+4. **Progress Tracking and Analytics**:
+   - Track learner progress through video courses (e.g., % watched, quiz scores).
+   - Monitor engagement metrics like video completion rates and drop-off points.
+   - Generate detailed reports for instructors and administrators.
+
+5. **Accessibility and Inclusivity**:
+   - Add subtitles, closed captions, and transcripts for better accessibility.
+   - Support multiple languages for global audiences.
+   - Ensure responsive design for seamless viewing on mobile, tablet, and desktop.
+
+6. **Collaboration and Communication**:
+   - **Live Sessions**: Host live webinars or virtual classrooms with real-time interaction.
+   - **Discussion Forums**: Enable learners to discuss course topics and share insights.
+   - **Chat and Messaging**: Facilitate communication between learners and instructors.
+
+7. **Gamification and Engagement**:
+   - Award badges, certificates, or points for completing courses or achieving milestones.
+   - Leaderboards to encourage healthy competition among learners.
+
+8. **Integration and Scalability**:
+   - Integrate with third-party services (e.g., payment gateways, social media platforms).
+   - Support for large-scale deployments with high availability and scalability.
+
+
 ## Development
 1. Turn on xampp
 2. PHP server
@@ -15,13 +92,6 @@ npm run watch
 3. show loader on user request ```profile.js``` and search for ```hide loader``` & ```show loader```
 4. server logs ```server_logs``` function in ```helper.php```
 5. server configuration ```php_config``` function in ```helper.php```
-6. whm password
-```
-4mEK10gw5n9d5BtEWN
-```
-7. DB password
-```
-BurraqLyskillsEngineering65$
 ```
 8. Checkout storage on server
 ```
@@ -36,17 +106,17 @@ df -hi
 2. Copy
 ```
 .env.dev
-``` 
+```
 to
 ```
 .env
 ```
 file and change the DB connection
-1. Create a database <b>usmansaleem234_lyskills_new</b>
+1. Create a database <b>db</b>
 2. You need to follow of either mentioned path
     1. One
         1. run
-           1. usmansaleem234_lyskills_new.sql
+           1. db.sql
            2.  <b>user_ann_models.sql</b>
         file locally. These files are avaiable in the source code, path /
         2. Add primary key manually in every table or create a alter query and try changing table name and primary key column

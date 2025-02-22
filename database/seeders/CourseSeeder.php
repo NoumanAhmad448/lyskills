@@ -34,7 +34,7 @@ class CourseSeeder extends Seeder
         Course::factory()
             ->count(3)
             ->create([
-                'email' => $instructor->email,
+                'user_id' => $instructor->id,
                 'categories_selection' => $itCategory->value,
                 'status' => 'published',
                 'is_draft' => false
@@ -43,7 +43,7 @@ class CourseSeeder extends Seeder
         // Create one draft course
         Course::factory()
             ->create([
-                'email' => $instructor->email,
+                'user_id' => $instructor->id,
                 'categories_selection' => $itCategory->value,
                 'status' => 'draft',
                 'is_draft' => true
@@ -54,11 +54,11 @@ class CourseSeeder extends Seeder
             Course::factory()
                 ->count(2)
                 ->create([
-                    'email' => $instructor->email,
+                    'user_id' => $instructor->id,
                     'categories_selection' => $category->value,
                     'status' => 'published',
                     'is_draft' => false
                 ]);
         });
     }
-} 
+}
