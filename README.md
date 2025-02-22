@@ -264,9 +264,9 @@ chmod -R 775 /home/web_server/public_html/bootstrap/cache
    ```
 2. Ensure the following settings are configured:
    ```ini
-   upload_max_filesize = 100M
-   post_max_size = 100M
-   memory_limit = 256M
+   upload_max_filesize = 8G
+   post_max_size = 8G
+   memory_limit = 8G
    ```
 
 ---
