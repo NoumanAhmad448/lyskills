@@ -16,6 +16,8 @@ return [
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
+    'testing_db' => env('DB_TESTING_DATABASE', 'usmansaleem234_lyskills_new_testing'),
+    'laravel_db' => env('DB_Laravel', 'usmansaleem234_laravel'),
 
     /*
     |--------------------------------------------------------------------------

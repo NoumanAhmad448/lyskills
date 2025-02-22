@@ -12,7 +12,7 @@ class DatabaseTest extends TestCase
     public function ensure_using_test_database()
     {
         $this->assertEquals(
-            'usmansaleem234_lyskills_new_testing',
+            config('database.testing_db'),
             \DB::connection()->getDatabaseName(),
             'Not using test database!'
         );
