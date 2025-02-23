@@ -57,14 +57,16 @@ jobs:
     #     # dry-run: true
 
     - name: FTP Deploy
-      uses: appleboy/ftp-action@v1  # FTP deploy action
+      uses: sebastianpopp/ftp-action@releases/v2 # FTP deploy action
       with:
         host: ${{ secrets.FTP_SERVER }}  # FTP server address
         username: ${{ secrets.FTP_USERNAME }}  # FTP username
         password: ${{ secrets.FTP_PASSWORD }}  # FTP password
         port: 21  # FTP port, 21 is default FTP port
-        local-dir: ./  # Local directory to upload (default is the repository root)
-        remote-dir: /
+        localDir: ./  # Local directory to upload (default is the repository root)
+        remoteDir: /
+        options: "--delete --asci"
+
 
     # - name: Directory Permissions
     #   run: chmod -R 777 storage bootstrap/cache
