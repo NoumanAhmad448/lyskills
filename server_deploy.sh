@@ -26,6 +26,9 @@ chown -R root:www-data /home/nomilyskills/public_html/bootstrap/cache
 # Update Composer Dependencies
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
 
+# to avoid any node permission error
+chmod -R 777 /home/nomilyskills/public_html/
+
 # Clear caches
 php artisan cache:clear
 php artisan config:clear
@@ -41,10 +44,15 @@ nvm use 16
 
 # Install Node.js dependencies
 npm install
+
+# to avoid any node permission error
+chmod -R 777 /home/nomilyskills/public_html/
+
+# Run on production mode
 npm run production
 
 # Reset permissions for web server & FTP user after script runs
-chown -R nomilyskills:www-data /home/nomilyskills/public_html/
+chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
 chmod -R 755 /home/nomilyskills/public_html/
 
 # Restore restricted permissions for sensitive files
