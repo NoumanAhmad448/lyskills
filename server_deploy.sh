@@ -58,6 +58,5 @@ chown root:root /home/nomilyskills/public_html/composer.json
 chown root:root /home/nomilyskills/public_html/composer.lock
 
 
-
 # Disable maintenance mode
 php artisan up
