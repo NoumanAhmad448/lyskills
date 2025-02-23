@@ -14,10 +14,10 @@ php artisan migrate --force
 php artisan key:generate
 
 # change folder permission
-chmod -R 777 storage bootstrap/cache
+chmod -R 777 /home/nomilyskills/public_html/
 
 # change folder permission
-sudo chown -R root:root /home/nomilyskills/public_html/
+sudo chown  root:root /home/nomilyskills/public_html/
 
 # change node permission
 sudo ln -sf $(which node) /usr/bin/node
@@ -45,7 +45,8 @@ npm install
 npm run production
 
 # clear permission
-sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
+sudo chown nomilyskills:nomilyskills /home/nomilyskills/public_html/
+sudo chown root:root  .env phpunit.xml php.ini server_deploy.sh .htaccess artisan composer.json composer.lock package.json webpack.mix.js
 
 # Turn off maintenance mode
 php artisan up
