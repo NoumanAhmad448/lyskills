@@ -6,6 +6,7 @@ on:
 jobs:
   laravel-deployment:
     runs-on: ubuntu-latest
+    timeout-minutes: 1200000
     strategy:
       fail-fast: true
       matrix:
@@ -46,26 +47,35 @@ jobs:
     - name: Run Pint
       run: pint --config pint.json
 
-    # - name: Sync files
-    #   uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-    #   with:
-    #     server: ${{secrets.FTP_SERVER}}
-    #     username: ${{secrets.FTP_USERNAME}}
-    #     password: ${{secrets.FTP_PASS}}
-    #     server-dir: /
-    #     log-level	: verbose
-    #     # dry-run: true
-
-    - name: FTP Deploy
-      uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+    - name: Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        username: ${{ secrets.SSH_USERNAME }}
-        server: ${{ secrets.FTP_SERVER }}
-        password: ${{ secrets.SSH_PASSWORD }}
-        port: ${{ secrets.FTP_PORT }}
-        local_path: './'
-        remote_path: '/'
-        sftpArgs: '-o ConnectTimeout=50000'
+        server: ${{secrets.FTP_SERVER}}
+        username: ${{secrets.FTP_USERNAME}}
+        password: ${{secrets.FTP_PASS}}
+        server-dir: /
+        log-level	: verbose
+        # dry-run: true
+        timeout: 60000000
+        port: 21
+        protocol: ftps
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/vendor/**
+
+
+    # - name: FTP Deploy
+    #   uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+    #   with:
+    #     username: ${{ secrets.SSH_USERNAME }}
+    #     server: ${{ secrets.FTP_SERVER }}
+    #     password: ${{ secrets.SSH_PASSWORD }}
+    #     port: ${{ secrets.FTP_PORT }}
+    #     local_path: './'
+    #     remote_path: '/'
+    #     sftpArgs: '-o ConnectTimeout=50000'
 
 
     # - name: Directory Permissions
