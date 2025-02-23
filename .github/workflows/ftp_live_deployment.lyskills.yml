@@ -57,14 +57,14 @@ jobs:
     #     # dry-run: true
 
     - name: FTP Deploy
-      uses: sebastianpopp/ftp-action@releases/v2 # FTP deploy action
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.5
       with:
-        host: ${{ secrets.FTP_SERVER }}
-        user: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        localDir: ./  # Local directory to upload (default is the repository root)
-        remoteDir: /
-        options: "--delete --asci"
+        username: ${{ secrets.SSH_USERNAME }}
+        server: ${{ secrets.FTP_SERVER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        port: ${{ secrets.FTP_PORT }}
+        local_path: './'
+        remote_path: '/'
 
 
     # - name: Directory Permissions
