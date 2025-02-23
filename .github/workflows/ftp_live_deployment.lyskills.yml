@@ -33,8 +33,8 @@ jobs:
     # - name: clear cache
       # run: php artisan config:cache
 
-    - name: npm dependecies
-      run: npm install
+    # - name: npm dependecies
+    #   run: npm install
 
     # - name: Clear Cache & run migrations
     #   run: |
@@ -59,10 +59,9 @@ jobs:
     - name: FTP Deploy
       uses: sebastianpopp/ftp-action@releases/v2 # FTP deploy action
       with:
-        host: ${{ secrets.FTP_SERVER }}  # FTP server address
-        username: ${{ secrets.FTP_USERNAME }}  # FTP username
-        password: ${{ secrets.FTP_PASSWORD }}  # FTP password
-        port: 21  # FTP port, 21 is default FTP port
+        host: ${{ secrets.FTP_SERVER }}
+        user: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
         localDir: ./  # Local directory to upload (default is the repository root)
         remoteDir: /
         options: "--delete --asci"
