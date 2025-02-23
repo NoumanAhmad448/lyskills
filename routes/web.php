@@ -49,6 +49,7 @@ use App\Http\Livewire\EditAdmin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\EasypaisaController;
 use App\Http\Controllers\InstructorAuthController;
+use App\Http\Controllers\HealthCheckResultsController;
 
 // Route::get('go-live-with-nouman', [HomeController::class, 'aritsanLive']);
 
@@ -641,6 +642,8 @@ Route::middleware('auth')->post('set-all-videos-downlabable/{course}', [CourseCo
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/homepage', [AdminController::class,'homepage'])->name('admin.homepage');
     Route::post('/admin/homepage/update', [AdminController::class,'homepageUpdate'])->name('admin.homepage.update');
+    Route::get('/health', HealthCheckResultsController::class)->name('health');
+
 });
 
 // Instructor Authentication Routes
