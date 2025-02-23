@@ -58,7 +58,7 @@ jobs:
         retries: 3
         retries-delay: 10000
         retries-delay-exponential: true
-        protocol: sftp
+        protocol: ftps
         debug: true
 
     # - name: Directory Permissions
