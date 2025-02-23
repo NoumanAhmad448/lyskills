@@ -28,8 +28,8 @@ jobs:
     #     php-version: '8.1'
         # ini-values: upload_max_filesize=80000M, post_max_size = 80000M, allow_url_fopen = On, display_errors = Off,enable_dl = Off,
                     # file_uploads = On,max_execution_time = 300,max_input_time = 600, max_input_vars = 10000,memory_limit = 4500M
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.live', '.env');"
+    # - name: Copy .env
+    #   run: php -r "file_exists('.env') || copy('.env.live', '.env');"
 
     # - name: clear cache
       # run: php artisan config:cache
@@ -58,6 +58,7 @@ jobs:
         # dry-run: true
         timeout: 60000000
         port: 21
+        passive: true  # Use passive mode to avoid unexpected disconnects
         protocol: ftps
         exclude: |
           **/.git*
