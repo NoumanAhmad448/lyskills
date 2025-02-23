@@ -27,15 +27,17 @@ chown -R root:www-data /home/nomilyskills/public_html/bootstrap/cache
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
 
 # to avoid any node permission error
-chmod -R 777 /home/nomilyskills/public_html/
+chmod -R 775 /home/nomilyskills/public_html/
+chown -R root:root /home/nomilyskills/public_html/
+
+# Run database migrations (ensuring root runs them)
+php artisan migrate --force
 
 # Clear caches
 php artisan cache:clear
 php artisan config:clear
 php artisan view:clear
 
-# Run database migrations (ensuring root runs them)
-php artisan migrate --force
 
 # Ensure correct Node.js version
 export NVM_DIR="$HOME/.nvm"
@@ -45,8 +47,6 @@ nvm use 16
 # Install Node.js dependencies
 npm install
 
-# to avoid any node permission error
-chmod -R 777 /home/nomilyskills/public_html/
 
 # Run on production mode
 npm run production
