@@ -20,8 +20,8 @@ chown root:root /home/nomilyskills/public_html/composer.lock
 # Set correct permissions for storage & bootstrap/cache (needed for Laravel)
 chmod -R 775 /home/nomilyskills/public_html/storage
 chmod -R 775 /home/nomilyskills/public_html/bootstrap/cache
-chown -R root:www-data /home/nomilyskills/public_html/storage
-chown -R root:www-data /home/nomilyskills/public_html/bootstrap/cache
+chown -R root:root /home/nomilyskills/public_html/storage
+chown -R root:root /home/nomilyskills/public_html/bootstrap/cache
 
 # Update Composer Dependencies
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
@@ -29,6 +29,7 @@ composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev -
 # to avoid any node permission error
 chmod -R 775 /home/nomilyskills/public_html/
 chown -R root:root /home/nomilyskills/public_html/
+chmod -R 775 bootstrap/cache storage
 
 # Run database migrations (ensuring root runs them)
 php artisan migrate --force
