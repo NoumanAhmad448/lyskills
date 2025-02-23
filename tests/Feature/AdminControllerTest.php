@@ -99,4 +99,4 @@ class AdminControllerTest extends TestCase
             'status' => 'published'
         ]);
     }
-} 
+}
