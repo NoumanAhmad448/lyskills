@@ -4,7 +4,7 @@
 php artisan down || true
 
 #generate artisan key
-php artisan key:generate
+yes | php artisan key:generate
 
 # Secure .env and other sensitive files before running anything
 chmod 600 /home/nomilyskills/public_html/.env
@@ -18,8 +18,8 @@ chown root:root /home/nomilyskills/public_html/composer.json
 chown root:root /home/nomilyskills/public_html/composer.lock
 
 # Set correct permissions for storage & bootstrap/cache (needed for Laravel)
-chmod -R 775 /home/nomilyskills/public_html/storage
-chmod -R 775 /home/nomilyskills/public_html/bootstrap/cache
+yes | chmod -R 777 /home/nomilyskills/public_html/storage/ /home/nomilyskills/public_html/bootstrap/cache
+
 chown -R root:root /home/nomilyskills/public_html/storage
 chown -R root:root /home/nomilyskills/public_html/bootstrap/cache
 
@@ -52,6 +52,9 @@ npm install
 # Run on production mode
 npm run production
 
+# check project health notification
+php artisan health:check --no-notification
+
 # Reset permissions for web server & FTP user after script runs
 chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
 chmod -R 755 /home/nomilyskills/public_html/
@@ -61,6 +64,7 @@ chmod 600 /home/nomilyskills/public_html/.env
 chmod 600 /home/nomilyskills/public_html/phpunit.xml
 chmod 600 /home/nomilyskills/public_html/composer.json
 chmod 600 /home/nomilyskills/public_html/composer.lock
+
 chown root:root /home/nomilyskills/public_html/.env
 chown root:root /home/nomilyskills/public_html/phpunit.xml
 chown root:root /home/nomilyskills/public_html/composer.json
