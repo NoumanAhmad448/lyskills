@@ -27,7 +27,7 @@
         "livewire/livewire": "^2.0",
         "paypal/paypal-checkout-sdk": "1.0.1",
         "paypal/rest-api-sdk-php": "^1.14",
-        "spatie/laravel-health": "*",
+        "spatie/laravel-health": "^1.32",
         "spatie/laravel-sluggable": "^3.4"
     },
     "require-dev": {
