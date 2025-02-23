@@ -21,13 +21,13 @@ class HomepagePhotoTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Run migrations
         Artisan::call('migrate:fresh');
-        
+
         // Create admin user
         $this->admin = User::factory()->create(['is_admin' => 1]);
-        
+
         // Get paths from language file
         $this->storagePath = __('tests.homepage.paths.storage');
         $this->defaultPath = __('tests.homepage.paths.default');
@@ -38,7 +38,7 @@ class HomepagePhotoTest extends TestCase
         // Clean up any files created during tests
         Storage::fake('s3')->deleteDirectory($this->storagePath);
         Storage::fake('public')->deleteDirectory($this->storagePath);
-        
+
         parent::tearDown();
     }
 
@@ -46,7 +46,7 @@ class HomepagePhotoTest extends TestCase
     public function non_admin_cannot_access_homepage_settings()
     {
         $user = User::factory()->create(['is_admin' => 0]);
-        
+
         $response = $this->actingAs($user)->get(route('admin.homepage'));
         
         $response->assertStatus(403);

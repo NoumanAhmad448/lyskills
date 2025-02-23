@@ -6,9 +6,21 @@ on:
 jobs:
   laravel-deployment:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1]
+        commit_msg: ["Fixes coding style"]
     steps:
     - uses: actions/checkout@v3
+
+    - name: Setup PHP with fail-fast
+      uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: json, dom, curl, libxml, mbstring, bz2, fileinfo, gd, gettext,mbstring,exif,mysqli,pdo_mysql
+        tools: pint:1.16.1,phpdoc,composer:2.4.4
+        coverage: none
 
     # - uses: shivammathur/setup-php@v2
     #   with:
@@ -31,6 +43,8 @@ jobs:
 
     # - name: config routing
       # run: php artisan config:route
+    - name: Run Pint
+      run: pint --config pint.json
 
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0

@@ -1,0 +1,24 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "simplified_null_return": true,
+        "braces": false,
+        "new_with_braces": {
+            "anonymous_class": false,
+            "named_class": false
+        },
+        "no_blank_lines_after_class_opening": true,
+        "no_trailing_whitespace_in_comment": true,
+        "array_push": true,
+        "array_syntax": true,
+        "trim_array_spaces": true,
+        "braces_position": {
+            "functions_opening_brace": "same_line",
+            "classes_opening_brace": "same_line",
+            "allow_single_line_anonymous_functions": true
+        }
+    },
+    "notName": ["*-blade.php"],
+    "exclude": [],
+    "notPath": []
+}
