@@ -40,6 +40,11 @@ jobs:
         password: ${{secrets.FTP_PASS}}
         server-dir: /
         verbose: true  # Optional: Enables verbose logging
+        passive: true
+        retries: 3
+        retries-delay: 10000
+        retries-delay-exponential: true
+        protocol: sftp
 
     # - name: Directory Permissions
     #   run: chmod -R 777 storage bootstrap/cache
