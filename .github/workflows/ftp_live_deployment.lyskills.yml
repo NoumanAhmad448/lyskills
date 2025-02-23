@@ -39,6 +39,7 @@ jobs:
         username: ${{secrets.FTP_USERNAME}}
         password: ${{secrets.FTP_PASS}}
         server-dir: /
+        verbose: true  # Optional: Enables verbose logging
 
     # - name: Directory Permissions
     #   run: chmod -R 777 storage bootstrap/cache
