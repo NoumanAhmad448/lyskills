@@ -54,7 +54,7 @@ jobs:
         password: ${{secrets.FTP_PASS}}
         server-dir: /
         log-level	: verbose
-        dry-run: true
+        # dry-run: true
 
     # - name: Directory Permissions
     #   run: chmod -R 777 storage bootstrap/cache
