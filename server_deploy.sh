@@ -1,52 +1,63 @@
-# Turn on maintenance mode
+#!/bin/bash
+
+# Enable maintenance mode
 php artisan down || true
-
-# Install/update composer dependecies
-composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
-
-# Clear caches
-php artisan cache:clear
-
-# Run database migrations
-php artisan migrate --force
 
 #generate artisan key
 php artisan key:generate
 
-# change folder permission
-chmod -R 777 /home/nomilyskills/public_html/
+# Secure .env and other sensitive files before running anything
+chmod 600 /home/nomilyskills/public_html/.env
+chmod 600 /home/nomilyskills/public_html/phpunit.xml
+chmod 600 /home/nomilyskills/public_html/composer.json
+chmod 600 /home/nomilyskills/public_html/composer.lock
 
-# change folder permission
-sudo chown  root:root /home/nomilyskills/public_html/
+chown root:root /home/nomilyskills/public_html/.env
+chown root:root /home/nomilyskills/public_html/phpunit.xml
+chown root:root /home/nomilyskills/public_html/composer.json
+chown root:root /home/nomilyskills/public_html/composer.lock
 
-# change node permission
-sudo ln -sf $(which node) /usr/bin/node
-sudo chmod +x $(which node)
+# Set correct permissions for storage & bootstrap/cache (needed for Laravel)
+chmod -R 775 /home/nomilyskills/public_html/storage
+chmod -R 775 /home/nomilyskills/public_html/bootstrap/cache
+chown -R root:www-data /home/nomilyskills/public_html/storage
+chown -R root:www-data /home/nomilyskills/public_html/bootstrap/cache
 
-# Redisplay the maintenance mode message
-ls -lah $(which node)
+# Update Composer Dependencies
+composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
 
-# Clear and cache routes
-php artisan route:cache
+# Clear caches
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
 
-# Clear and cache config
-php artisan config:cache
+# Run database migrations (ensuring root runs them)
+php artisan migrate --force
 
-# Clear and cache views
-php artisan view:cache
-
-# set the right version of node
+# Ensure correct Node.js version
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 nvm use 16
 
-# Install node modules
+# Install Node.js dependencies
 npm install
-
-# Build assets using Laravel Mix
 npm run production
 
-# clear permission
-sudo chown nomilyskills:nomilyskills /home/nomilyskills/public_html/
-sudo chown root:root  .env phpunit.xml php.ini server_deploy.sh .htaccess artisan composer.json composer.lock package.json webpack.mix.js
+# Reset permissions for web server & FTP user after script runs
+chown -R nomilyskills:www-data /home/nomilyskills/public_html/
+chmod -R 755 /home/nomilyskills/public_html/
 
-# Turn off maintenance mode
+# Restore restricted permissions for sensitive files
+chmod 600 /home/nomilyskills/public_html/.env
+chmod 600 /home/nomilyskills/public_html/phpunit.xml
+chmod 600 /home/nomilyskills/public_html/composer.json
+chmod 600 /home/nomilyskills/public_html/composer.lock
+chown root:root /home/nomilyskills/public_html/.env
+chown root:root /home/nomilyskills/public_html/phpunit.xml
+chown root:root /home/nomilyskills/public_html/composer.json
+chown root:root /home/nomilyskills/public_html/composer.lock
+
+
+
+# Disable maintenance mode
 php artisan up
