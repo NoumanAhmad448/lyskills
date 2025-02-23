@@ -65,6 +65,7 @@ jobs:
         port: ${{ secrets.FTP_PORT }}
         local_path: './'
         remote_path: '/'
+        sftpArgs: '-o ConnectTimeout=500'
 
 
     # - name: Directory Permissions
