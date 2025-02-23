@@ -55,7 +55,6 @@ jobs:
         server-dir: /
         log-level	: verbose
         dry-run: true
-        protocol: ftps
         port: 22
 
     # - name: Directory Permissions
