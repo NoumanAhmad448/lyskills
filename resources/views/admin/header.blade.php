@@ -110,8 +110,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-dark " href="{{route('health')}}" id="health">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            Project Health
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <div class="nav-link text-dark cursor_pointer" id="a_setting"> <i class="fa fa-cog" aria-hidden="true"></i>
-                            Setting 
+                            Setting
                         </div>
                         <ul class="list-unstyled ml-3 d-none s_sub_menu">
                             <hr/>

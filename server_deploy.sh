@@ -7,15 +7,8 @@ php artisan down || true
 yes | php artisan key:generate
 
 # Secure .env and other sensitive files before running anything
-chmod 600 /home/nomilyskills/public_html/.env
-chmod 600 /home/nomilyskills/public_html/phpunit.xml
-chmod 600 /home/nomilyskills/public_html/composer.json
-chmod 600 /home/nomilyskills/public_html/composer.lock
-
+chmod 444 /home/nomilyskills/public_html/.env
 chown root:root /home/nomilyskills/public_html/.env
-chown root:root /home/nomilyskills/public_html/phpunit.xml
-chown root:root /home/nomilyskills/public_html/composer.json
-chown root:root /home/nomilyskills/public_html/composer.lock
 
 # Set correct permissions for storage & bootstrap/cache (needed for Laravel)
 yes | chmod -R 777 /home/nomilyskills/public_html/storage/ /home/nomilyskills/public_html/bootstrap/cache
@@ -60,15 +53,8 @@ chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
 chmod -R 755 /home/nomilyskills/public_html/
 
 # Restore restricted permissions for sensitive files
-chmod 600 /home/nomilyskills/public_html/.env
-chmod 600 /home/nomilyskills/public_html/phpunit.xml
-chmod 600 /home/nomilyskills/public_html/composer.json
-chmod 600 /home/nomilyskills/public_html/composer.lock
-
+chmod .env /home/nomilyskills/public_html/.env
 chown root:root /home/nomilyskills/public_html/.env
-chown root:root /home/nomilyskills/public_html/phpunit.xml
-chown root:root /home/nomilyskills/public_html/composer.json
-chown root:root /home/nomilyskills/public_html/composer.lock
 
 
 # Disable maintenance mode
