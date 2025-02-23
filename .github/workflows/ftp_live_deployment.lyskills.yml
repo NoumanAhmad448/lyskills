@@ -45,6 +45,7 @@ jobs:
         retries-delay: 10000
         retries-delay-exponential: true
         protocol: sftp
+        debug: true
 
     # - name: Directory Permissions
     #   run: chmod -R 777 storage bootstrap/cache
