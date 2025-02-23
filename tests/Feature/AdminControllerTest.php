@@ -1,3 +1,8 @@
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use App\Models\User;
 <?php
 
 namespace Tests\Feature;

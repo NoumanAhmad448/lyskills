@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
                 FaqSeeder::class,
                 PageSeeder::class,
                 CourseSeeder::class,
+                InstructorPaymentSeeder::class,
             ]);
         }
     }
