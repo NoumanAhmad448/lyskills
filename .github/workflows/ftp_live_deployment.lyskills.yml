@@ -53,7 +53,7 @@ jobs:
         username: ${{secrets.FTP_USERNAME}}
         password: ${{secrets.FTP_PASS}}
         server-dir: /
-        verbose: print
+        log-level	: verbose
         dry-run: true
 
     # - name: Directory Permissions
