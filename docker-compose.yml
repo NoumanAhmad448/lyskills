@@ -1,0 +1,55 @@
+# version: '3.8'
+
+services:
+  # lyskills app (PHP-FPM)
+  app:
+    env_file:
+      - .env  # This loads variables from .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lyskills-app
+    volumes:
+      - .:/home/nomilyskills/public_html
+    networks:
+      - lyskills-network
+    environment:
+      - DB_HOST=db
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - db   # Ensure the app waits for db to start
+
+  # MySQL database
+  db:
+    image: mysql:5.7
+    container_name: lyskills-db
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}       # Create user with the specified username
+      MYSQL_PASSWORD: ${DB_PASSWORD}   # Set password for the created user
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Allow empty password for root user in local
+    networks:
+      - lyskills-network
+    ports:
+      - 3306:3306
+
+  # Nginx for reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - 8081:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/home/nomilyskills/public_html
+    depends_on:
+      - app
+    networks:
+      - lyskills-network
+
+networks:
+  lyskills-network:
+    driver: bridge
