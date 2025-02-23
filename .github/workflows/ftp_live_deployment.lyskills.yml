@@ -56,17 +56,15 @@ jobs:
     #     log-level	: verbose
     #     # dry-run: true
 
-    - name: Set up FTP client
-      uses: sebastianpopp/ftp-action@v2  # FTP deployment action
-
     - name: FTP Deploy
-      uses: sebastianpopp/ftp-action@v2
+      uses: appleboy/ftp-action@v1  # FTP deploy action
       with:
-        server: ${{ secrets.FTP_SERVER }}  # Your FTP server address (stored as secret)
-        username: ${{ secrets.FTP_USERNAME }}  # Your FTP username (stored as secret)
-        password: ${{ secrets.FTP_PASSWORD }}  # Your FTP password (stored as secret)
-        local-directory: ./  # Directory to upload (root directory of the repository)
-        remote-directory: /
+        host: ${{ secrets.FTP_SERVER }}  # FTP server address
+        username: ${{ secrets.FTP_USERNAME }}  # FTP username
+        password: ${{ secrets.FTP_PASSWORD }}  # FTP password
+        port: 21  # FTP port, 21 is default FTP port
+        local-dir: ./  # Local directory to upload (default is the repository root)
+        remote-dir: /
 
     # - name: Directory Permissions
     #   run: chmod -R 777 storage bootstrap/cache
