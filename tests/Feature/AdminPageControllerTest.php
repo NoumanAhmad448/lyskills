@@ -187,4 +187,12 @@ class AdminPageControllerTest extends TestCase
         $this->actingAs($this->adminUser)->delete(route('admin_delete_page', $page));
         Storage::disk('public')->assertMissing('uploads/test.jpg');
     }
+
+    public function it_displays_the_pages_list_for_admi()
+    {
+        Page::factory()->count(5)->create();
+        $response = $this->actingAs($this->adminUser)->get(route('admin_v_page'));
+        $response->assertStatus(200)->assertViewHas('pages');
+    }
+
 }
