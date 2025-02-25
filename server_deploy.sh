@@ -9,7 +9,7 @@ yes | php artisan key:generate
 # Secure .env and other sensitive files before running anything
 chmod 775 /home/nomilyskills/public_html/
 chmod 444 /home/nomilyskills/public_html/.env
-chown root:root /home/nomilyskills/public_html/
+chown -R root:root /home/nomilyskills/public_html/
 
 # Set correct permissions for storage & bootstrap/cache (needed for Laravel)
 yes | chmod -R 777 /home/nomilyskills/public_html/storage/ /home/nomilyskills/public_html/bootstrap/cache
