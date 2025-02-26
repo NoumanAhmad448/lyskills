@@ -144,7 +144,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd ${{ matrix.server_path }} &&
-            sudo chmod u+x ./server_deploy.sh &&
+            sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
             sudo chown -R root:root /home/nomilyskills/public_html/server_deploy.sh &&
             ${{ matrix.server_path }}/server_deploy.sh
 
