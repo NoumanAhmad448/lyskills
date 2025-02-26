@@ -13,9 +13,17 @@ on:
           - normal
 
 jobs:
-  docker-deploy:
-    if: ${{ github.event.inputs.deploy_type == 'docker' }}
+  test_condition:
     runs-on: ubuntu-latest
+    steps:
+    - name: Debug deploy_type input
+      run: echo "Deploy Type: ${{ github.event.inputs.deploy_type }}"
+
+
+  docker-deploy:
+    runs-on: ubuntu-latest
+    
+    if: ${{ github.event.inputs.deploy_type == 'docker' }}
     strategy:
       fail-fast: true
       matrix:
@@ -112,8 +120,8 @@ jobs:
 
   # Job for Normal Laravel deployment
   laravel-deployment:
-    if: ${{ github.event.inputs.deploy_type == 'normal' }}  # Trigger this job only if 'normal' is selected
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.deploy_type == 'normal' }}  # Trigger this job only if 'normal' is selected
     timeout-minutes: 1200
     strategy:
       fail-fast: true
