@@ -16,6 +16,8 @@ jobs:
   test_condition:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
+
     - name: Debug deploy_type input
       run: echo "Deploy Type: ${{ github.event.inputs.deploy_type }}"
 
