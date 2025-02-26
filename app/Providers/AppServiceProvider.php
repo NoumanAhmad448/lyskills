@@ -82,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
 
         if (in_array(config('app.env'), ['production', 'prod'])) {
             $checks[] = Js_Debug::new();
-            $checks[] = CpuLoadCheck::new()->failWhenLoadIsHigherInTheLast15Minutes(2.0);
+            // $checks[] = CpuLoadCheck::new()->failWhenLoadIsHigherInTheLast15Minutes(2.0);
             $checks[] = EnvironmentCheck::new();
             $checks[] = UsedDiskSpaceCheck::new();
             $checks[] = PingCheck::new()->url(config('app.url'))->retryTimes(config('setting.retry_time'));
