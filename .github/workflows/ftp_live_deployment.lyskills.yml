@@ -1,61 +1,148 @@
 name: Lyskills Deployment
 
 on:
-  push:
-    branches: [ "master" ]
+  workflow_dispatch:
+    inputs:
+      deploy_type:
+        description: 'Choose deploy type'
+        required: true
+        default: 'docker'
+        type: choice
+        options:
+          - docker
+          - normal
+
 jobs:
-  laravel-deployment:
+  docker-deploy:
+    if: ${{ github.event.inputs.deploy_type == 'docker' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 1200000
     strategy:
       fail-fast: true
       matrix:
-        php: [8.1]
+        php: [8.1]  # You can add more PHP versions in the future if needed
         commit_msg: ["Fixes coding style"]
+        container: ["/lyskills-app"]
+        app: ["lyskills-app"]
+        server_path: ["/home/nomilyskills/public_html"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: json, dom, curl, libxml, mbstring, bz2, fileinfo, gd, gettext, mbstring, exif, mysqli, pdo_mysql
+          tools: pint:1.16.1, phpdoc, composer:2.4.4
+          coverage: none
+
+      - name: Run Pint for code styling
+        run: pint --config pint.json
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}${{ matrix.container}}:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}${{ matrix.container}}:latest
+
+      - name: SSH to server and deploy Docker image
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ secrets.SSH_USERNAME }}
+          host: ${{ secrets.SERVER_IP }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            # Log into Docker Hub on the remote server
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            # Pull the latest image from Docker Hub
+            docker pull ${{ secrets.DOCKER_USERNAME }}${{ matrix.container}}:latest
+
+            # Stop and remove the existing container
+            docker stop ${{ matrix.app }} || true
+            docker rm ${{ matrix.app }} || true
+
+            # Run the new container with the latest image
+            docker run -d --name ${{ matrix.app }} -p 80:80 ${{ secrets.DOCKER_USERNAME }}${{ matrix.container}}:latest
+
+      - name: Build and start Docker containers
+        run: |
+          docker-compose -f docker-compose.yml up -d --build
+
+      - name: Run Laravel setup script inside container
+        run: |
+          docker-compose exec ${{ matrix.app }} bash -c "
+            php artisan down || true &&
+            yes | php artisan key:generate &&
+            chmod 775 ${{ matrix.server_path }} &&
+            chmod 444 ${{ matrix.server_path }}/.env &&
+            chown -R root:root ${{ matrix.server_path }} &&
+            yes | chmod -R 777 ${{ matrix.server_path }}/storage/ ${{ matrix.server_path }}/bootstrap/cache &&
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache &&
+            chown -R root:root ${{ matrix.server_path }} &&
+            php artisan migrate --force &&
+            php artisan cache:clear &&
+            php artisan config:clear &&
+            php artisan view:clear &&
+            export NVM_DIR=\"$HOME/.nvm\" &&
+            [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\" &&
+            nvm use 16 &&
+            npm install &&
+            npm run production &&
+            php artisan health:check --no-notification &&
+            chown -R nomilyskills:nomilyskills ${{ matrix.server_path }} &&
+            chmod -R 755 ${{ matrix.server_path }} &&
+            chmod 444 ${{ matrix.server_path }}/.env &&
+            php artisan up
+          "
+
+      - name: Stop Docker containers
+        run: |
+          docker-compose down
+
+  # Job for Normal Laravel deployment
+  laravel-deployment:
+    if: ${{ github.event.inputs.deploy_type == 'normal' }}  # Trigger this job only if 'normal' is selected
+    runs-on: ubuntu-latest
+    timeout-minutes: 1200
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1]  # You can add more PHP versions in the future if needed
+        commit_msg: ["Fixes coding style"]
+
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup PHP with fail-fast
+    - name: Setup PHP
       uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
       with:
         php-version: ${{ matrix.php }}
-        extensions: json, dom, curl, libxml, mbstring, bz2, fileinfo, gd, gettext,mbstring,exif,mysqli,pdo_mysql
-        tools: pint:1.16.1,phpdoc,composer:2.4.4
+        extensions: json, dom, curl, libxml, mbstring, bz2, fileinfo, gd, gettext, mbstring, exif, mysqli, pdo_mysql
+        tools: pint:1.16.1, phpdoc, composer:2.4.4
         coverage: none
 
-    # - uses: shivammathur/setup-php@v2
-    #   with:
-    #     php-version: '8.1'
-        # ini-values: upload_max_filesize=80000M, post_max_size = 80000M, allow_url_fopen = On, display_errors = Off,enable_dl = Off,
-                    # file_uploads = On,max_execution_time = 300,max_input_time = 600, max_input_vars = 10000,memory_limit = 4500M
-    # - name: Copy .env
-    #   run: php -r "file_exists('.env') || copy('.env.live', '.env');"
-
-    # - name: clear cache
-      # run: php artisan config:cache
-
-    # - name: npm dependecies
-    #   run: npm install
-
-    # - name: Clear Cache & run migrations
-    #   run: |
-    #     php artisan key:generate
-    #     php artisan migrate
-
-    # - name: config routing
-      # run: php artisan config:route
-    - name: Run Pint
+    - name: Run Pint for code styling
       run: pint --config pint.json
 
-    - name: Sync files
+    - name: Sync files to server via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: ${{secrets.FTP_SERVER}}
-        username: ${{secrets.FTP_USERNAME}}
-        password: ${{secrets.FTP_PASS}}
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASS }}
         server-dir: /
-        log-level	: verbose
-        # dry-run: true
+        log-level: verbose
         timeout: 60000000
         port: 21
         passive: true  # Use passive mode to avoid unexpected disconnects
@@ -66,32 +153,13 @@ jobs:
           **/node_modules/**
           **/vendor/**
 
-
-    # - name: FTP Deploy
-    #   uses: wlixcc/SFTP-Deploy-Action@v1.2.5
-    #   with:
-    #     username: ${{ secrets.SSH_USERNAME }}
-    #     server: ${{ secrets.FTP_SERVER }}
-    #     password: ${{ secrets.SSH_PASSWORD }}
-    #     port: ${{ secrets.FTP_PORT }}
-    #     local_path: './'
-    #     remote_path: '/'
-    #     sftpArgs: '-o ConnectTimeout=50000'
-
-
-    # - name: Directory Permissions
-    #   run: chmod -R 777 storage bootstrap/cache
-
-    # - name: Install Dependencies
-      # run: |
-          # composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name : current working directory before deployment
-      run: pwd
-
-    - name: Running Scripts
+    - name: Run server-side deployment script
       uses: appleboy/ssh-action@master
       with:
-        username: ${{secrets.SSH_USERNAME}}
-        host: ${{secrets.SERVER_IP}}
+        username: ${{ secrets.SSH_USERNAME }}
+        host: ${{ secrets.SERVER_IP }}
         password: ${{ secrets.SSH_PASSWORD }}
-        script: 'cd /home/nomilyskills/public_html && chmod u+x ./server_deploy.sh && ./server_deploy.sh'
+        script: |
+          cd ${{ matrix.server_path }} &&
+          chmod u+x ./server_deploy.sh &&
+          ./server_deploy.sh
