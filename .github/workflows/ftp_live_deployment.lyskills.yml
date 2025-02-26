@@ -145,4 +145,4 @@ jobs:
           script: |
             cd ${{ matrix.server_path }} &&
             chmod u+x ./server_deploy.sh &&
-            ./server_deploy.sh
+            ${{ matrix.server_path }}/server_deploy.sh
