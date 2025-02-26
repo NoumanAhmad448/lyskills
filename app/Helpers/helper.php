@@ -207,3 +207,12 @@ if (!function_exists('server_logs')){
         }
    }
 }
+
+if (! function_exists('debug_logs')) {
+    function debug_logs($input): void {
+        if (config('app.debug')) {
+            dump($input);
+            dump(config('setting.dash_lines'));
+        }
+    }
+}
