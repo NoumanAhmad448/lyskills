@@ -144,26 +144,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd ${{ matrix.server_path }} &&
-            chmod u+x ./server_deploy.sh &&
-            ./server_deploy.sh
+            sudo chmod u+x ./server_deploy.sh &&
+            sudo chown -R root:root /home/nomilyskills/public_html/server_deploy.sh &&
+            ${{ matrix.server_path }}/server_deploy.sh
 
-    # - name: FTP Deploy
-    #   uses: wlixcc/SFTP-Deploy-Action@v1.2.5
-    #   with:
-    #     username: ${{ secrets.SSH_USERNAME }}
-    #     server: ${{ secrets.FTP_SERVER }}
-    #     password: ${{ secrets.SSH_PASSWORD }}
-    #     port: ${{ secrets.FTP_PORT }}
-    #     local_path: './'
-    #     remote_path: '/'
-    #     sftpArgs: '-o ConnectTimeout=50000'
-
-
-    # - name: Directory Permissions
-    #   run: chmod -R 777 storage bootstrap/cache
-
-    # - name: Install Dependencies
-      # run: |
-          # composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
-    
