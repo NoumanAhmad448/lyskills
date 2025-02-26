@@ -35,7 +35,7 @@ jobs:
         commit_msg: ["Fixes coding style"]
         container: ["/lyskills-app"]
         app: ["lyskills-app"]
-        server_path: ["/home/nomilyskills/public_html"]
+        server_path: [${{ secrets.server_path }}]
 
     steps:
       - name: Checkout code
@@ -103,6 +103,7 @@ jobs:
       matrix:
         php: [8.1]  # You can add more PHP versions in the future if needed
         commit_msg: ["Fixes coding style"]
+        server_path: [${{ secrets.server_path }}]
 
     steps:
       - uses: actions/checkout@v3
@@ -145,6 +146,6 @@ jobs:
           script: |
             cd ${{ matrix.server_path }} &&
             sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
-            sudo chown -R root:root /home/nomilyskills/public_html/server_deploy.sh &&
-            ${{ matrix.server_path }}/server_deploy.sh
+            sudo chown -R ${{ matrix.server_path }}/server_deploy.sh &&
+            ./server_deploy.sh
 
