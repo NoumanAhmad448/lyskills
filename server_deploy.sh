@@ -7,9 +7,9 @@ php artisan down || true
 yes | php artisan key:generate
 
 # Secure .env and other sensitive files before running anything
-chmod -R 775 /home/nomilyskills/public_html/
-chmod 444 /home/nomilyskills/public_html/.env
-chown root:root /home/nomilyskills/public_html/
+sudo chmod -R 775 /home/nomilyskills/public_html/
+sudo chmod 444 /home/nomilyskills/public_html/.env
+sudo chown -R root:root /home/nomilyskills/public_html/
 
 # Set correct permissions for storage & bootstrap/cache (needed for Laravel)
 yes | chmod -R 777 /home/nomilyskills/public_html/storage/ /home/nomilyskills/public_html/bootstrap/cache
@@ -18,7 +18,7 @@ yes | chmod -R 777 /home/nomilyskills/public_html/storage/ /home/nomilyskills/pu
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
 
 # to avoid any node permission error
-chown -R root:root /home/nomilyskills/public_html/
+sudo chown -R root:root /home/nomilyskills/public_html/
 
 # Run database migrations (ensuring root runs them)
 php artisan migrate --force
@@ -45,13 +45,13 @@ npm run production
 php artisan health:check --no-notification
 
 # Reset permissions for web server & FTP user after script runs
-chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
-chmod -R 755 /home/nomilyskills/public_html/
-chmod 444 /home/nomilyskills/public_html/.env
+sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
+sudo chmod -R 755 /home/nomilyskills/public_html/
+sudo chmod 444 /home/nomilyskills/public_html/.env
 
 # Restore restricted permissions for sensitive files
-chmod -R 755  /home/nomilyskills/public_html/server_deploy.sh
-chown root:root /home/nomilyskills/public_html/server_deploy.sh
+# chmod -R 755  /home/nomilyskills/public_html/server_deploy.sh
+# chown root:root /home/nomilyskills/public_html/server_deploy.sh
 
 # Disable maintenance mode
 php artisan up
