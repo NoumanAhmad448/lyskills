@@ -103,7 +103,7 @@ jobs:
       matrix:
         php: [8.1]  # You can add more PHP versions in the future if needed
         commit_msg: ["Fixes coding style"]
-        server_path: ["${{ secrets.server_path }}"]
+        server_path: ["${{ secrets.SERVER_PATH }}"]
 
     steps:
       - uses: actions/checkout@v3
