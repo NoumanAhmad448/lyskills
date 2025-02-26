@@ -10,20 +10,11 @@ Lyskills
 <a href="https://github.com/NoumanAhmad448/lyskills/stargazers">
     <img src="https://img.shields.io/github/stars/hiyouga/LLaMA-Factory?style=social" alt="GitHub Repo stars"/>
 </a>
-<a href="https://github.com/NoumanAhmad448/DebugEval/commits/master">
-    <img src="https://img.shields.io/github/last-commit/NoumanAhmad448/DebugEval" alt="GitHub last commit"/>
+<a href="https://github.com/NoumanAhmad448/lyskills/commits/master">
+    <img src="https://img.shields.io/github/last-commit/NoumanAhmad448/lyskills" alt="GitHub last commit"/>
 </a>
 <a href="https://github.com/NoumanAhmad448/lyskills/graphs/contributors">
     <img src="https://img.shields.io/github/contributors/hiyouga/LLaMA-Factory?color=orange" alt="GitHub contributors"/>
-</a>
-<a href="https://github.com/NoumanAhmad448/lyskills/actions/workflows/tests.yml">
-    <img src="https://github.com/NoumanAhmad448/lyskills/actions/workflows/tests.yml/badge.svg" alt="GitHub workflow"/>
-</a>
-<a href="https://pypi.org/project/llamafactory/">
-    <img src="https://img.shields.io/pypi/v/llamafactory" alt="PyPI"/>
-</a>
-<a href="https://scholar.google.com/scholar?cites=12620864006390196564">
-    <img src="https://img.shields.io/badge/citation-238-green" alt="Citation"/>
 </a>
 <a href="https://github.com/NoumanAhmad448/lyskills/pulls">
     <img src="https://img.shields.io/badge/PRs-welcome-blue" alt="GitHub pull request"/>
@@ -130,13 +121,14 @@ to
 
 ````
 file and change the DB connection
+
 1. Create a database <b>db</b>
 2. You need to follow of either mentioned path
     1. One
         1. run
-           1. db.sql
-           2.  <b>user_ann_models.sql</b>
-        file locally. These files are avaiable in the source code, path /
+            1. db.sql
+            2. <b>user_ann_models.sql</b>
+               file locally. These files are avaiable in the source code, path /
         2. Add primary key manually in every table or create a alter query and try changing table name and primary key column
     2. Second
         1. php artisan migrate
@@ -165,7 +157,7 @@ npm install
 
 php artisan serve --port=8081
 
-````
+```
 
 
 # Server Configurations
