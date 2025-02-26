@@ -240,4 +240,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
     ],
 
+    "google_captcha_key" => env("NOCAPTCHA_SITEKEY"),
+    "google_captcha_secret" => env("NOCAPTCHA_SECRET")
 ];

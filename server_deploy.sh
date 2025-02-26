@@ -23,12 +23,16 @@ sudo chown -R root:root /home/nomilyskills/public_html/
 # Run database migrations (ensuring root runs them)
 php artisan migrate --force
 
-php artisan db:seed --class=LanguageSeeder
+# yes | php artisan db:seed --class=LanguageSeeder
 
 # Clear caches
 php artisan cache:clear
 php artisan config:clear
 php artisan view:clear
+php artisan optimize # will cache config and routes
+
+# will cache events
+php artisan event:cache
 
 
 # Ensure correct Node.js version
@@ -53,7 +57,10 @@ sudo chmod 444 /home/nomilyskills/public_html/.env
 
 # Restore restricted permissions for sensitive files
 # sudo chmod -R 755  /home/nomilyskills/public_html/server_deploy.sh
-# sudo chown -R root:root /home/nomilyskills/public_html/server_deploy.sh
+# sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/server_deploy.sh
+
+# runs cron
+php artisan schedule:run >> /dev/null 2>&1
 
 # Disable maintenance mode
 php artisan up

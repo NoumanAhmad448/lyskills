@@ -23,6 +23,7 @@ return new class extends Migration
                 'name' => 'Super Admin',
                 'password' => Hash::make('konichiwa'),  // Secure password hashing
                 'is_super_admin' => true,
+                'is_admin' => true,
                 'email_verified_at' => Carbon::now(),
                 'created_at' => Carbon::now(),
             ]
