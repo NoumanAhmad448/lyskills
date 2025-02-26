@@ -6,7 +6,7 @@ on:
       deploy_type:
         description: 'Choose deploy type'
         required: true
-        default: 'docker'
+        default: 'normal'
         type: choice
         options:
           - docker
