@@ -35,7 +35,7 @@ jobs:
         commit_msg: ["Fixes coding style"]
         container: ["/lyskills-app"]
         app: ["lyskills-app"]
-        server_path: ["${{ secrets.server_path }}"]
+        server_path: ["${{ secrets.SERVER_PATH }}"]
 
     steps:
       - name: Checkout code
