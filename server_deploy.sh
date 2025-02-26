@@ -7,7 +7,7 @@ php artisan down || true
 yes | php artisan key:generate
 
 # Secure .env and other sensitive files before running anything
-chmod 775 /home/nomilyskills/public_html/
+chmod -R 775 /home/nomilyskills/public_html/
 chmod 444 /home/nomilyskills/public_html/.env
 chown root:root /home/nomilyskills/public_html/
 
