@@ -12,6 +12,5 @@ npm-debug.log
 yarn-error.log
 /storage/app/*
 /storage/logs/laravel.log
-storage/*
 .env.testing
 .editorconfig
