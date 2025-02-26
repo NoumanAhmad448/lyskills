@@ -23,6 +23,8 @@ sudo chown -R root:root /home/nomilyskills/public_html/
 # Run database migrations (ensuring root runs them)
 php artisan migrate --force
 
+php artisan db:seed --class=LanguageSeeder
+
 # Clear caches
 php artisan cache:clear
 php artisan config:clear
