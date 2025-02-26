@@ -50,9 +50,8 @@ chmod -R 755 /home/nomilyskills/public_html/
 chmod 444 /home/nomilyskills/public_html/.env
 
 # Restore restricted permissions for sensitive files
-# chmod .env /home/nomilyskills/public_html/.env
-# chown root:root /home/nomilyskills/public_html/.env
-
+chmod -R 755  /home/nomilyskills/public_html/server_deploy.sh
+chown root:root /home/nomilyskills/public_html/server_deploy.sh
 
 # Disable maintenance mode
 php artisan up

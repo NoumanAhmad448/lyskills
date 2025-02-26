@@ -128,7 +128,7 @@ jobs:
           log-level: verbose
           timeout: 60000000
           port: 21
-          passive: true  # Use passive mode to avoid unexpected disconnects
+          # passive: true  # Use passive mode to avoid unexpected disconnects
           protocol: ftps
           exclude: |
             **/.git*
