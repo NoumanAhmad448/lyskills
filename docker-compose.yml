@@ -3,6 +3,8 @@ version: '3.8'
 services:
   # lyskills app (PHP-FPM)
   app:
+    env_file:
+      - .env  # This loads variables from .env
     build:
       context: .
       dockerfile: Dockerfile
@@ -24,7 +26,7 @@ services:
     container_name: lyskills-db
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: {DB_DATABASE}
+      MYSQL_DATABASE: ${DB_DATABASE}
     networks:
       - lyskills-network
     ports:
