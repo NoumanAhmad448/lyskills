@@ -146,6 +146,6 @@ jobs:
           script: |
             cd ${{ matrix.server_path }} &&
             sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
-            sudo chown -R ${{ matrix.server_path }}/server_deploy.sh &&
+            sudo chown -R root:root ${{ matrix.server_path }}/server_deploy.sh &&
             ./server_deploy.sh
 
