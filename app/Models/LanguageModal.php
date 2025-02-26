@@ -12,6 +12,6 @@ class LanguageModal extends Model
     public $timestamps = false;
 
     public function __construct(){
-        $this->table = config('setting.db_helper').'languages';
+        $this->table = 'languages';
     }
 }
