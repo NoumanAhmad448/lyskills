@@ -10,20 +10,11 @@ Lyskills
 <a href="https://github.com/NoumanAhmad448/lyskills/stargazers">
     <img src="https://img.shields.io/github/stars/hiyouga/LLaMA-Factory?style=social" alt="GitHub Repo stars"/>
 </a>
-<a href="https://github.com/NoumanAhmad448/DebugEval/commits/master">
-    <img src="https://img.shields.io/github/last-commit/NoumanAhmad448/DebugEval" alt="GitHub last commit"/>
+<a href="https://github.com/NoumanAhmad448/lyskills/commits/master">
+    <img src="https://img.shields.io/github/last-commit/NoumanAhmad448/lyskills" alt="GitHub last commit"/>
 </a>
 <a href="https://github.com/NoumanAhmad448/lyskills/graphs/contributors">
     <img src="https://img.shields.io/github/contributors/hiyouga/LLaMA-Factory?color=orange" alt="GitHub contributors"/>
-</a>
-<a href="https://github.com/NoumanAhmad448/lyskills/actions/workflows/tests.yml">
-    <img src="https://github.com/NoumanAhmad448/lyskills/actions/workflows/tests.yml/badge.svg" alt="GitHub workflow"/>
-</a>
-<a href="https://pypi.org/project/llamafactory/">
-    <img src="https://img.shields.io/pypi/v/llamafactory" alt="PyPI"/>
-</a>
-<a href="https://scholar.google.com/scholar?cites=12620864006390196564">
-    <img src="https://img.shields.io/badge/citation-238-green" alt="Citation"/>
 </a>
 <a href="https://github.com/NoumanAhmad448/lyskills/pulls">
     <img src="https://img.shields.io/badge/PRs-welcome-blue" alt="GitHub pull request"/>
@@ -32,9 +23,6 @@ Lyskills
 </div>
 
 A **Video-Based Learning Management System (LMS)** is a specialized platform designed to deliver, manage, and track educational courses and training programs primarily through video content. It is widely used in online education, corporate training, and skill development to provide an engaging and flexible learning experience.
-
-
-
 
 #### **Core Features of a Video-Based LMS:**
 
@@ -114,18 +102,14 @@ A **Video-Based Learning Management System (LMS)** is a specialized platform des
 
 ## Development
 
-
 1. Turn on xampp
 2. PHP server
-
 
 ```
 php artisan serve --port=8080
 ```
 
-
 3. Turn on npm server
-
 
 ```
 npm run watch
@@ -139,20 +123,17 @@ npm run watch
 4. server logs `server_logs` function in `helper.php`
 5. server configuration `php_config` function in `helper.php`
 
-
-1. Add all global setting constants in `custom_lib .blade.php`
-2. custom javascript functions in `common_functions.js`
-3. show loader on user request `profile.js` and search for `hide loader` & `show loader`
-4. server logs `server_logs` function in `helper.php`
-5. server configuration `php_config` function in `helper.php`
+1) Add all global setting constants in `custom_lib .blade.php`
+2) custom javascript functions in `common_functions.js`
+3) show loader on user request `profile.js` and search for `hide loader` & `show loader`
+4) server logs `server_logs` function in `helper.php`
+5) server configuration `php_config` function in `helper.php`
 
 ```
 8. Checkout storage on server
 ```
 
-
 df -hi
-
 
 ```
 9. cloudflare setup for extra security
@@ -162,69 +143,50 @@ df -hi
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
 2. download node 16.18.0
 2. Copy
-```
 
-
-.env.dev
-
-
-```
-to
-```
-
-
-.env
-
-````
-
-````
 file and change the DB connection
+
 1. Create a database <b>db</b>
 2. You need to follow of either mentioned path
     1. One
         1. run
-           1. db.sql
-           2.  <b>user_ann_models.sql</b>
-        file locally. These files are avaiable in the source code, path /
+            1. db.sql
+            2. <b>user_ann_models.sql</b>
+               file locally. These files are avaiable in the source code, path /
         2. Add primary key manually in every table or create a alter query and try changing table name and primary key column
     2. Second
         1. php artisan migrate
         2. Get dump from someone else and upload
-3. Visit ```storage/framework``` folder and create
-````
+3. Visit `storage/framework` folder and create
 
-````
+```
+
+```
 
 views
-
 
 ```
 folder
 4. Run
 ```
 
-
 composer install
-
 
 ```
 5. Run
 ```
 
-
 npm install
-
 
 ```
 6. Finally😍😍😍 Run
 ```
 
-
 php artisan serve --port=8081
 
-````
+```
 
-````
+```
 
 # Comprehensive Deployment Guidelines for Lyskills
 
@@ -235,12 +197,15 @@ This guide provides step-by-step instructions for deploying the **Lyskills** Lar
 ## **1. Pre-Deployment Preparation**
 
 ### **1.1. Verify Local Environment**
-1. **PHP Version**: Ensure PHP 8.1 or higher is installed.
-   ```bash
-   php -v
-````
 
-````
+1. **PHP Version**: Ensure PHP 8.1 or higher is installed.
+    ```bash
+    php -v
+    ```
+
+```
+
+```
 
 2. **Composer**: Install Composer and verify its version.
     ```bash
@@ -260,7 +225,6 @@ This guide provides step-by-step instructions for deploying the **Lyskills** Lar
     ```
 
 ### **1.2. Prepare the Laravel Project**
-
 
 1. **Update `.env` File**:
 
@@ -312,7 +276,6 @@ This guide provides step-by-step instructions for deploying the **Lyskills** Lar
 
 ### **2.1. Verify Server Requirements**
 
-
 1. **PHP Version**: Ensure the server has PHP 8.1 or higher.
     ```bash
     php -v
@@ -339,7 +302,6 @@ This guide provides step-by-step instructions for deploying the **Lyskills** Lar
 
 ### **2.2. Create FTP Access**
 
-
 1. In cPanel, go to **FTP Accounts**.
 2. Create a new FTP account with access to the domain's root directory (e.g., `/home/web_server/public_html`).
 
@@ -348,7 +310,6 @@ This guide provides step-by-step instructions for deploying the **Lyskills** Lar
 ## **3. Upload the Project to the Server**
 
 ### **3.1. Connect via FTP**
-
 
 1. Use an FTP client like **FileZilla**.
 2. Enter the following details:
@@ -364,9 +325,7 @@ This guide provides step-by-step instructions for deploying the **Lyskills** Lar
 
 ### **3.2. Set File Permissions**
 
-
 Set the correct permissions for the Laravel project:
-
 
 ```bash
 chmod -R 755 /home/web_server/public_html
@@ -379,7 +338,6 @@ chmod -R 775 /home/web_server/public_html/bootstrap/cache
 ## **4. Configure the Server**
 
 ### **4.1. Update Apache Configuration**
-
 
 1. Edit the Apache configuration file:
     ```bash
@@ -404,7 +362,6 @@ chmod -R 775 /home/web_server/public_html/bootstrap/cache
     ```
 
 ### **4.2. Update PHP Configuration**
-
 
 1. Edit the PHP configuration file:
     ```bash
@@ -431,7 +388,6 @@ chmod -R 775 /home/web_server/public_html/bootstrap/cache
 
 ### **5.1. Import the Database**
 
-
 1. Connect to MySQL:
     ```bash
     mysql -h 127.0.0.1 -P 3306 -u web_server_lyskills_root5 -p
@@ -456,9 +412,7 @@ chmod -R 775 /home/web_server/public_html/bootstrap/cache
 
 ### **5.2. Verify Database Connection**
 
-
 Ensure the `.env.example` file has the correct database credentials:
-
 
 ```env
 DB_HOST=127.0.0.1
@@ -473,15 +427,12 @@ DB_PASSWORD=your_password
 
 ### **6.1. Test the Website**
 
-
 1. Open your browser and navigate to `http://your_website.com`.
 2. Verify that the Laravel application loads correctly.
 
 ### **6.2. Check Laravel Logs**
 
-
 If there are issues, check the Laravel logs:
-
 
 ```bash
 nano /home/web_server/public_html/storage/logs/laravel.log
@@ -493,9 +444,7 @@ nano /home/web_server/public_html/storage/logs/laravel.log
 
 ### **7.1. Set Up Cron Jobs**
 
-
 Set up a cron job for Laravel's scheduler:
-
 
 1. Open the crontab:
     ```bash
@@ -514,9 +463,7 @@ Set up a cron job for Laravel's scheduler:
 
 ### **7.2. Configure Queue Workers**
 
-
 If using queues, start the queue worker:
-
 
 ```bash
 php /home/web_server/public_html/artisan queue:work --daemon
@@ -538,6 +485,7 @@ php /home/web_server/public_html/artisan queue:work --daemon
 
 -   Verify MySQL credentials in `.env`.
 -   Ensure the MySQL service is running:
+
     ```bash
     systemctl status mysql
     ```
@@ -562,6 +510,4 @@ php /home/web_server/public_html/artisan queue:work --daemon
     ```
 -   Ensure the `mod_rewrite` module is enabled.
 
-
 By following these comprehensive deployment guidelines, you can successfully deploy the **Lyskills** Laravel project to the server.
-
