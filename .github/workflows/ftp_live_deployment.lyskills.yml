@@ -17,13 +17,13 @@ on:
           - normal
 
 jobs:
-  test_condition:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  # test_condition:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: Debug deploy_type input
-        run: echo "Deploy Type: ${{ github.event.inputs.deploy_type }}"
+  #     - name: Debug deploy_type input
+  #       run: echo "Deploy Type: ${{ github.event.inputs.deploy_type }}"
 
   docker-deploy:
     runs-on: ubuntu-latest
@@ -97,7 +97,6 @@ jobs:
 
   laravel-deployment:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.deploy_type == 'normal' }}  # Trigger this job only if 'normal' is selected
     timeout-minutes: 1200
     strategy:
       fail-fast: true
