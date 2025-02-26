@@ -3,7 +3,7 @@
 @endsection
 @section('content')
 @php
-$constant = gen_str();
+$constant = "test";
 @endphp
 <body class="antialiased bg-gray-100 mt-7 md:mt-12 dark:bg-gray-900">
     <div class="mx-auto max-w-7xl lg:px-8 sm:px-6">
@@ -14,15 +14,10 @@ $constant = gen_str();
             </div>
 
             @if ($lastRanAt)
-                @include(config("files.components").".loader", ["prop" => [
-                    "id" => "{$constant}notifications_check_results_from"
-                ]])
                 <div id="{{$constant}}notifications" class="hidden {{ $lastRanAt->diffInMinutes() > 5 ? 'text-red-400' : 'text-gray-400 dark:text-gray-500' }} text-sm text-center font-medium">
                     {{ __('health::notifications.check_results_from') }} {{ $lastRanAt->diffForHumans() }}
                 </div>
-                @include(config("files.components").".loader_script", ["prop" => [
-                    'id' => "{$constant}notifications_check_results_from",
-                     "hide_el" => "{$constant}notifications"]])
+                
 
             @endif
 
