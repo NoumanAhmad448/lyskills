@@ -65,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         }
-        if(trim(config('app.env')) === "developement"){
+        if(trim(config('app.env')) === "dev"){
             URL::forceScheme('http');
         }
         $checks = [
