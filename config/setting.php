@@ -3,6 +3,8 @@
 $site_settings = [
         "s3Url" => env('AWS_URL'),
         "no_reply_email_pass" => env('NO_REPLY_EMAIL_PASS'),
+        "max_tble_size" => 9_0000000,
+        "retry_time" => 5,
         "show_site_log" => true,
         "login_profile" => true,
         "guest_search_bar" => true,

@@ -17,17 +17,22 @@ return new class extends Migration
      */
     public function up()
     {
-        User::firstOrCreate(
-            ['email' => 'admin@lyskills.com'],  // Check if user exists by email
-            [
-                'name' => 'Super Admin',
-                'password' => Hash::make('konichiwa'),  // Secure password hashing
-                'is_super_admin' => true,
-                'is_admin' => true,
-                'email_verified_at' => Carbon::now(),
-                'created_at' => Carbon::now(),
-            ]
-        );
+        if (class_exists(\App\Models\User::class)) {
+            User::firstOrCreate(
+                ['email' => 'admin@lyskills.com'],  // Check if user exists by email
+                [
+                    'name' => 'Super Admin',
+                    'password' => Hash::make('konichiwa'),  // Secure password hashing
+                    'is_super_admin' => true,
+                    'is_admin' => true,
+                    'email_verified_at' => Carbon::now(),
+                    'created_at' => Carbon::now(),
+                ]
+            );
+        }
+        else {
+            echo "❌ Error: User model does not exist. Please check your models directory.";
+        }
         
     }
 
