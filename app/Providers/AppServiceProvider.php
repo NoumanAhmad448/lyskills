@@ -24,6 +24,8 @@ use Spatie\Health\Checks\Checks\PingCheck;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Spatie\Health\Facades\Health;
 use Spatie\SecurityAdvisoriesHealthCheck\SecurityAdvisoriesCheck;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -46,6 +48,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        try {
+            DB::connection()->getPdo();  // Try to connect to the database
         if(Schema::hasTable('socials')){
         $social = Social::first();
         if($social){
@@ -88,5 +92,8 @@ class AppServiceProvider extends ServiceProvider
             $checks[] = PingCheck::new()->url(config('app.url'))->retryTimes(config('setting.retry_time'));
         }
         Health::checks($checks);
+    } catch (\Exception $e) {
+        Log::error('Database connection failed: ' . $e->getMessage());
+    }
     }
 }
