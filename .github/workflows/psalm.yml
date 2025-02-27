@@ -39,7 +39,10 @@ jobs:
         run: mkdir -p storage/app storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
       
       - name: set permissions
-        run: chmod -R 755 storage 
+        run: chmod -R 755 storage
+
+      - name: Install Dependencies
+        run: composer update
 
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
