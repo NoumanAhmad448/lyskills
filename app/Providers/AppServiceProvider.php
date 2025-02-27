@@ -46,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        try {
+            DB::connection()->getPdo();  // Try to connect to the database
         if(Schema::hasTable('socials')){
         $social = Social::first();
         if($social){
@@ -89,5 +91,8 @@ class AppServiceProvider extends ServiceProvider
             $checks[] = PingCheck::new()->url(config('app.url'))->retryTimes(config('setting.retry_time'));
         }
         Health::checks($checks);
+    } catch (\Exception $e) {
+        Log::error('Database connection failed: ' . $e->getMessage());
+    }
     }
 }
