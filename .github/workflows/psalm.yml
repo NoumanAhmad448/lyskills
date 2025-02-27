@@ -1,15 +1,9 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Psalm Security Scan
 
 on:
   push:
     branches: [ "master" ]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [ "master" ]
   schedule:
     - cron: '42 20 * * 1'
@@ -21,9 +15,9 @@ jobs:
   php-security:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+      contents: read
+      security-events: write
+      actions: read
 
     steps:
       - name: Checkout code
@@ -32,19 +26,18 @@ jobs:
       - name: Set Up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'  # Change to your PHP version
-          extensions: bcmath  # Install bcmath
+          php-version: '8.1'
+          extensions: bcmath  # Ensure bcmath is installed
 
-      - name: create import direcoties
+      - name: create import directories
         run: mkdir -p storage/app storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
-      
+
       - name: set permissions
         run: chmod -R 755 storage
 
-      - name: Install Dependencies
-        run: composer update
+      - name: Install Dependencies (Ignore bcmath extension requirement)
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=ext-bcmath
 
-        # run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=ext-bcmath
       - name: Psalm Security Scan
         uses: psalm/psalm-github-security-scan@f3e6fd9432bc3e44aec078572677ce9d2ef9c287
 
