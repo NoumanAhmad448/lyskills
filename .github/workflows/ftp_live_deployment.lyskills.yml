@@ -4,11 +4,6 @@ on:
   push:
     branches:
       - master  # Only trigger when pushing to the 'master' branch
-permissions:
-  contents: write  # Allows the workflow to push changes
-  actions: read    # Allows reading action logs
-  pull-requests: write  # Enables PR creation and updates
-
   workflow_dispatch:
     inputs:
       deploy_type:
@@ -19,6 +14,11 @@ permissions:
         options:
           - docker
           - normal
+
+permissions:
+  contents: write  # Allows the workflow to push changes
+  actions: read    # Allows reading action logs
+  pull-requests: write  # Enables PR creation and updates
 
 jobs:
   # test_condition:
