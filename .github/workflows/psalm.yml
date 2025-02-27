@@ -42,8 +42,9 @@ jobs:
         run: chmod -R 755 storage
 
       - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=ext-bcmath
+        run: composer update
 
+        # run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=ext-bcmath
       - name: Psalm Security Scan
         uses: psalm/psalm-github-security-scan@f3e6fd9432bc3e44aec078572677ce9d2ef9c287
 
