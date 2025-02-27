@@ -1,8 +1,8 @@
 <?php
 
 $site_settings = [
-        "s3Url" => "http://lyskills-by-us-yes-that-us.s3.ap-south-1.amazonaws.com/",
-        "no_reply_email_pass" => "30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ",
+        "s3Url" => env('AWS_URL'),
+        "no_reply_email_pass" => env('NO_REPLY_EMAIL_PASS'),
         "max_tble_size" => 9_0000000,
         "retry_time" => 5,
         "show_site_log" => true,

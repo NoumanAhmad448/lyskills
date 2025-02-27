@@ -26,13 +26,11 @@ php artisan migrate --force
 # yes | php artisan db:seed --class=LanguageSeeder
 
 # Clear caches
-php artisan cache:clear
-php artisan config:clear
-php artisan view:clear
-php artisan optimize # will cache config and routes
+php artisan cache:clear && php artisan config:clear && php artisan route:clear
+php artisan view:clear && php artisan event:clear && php artisan clear-compiled
+php artisan optimize:clear
+php artisan cache:forget spatie.permission.cache
 
-# will cache events
-php artisan event:cache
 
 
 # Ensure correct Node.js version
