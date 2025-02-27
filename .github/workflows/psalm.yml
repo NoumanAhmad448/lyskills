@@ -29,6 +29,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set Up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'  # Change to your PHP version
+          extensions: bcmath  # Install bcmath
+
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        
       - name: Psalm Security Scan
         uses: psalm/psalm-github-security-scan@f3e6fd9432bc3e44aec078572677ce9d2ef9c287
 

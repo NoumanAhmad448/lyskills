@@ -18,7 +18,7 @@
         "intervention/image": "^2.5",
         "james-heinrich/getid3": "^1.9",
         "laravel/cashier": "^12.12",
-        "laravel/framework": "^9.0",
+        "laravel/framework": "9.52.17",
         "laravel/jetstream": "^1.6",
         "laravel/sanctum": "^2.6",
         "laravel/slack-notification-channel": "^3.5",
