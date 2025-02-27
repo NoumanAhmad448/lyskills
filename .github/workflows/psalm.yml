@@ -1,47 +1,57 @@
-name: Psalm Security Scan
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# PHPMD is a spin-off project of PHP Depend and
+# aims to be a PHP equivalent of the well known Java tool PMD.
+# What PHPMD does is: It takes a given PHP source code base
+# and look for several potential problems within that source.
+# These problems can be things like:
+#   Possible bugs
+#   Suboptimal code
+#   Overcomplicated expressions
+#   Unused parameters, methods, properties
+# More details at https://phpmd.org/
+
+name: PHPMD
 
 on:
   push:
     branches: [ "master" ]
   pull_request:
+    # The branches below must be a subset of the branches above
     branches: [ "master" ]
   schedule:
-    - cron: '42 20 * * 1'
+    - cron: '28 1 * * 4'
 
 permissions:
   contents: read
 
 jobs:
-  php-security:
+  PHPMD:
+    name: Run PHPMD scanning
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      security-events: write
-      actions: read
+      contents: read # for checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set Up PHP
-        uses: shivammathur/setup-php@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@aa1fe473f9c687b6fb896056d771232c0bc41161
         with:
-          php-version: '8.1'
-          extensions: bcmath  # Ensure bcmath is installed
+          coverage: none
+          tools: phpmd
 
-      - name: create import directories
-        run: mkdir -p storage/app storage/framework/cache storage/framework/sessions storage/framework/views storage/logs
+      - name: Run PHPMD
+        run: phpmd . sarif codesize --reportfile phpmd-results.sarif
+        continue-on-error: true
 
-      - name: set permissions
-        run: chmod -R 755 storage
-
-      - name: Install Dependencies (Ignore bcmath extension requirement)
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-req=ext-bcmath
-
-      - name: Psalm Security Scan
-        uses: psalm/psalm-github-security-scan@f3e6fd9432bc3e44aec078572677ce9d2ef9c287
-
-      - name: Upload Security Analysis results to GitHub
+      - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: results.sarif
+          sarif_file: phpmd-results.sarif
+          wait-for-processing: true
