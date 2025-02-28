@@ -169,6 +169,12 @@ if (!function_exists('dateFormat')){
        return Carbon::parse($value)->format('Y-m-d');
    }
 }
+if (!function_exists('dbDate')){
+
+    function dbDate($value){
+       return Carbon::parse($value)->format('Y-m-d H:i:s');
+   }
+}
 if (!function_exists('php_config')){
 
     function php_config(){

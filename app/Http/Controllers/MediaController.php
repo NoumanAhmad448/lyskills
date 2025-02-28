@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Media;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class MediaController extends Controller
 {
@@ -17,5 +21,12 @@ class MediaController extends Controller
         } catch (\Throwable $th) {
             return back();
         }
+    }
+    public function saveAccessDuration(Request $request)
+    {
+        DB::table('media')->where('course_id', $request->course_id)->where('lecture_id', $request->lecture_id)->update([
+            'access_duration' => $request->access_duration ? dbDate($request->access_duration): null
+        ]);
+        return response()->json(['message' => 'Access duration updated successfully']);
     }
 }

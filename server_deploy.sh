@@ -3,6 +3,12 @@
 # Enable maintenance mode
 php artisan down || true
 
+mkdir -p /home/nomilyskills/public_html/storage/app 
+mkdir -p /home/nomilyskills/public_html/storage/framework/cache
+mkdir -p /home/nomilyskills/public_html/storage/framework/sessions 
+mkdir -p /home/nomilyskills/public_html/storage/framework/views
+mkdir -p /home/nomilyskills/public_html/storage/logs
+
 #generate artisan key
 yes | php artisan key:generate
 
@@ -13,6 +19,26 @@ sudo chown -R root:root /home/nomilyskills/public_html/
 
 # Set correct permissions for storage & bootstrap/cache (needed for Laravel)
 yes | chmod -R 777 /home/nomilyskills/public_html/storage/ /home/nomilyskills/public_html/bootstrap/cache
+
+# php version
+php --version
+
+# Check if PHP 8.1 is installed
+if ! php -v | grep -q "PHP 8.1"; then
+  echo "PHP 8.1 is not installed. Exiting."
+  exit 1
+fi
+
+# Check if Composer is installed, and install it if not
+if ! command -v composer &> /dev/null; then
+  echo "Composer is not installed. Installing Composer..."
+  php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+  php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  php -r "unlink('composer-setup.php');"
+else
+  echo "Composer is already installed."
+  composer --version
+fi
 
 # Update Composer Dependencies
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
@@ -32,15 +58,34 @@ php artisan optimize:clear
 php artisan cache:forget spatie.permission.cache
 
 
+# Check if the version is installed
+if ! nvm list | grep -q "20.18.3"; then
+  # Check if the version is available
+  if nvm list available | grep -q "20.18.3"; then
+    # Install the version
+    # Check if Node.js version 20.x is installed
+    if node -v | grep -q "v20"; then
+    echo "Node.js version 20.x is already installed."
+    else
+    # Install Node.js version 20.x
+    nvm install 20.18.3
+    fi
+  else
+    echo "Node.js version 20.18.3 is not available via nvm."
+  fi
+else
+  echo "Node.js version 20.18.3 is already installed."
+fi
 
-# Ensure correct Node.js version
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use 16
+
+yes | nvm use 20.18.3
 
 # Install Node.js dependencies
 npm install
 
+npm audit fix --force
 
 # Run on production mode
 npm run production
