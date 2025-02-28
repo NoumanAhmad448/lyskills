@@ -24,7 +24,7 @@
         "webpack-cli": "^6.0.1"
     },
     "dependencies": {
-        "buffer": "^6.0.3",
+        "buffer": "npm:Buffer@^0.0.0",
         "Buffer": "0.0.0",
         "dplayer": "^1.27.0"
     }
