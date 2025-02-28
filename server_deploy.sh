@@ -116,22 +116,22 @@ fi
 nvm use 20.18.3
 
 #  To ensure node does not get any conflict; only on fresh or node upgrade time
-rm -rf node_modules
-rm -f package-lock.json
-npm cache clean --force
-npm cache clean --force --global
-rm -rf ~/.npm
-rm -rf ~/.nvm/.cache
-rm -rf /tmp/*
+# rm -rf node_modules
+# rm -f package-lock.json
+# npm cache clean --force
+# npm cache clean --force --global
+# rm -rf ~/.npm
+# rm -rf ~/.nvm/.cache
+# rm -rf /tmp/*
 
 # Install Node.js dependencies
-npm install
+# npm install
 
-# Fix npm audit issues
-npm audit fix --force
+# # Fix npm audit issues
+# npm audit fix --force
 
-# Run in production mode
-npm run production
+# # Run in production mode
+# npm run production
 
 # Check project health
 php artisan health:check --no-notification
