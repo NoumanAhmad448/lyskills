@@ -1,15 +1,1 @@
-/******/ (() => { // webpackBootstrap
-/*!***********************************!*\
-  !*** ./resources/js/dashboard.js ***!
-  \***********************************/
-$(function () {
-  $(".delete_course").click(function () {
-    var get_id = $(this).attr('id');
-    if (get_id) {
-      $('.delete').attr('onClick', "$('.".concat(get_id, "').submit();"));
-      $('#course_delete').modal('show');
-    }
-  });
-});
-/******/ })()
-;
+$((function(){$(".delete_course").click((function(){var t=$(this).attr("id");t&&($(".delete").attr("onClick","$('.".concat(t,"').submit();")),$("#course_delete").modal("show"))}))}));
