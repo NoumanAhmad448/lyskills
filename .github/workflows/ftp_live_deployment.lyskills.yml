@@ -153,6 +153,7 @@ jobs:
           EXCLUDE: "/dist/, /node_modules/ , /.git, /vendor/"
           SCRIPT_BEFORE: |
             whoami
+          SCRIPT_AFTER_REQUIRED: true
           SCRIPT_AFTER: |
             cd ${{ matrix.server_path }} &&
             sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&

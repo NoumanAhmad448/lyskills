@@ -55,6 +55,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    "js_debug" => env('DEBUG_JS', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
 
