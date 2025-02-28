@@ -47,7 +47,7 @@ composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev -
 sudo chown -R root:root /home/nomilyskills/public_html/
 
 # Run database migrations (ensuring root runs them)
-php artisan migrate --force
+yes | php artisan migrate --force
 
 # yes | php artisan db:seed --class=LanguageSeeder
 
