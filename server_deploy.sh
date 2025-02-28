@@ -103,17 +103,17 @@ else
 fi
 
 # Ensure nvm is loaded
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-# Check if the correct Node.js version is installed
-if [[ $(node -v) != "v20.18.3" ]]; then
-  echo "Node.js version is NOT v20.18.3. Installing..."
-  nvm install 20.18.3
-fi
+# # Check if the correct Node.js version is installed
+# if [[ $(node -v) != "v20.18.3" ]]; then
+#   echo "Node.js version is NOT v20.18.3. Installing..."
+#   nvm install 20.18.3
+# fi
 
-# Use the correct Node.js version
-nvm use 20.18.3
+# # Use the correct Node.js version
+# nvm use 20.18.3
 
 #  To ensure node does not get any conflict; only on fresh or node upgrade time
 # rm -rf node_modules
