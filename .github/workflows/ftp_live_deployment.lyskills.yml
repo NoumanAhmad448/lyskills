@@ -170,7 +170,7 @@ jobs:
       # Step 6: Deploy using rsync
       - name: Deploy using rsync
         run: |
-          rsync -avz --delete / ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ matrix.server_path }}
+          rsync -avz --delete ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ matrix.server_path }}/
 
       - name: Run server-side deployment script
         uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
