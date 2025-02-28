@@ -59,22 +59,12 @@ php artisan cache:forget spatie.permission.cache
 
 
 # Check if the version is installed
-if ! nvm list | grep -q "20.18.3"; then
-  # Check if the version is available
-  if nvm list available | grep -q "20.18.3"; then
-    # Install the version
-    # Check if Node.js version 20.x is installed
-    if node -v | grep -q "v20"; then
-    echo "Node.js version 20.x is already installed."
-    else
-    # Install Node.js version 20.x
-    nvm install 20.18.3
-    fi
-  else
-    echo "Node.js version 20.18.3 is not available via nvm."
-  fi
+
+if [[ $(node -v) == "v20.4"* ]]; then
+  echo "Node.js version is v20.4."
 else
-  echo "Node.js version 20.18.3 is already installed."
+  echo "Node.js version is NOT v20.4."
+  nvm install 20.18.3
 fi
 
 export NVM_DIR="$HOME/.nvm"
