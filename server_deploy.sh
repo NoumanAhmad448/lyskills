@@ -72,6 +72,9 @@ export NVM_DIR="$HOME/.nvm"
 
 yes | nvm use 20.18.3
 
+
+rm -rf node_modules package-lock.json
+
 # Install Node.js dependencies
 npm install
 
