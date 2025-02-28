@@ -1,1 +1,91 @@
-(()=>{$((function(){$("input, textarea").click((function(){$("input, textarea").removeClass("is-invalid"),$(".show_message").fadeOut()}))}));var e,a=$("#modal"),n=document.getElementById("image");$("body").on("change",".image",(function(e){var o,t,d=e.target.files,i=function(e){n.src=e,a.modal("show")};d&&d.length>0&&(t=d[0],URL?i(URL.createObjectURL(t)):FileReader&&((o=new FileReader).onload=function(e){i(o.result)},o.readAsDataURL(t)))})),a.on("shown.bs.modal",(function(){e=new Cropper(n,{aspectRatio:1,viewMode:3,preview:".preview"})})).on("hidden.bs.modal",(function(){e.destroy(),e=null,$(".image").val(null)})),$("#crop").click((function(){canvas=e.getCroppedCanvas({width:160,height:160}),canvas.toBlob((function(e){url=URL.createObjectURL(e);var n=new FileReader;n.readAsDataURL(e),$(".loading-section").addClass("loader").fadeIn(),$("#loading").fadeIn(),n.onloadend=function(){var e=n.result;$.ajax({type:"POST",dataType:"json",url:upload_profile,headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")},data:{image:e},success:function(e){$("#loading",".loading-section").fadeOut(),$(".loading-section").removeClass("loader").fadeOut(),a.modal("hide"),show_message(e.success),location.reload()},error:function(e){$("#loading",".loading-section").fadeOut(),$(".loading-section").removeClass("loader").fadeOut(),a.modal("hide"),popup_message(e)}})}}))}))})();
+/******/ (() => { // webpackBootstrap
+/*!*********************************!*\
+  !*** ./resources/js/profile.js ***!
+  \*********************************/
+$(function () {
+  $('input, textarea').click(function () {
+    $('input, textarea').removeClass('is-invalid');
+    $('.show_message').fadeOut();
+  });
+});
+var $modal = $('#modal');
+var image = document.getElementById('image');
+var cropper;
+$("body").on("change", ".image", function (e) {
+  var files = e.target.files;
+  var done = function done(url) {
+    image.src = url;
+    $modal.modal('show');
+  };
+  var reader;
+  var file;
+  var url;
+  if (files && files.length > 0) {
+    file = files[0];
+    if (URL) {
+      done(URL.createObjectURL(file));
+    } else if (FileReader) {
+      reader = new FileReader();
+      reader.onload = function (e) {
+        done(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+});
+$modal.on('shown.bs.modal', function () {
+  cropper = new Cropper(image, {
+    aspectRatio: 1,
+    viewMode: 3,
+    preview: '.preview'
+  });
+}).on('hidden.bs.modal', function () {
+  cropper.destroy();
+  cropper = null;
+  $(".image").val(null);
+});
+$("#crop").click(function () {
+  canvas = cropper.getCroppedCanvas({
+    width: 160,
+    height: 160
+  });
+  canvas.toBlob(function (blob) {
+    url = URL.createObjectURL(blob);
+    var reader = new FileReader();
+    reader.readAsDataURL(blob);
+    // show loader
+    $('.loading-section').addClass('loader').fadeIn();
+    $('#loading').fadeIn();
+    reader.onloadend = function () {
+      var base64data = reader.result;
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: upload_profile,
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+          'image': base64data
+        },
+        success: function success(data) {
+          // hide loader
+          $('#loading', '.loading-section').fadeOut();
+          $('.loading-section').removeClass('loader').fadeOut();
+          $modal.modal('hide');
+          show_message(data.success);
+          location.reload();
+        },
+        error: function error(d) {
+          // hide loader
+          $('#loading', '.loading-section').fadeOut();
+          $('.loading-section').removeClass('loader').fadeOut();
+          $modal.modal('hide');
+          popup_message(d);
+        }
+      });
+    };
+  });
+});
+/******/ })()
+;
