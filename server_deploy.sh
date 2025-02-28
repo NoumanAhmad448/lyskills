@@ -79,28 +79,28 @@ install_nvm() {
 }
 
 # Function to load nvm
-load_nvm() {
-  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  echo "nvm loaded successfully."
-}
+# load_nvm() {
+#   export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+#   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#   echo "nvm loaded successfully."
+# }
 
-# Main script logic
-if ! check_nvm_installed; then
-  install_nvm
-fi
+# # Main script logic
+# if ! check_nvm_installed; then
+#   install_nvm
+# fi
 
-# Ensure nvm is loaded
-load_nvm
+# # Ensure nvm is loaded
+# load_nvm
 
-# Verify nvm installation
-if command -v nvm &> /dev/null; then
-  echo "nvm is ready to use."
-  nvm --version
-else
-  echo "Failed to install or load nvm. Please check the installation manually."
-  exit 1
-fi
+# # Verify nvm installation
+# if command -v nvm &> /dev/null; then
+#   echo "nvm is ready to use."
+#   nvm --version
+# else
+#   echo "Failed to install or load nvm. Please check the installation manually."
+#   exit 1
+# fi
 
 # Ensure nvm is loaded
 # export NVM_DIR="$HOME/.nvm"
@@ -124,14 +124,14 @@ fi
 # rm -rf ~/.nvm/.cache
 # rm -rf /tmp/*
 
-# Install Node.js dependencies
-# npm install
+Install Node.js dependencies
+/root/.nvm/versions/node/v20.18.3/bin/npm install
 
-# # Fix npm audit issues
-# npm audit fix --force
+# Fix npm audit issues
+/root/.nvm/versions/node/v20.18.3/bin/npm audit fix --force
 
-# # Run in production mode
-# npm run production
+# Run in production mode
+/root/.nvm/versions/node/v20.18.3/bin/npm run production
 
 # Check project health
 php artisan health:check --no-notification
