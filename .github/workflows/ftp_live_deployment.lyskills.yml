@@ -111,6 +111,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch the entire repository history
 
       - name: Setup PHP
         uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
@@ -123,52 +125,52 @@ jobs:
       - name: Run Pint for code styling
         run: pint --config pint.json
 
-      # - name: Sync files to server via FTP
-      #   uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65
-      #   with:
-      #     server: ${{ secrets.FTP_SERVER }}
-      #     username: ${{ secrets.FTP_USERNAME }}
-      #     password: ${{ secrets.FTP_PASS }}
-      #     server-dir: /
-      #     log-level: verbose
-      #     timeout: 60000000
-      #     port: 21
-      #     # passive: true  # Use passive mode to avoid unexpected disconnects
-      #     protocol: ftps
-      #     exclude: |
-      #       **/.git*
-      #       **/.git*/**
-      #       **/node_modules/**
-      #       **/vendor/**
-
-      - name: Deploy to Staging server
-        uses: easingthemes/ssh-deploy@a1aa0b6cf96ce2406eef90faa35007a4a7bf0ac0
+      - name: Sync files to server via FTP
+        uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rlgoDzvc -i"
-          SOURCE: "/"
-          REMOTE_HOST: ${{ secrets.SERVER_IP }}
-          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
-          TARGET: /
-          EXCLUDE: "/dist/, /node_modules/ , /.git, /vendor/"
-          SCRIPT_BEFORE: |
-            whoami
-          SCRIPT_AFTER_REQUIRED: true
-          SCRIPT_AFTER: |
-            cd ${{ matrix.server_path }} &&
-            sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
-            sudo chown -R root:root ${{ matrix.server_path }}/server_deploy.sh &&
-            ./server_deploy.sh
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASS }}
+          server-dir: /
+          log-level: verbose
+          timeout: 60000000
+          port: 21
+          # passive: true  # Use passive mode to avoid unexpected disconnects
+          protocol: ftps
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/vendor/**
 
-      # - name: Run server-side deployment script
-      #   uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
+      # - name: Deploy to Staging server
+      #   uses: easingthemes/ssh-deploy@a1aa0b6cf96ce2406eef90faa35007a4a7bf0ac0
       #   with:
-      #     username: ${{ secrets.SSH_USERNAME }}
-      #     host: ${{ secrets.SERVER_IP }}
-      #     password: ${{ secrets.SSH_PASSWORD }}
-      #     script: |
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     ARGS: "-rlgoDzvc -i"
+      #     SOURCE: "/"
+      #     REMOTE_HOST: ${{ secrets.SERVER_IP }}
+      #     REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+      #     TARGET: /
+      #     EXCLUDE: "/dist/, /node_modules/ , /.git, /vendor/"
+      #     SCRIPT_BEFORE: |
+      #       whoami
+      #     SCRIPT_AFTER_REQUIRED: true
+      #     SCRIPT_AFTER: |
       #       cd ${{ matrix.server_path }} &&
       #       sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
       #       sudo chown -R root:root ${{ matrix.server_path }}/server_deploy.sh &&
       #       ./server_deploy.sh
+
+      - name: Run server-side deployment script
+        uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
+        with:
+          username: ${{ secrets.SSH_USERNAME }}
+          host: ${{ secrets.SERVER_IP }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd ${{ matrix.server_path }} &&
+            sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
+            sudo chown -R root:root ${{ matrix.server_path }}/server_deploy.sh &&
+            ./server_deploy.sh
 
