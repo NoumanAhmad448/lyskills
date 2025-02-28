@@ -3,24 +3,25 @@
 # Enable maintenance mode
 yes | php artisan down
 
+# Create necessary directories
 mkdir -p /home/nomilyskills/public_html/storage/app 
 mkdir -p /home/nomilyskills/public_html/storage/framework/cache
 mkdir -p /home/nomilyskills/public_html/storage/framework/sessions 
 mkdir -p /home/nomilyskills/public_html/storage/framework/views
 mkdir -p /home/nomilyskills/public_html/storage/logs
 
-#generate artisan key
+# Generate artisan key
 yes | php artisan key:generate
 
-# Secure .env and other sensitive files before running anything
+# Secure .env and other sensitive files
 sudo chmod -R 775 /home/nomilyskills/public_html/
 sudo chmod 444 /home/nomilyskills/public_html/.env
 sudo chown -R root:root /home/nomilyskills/public_html/
 
-# Set correct permissions for storage & bootstrap/cache (needed for Laravel)
+# Set correct permissions for storage & bootstrap/cache
 yes | chmod -R 777 /home/nomilyskills/public_html/storage/ /home/nomilyskills/public_html/bootstrap/cache
 
-# php version
+# Check PHP version
 php --version
 
 # Check if PHP 8.1 is installed
@@ -42,14 +43,13 @@ fi
 
 # Update Composer Dependencies
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
+# yes | php artisan db:seed --class=LanguageSeeder
 
-# to avoid any node permission error
+# Avoid any node permission error
 sudo chown -R root:root /home/nomilyskills/public_html/
 
-# Run database migrations (ensuring root runs them)
+# Run database migrations
 yes | php artisan migrate --force
-
-# yes | php artisan db:seed --class=LanguageSeeder
 
 # Clear caches
 php artisan cache:clear && php artisan config:clear && php artisan route:clear
@@ -58,44 +58,90 @@ php artisan optimize:clear
 php artisan cache:forget spatie.permission.cache
 
 
-# Check if the version is installed
+# Function to check if nvm is installed
+check_nvm_installed() {
+  if command -v nvm &> /dev/null; then
+    echo "nvm is already installed."
+    return 0
+  else
+    echo "nvm is not installed."
+    return 1
+  fi
+}
 
-if [[ $(node -v) == "v20.4"* ]]; then
-  echo "Node.js version is v20.4."
-else
-  echo "Node.js version is NOT v20.4."
-  nvm install 20.18.3
+# Function to install nvm
+install_nvm() {
+  echo "Installing nvm..."
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  echo "nvm installed successfully."
+}
+
+# Function to load nvm
+load_nvm() {
+  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  echo "nvm loaded successfully."
+}
+
+# Main script logic
+if ! check_nvm_installed; then
+  install_nvm
 fi
 
+# Ensure nvm is loaded
+load_nvm
+
+# Verify nvm installation
+if command -v nvm &> /dev/null; then
+  echo "nvm is ready to use."
+  nvm --version
+else
+  echo "Failed to install or load nvm. Please check the installation manually."
+  exit 1
+fi
+
+# Ensure nvm is loaded
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-yes | nvm use 20.18.3
+# Check if the correct Node.js version is installed
+if [[ $(node -v) != "v20.18.3" ]]; then
+  echo "Node.js version is NOT v20.18.3. Installing..."
+  nvm install 20.18.3
+fi
 
-# Use this for upgrading the nodeJS
-# rm -rf node_modules package-lock.json
+# Use the correct Node.js version
+nvm use 20.18.3
+
+#  To ensure node does not get any conflict; only on fresh or node upgrade time
+rm -rf node_modules
+rm -f package-lock.json
+npm cache clean --force
+npm cache clean --force --global
+rm -rf ~/.npm
+rm -rf ~/.nvm/.cache
+rm -rf /tmp/*
 
 # Install Node.js dependencies
-/root/.nvm/versions/node/v20.18.3/bin/npm install
+npm install
 
-/root/.nvm/versions/node/v20.18.3/bin/npm audit fix --force
+# Fix npm audit issues
+npm audit fix --force
 
-# Run on production mode
-/root/.nvm/versions/node/v20.18.3/bin/npm run production
+# Run in production mode
+npm run production
 
-# check project health notification
+# Check project health
 php artisan health:check --no-notification
 
-# Reset permissions for web server & FTP user after script runs
+# Reset permissions for web server & FTP user
 sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
 sudo chmod -R 755 /home/nomilyskills/public_html/
 sudo chmod 444 /home/nomilyskills/public_html/.env
 
-# Restore restricted permissions for sensitive files
-# sudo chmod -R 755  /home/nomilyskills/public_html/server_deploy.sh
-# sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/server_deploy.sh
-
-# runs cron
+# Run cron
 php artisan schedule:run >> /dev/null 2>&1
 
 # Disable maintenance mode
