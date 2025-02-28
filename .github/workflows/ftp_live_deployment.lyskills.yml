@@ -124,7 +124,7 @@ jobs:
         run: pint --config pint.json
 
       - name: Sync files to server via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
@@ -140,9 +140,13 @@ jobs:
             **/.git*/**
             **/node_modules/**
             **/vendor/**
+          script: |
+            if [ ! -d "/app/Exceptions" ]; then
+              mkdir /app/Exceptions
+            fi
 
       - name: Run server-side deployment script
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
         with:
           username: ${{ secrets.SSH_USERNAME }}
           host: ${{ secrets.SERVER_IP }}
