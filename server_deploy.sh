@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Enable maintenance mode
-php artisan down || true
+yes | php artisan down
 
 mkdir -p /home/nomilyskills/public_html/storage/app 
 mkdir -p /home/nomilyskills/public_html/storage/framework/cache
@@ -67,38 +67,36 @@ else
   nvm install 20.18.3
 fi
 
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 yes | nvm use 20.18.3
 
-
-rm -rf node_modules package-lock.json
+# Use this for upgrading the nodeJS
+# rm -rf node_modules package-lock.json
 
 # Install Node.js dependencies
-npm install
+/root/.nvm/versions/node/v20.18.3/bin/npm install
 
-node --version
-
-npm audit fix --force
+/root/.nvm/versions/node/v20.18.3/bin/npm audit fix --force
 
 # Run on production mode
-# npm run production
+/root/.nvm/versions/node/v20.18.3/bin/npm run production
 
-# # check project health notification
-# php artisan health:check --no-notification
+# check project health notification
+php artisan health:check --no-notification
 
-# # Reset permissions for web server & FTP user after script runs
-# sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
-# sudo chmod -R 755 /home/nomilyskills/public_html/
-# sudo chmod 444 /home/nomilyskills/public_html/.env
+# Reset permissions for web server & FTP user after script runs
+sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
+sudo chmod -R 755 /home/nomilyskills/public_html/
+sudo chmod 444 /home/nomilyskills/public_html/.env
 
-# # Restore restricted permissions for sensitive files
-# # sudo chmod -R 755  /home/nomilyskills/public_html/server_deploy.sh
-# # sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/server_deploy.sh
+# Restore restricted permissions for sensitive files
+# sudo chmod -R 755  /home/nomilyskills/public_html/server_deploy.sh
+# sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/server_deploy.sh
 
-# # runs cron
-# php artisan schedule:run >> /dev/null 2>&1
+# runs cron
+php artisan schedule:run >> /dev/null 2>&1
 
-# # Disable maintenance mode
-# php artisan up
+# Disable maintenance mode
+php artisan up
