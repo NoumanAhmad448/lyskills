@@ -143,16 +143,16 @@ jobs:
       #       **/node_modules/**
       #       **/vendor/**
 
-      - name: Deploy to Staging server
-        uses: easingthemes/ssh-deploy@a1aa0b6cf96ce2406eef90faa35007a4a7bf0ac0
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: "-rlgoDzvc -i"
-          SOURCE: "/"
-          REMOTE_HOST: ${{ secrets.SERVER_IP }}
-          REMOTE_USER: ${{ secrets.SSH_USERNAME }}
-          TARGET: /
-          EXCLUDE: "/dist/, /node_modules/ , /.git, /vendor/"
+      # - name: Deploy to Staging server
+      #   uses: easingthemes/ssh-deploy@a1aa0b6cf96ce2406eef90faa35007a4a7bf0ac0
+      #   with:
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     ARGS: "-rlgoDzvc -i"
+      #     SOURCE: "/"
+      #     REMOTE_HOST: ${{ secrets.SERVER_IP }}
+      #     REMOTE_USER: ${{ secrets.SSH_USERNAME }}
+      #     TARGET: /
+      #     EXCLUDE: "/dist/, /node_modules/ , /.git, /vendor/"
           # SCRIPT_BEFORE: |
           #   whoami
           # SCRIPT_AFTER_REQUIRED: true
@@ -161,6 +161,16 @@ jobs:
           #   sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
           #   sudo chown -R root:root ${{ matrix.server_path }}/server_deploy.sh &&
           #   ./server_deploy.sh
+      # Step 5: Set up SSH
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Step 6: Deploy using rsync
+      - name: Deploy using rsync
+        run: |
+          rsync -avz --delete / ${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ matrix.server_path }}
 
       - name: Run server-side deployment script
         uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
