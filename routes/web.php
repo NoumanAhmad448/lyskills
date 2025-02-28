@@ -125,6 +125,9 @@ Route::get('instructor/course/{course_id}/manage/film', [DashboardController::cl
 Route::get('instructor/course/{course_id}/manage/curriculum', [DashboardController::class, 'course_curriculum'])
 ->name('courses_curriculum');
 
+Route::post('/save-access-duration', [MediaController::class, 'saveAccessDuration'])
+->name('saveAccessDuration');
+
 Route::post('instructor/course/{course_id}/manage/section_title', [DashboardController::class, 'course_curriculum_post'])
 ->name('courses_curriculum_post');
 

@@ -157,6 +157,7 @@ use App\Models\ResVideo;
                                 set video free
                             </label>
                         </div>
+                        
                         <div class="form-check my-3">
                             <input class="form-check-input is_download is_free" type="checkbox" id="is_download_{{$media->id}}" media_id="{{$media->id}}" @if ($media->is_download){{"checked"}} @endif
                             url="{{route("update-lecture-status",["media_id" => $media->id])}}">
@@ -164,6 +165,17 @@ use App\Models\ResVideo;
                                 set video download
                             </label>
                         </div>
+                        @if($media->id)
+                        <section class="d-flex justify-content-start align-items-center my-3">
+                            <div class="col-3" name="access_duration">
+                                <label for="date_time">Until Valid Date?</label>
+                                <input p_d="{{$media?->access_duration}}" value="{{$media?->access_duration}}" type="text"
+                                 class="form-control date-picker access_duration_{{ $course_id }}" autocomplete="off" id="date_time" name="date_time">
+                            </div>
+                            <button class="saveAccess btn btn-info" style="margin-top: 2rem"
+                             data-course-id="{{ $course_id }}" data-lecture-id="{{ $lec->id }}" class=''>Save</button>
+                        </section>
+                        @endif
                         <div class="d-flex">
                             <video width="500" height="240" controls preload="auto" oncontextmenu="return false;">
                                 <source src="{{config('setting.s3Url')}}{{$media->lec_name}} " type="{{$media->f_mimetype ?? ''}}">
