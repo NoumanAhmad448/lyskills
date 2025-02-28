@@ -167,6 +167,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # Step 6: Add remote server to known hosts
+      - name: Add remote server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H remote-server-ip >> ~/.ssh/known_hosts
+      
       # Step 6: Deploy using rsync
       - name: Deploy using rsync
         run: |
