@@ -1,9 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Actions\Nouman\LyskillsPayment;
+use App\Events\CourseStatusEmail;
+use App\Http\Requests\CourseAnnRequest;
+use App\Mail\PublicAnnByIns;
+use App\Mail\StudentEmail;
+use App\Models\Categories;
+use App\Models\Chat;
+use App\Models\ChatInfo;
+use App\Models\Comment;
 use Illuminate\Http\Request;
-
+use App\Models\Course;
+use App\Models\CourseAnnouncement;
+use App\Models\CourseEnrollment;
+use App\Models\CourseStatus;
+use App\Models\Media;
+use App\Models\OfflineEnrollment;
+use App\Models\Promotion;
+use App\Models\RatingModal;
+use App\Models\User;
+use App\Rules\IsScriptAttack;
+use Exception;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
 class CourseExController extends Controller
 {
 

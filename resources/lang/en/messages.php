@@ -70,5 +70,9 @@ return [
     ],
     'success' => [
         'photo_updated' => 'Homepage photo updated successfully'
-    ]
+    ],
+    "access_restricted" => "Your access to this video has expired. Please contact support for assistance. The date to view this video was ",
+    "video_nt_fnd" =>  "
+                        Your browser does not support the video tag. Please choose latest Google Chrome, Firefox , Opera
+                        Browser",
 ];

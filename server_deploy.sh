@@ -78,42 +78,42 @@ install_nvm() {
   echo "nvm installed successfully."
 }
 
-# Function to load nvm
-# load_nvm() {
-#   export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-#   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-#   echo "nvm loaded successfully."
-# }
+Function to load nvm
+load_nvm() {
+  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  echo "nvm loaded successfully."
+}
 
-# # Main script logic
-# if ! check_nvm_installed; then
-#   install_nvm
-# fi
-
-# # Ensure nvm is loaded
-# load_nvm
-
-# # Verify nvm installation
-# if command -v nvm &> /dev/null; then
-#   echo "nvm is ready to use."
-#   nvm --version
-# else
-#   echo "Failed to install or load nvm. Please check the installation manually."
-#   exit 1
-# fi
+# Main script logic
+if ! check_nvm_installed; then
+  install_nvm
+fi
 
 # Ensure nvm is loaded
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+load_nvm
 
-# # Check if the correct Node.js version is installed
-# if [[ $(node -v) != "v20.18.3" ]]; then
-#   echo "Node.js version is NOT v20.18.3. Installing..."
-#   nvm install 20.18.3
-# fi
+# Verify nvm installation
+if command -v nvm &> /dev/null; then
+  echo "nvm is ready to use."
+  nvm --version
+else
+  echo "Failed to install or load nvm. Please check the installation manually."
+  exit 1
+fi
 
-# # Use the correct Node.js version
-# nvm use 20.18.3
+Ensure nvm is loaded
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Check if the correct Node.js version is installed
+if [[ $(node -v) != "v20.18.3" ]]; then
+  echo "Node.js version is NOT v20.18.3. Installing..."
+  nvm install 20.18.3
+fi
+
+# Use the correct Node.js version
+nvm use 20.18.3
 
 #  To ensure node does not get any conflict; only on fresh or node upgrade time
 # rm -rf node_modules
@@ -135,6 +135,9 @@ Install Node.js dependencies
 
 # Check project health
 php artisan health:check --no-notification
+
+# make sure .env files are same
+php artisan test --filter EnvFilesConsistencyTest
 
 # Reset permissions for web server & FTP user
 sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/

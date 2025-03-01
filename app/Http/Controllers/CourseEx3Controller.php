@@ -3,9 +3,41 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Actions\Nouman\LyskillsPayment;
+use App\Events\CourseStatusEmail;
+use App\Http\Requests\CourseAnnRequest;
+use App\Mail\PublicAnnByIns;
+use App\Mail\StudentEmail;
+use App\Models\Categories;
+use App\Models\Chat;
+use App\Models\ChatInfo;
+use App\Models\Comment;
+use App\Models\Course;
+use App\Models\CourseAnnouncement;
+use App\Models\CourseEnrollment;
+use App\Models\CourseStatus;
+use App\Models\Media;
+use App\Models\OfflineEnrollment;
+use App\Models\Promotion;
+use App\Models\RatingModal;
+use App\Models\User;
+use App\Rules\IsScriptAttack;
+use Exception;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
+use App\Classes\LyskillsCarbonClass;
 
 class CourseEx3Controller extends Controller
 {
+    public function __construct() {
+    }
+
     public function setting(Course $course)
     {
         try {
@@ -143,8 +175,11 @@ class CourseEx3Controller extends Controller
                 }
                 $m_lec = $media->lecture;
                 $c_anns = CourseAnnouncement::select('subject', 'body')->where('course_id', $course->id)->latest()->take(5)->get();
-
-                return view('xuesheng.course-content', compact('course', 'title', 'media', 'desc', 'm_lec', 'c_anns'));
+                $should_usr_hv_acs = true;
+                if ($media->access_duration && $c_en && LyskillsCarbonClass::diffInDays($c_en->created_at,$media->access_duration)){
+                    $should_usr_hv_acs = false;
+                }
+                return view('xuesheng.course-content', compact('course', 'title', 'media', 'desc', 'm_lec', 'c_anns','should_usr_hv_acs'));
             } else {
                 abort(403);
             }
