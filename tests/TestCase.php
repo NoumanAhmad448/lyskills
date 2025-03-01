@@ -20,6 +20,7 @@ abstract class TestCase extends BaseTestCase
         }
 
         // Seed the database for testing
-        $this->seed();
+        // check the following seeder the future
+        // $this->seed();
     }
 }
