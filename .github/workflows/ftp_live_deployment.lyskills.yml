@@ -171,7 +171,7 @@ jobs:
       - name: Add remote server to known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H remote-server-ip >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
       
       # Step 6: Deploy using rsync
       - name: Deploy using rsync
