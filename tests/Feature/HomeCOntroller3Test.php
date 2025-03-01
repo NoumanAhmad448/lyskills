@@ -15,7 +15,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 
-class HomeController2Test extends TestCase
+class HomeController3Test extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
