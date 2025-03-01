@@ -1344,7 +1344,7 @@ use App\Models\ResVideo;
                                 progress_bar.parent().remove();
                             },
                             error: function(data) {
-                                show_message('somethingw went wrong');
+                                show_message('something went wrong');
                                 progress_bar.parent().remove();
                                 current_file.attr('disabled', false);
 
