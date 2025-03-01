@@ -177,6 +177,7 @@ jobs:
       - name: Deploy using rsync
         run: |
           rsync -avz --delete --exclude='.env' \
+            --exclude='.env.testing' \
             -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
             ./ "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ matrix.server_path }}/"
           
