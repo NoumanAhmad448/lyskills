@@ -24,7 +24,6 @@ abstract class TestCase extends BaseTestCase
         }
 
         // Seed the database for testing
-        dd(User::factory());
         // check the following seeder the future
         // $this->seed(\Database\Seeders\DatabaseSeeder::class);
     }
