@@ -6,7 +6,6 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Classes\Faker;
 
 class PostFactory extends Factory
 {
@@ -14,18 +13,17 @@ class PostFactory extends Factory
 
     private $faker;
     public function __construct() {
-        $this->faker = new Faker;
     }
 
     public function definition()
     {
         $user = User::factory()->create();
-        $title = $this->faker->sentence();
+        $title = fake()->sentence();
 
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'message' => $this->faker->paragraphs(),
+            'message' => fake()->paragraphs(),
             'email' => $user->email,
             'status' => 'published',
             'upload_img' => 'posts/default.jpg',

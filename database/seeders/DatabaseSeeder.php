@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
         if (app()->environment('testing')) {
             $this->call([
                 UserSeeder::class,
-                CategoriesSeeder::class,
-                SubCategorySeeder::class,
-                PostSeeder::class,
-                FaqSeeder::class,
-                PageSeeder::class,
-                CourseSeeder::class,
-                InstructorPaymentSeeder::class,
+                // CategoriesSeeder::class,
+                // SubCategorySeeder::class,
+                // PostSeeder::class,
+                // FaqSeeder::class,
+                // PageSeeder::class,
+                // CourseSeeder::class,
+                // InstructorPaymentSeeder::class,
             ]);
         }
     }

@@ -14,6 +14,9 @@ class CategoriesFactory extends Factory
      * @var string
      */
     protected $model = Categories::class;
+    private $faker;
+    public function __construct() {
+    }
 
     /**
      * Define the model's default state.
@@ -22,11 +25,11 @@ class CategoriesFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->unique()->words(2, true);
+        $name = fake()->unique()->words(2, true);
         return [
             'name' => ucwords($name),
             'value' => Str::slug($name),
-            'description' => $this->faker->sentence(),
+            'description' => fake()->sentence(),
             'status' => 'active',
             'created_at' => now(),
             'updated_at' => now(),

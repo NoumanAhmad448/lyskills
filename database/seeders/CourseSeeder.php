@@ -6,13 +6,11 @@ use App\Models\Course;
 use App\Models\User;
 use App\Models\Categories;
 use Illuminate\Database\Seeder;
-use App\Classes\Faker;
 
 class CourseSeeder extends Seeder
 {
     private $faker;
     public function __construct() {
-        $this->faker = new Faker;
     }
     /**
      * Run the database seeds.
@@ -25,7 +23,7 @@ class CourseSeeder extends Seeder
         $instructor = User::where('is_instructor', true)->first() ??
                      User::factory()->create([
                          'is_instructor' => true,
-                         'email' => $this->faker->email()
+                         'email' => fake()->email()
                      ]);
 
         // Get IT category or create it

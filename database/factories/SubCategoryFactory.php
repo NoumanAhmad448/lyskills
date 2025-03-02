@@ -6,7 +6,7 @@ use App\Models\SubCategory;
 use App\Models\Categories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Classes\Faker;
+
 class SubCategoryFactory extends Factory
 {
     protected $model = SubCategory::class;
@@ -14,17 +14,16 @@ class SubCategoryFactory extends Factory
 
     public function __construct()
     {
-        $this->faker = new Faker;
     }
 
     public function definition()
     {
-        $name = $this->faker->words();
+        $name = fake()->words();
         return [
             'name' => ucwords($name),
             'value' => Str::slug($name),
             'categories_id' => Categories::factory(),
-            'description' => $this->faker->sentence(),
+            'description' => fake()->sentence(),
             'status' => 'active',
             'created_at' => now(),
             'updated_at' => now()

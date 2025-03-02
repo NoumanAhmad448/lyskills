@@ -5,12 +5,11 @@ namespace Database\Seeders;
 use App\Models\SubCategory;
 use App\Models\Categories;
 use Illuminate\Database\Seeder;
-use App\Classes\Faker;
+
 class SubCategorySeeder extends Seeder
 {
     private $faker;
     public function __construct() {
-        $this->faker = new Faker;
     }
     /**
      * Run the database seeds.

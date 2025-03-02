@@ -20,8 +20,8 @@ class UploadData{
         $this->disk = config('app.env') === 'local' ? 'public' : 's3';
 
         if(config("app.debug")){
-            dump(config("filesystems.disks.$this->disk"));
-            dump($this->disk);
+            debug_logs(config("filesystems.disks.$this->disk"));
+            debug_logs($this->disk);
         }
 
         // reset the path to the root dire for the time being

@@ -102,7 +102,7 @@ class ProfileController extends Controller
             }else{
                 if(config("app.debug")){
                     server_logs($e=[false,''],$request=[true,$request],$config=true);
-                    dump($image_parts);
+                    debug_logs($image_parts);
                 }else{
                     return response()->json(['error', config("setting.err_msg")],500);
                 }

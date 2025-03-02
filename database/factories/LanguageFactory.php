@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class LanguageFactory extends Factory
 {
     protected $model = Language::class;
+    private $faker;
+    public function __construct() {
+    }
 
     public function definition(): array
     {
         return [
-            'name' => $this->faker->languageCode,
-            'iso_639_1' => $this->faker->unique()->lexify('??'),
+            'name' => fake()->languageCode,
+            'iso_639_1' => fake()->unique()->lexify('??'),
         ];
     }
 }

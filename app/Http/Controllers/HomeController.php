@@ -166,7 +166,7 @@ class HomeController extends Controller
 
             $request->validated();
             // dd($request->all());
-            Mail::to('lyskills.info@gmail.com')->queue(new ContactUsMail(
+            Mail::to(config("mail.contact_us_email"))->queue(new ContactUsMail(
                 $request->name,
                 $request->email,
                 $request->mobile ?? '',
