@@ -16,6 +16,7 @@ return [
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
+    'current_db' => env('DB_DATABASE', ''),
     'testing_db' => env('DB_TESTING_DATABASE', 'usmansaleem234_lyskills_new_testing'),
     'laravel_db' => env('DB_Laravel', 'usmansaleem234_laravel'),
 

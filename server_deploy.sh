@@ -137,7 +137,7 @@ Install Node.js dependencies
 php artisan health:check --no-notification
 
 # make sure .env files are same
-php artisan test --filter EnvFilesConsistencyTest
+APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest
 
 # Reset permissions for web server & FTP user
 sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
