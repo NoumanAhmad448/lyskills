@@ -14,6 +14,8 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
+use App\Helpers\UploadData;
+
 class LandingPageController extends Controller
 {
     public function landing_page(Course $course)
@@ -82,20 +84,20 @@ class LandingPageController extends Controller
             $path = "storage/img/".time() . uniqid() . str_replace(' ', '-',$name);
 
             $dir_path = "storage/img";
-            if(!Storage::disk("s3")->exists($dir_path)) {
-                Storage::disk("s3")->makeDirectory($dir_path, 0775, true);
-            }
+            $uploadData = new UploadData();
+            $uploadData->createDirectory($dir_path);
 
-            Storage::disk("s3")->put($path, $image->stream()->__toString());
+            $path = $uploadData->upload($image->stream()->__toString(), $name);
 
             $extension = $file->extension();
             $course = Course::findOrFail($course);
             $course_img = $course->course_image;
+
             if ($course_img) {
                 $prev_p = $course_img->image_path;
 
                 if ($prev_p) {
-                    Storage::disk("s3")->delete($prev_p);
+                    $uploadData->delete($prev_p);
                 }
                 $course_img->image_path = $path;
                 $course_img->image_name = $name;

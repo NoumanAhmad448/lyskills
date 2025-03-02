@@ -139,9 +139,9 @@ df -hi
 9. cloudflare setup for extra security
 [Todo list after registeration](./cloudflare.todo.md)
 
-## Local Setup (Development)
+## Local Setup (For Development)
 1. install xampp (Required PHP version -> 8.1) [Download Link](https://downloadsapachefriends.global.ssl.fastly.net/7.4.30/xampp-windows-x64-7.4.30-1-VC15-installer.exe?from_af=true)
-2. download node 16.18.0
+2. download node from https://github.com/coreybutler/nvm-windows/releases and use 20.0
 2. Copy
 
 file and change the DB connection
@@ -157,16 +157,14 @@ file and change the DB connection
     2. Second
         1. php artisan migrate
         2. Get dump from someone else and upload
-3. Visit `storage/framework` folder and create
-
+3. Create following folders
 ```
-
+mkdir -p /home/nomilyskills/public_html/storage/app 
+mkdir -p /home/nomilyskills/public_html/storage/framework/cache
+mkdir -p /home/nomilyskills/public_html/storage/framework/sessions 
+mkdir -p /home/nomilyskills/public_html/storage/framework/views
+mkdir -p /home/nomilyskills/public_html/storage/logs
 ```
-
-views
-
-```
-folder
 4. Run
 ```
 

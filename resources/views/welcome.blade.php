@@ -34,7 +34,7 @@ use App\Models\RatingModal;
                 @endphp
                 <img src="{{ $settings && $settings->homepage_photo ? config('setting.s3Url').$settings->homepage_photo : asset('img/student.jpg') }}" 
                      alt="{{ __('homepage.alt_text.student') }}"
-                     class="img-fluid"
+                     class="img-fluid mx-auto d-block"
                      id="student_img"
                      style="box-shadow: 0px 10px 10px 3px #605f5b;"/>
                 <a href="{{route('register')}}" 

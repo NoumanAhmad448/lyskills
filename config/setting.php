@@ -1,8 +1,10 @@
 <?php
 
 $site_settings = [
-        "s3Url" => "http://lyskills-by-us-yes-that-us.s3.ap-south-1.amazonaws.com/",
-        "no_reply_email_pass" => "30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ30vx5Ga{f,XJ",
+        "s3Url" => env('AWS_URL'),
+        "no_reply_email_pass" => env('NO_REPLY_EMAIL_PASS'),
+        "max_tble_size" => 9_0000000,
+        "retry_time" => 5,
         "show_site_log" => true,
         "login_profile" => true,
         "guest_search_bar" => true,
@@ -49,6 +51,13 @@ $site_settings = [
         "set_time_limit" => 60000,
         "upload_max_filesize" => '2000M',
         "memory_limit" => '8096M',
+        "base_env" => env("BASE_ENV"),
+        "env_files" => [
+                '.env',
+                '.env.dev',
+                '.env.live.example',
+                '.env.dev.example',
+            ]
 ];
 
 return $site_settings;

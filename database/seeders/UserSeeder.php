@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Classes\Faker;
+use Faker\Factory;
 
 class UserSeeder extends Seeder
 {
@@ -16,6 +17,12 @@ class UserSeeder extends Seeder
     }
     public function run()
     {
+        $faker = Factory::create();
+        $fakeEmail = $faker->unique()->email;
+        echo $fakeEmail; // Outputs something like "john.doe@example.com"
+        // Get admin user or create one if doesn't exist
+
+
         // Create admin user
         User::factory()->create([
             'name' => $this->faker->words(),
@@ -25,6 +32,12 @@ class UserSeeder extends Seeder
             'email_verified_at' => now()
         ]);
 
+        $faker = Factory::create();
+        $fakeEmail = $faker->unique()->email;
+        echo $fakeEmail; // Outputs something like "john.doe@example.com"
+        // Get admin user or create one if doesn't exist
+
+
         // Create instructor
         User::factory()->create([
             'name' => $this->faker->name(),
@@ -33,6 +46,12 @@ class UserSeeder extends Seeder
             'is_instructor' => true,
             'email_verified_at' => now()
         ]);
+
+        $faker = Factory::create();
+        $fakeEmail = $faker->unique()->email;
+        echo $fakeEmail; // Outputs something like "john.doe@example.com"
+        // Get admin user or create one if doesn't exist
+
 
         // Create regular user
         User::factory()->create([

@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseExController;
+use App\Http\Controllers\CourseEx2Controller;
+use App\Http\Controllers\CourseEx3Controller;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
@@ -124,6 +127,9 @@ Route::get('instructor/course/{course_id}/manage/film', [DashboardController::cl
 
 Route::get('instructor/course/{course_id}/manage/curriculum', [DashboardController::class, 'course_curriculum'])
 ->name('courses_curriculum');
+
+Route::post('/save-access-duration', [MediaController::class, 'saveAccessDuration'])
+->name('saveAccessDuration');
 
 Route::post('instructor/course/{course_id}/manage/section_title', [DashboardController::class, 'course_curriculum_post'])
 ->name('courses_curriculum_post');
@@ -287,16 +293,16 @@ Route::post('instructor/course/{course}/submit-course', [SayonaraController::cla
 Route::post('instructor/course/{course}/upload-bulk-loader', [VideoController::class, 'uploadBulkLoader'])
 ->name('bulk_loader');
 
-Route::get('instructor/course/{course}/setting-course-status', [CourseController::class, 'setting'])
+Route::get('instructor/course/{course}/setting-course-status', [CourseEx3Controller::class, 'setting'])
 ->name('setting');
 
-Route::post('instructor/course/{course}/setting-course-status', [CourseController::class, 'PostSetting'])
+Route::post('instructor/course/{course}/setting-course-status', [CourseEx3Controller::class, 'PostSetting'])
 ->name('post_setting');
 
-Route::post('instructor/course/{course}/setting-delete-course', [CourseController::class, 'delCourseSetting'])
+Route::post('instructor/course/{course}/setting-delete-course', [CourseEx3Controller::class, 'delCourseSetting'])
 ->name('del-course_setting');
 
-Route::post('instructor/course/{course}/change-the-course-url', [CourseController::class, 'changeURL'])
+Route::post('instructor/course/{course}/change-the-course-url', [CourseEx3Controller::class, 'changeURL'])
 ->name('course-change-url');
 
 });
@@ -514,8 +520,8 @@ Route::get('blogger-logout', [BloggerFaqController::class, 'logout'])->name('b_l
 });
 
 Route::get('categories/{category}', [CategoriesController::class, 'showCategory'])->name('user-categories');
-Route::get('course/{slug}', [CourseController::class, 'showCourse'])->name('user-course');
-Route::get('show-all-courses', [CourseController::class, 'showAllCourses'])->name('show-all-courses');
+Route::get('course/{slug}', [CourseEx3Controller::class, 'showCourse'])->name('user-course');
+Route::get('show-all-courses', [CourseEx3Controller::class, 'showAllCourses'])->name('show-all-courses');
 Route::post('update-lecture-status/{media_id}', [VideoController::class, 'set_video_free'])->name('update-lecture-status');
 
 Route::middleware(['verified','auth'])->group(function () {
@@ -539,17 +545,17 @@ Route::get('student/notification', [StudentController::class, 'getNotify'])->nam
 Route::get('student/send-message', [StudentController::class, 'sendMsg'])->name('fa-msg-to-laoshi');
 Route::get('student/saved-payment-detail', [StudentController::class, 'savedPaymentDetail'])->name('saveQian');
 Route::get('student/purchase-history', [StudentController::class, 'maiHistory'])->name('maiHistory');
-Route::get('course/{slug}/video/uploads/{video}', [CourseController::class, 'showVideo'])->name('video-page');
+Route::get('course/{slug}/video/uploads/{video}', [CourseEx3Controller::class, 'showVideo'])->name('video-page');
 
-Route::get('courses/public-announcement', [CourseController::class, 'publicAnn'])->name('public-ann');
-Route::post('courses/public-announcement', [CourseController::class, 'publicAnnPost'])->name('public-ann-post');
+Route::get('courses/public-announcement', [CourseEx3Controller::class, 'publicAnn'])->name('public-ann');
+Route::post('courses/public-announcement', [CourseEx3Controller::class, 'publicAnnPost'])->name('public-ann-post');
 
-Route::get('student/contact-with-instructor', [CourseController::class, 'contactIns'])->name('con-ins');
-Route::post('student/contact-with-instructor', [CourseController::class, 'contactInsPost'])->name('con-ins-post');
+Route::get('student/contact-with-instructor', [CourseEx3Controller::class, 'contactIns'])->name('con-ins');
+Route::post('student/contact-with-instructor', [CourseEx3Controller::class, 'contactInsPost'])->name('con-ins-post');
 
-Route::get('student/contacts-instructor', [CourseController::class, 'chatIns'])->name('chat_w_i');
-Route::get('student/email-to-instructor', [CourseController::class, 'emailToIns'])->name('email_to_ins');
-Route::post('student/email-to-instructor', [CourseController::class, 'emailToInsPost'])->name('email_to_ins_post');
+Route::get('student/contacts-instructor', [CourseEx2Controller::class, 'chatIns'])->name('chat_w_i');
+Route::get('student/email-to-instructor', [CourseEx2Controller::class, 'emailToIns'])->name('email_to_ins');
+Route::post('student/email-to-instructor', [CourseEx2Controller::class, 'emailToInsPost'])->name('email_to_ins_post');
 
 Route::get('course/{slug}/available-payment-methods', [PaymentController::class, 'availablePayMe'])->name('a_payment_methods');
 Route::get('course/{slug}/payment-with-credit-card', [PaymentController::class, 'creditPayment'])->name('credit_card_payment');
@@ -558,10 +564,10 @@ Route::post('course/{slug}/payment-with-credit-card', [PaymentController::class,
 Route::get('student/payment-history', [PaymentController::class, 'paymentHis'])->name('pay_his');
 Route::get('instructor/purchase-history', [PaymentController::class, 'purHis'])->name('purHis');
 
-Route::get('student/my-learning', [CourseController::class, 'myLearning'])->name('myLearning');
-Route::post('student/offline-payment', [CourseController::class, 'offlinePayment'])->name('offline-payment');
-Route::get('student/get-certificate', [CourseController::class, 'getCerti'])->name('getCerti');
-// Route::get('student/get-certificate', [CourseController::class, 'getCerti'])->name('getCerti');
+Route::get('student/my-learning', [CourseEx2Controller::class, 'myLearning'])->name('myLearning');
+Route::post('student/offline-payment', [CourseEx2Controller::class, 'offlinePayment'])->name('offline-payment');
+Route::get('student/get-certificate', [CourseEx2Controller::class, 'getCerti'])->name('getCerti');
+// Route::get('student/get-certificate', [CourseEx2Controller::class, 'getCerti'])->name('getCerti');
 Route::post('crop-image-upload', [ProfileController::class,'uploadCropImage'])->name('upload_profile');
 
 });
@@ -590,8 +596,8 @@ Route::get('show-search-course/{keyword}', [HomeController::class, 'showSearchCo
 
 
 Route::middleware(['verified','auth'])->group(function () {
-Route::post('student/course/coupon', [CourseController::class, 'coupon'])->name('coupon');
-Route::post('student/course/enroll-now/{course}', [CourseController::class, 'enrollNow'])->name('enroll-now');
+Route::post('student/course/coupon', [CourseEx2Controller::class, 'coupon'])->name('coupon');
+Route::post('student/course/enroll-now/{course}', [CourseEx2Controller::class, 'enrollNow'])->name('enroll-now');
 });
 
 
@@ -610,11 +616,11 @@ Route::middleware('auth')->post('/paypal-integration/{slug}', [PaypalController:
 Route::middleware('auth')->get('payment-success', [PaypalController::class, 'paymentSuccess'])->name('success.payment');
 
 
-Route::middleware('auth')->post('rating-course', [CourseController::class, 'ratingCourse'])->name('rating-course');
+Route::middleware('auth')->post('rating-course', [CourseExController::class, 'ratingCourse'])->name('rating-course');
 
-Route::middleware('auth')->get('create-pdf-file', [CourseController::class, 'createPdf'])->name('create-pdf');
+Route::middleware('auth')->get('create-pdf-file', [CourseExController::class, 'createPdf'])->name('create-pdf');
 
-Route::middleware('auth')->get('download-certificate/{course_name}', [CourseController::class, 'downloadCert'])->name('down-cert');
+Route::middleware('auth')->get('download-certificate/{course_name}', [CourseExController::class, 'downloadCert'])->name('down-cert');
 
 
 Route::post('e/{course_id}/{media_id}/edit_video', [VideoController::class, 'edit_video'])->name('e_video');
@@ -630,14 +636,14 @@ Route::middleware('auth')->get('get-token-via-easypay', [EasypaisaController::cl
 
 
 
-Route::middleware('auth')->get('instructor/comments/course/{course_name}', [CourseController::class, 'comment'])->name('laoshi-comment');
-Route::middleware('auth')->post('instructor/comments', [CourseController::class, 'commentPost'])->name('laoshi-commentPost');
-Route::middleware('auth')->patch('instructor/comments/update', [CourseController::class, 'commentUpdate'])->name('laoshi-commentUpdate');
-Route::middleware('auth')->post('instructor/comments/delete', [CourseController::class, 'commentDelete'])->name('laoshi-commentDelete');
+Route::middleware('auth')->get('instructor/comments/course/{course_name}', [CourseExController::class, 'comment'])->name('laoshi-comment');
+Route::middleware('auth')->post('instructor/comments', [CourseExController::class, 'commentPost'])->name('laoshi-commentPost');
+Route::middleware('auth')->patch('instructor/comments/update', [CourseExController::class, 'commentUpdate'])->name('laoshi-commentUpdate');
+Route::middleware('auth')->post('instructor/comments/delete', [CourseExController::class, 'commentDelete'])->name('laoshi-commentDelete');
 
-Route::middleware('auth')->get('laoshi-de/comments/{course}', [CourseController::class, 'readComments'])->name('laoshi_de_c');
+Route::middleware('auth')->get('laoshi-de/comments/{course}', [CourseExController::class, 'readComments'])->name('laoshi_de_c');
 
-Route::middleware('auth')->post('set-all-videos-downlabable/{course}', [CourseController::class, 'setVidDown'])->name('setVidDown');
+Route::middleware('auth')->post('set-all-videos-downlabable/{course}', [CourseExController::class, 'setVidDown'])->name('setVidDown');
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/homepage', [AdminController::class,'homepage'])->name('admin.homepage');

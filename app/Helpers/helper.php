@@ -169,6 +169,12 @@ if (!function_exists('dateFormat')){
        return Carbon::parse($value)->format('Y-m-d');
    }
 }
+if (!function_exists('dbDate')){
+
+    function dbDate($value){
+       return Carbon::parse($value)->format('Y-m-d H:i:s');
+   }
+}
 if (!function_exists('php_config')){
 
     function php_config(){
@@ -206,4 +212,13 @@ if (!function_exists('server_logs')){
             return response()->json(['error', config("setting.err_msg"),$response_status]);
         }
    }
+}
+
+if (! function_exists('debug_logs')) {
+    function debug_logs($input): void {
+        if (config('app.debug')) {
+            dump($input);
+            dump(config('setting.dash_lines'));
+        }
+    }
 }

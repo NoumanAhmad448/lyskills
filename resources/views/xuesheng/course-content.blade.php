@@ -188,13 +188,16 @@
                     <h3 class="mb-2">
                         Extra Recommended Video
                     </h3>
+                    @if($should_usr_hv_acs)
                     <video controls class="w-100" oncontextmenu="return false;">
                         <source
                             src="{{config('setting.s3Url')}}{{$extra_vid->lec_path}}"
                             type="{{$extra_vid->f_mimetype ?? '' }}">
-                        Your browser does not support the video tag. Please choose latest Google Chrome, Firefox , Opera
-                        Browser
+                            {{ __('video_nt_fnd')}}
                     </video>
+                    @else
+                        {{ __("access_restricted")}} {{dateFormat($media?->access_duration)}}
+                    @endif
                 </div>
             </div>
 

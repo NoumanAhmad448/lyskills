@@ -4,7 +4,7 @@ $(function () {
     $('.footer').addClass('mt-auto');
 
 
-    $(".sec-container").on("change",".is_free",function () {
+    $(".sec-container").on("change", ".is_free", function () {
         url = $(this).attr("url")
         media_id = $(this).attr("media_id")
 
@@ -40,43 +40,43 @@ $(function () {
 
 })
 
-function cancel(event){
-    let current_elem = $( event.target );
+function cancel(event) {
+    let current_elem = $(event.target);
     let prev_val = current_elem.attr('prev_val');
-    let parent_form  = $(current_elem.parents('form'))
-    if( parent_form!== 'undefined'){
+    let parent_form = $(current_elem.parents('form'))
+    if (parent_form !== 'undefined') {
         parent_form.replaceWith(`<div class="sec_title ml-md-2">
            ${prev_val}
             <span class="sec_title_edit ml-2" >
                 <i class="las la-pen"></i>
             </span>
     </div>`);
-    }else{
+    } else {
         console.error('could not find form element')
     }
 }
-function cancel_title(event){
-    let current_elem = $( event.target );
-    let parent_form  = $(current_elem.parents('form'))
-    if( parent_form!== 'undefined'){
+function cancel_title(event) {
+    let current_elem = $(event.target);
+    let parent_form = $(current_elem.parents('form'))
+    if (parent_form !== 'undefined') {
         parent_form.replaceWith(`<div class="btn website add_title">
             <i class="las la-plus"></i>
             Add Title
         </div>`);
-    }else{
+    } else {
         console.error('could not find form element')
     }
 }
 
-function reduceTextLen(input_txt,limit=50){
-    if(input_txt.length > limit){
-        return input_txt.substr(0,limit) + "...";
+function reduceTextLen(input_txt, limit = 50) {
+    if (input_txt.length > limit) {
+        return input_txt.substr(0, limit) + "...";
     }
     return input_txt;
 }
 
-$(function(){
-    $("body").on("change","#set_all_video",function () {
+$(function () {
+    $("body").on("change", "#set_all_video", function () {
         url = $(this).attr("url")
 
         set_free = $(this).is(":checked") ? 1 : 0
@@ -113,3 +113,37 @@ $(function(){
     })
 
 })
+
+$(document).ready(function () {
+    $(".saveAccess").click(function () {
+        let courseId = $(this).data('course-id');
+        let lectureId = $(this).data('lecture-id');
+        let access_duration = $(`.access_duration_${courseId}`)
+        if (access_duration.val() || access_duration.attr("p_d")) {
+            $.ajax({
+                url: '/save-access-duration',
+                type: 'POST',
+                data: {
+                    course_id: courseId,
+                    lecture_id: lectureId,
+                    access_duration: access_duration.val()
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    show_popup(response.message)
+                    $("#close-modal").removeAttr("onclick")
+                })
+                .fail(function () {
+                    console.error('An error')
+                    $("#close-modal").removeAttr("onclick")
+                })
+        } else {
+            show_popup("date is required")
+            $("#close-modal").removeAttr("onclick")
+        }
+    });
+});

@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Classes\Faker;
+use Faker\Factory;
 
 class PostSeeder extends Seeder
 {
@@ -20,7 +21,12 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
+
+        $faker = Factory::create();
+        $fakeEmail = $faker->unique()->email;
+        echo $fakeEmail; // Outputs something like "john.doe@example.com"
         // Get admin user or create one if doesn't exist
+
         $admin = User::where('is_admin', true)->first() ??
                 User::factory()->create([
                     'is_admin' => true,
