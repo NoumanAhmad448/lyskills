@@ -9,6 +9,9 @@ use Illuminate\Database\Seeder;
 
 class CourseSeeder extends Seeder
 {
+    private $faker;
+    public function __construct() {
+    }
     /**
      * Run the database seeds.
      *
@@ -17,14 +20,14 @@ class CourseSeeder extends Seeder
     public function run()
     {
         // Get or create instructor
-        $instructor = User::where('is_instructor', true)->first() ?? 
+        $instructor = User::where('is_instructor', true)->first() ??
                      User::factory()->create([
                          'is_instructor' => true,
-                         'email' => 'instructor@lyskills.com'
+                         'email' => fake()->email()
                      ]);
 
         // Get IT category or create it
-        $itCategory = Categories::where('value', 'it')->first() ?? 
+        $itCategory = Categories::where('value', 'it')->first() ??
                      Categories::factory()->create([
                          'name' => 'Information Technology',
                          'value' => 'it'

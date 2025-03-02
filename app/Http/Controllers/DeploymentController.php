@@ -12,7 +12,7 @@ class DeploymentController extends Controller
         Artisan::call("config:cache");
         // Artisan::call("route:cache");
         // Artisan::call("view:cache");
-        dump("config, view, route are cached successfully");
+        debug_logs("config, view, route are cached successfully");
     }
     public function liveDeployment()
     {

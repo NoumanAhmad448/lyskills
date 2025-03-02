@@ -10,14 +10,16 @@ use Illuminate\Support\Str;
 class FaqFactory extends Factory
 {
     protected $model = Faq::class;
-
+    private $faker;
+    public function __construct() {
+    }
     public function definition()
     {
-        $title = $this->faker->sentence();
+        $title = fake()->sentence();
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'message' => $this->faker->paragraphs(3, true),
+            'message' => fake()->paragraphs(),
             'email' => User::factory()->create()->email,
             'status' => 'published',
             'upload_img' => 'faqs/default.jpg',

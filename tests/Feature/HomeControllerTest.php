@@ -84,14 +84,18 @@ class HomeControllerTest extends TestCase
         ]);
 
         Mail::assertQueued(ContactUsMail::class, function ($mail) {
-            return $mail->hasTo('lyskills.info@gmail.com');
+            return $mail->hasTo(config("mail.contact_us_email"));
         });
         
         $response->assertRedirect();
         $response->assertSessionHas('status', 'Your Message has delivered. We will contact you soon');
     }
 
-    /** @test */
+    /** @test
+     * 
+     * 
+     */
+    
     public function contact_form_validates_required_fields()
     {
         $response = $this->post('/contact-us', []);

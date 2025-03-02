@@ -5,53 +5,54 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+
 use Faker\Factory;
 
 class UserSeeder extends Seeder
 {
+
+    public function __construct() {
+    }
     public function run()
     {
-        $faker = Factory::create();
-        $fakeEmail = $faker->unique()->email;
+        $fakeEmail = fake()->email();
         echo $fakeEmail; // Outputs something like "john.doe@example.com"
         // Get admin user or create one if doesn't exist
 
-
         // Create admin user
         User::factory()->create([
-            'name' => 'Admin User',
-            'email' => $fakeEmail,
-            'password' => Hash::make('password'),
+            'name' => fake()->words(),
+            'email' => fake()->unique()->email,
+            'password' => Hash::make(fake()->words(1)),
             'is_admin' => true,
             'email_verified_at' => now()
         ]);
 
-        $faker = Factory::create();
-        $fakeEmail = $faker->unique()->email;
+        $fakeEmail = fake()->email();
         echo $fakeEmail; // Outputs something like "john.doe@example.com"
         // Get admin user or create one if doesn't exist
 
+        debug_logs("here");
 
         // Create instructor
         User::factory()->create([
-            'name' => 'Test Instructor',
-            'email' => $fakeEmail,
-            'password' => Hash::make('password'),
+            'name' => fake()->name(),
+            'email' => fake()->unique()->email(),
+            'password' => Hash::make(fake()->words(10)),
             'is_instructor' => true,
             'email_verified_at' => now()
         ]);
 
-        $faker = Factory::create();
-        $fakeEmail = $faker->unique()->email;
-        echo $fakeEmail; // Outputs something like "john.doe@example.com"
+        $fakeEmail = fake()->unique()->email();
+        debug_logs("here");
         // Get admin user or create one if doesn't exist
 
 
         // Create regular user
         User::factory()->create([
-            'name' => 'Test User',
+            'name' => fake()->name(),
             'email' => $fakeEmail,
-            'password' => Hash::make('password'),
+            'password' => Hash::make(fake()->email()),
             'email_verified_at' => now()
         ]);
 
@@ -60,4 +61,4 @@ class UserSeeder extends Seeder
             ->count(3)
             ->create();
     }
-} 
+}

@@ -7,18 +7,21 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+
 class PageFactory extends Factory
 {
     protected $model = Page::class;
-
+    private $faker;
+    public function __construct() {
+    }
     public function definition()
     {
-        $title = $this->faker->sentence();
+        $title = fake()->sentence();
         $user = User::factory()->create();
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'message' => $this->faker->paragraphs(5, true),
+            'message' => fake()->paragraphs(5),
             'status' => 'published',
             'created_at' => now(),
             'updated_at' => now(),

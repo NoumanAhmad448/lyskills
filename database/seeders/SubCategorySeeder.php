@@ -8,6 +8,9 @@ use Illuminate\Database\Seeder;
 
 class SubCategorySeeder extends Seeder
 {
+    private $faker;
+    public function __construct() {
+    }
     /**
      * Run the database seeds.
      *
@@ -49,12 +52,14 @@ class SubCategorySeeder extends Seeder
         $otherCategories = Categories::where('id', '!=', $itCategory->id)->get();
 
         // Create 2 random subcategories for each remaining category
+        if($otherCategories->count()){
         foreach ($otherCategories as $category) {
             SubCategory::factory()
                 ->count(2)
                 ->create([
                     'categories_id' => $category->id
                 ]);
+            }
         }
 
         // Create one inactive subcategory
@@ -64,4 +69,4 @@ class SubCategorySeeder extends Seeder
                 'categories_id' => $itCategory->id
             ]);
     }
-} 
+}

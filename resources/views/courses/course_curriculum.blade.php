@@ -165,7 +165,7 @@ use App\Models\ResVideo;
                                 set video download
                             </label>
                         </div>
-                        @if($media->id)
+                        @if($media->id && config('setting.en_showing_vid_val'))
                         <section class="d-flex justify-content-start align-items-center my-3">
                             <div class="col-3" name="access_duration">
                                 <label for="date_time">Until Valid Date?</label>

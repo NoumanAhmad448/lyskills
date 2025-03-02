@@ -14,6 +14,7 @@ return [
     */
 
     'default' => env('MAIL_MAILER', 'smtp'),
+    "contact_us_email" => env("CONTACT_US_MAIL"),
 
     /*
     |--------------------------------------------------------------------------

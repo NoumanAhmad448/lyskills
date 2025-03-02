@@ -11,15 +11,19 @@ class PostFactory extends Factory
 {
     protected $model = Post::class;
 
+    private $faker;
+    public function __construct() {
+    }
+
     public function definition()
     {
         $user = User::factory()->create();
-        $title = $this->faker->sentence();
+        $title = fake()->sentence();
 
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'message' => $this->faker->paragraphs(3, true),
+            'message' => fake()->paragraphs(),
             'email' => $user->email,
             'status' => 'published',
             'upload_img' => 'posts/default.jpg',
@@ -37,4 +41,4 @@ class PostFactory extends Factory
             ];
         });
     }
-} 
+}

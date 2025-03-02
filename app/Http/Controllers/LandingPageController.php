@@ -18,6 +18,9 @@ use App\Helpers\UploadData;
 
 class LandingPageController extends Controller
 {
+    public function __construct() {
+        $this->uploadData = new UploadData();
+    }
     public function landing_page(Course $course)
     {
         try {
@@ -84,10 +87,8 @@ class LandingPageController extends Controller
             $path = "storage/img/".time() . uniqid() . str_replace(' ', '-',$name);
 
             $dir_path = "storage/img";
-            $uploadData = new UploadData();
-            $uploadData->createDirectory($dir_path);
 
-            $path = $uploadData->upload($image->stream()->__toString(), $name);
+            $path = $this->uploadData->upload($image->stream()->__toString(), $name);
 
             $extension = $file->extension();
             $course = Course::findOrFail($course);
@@ -96,9 +97,6 @@ class LandingPageController extends Controller
             if ($course_img) {
                 $prev_p = $course_img->image_path;
 
-                if ($prev_p) {
-                    $uploadData->delete($prev_p);
-                }
                 $course_img->image_path = $path;
                 $course_img->image_name = $name;
                 $course_img->image_ex = $extension;
@@ -138,25 +136,22 @@ class LandingPageController extends Controller
             $file = $request->file('course_vid');
 
             $file_path = 'uploads';
-            $file_path = Storage::disk('s3')->put($file_path, $file);
 
             $f_mime_type = $file->getClientMimeType();
             $f_name = $file->getClientOriginalName();
 
+            $file_path = $this->uploadData->uploadVid()->upload($file, $f_name);
+  
+
             $course_vid = $course->course_vid;
             if ($course_vid) {
-                $p_path = Storage::disk('s3')->exists($course_vid->vid_path);
-                if ($p_path ) {
-                    Storage::disk('s3')->delete($course_vid->vid_path);
-
-                }
                 $course_vid->video_name = $f_name;
                 $course_vid->video_type = $f_mime_type;
                 $course_vid->vid_path = $file_path;
                 $course_vid->save();
 
                 return response()->json([
-                    'video_path' => Storage::disk('s3')->response($file_path),
+                    'video_path' => $this->uploadData->url($file_path),
                     'video_type' => $f_mime_type
                 ]);
             } else {
@@ -169,7 +164,7 @@ class LandingPageController extends Controller
 
                 changeCourseStatus($course->id, 5, 'course_video');
                 return response()->json([
-                    'video_path' =>  Storage::disk('s3')->response($file_path),
+                    'video_path' =>  $this->uploadData->url($file_path),
                     'video_type' => $f_mime_type
                 ]);
             }

@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class InstructorAnnFactory extends Factory
 {
     protected $model = InstructorAnn::class;
+    private $faker;
+    public function __construct() {
+    }
 
     public function definition()
     {
         return [
-            'message' => $this->faker->paragraph(),
-            'created_at' => $this->faker->dateTimeBetween('-1 month', 'now')
+            'message' => fake()->paragraph(),
+            'created_at' => fake()->dateTimeBetween('-1 month')
         ];
     }
 } 

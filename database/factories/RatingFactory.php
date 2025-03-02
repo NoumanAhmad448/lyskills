@@ -10,14 +10,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class RatingFactory extends Factory
 {
     protected $model = Rating::class;
+    private $faker;
+
+    public function __construct() {
+    }
 
     public function definition()
     {
         return [
             'user_id' => User::factory(),
             'course_id' => Course::factory(),
-            'rating' => $this->faker->numberBetween(1, 5),
-            'review' => $this->faker->paragraph(),
+            'rating' => fake()->numberBetween(1, 5),
+            'review' => fake()->paragraph(),
             'created_at' => now(),
             'updated_at' => now()
         ];
@@ -27,7 +31,7 @@ class RatingFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'rating' => $this->faker->numberBetween(4, 5)
+                'rating' => fake()->numberBetween(4, 5)
             ];
         });
     }
@@ -36,7 +40,7 @@ class RatingFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'rating' => $this->faker->numberBetween(1, 2)
+                'rating' => fake()->numberBetween(1, 2)
             ];
         });
     }

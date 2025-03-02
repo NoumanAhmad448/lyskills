@@ -4,6 +4,7 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -15,12 +16,15 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         // Optional: You can add additional checks
-        if (env('DB_DATABASE') !== config('database.testing_db')) {
-            throw new \Exception('Not using testing database! Current DB: ' . env('DB_DATABASE'));
+        if (config('database.current_db') !== config('database.testing_db')) {
+            $msg = 'Not using testing database! Current DB:' . config('database.current_db');
+            debug_logs($msg);
+            
+            throw new \Exception($msg);
         }
 
         // Seed the database for testing
         // check the following seeder the future
-        // $this->seed();
+        // $this->seed(\Database\Seeders\DatabaseSeeder::class);
     }
 }

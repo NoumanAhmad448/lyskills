@@ -5,6 +5,12 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 
+if (! function_exists('custom_dump')) {
+    function custom_dump($input): void {
+        dump($input);
+    }
+}
+
 if (!function_exists('check_input')){
      function check_input($u_input ){
         return htmlspecialchars(trim(stripslashes($u_input)));
@@ -179,10 +185,10 @@ if (!function_exists('php_config')){
 
     function php_config(){
         if(config("app.debug")){
-            dump("memory_limit =>".ini_get("memory_limit"));
-            dump("-----------------------");
-            dump("upload_max_filesize =>".ini_get("upload_max_filesize"));
-            dump("-----------------------");
+            custom_dump("memory_limit =>".ini_get("memory_limit"));
+            custom_dump("-----------------------");
+            custom_dump("upload_max_filesize =>".ini_get("upload_max_filesize"));
+            custom_dump("-----------------------");
         }
 
         ini_set('upload_max_filesize',config("setting.memory_limit"));
@@ -195,18 +201,18 @@ if (!function_exists('server_logs')){
             $return_response=true){
         if(config("app.debug")){
             if(count($e) > 1 && $e[0]){
-                dump($e[1]->getMessage());
-                dump("-----------------------");
+                custom_dump($e[1]->getMessage());
+                custom_dump("-----------------------");
             }
             if(count($request) > 1 && $request[0]){
-                dump($request[1]->all());
-                dump("-----------------------");
+                custom_dump($request[1]->all());
+                custom_dump("-----------------------");
             }
             if($config){
-                dump("memory_limit".ini_get("memory_limit"));
-                dump("-----------------------");
-                dump("upload_max_filesize=>".ini_get("upload_max_filesize"));
-                dump("-----------------------");
+                custom_dump("memory_limit".ini_get("memory_limit"));
+                custom_dump("-----------------------");
+                custom_dump("upload_max_filesize=>".ini_get("upload_max_filesize"));
+                custom_dump("-----------------------");
             }
         }else if($return_response){
             return response()->json(['error', config("setting.err_msg"),$response_status]);
@@ -214,11 +220,14 @@ if (!function_exists('server_logs')){
    }
 }
 
+
+
 if (! function_exists('debug_logs')) {
     function debug_logs($input): void {
         if (config('app.debug')) {
-            dump($input);
-            dump(config('setting.dash_lines'));
+            custom_dump($input);
+            custom_dump(config('setting.dash_lines'));
         }
     }
 }
+
