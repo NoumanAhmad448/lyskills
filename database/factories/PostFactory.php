@@ -6,10 +6,16 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Classes\Faker;
 
 class PostFactory extends Factory
 {
     protected $model = Post::class;
+
+    private $faker;
+    public function __construct() {
+        $this->faker = new Faker;
+    }
 
     public function definition()
     {
@@ -19,7 +25,7 @@ class PostFactory extends Factory
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'message' => $this->faker->paragraphs(3, true),
+            'message' => $this->faker->paragraphs(),
             'email' => $user->email,
             'status' => 'published',
             'upload_img' => 'posts/default.jpg',
@@ -37,4 +43,4 @@ class PostFactory extends Factory
             ];
         });
     }
-} 
+}

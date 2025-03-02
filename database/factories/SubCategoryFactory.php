@@ -6,14 +6,20 @@ use App\Models\SubCategory;
 use App\Models\Categories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-
+use App\Classes\Faker;
 class SubCategoryFactory extends Factory
 {
     protected $model = SubCategory::class;
+    private $faker;
+
+    public function __construct()
+    {
+        $this->faker = new Faker;
+    }
 
     public function definition()
     {
-        $name = $this->faker->unique()->words(2, true);
+        $name = $this->faker->words();
         return [
             'name' => ucwords($name),
             'value' => Str::slug($name),
@@ -43,4 +49,4 @@ class SubCategoryFactory extends Factory
             ];
         });
     }
-} 
+}

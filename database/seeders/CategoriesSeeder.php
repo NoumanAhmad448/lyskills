@@ -53,4 +53,4 @@ class CategoriesSeeder extends Seeder
             Categories::create($category);
         }
     }
-} 
+}

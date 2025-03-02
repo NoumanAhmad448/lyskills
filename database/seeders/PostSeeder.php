@@ -5,9 +5,14 @@ namespace Database\Seeders;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use App\Classes\Faker;
 
 class PostSeeder extends Seeder
 {
+    private $faker;
+    public function __construct() {
+        $this->faker = new Faker;
+    }
     /**
      * Run the database seeds.
      *
@@ -19,7 +24,7 @@ class PostSeeder extends Seeder
         $admin = User::where('is_admin', true)->first() ??
                 User::factory()->create([
                     'is_admin' => true,
-                    'email' => 'admin@lyskills.com'
+                    'email' => $this->faker->email()
                 ]);
 
         // Create published posts

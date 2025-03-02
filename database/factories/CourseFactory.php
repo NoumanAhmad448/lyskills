@@ -7,10 +7,16 @@ use App\Models\User;
 use App\Models\Categories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Classes\Faker;
+
 
 class CourseFactory extends Factory
 {
     protected $model = Course::class;
+    private $faker;
+    public function __construct() {
+        $this->faker = new Faker;
+    }
 
     public function definition()
     {
@@ -18,7 +24,7 @@ class CourseFactory extends Factory
         return [
             'course_title' => $title,
             'slug' => Str::slug($title),
-            'description' => $this->faker->paragraphs(3, true),
+            'description' => $this->faker->paragraphs(),
             'user_id' => User::factory(),
             'categories_selection' => Categories::factory(),
             'c_level' => $this->faker->randomElement(['Beginner', 'Intermediate', 'Advanced']),
@@ -38,4 +44,4 @@ class CourseFactory extends Factory
             ];
         });
     }
-} 
+}
