@@ -120,6 +120,9 @@ $(document).ready(function () {
         let lectureId = $(this).data('lecture-id');
         let access_duration = $(`.access_duration_${courseId}`)
         if (access_duration.val() || access_duration.attr("p_d")) {
+                    // show loader
+        $('.loading-section').addClass('loader').fadeIn();
+        $('#loading').fadeIn()
             $.ajax({
                 url: '/save-access-duration',
                 type: 'POST',
@@ -134,15 +137,21 @@ $(document).ready(function () {
                 dataType: 'json'
             })
                 .done(function (response) {
-                    show_popup(response.message)
+                    // hide loader
+                    $('#loading', '.loading-section').fadeOut();
+                    $('.loading-section').removeClass('loader').fadeOut();
+                    show_message(response.message)
                     $("#close-modal").removeAttr("onclick")
                 })
                 .fail(function () {
-                    console.error('An error')
+                    // hide loader
+                    $('#loading', '.loading-section').fadeOut();
+                    $('.loading-section').removeClass('loader').fadeOut();
+                    show_message('An error')
                     $("#close-modal").removeAttr("onclick")
                 })
         } else {
-            show_popup("date is required")
+            show_message("date is required")
             $("#close-modal").removeAttr("onclick")
         }
     });

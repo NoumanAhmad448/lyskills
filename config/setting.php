@@ -57,7 +57,8 @@ $site_settings = [
                 '.env.dev',
                 '.env.live.example',
                 '.env.dev.example',
-            ]
+        ],
+        "en_showing_vid_val" => false
 ];
 
 return $site_settings;

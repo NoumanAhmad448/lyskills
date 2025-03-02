@@ -8,9 +8,14 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "git_push": "git add . && git commit -m \"$npm_config_message\" && php artisan test --filter EnvFilesConsistencyTest && git push",
-        "git_push_0": "git add . && git commit -m \"$npm_config_message\" && php artisan test --filter EnvFilesConsistencyTest && git push"
+        "git_push": "git add . && git commit -m \"$npm_package_config_message\" && php artisan test --filter EnvFilesConsistencyTest && git push",
+        "git_push_0": "npm run git_push --message='Your custom commit message'",
+        "git_push_help" : "echo 'run the command mentioned in git_push_0'"
     },
+        "config": {
+          "message": "Local to Github"
+        }
+      ,
     "devDependencies": {
         "axios": "^1.8.1",
         "buffer": "^6.0.3",

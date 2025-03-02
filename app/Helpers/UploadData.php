@@ -11,7 +11,7 @@ class UploadData{
         "isImage" => true, 
         "isVideo" => false, 
         "imageStoragePath" => "storage/img/",
-        "videoStoragePath" => "upload/"
+        "videoStoragePath" => "uploads/"
     ];
 
 
@@ -23,32 +23,49 @@ class UploadData{
             dump(config("filesystems.disks.$this->disk"));
             dump($this->disk);
         }
+
+        // reset the path to the root dire for the time being
+        if(config("app.debug") && false){
+            $this->default_setting["imageStoragePath"] = "";
+            $this->default_setting["videoStoragePath"] = "";
+        } 
+    }
+
+    public static function changeDisk($disk){
+        $this->disk = $disk;
+        return $this;
     }
 
     public function upload($object, $file_name, $params=[])
     {
-        if(!empty($params)){
-            if(!empty($params['isVideo'])){
-                $default_setting['isVideo'] = true;
-                $default_setting['isImage'] = false;
-            }
-        }
 
         // $this->createDirectory();
+        // Never and Ever Call the above funtion 
 
         // upload image
         if($this->default_setting['isImage']){
+            if(config("app.debug")){
+                $this->default_setting['imageStoragePath'];
+            }
             $path = $this->default_setting['imageStoragePath'].time() . uniqid() . str_replace(' ', '-',$file_name);
             
-            // Check environment
-            if(config('app.env') === 'local') {
-                Storage::disk('public')->put($path, $object);
-            } else {
-                Storage::disk("s3")->put($path, $object);
-            }
-            
-            return $path;
+        }else if($this->default_setting['isVideo']){
+            $path = $this->default_setting['videoStoragePath'].time() . uniqid() . str_replace(' ', '-',$file_name);
         }
+        // Check environment
+        if(config('app.env') === 'local') {
+            Storage::disk($this->disk)->put($path, $object);
+        } else {
+            Storage::disk($this->disk)->put($path, $object);
+        }
+        
+        return $path;
+    
+    }
+    public function uploadVid(){
+        $this->default_setting["isVideo"] = true;
+        $this->default_setting["isImage"] = false;
+        return $this;
     }
 
     public function createDirectory($customPath=""){
@@ -65,5 +82,9 @@ class UploadData{
 
     public function delete($path){
         Storage::disk($this->disk)->delete($path);
+    }
+
+    public function url($file){
+        return Storage::disk($this->disk)->url($file);
     }
 }
