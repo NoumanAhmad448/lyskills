@@ -9,7 +9,7 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
         "git_push": "git add . && git commit -m \"$npm_package_config_message\" && php artisan test --filter EnvFilesConsistencyTest && git push",
-        "git_push_0": "npm run git_push --message='Your custom commit message'",
+        "git_push_0": "npm run git_push --message='commit'",
         "git_push_help" : "echo 'run the command mentioned in git_push_0'"
     },
         "config": {
