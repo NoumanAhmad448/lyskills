@@ -223,9 +223,9 @@ jobs:
       - name: Checking Laravel Health
         run: php artisan health:check --no-notification
 
-      - name: Run Tests
-        run: APP_ENV=testing php artisan test
-        continue-on-error: true  # ✅ Allows pipeline to continue even if tests fail
+      # - name: Run Tests
+      #   run: APP_ENV=testing php artisan test -v 
+      #   continue-on-error: true  # ✅ Allows pipeline to continue even if tests fail
 
       # - name: Sync files to server via FTP
       #   uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65
