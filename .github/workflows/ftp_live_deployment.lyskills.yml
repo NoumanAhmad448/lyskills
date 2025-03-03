@@ -133,12 +133,15 @@ jobs:
       - name: Set up Environment File
         run: |
           cp .env.testing.example .env
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=127.0.0.1" >> .env
-          echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          # Read the keys from the secrets.json file (no values)
+          keys=$(cat secrets.json)
+
+          # Loop through each key, get the value from GitHub Secrets and set it in the .env file
+          for key in $keys; do
+            value="${{ secrets[$key] }}"
+            echo "$key=$value" >> .env
+          done
+
 
 
       - name: Run Pint for code styling
@@ -151,7 +154,7 @@ jobs:
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions 
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/views
           sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
-          
+
       - name: File permission
         run:  yes | sudo chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
 
