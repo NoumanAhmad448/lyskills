@@ -20,7 +20,7 @@ return new class extends Migration
             $dbExists = DB::select("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?", [$database]);
 
             if (!count($dbExists)) {
-                $adminDB->statement("CREATE DATABASE `" . addslashes($database) . "`");
+                DB::statement("CREATE DATABASE `" . addslashes($database) . "`");
                 echo "✅ Database '$database' created successfully.\n";
             } else {
                 echo "⚠️ Database '$database' already exists. Skipping...\n";
