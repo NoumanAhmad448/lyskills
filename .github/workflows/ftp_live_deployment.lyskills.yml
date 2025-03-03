@@ -144,6 +144,14 @@ jobs:
       - name: Run Pint for code styling
         run: pint --config pint.json
 
+      - name: Creating essential directoires
+        run: |
+          mkdir -p /storage/app 
+          mkdir -p /storage/framework/cache
+          mkdir -p /storage/framework/sessions 
+          mkdir -p /storage/framework/views
+          mkdir -p /storage/logs
+
       - name: installing composer
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
 
