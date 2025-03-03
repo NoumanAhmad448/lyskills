@@ -146,11 +146,14 @@ jobs:
 
       - name: Creating essential directoires
         run: |
-          sudo mkdir -p /storage/app 
-          sudo mkdir -p /storage/framework/cache
-          sudo mkdir -p /storage/framework/sessions 
-          sudo mkdir -p /storage/framework/views
-          sudo mkdir -p /storage/logs
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/app 
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/cache
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions 
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/views
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
+
+      - name: Show file structure
+        run: ls -l $GITHUB_WORKSPACE
 
       - name: installing composer
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
