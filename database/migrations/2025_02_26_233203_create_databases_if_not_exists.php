@@ -15,6 +15,7 @@ return new class extends Migration
             config("database.testing_db"),
             config("database.connections")[config("database.default")]["database"]
         ];
+        if (config('database.current_db') !== config('database.testing_db')) {
 
         foreach ($databases as $database) {
             $dbExists = DB::select("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?", [$database]);
@@ -26,6 +27,7 @@ return new class extends Migration
                 echo "⚠️ Database '$database' already exists. Skipping...\n";
             }
         }
+    }
     }
 
     /**
