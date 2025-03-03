@@ -146,11 +146,11 @@ jobs:
 
       - name: Creating essential directoires
         run: |
-          mkdir -p /storage/app 
-          mkdir -p /storage/framework/cache
-          mkdir -p /storage/framework/sessions 
-          mkdir -p /storage/framework/views
-          mkdir -p /storage/logs
+          sudo mkdir -p /storage/app 
+          sudo mkdir -p /storage/framework/cache
+          sudo mkdir -p /storage/framework/sessions 
+          sudo mkdir -p /storage/framework/views
+          sudo mkdir -p /storage/logs
 
       - name: installing composer
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
