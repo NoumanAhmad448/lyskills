@@ -10,20 +10,15 @@ use Illuminate\Support\Str;
 class SubCategoryFactory extends Factory
 {
     protected $model = SubCategory::class;
-    private $faker;
-
-    public function __construct()
-    {
-    }
-
+    
     public function definition()
     {
-        $name = fake()->words();
+        $name = $this->faker->name();
         return [
             'name' => ucwords($name),
             'value' => Str::slug($name),
             'categories_id' => Categories::factory(),
-            'description' => fake()->sentence(),
+            'description' => $this->faker->sentence(),
             'status' => 'active',
             'created_at' => now(),
             'updated_at' => now()

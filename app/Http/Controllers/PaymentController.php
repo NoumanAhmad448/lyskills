@@ -14,7 +14,7 @@ use App\Models\OfflinePayment;
 use App\Models\Setting;
 use App\Models\User;
 use App\Rules\IsScriptAttack;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -174,9 +174,10 @@ class PaymentController extends Controller
             ]);
 
             $ins = User::findOrFail($request->user)->select('id', 'name', 'email')->first();
-            $month  = Carbon::now()->month - 1;
+            $month  = LyskillsCarbon::currentMonth() - 1;
 
-            $save_detail = MonthlyPaymentModel::where('user_id', $request->user)->where('month', $month)->whereYear('created_at', Carbon::now()->year)->exists();
+            $save_detail = MonthlyPaymentModel::where('user_id', $request->user)->where('month', $month)
+            ->whereYear('created_at', LyskillsCarbon:currentYear())->exists();
             if ($save_detail) {
                 return back()->with('error', 'you have already paid for this month to this instructor');
             }

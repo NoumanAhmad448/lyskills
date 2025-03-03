@@ -9,7 +9,7 @@ use App\Models\InstructorEarning;
 use App\Models\InstructorPayment as ModelsInstructorPayment;
 use App\Models\MonthlyPaymentModel;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -35,10 +35,10 @@ class InstructorPayment extends Controller
                 $payment_detail = ModelsInstructorPayment::where('user_id', $user->id)->first();
                 $total_earning = InstructorEarning::where('ins_id', $user->id)->sum('earning');
 
-                $current_month_earning = InstructorEarning::where('ins_id', $user->id)->whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('earning');
+                $current_month_earning = InstructorEarning::where('ins_id', $user->id)->whereYear('created_at', LyskillsCarbon:now()->year)->whereMonth('created_at', LyskillsCarbon:now()->month)->sum('earning');
 
-                $prev_month = Carbon::now()->month - 1;
-                $cu_year = Carbon::now()->year;
+                $prev_month = LyskillsCarbon::currentMonth() - 1;
+                $cu_year = LyskillsCarbon::currentYear();
                 $payment = [];
 
                 $payment_history = [];
@@ -48,7 +48,7 @@ class InstructorPayment extends Controller
 
                     $m_payment = MonthlyPaymentModel::where('month', $prev_month)->where('user_id', (int)$user->id)->whereYear(
                         'created_at',
-                        Carbon::now()->year
+                        LyskillsCarbon:now()->year
                     )->value('payment');
 
 

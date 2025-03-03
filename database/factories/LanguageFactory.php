@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class LanguageFactory extends Factory
 {
     protected $model = Language::class;
-    private $faker;
-    public function __construct() {
-    }
+    
 
     public function definition(): array
     {

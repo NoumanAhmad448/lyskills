@@ -1,5 +1,5 @@
 @php 
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 
 @endphp
 <style type="text/css" media="print">
@@ -35,7 +35,7 @@ use Carbon\Carbon;
                     <img src="{{asset('img/logo.jpg')}}" alt="company logo" style="width: 150px;"  />
                 </div>
                 <div style="font-size:25px;"><i>Dated</i></div>
-                <div style="font-size:30px;color: #000">  @php echo Carbon::now()->toDateString(); @endphp </div>
+                <div style="font-size:30px;color: #000">  @php echo LyskillsCarbon::now(true); @endphp </div>
                 <div style="display: flex;justify-content: between !important; margin-left: 1rem">
                 <div> Ref no @php echo rand();  @endphp  </div>
                     <img src="{{asset('img/sign.JPG')}}" alt="signature" style="width: 150px; margin-left: auto"  />

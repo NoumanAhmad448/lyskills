@@ -108,7 +108,15 @@ jobs:
         php: [8.1]  # You can add more PHP versions in the future if needed
         commit_msg: ["Fixes coding style"]
         server_path: ["/home/nomilyskills/public_html"]
-
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - uses: actions/checkout@v3
         with:
@@ -122,8 +130,23 @@ jobs:
           tools: pint:1.16.1, phpdoc, composer:2.4.4
           coverage: none
 
+      - name: Set up Environment File
+        run: |
+          cp .env.testing.example .env
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+
+
       - name: Run Pint for code styling
         run: pint --config pint.json
+
+      - name: Run Tests
+        run: APP_ENV=testing php artisan test
+        continue-on-error: true  # ✅ Allows pipeline to continue even if tests fail
 
       # - name: Sync files to server via FTP
       #   uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65

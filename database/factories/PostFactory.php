@@ -11,19 +11,16 @@ class PostFactory extends Factory
 {
     protected $model = Post::class;
 
-    private $faker;
-    public function __construct() {
-    }
-
+   
     public function definition()
     {
         $user = User::factory()->create();
-        $title = fake()->sentence();
+        $title = $this->faker->sentence();
 
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'message' => fake()->paragraphs(),
+            'message' => implode("\n\n",$this->faker->paragraphs()),
             'email' => $user->email,
             'status' => 'published',
             'upload_img' => 'posts/default.jpg',

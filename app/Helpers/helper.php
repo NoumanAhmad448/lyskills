@@ -2,12 +2,14 @@
 
 use App\Models\CourseStatus;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 
 
 if (! function_exists('custom_dump')) {
     function custom_dump($input): void {
-        dump($input);
+        if(config("app.debug")){
+            dump($input);
+        }
     }
 }
 
@@ -172,13 +174,13 @@ if (!function_exists('isCurrentUserBlogger')){
 if (!function_exists('dateFormat')){
 
     function dateFormat($value){
-       return Carbon::parse($value)->format('Y-m-d');
+       return LyskillsCarbon::dateFormat($value);
    }
 }
 if (!function_exists('dbDate')){
 
     function dbDate($value){
-       return Carbon::parse($value)->format('Y-m-d H:i:s');
+       return LyskillsCarbon::dbDateFormat($value);
    }
 }
 if (!function_exists('php_config')){

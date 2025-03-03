@@ -17,7 +17,7 @@ class UploadData{
 
     public function __construct(){
         $this->dir_path = config("setting.dir_path");
-        $this->disk = config('app.env') === 'local' ? 'public' : 's3';
+        $this->disk = config('app.env') === config("app.dev_env") ? 'public' : 's3';
 
         if(config("app.debug")){
             debug_logs(config("filesystems.disks.$this->disk"));
@@ -62,6 +62,7 @@ class UploadData{
         return $path;
     
     }
+    
     public function uploadVid(){
         $this->default_setting["isVideo"] = true;
         $this->default_setting["isImage"] = false;

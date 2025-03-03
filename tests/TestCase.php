@@ -25,6 +25,6 @@ abstract class TestCase extends BaseTestCase
 
         // Seed the database for testing
         // check the following seeder the future
-        // $this->seed(\Database\Seeders\DatabaseSeeder::class);
+        $this->seed(\Database\Seeders\DatabaseSeeder::class);
     }
 }

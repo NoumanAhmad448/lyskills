@@ -6,9 +6,14 @@ use App\Models\Payment;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class PaymentSeeder extends Seeder
 {
+    public function __construct() {
+        $this->faker = Faker::create();  // Manually instantiate the Faker object
+
+    }
     public function run()
     {
         // Get all students

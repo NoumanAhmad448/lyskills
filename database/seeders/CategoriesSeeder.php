@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Categories;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class CategoriesSeeder extends Seeder
 {

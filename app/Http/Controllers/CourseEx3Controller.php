@@ -30,8 +30,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade as PDF;
-use Carbon\Carbon;
-use App\Classes\LyskillsCarbonClass;
+use App\Classes\LyskillsCarbon;
 
 class CourseEx3Controller extends Controller
 {
@@ -176,7 +175,8 @@ class CourseEx3Controller extends Controller
                 $m_lec = $media->lecture;
                 $c_anns = CourseAnnouncement::select('subject', 'body')->where('course_id', $course->id)->latest()->take(5)->get();
                 $should_usr_hv_acs = true;
-                if ($media->access_duration && $c_en && LyskillsCarbonClass::diffInDays($c_en->created_at,$media->access_duration)){
+                if ($media->access_duration && $c_en && 
+                    LyskillsCarbon::is_day_future(LyskillsCarbon::now(),$media->access_duration)){
                     $should_usr_hv_acs = false;
                 }
                 return view('xuesheng.course-content', compact('course', 'title', 'media', 'desc', 'm_lec', 'c_anns','should_usr_hv_acs'));
