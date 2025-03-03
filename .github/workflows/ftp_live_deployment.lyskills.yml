@@ -137,8 +137,9 @@ jobs:
           # keys=$(cat secrets.json)
 
           # # Loop through each key, get the value from GitHub Secrets and set it in the .env file
+          # following loop is not valid for github action
           # for key in $keys; do
-          #   value="${{ secrets.$key }}"
+          #   value=secrets.$key"
           #   echo "$key=$value" >> .env
           # done
 
