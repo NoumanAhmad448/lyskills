@@ -28,7 +28,7 @@ use App\Models\Quiz;
 use App\Models\ResVideo;
 use App\Models\Setting;
 use App\Rules\IsLessThan;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -89,15 +89,15 @@ class AdminController extends Controller
             $title = 'admin';
             $current_month = date('m');
             $current_day = date('d');
-            $dateS = Carbon::now()->startOfMonth();
-            $dateE = Carbon::now();
+            $dateS = LyskillsCarbon::startOfMonth();
+            $dateE = LyskillsCarbon::now();
 
             $history = CourseHistory::select('amount', 'id', 'created_at')->whereBetween('created_at', [$dateS, $dateE])
                 ->get();
             $dates = [];
             if ($history->count()) {
                 foreach ($history as $key) {
-                    $d = Carbon::parse($key->created_at)->format('d');
+                    $d = LyskillsCarbon::parse($key->created_at,'d');
                     array_push($dates, [(int)$d, $key->amount]);
                 }
             }

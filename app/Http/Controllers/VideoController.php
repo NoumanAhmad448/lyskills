@@ -8,16 +8,23 @@ use App\Models\CourseStatus;
 use App\Models\Media;
 use App\Models\Lecture;
 use App\Models\ResVideo;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\uploadData;
 
 class VideoController extends Controller
 {
+    public function __construct() {
+        $this->uploadData = new uploadData;
+        $this->uploadData = $this->uploadData->uploadVid();
+        $this->st_path = "storage";
+    }
     function validate_user($course_id){
         return Course::where([['user_id',Auth::id()],['id', $course_id]])->firstOrFail();
     }
+    
     public function set_video_free(Request $request, $media_id)
     {
         try{
@@ -77,15 +84,14 @@ class VideoController extends Controller
             $path1 = $file->store('uploads','public');
 
             $path = "uploads";
-            $path = Storage::disk('s3')->put($path, $file);
+            $path = $this->uploadData->upload($file, $f_name);
 
             $getID3 = new \getID3;
             $file = $getID3->analyze(public_path('storage/'.$path1));
-            // $file = $getID3->analyze('https://lyskills-by-nouman.s3.ap-southeast-1.amazonaws.com/'.$path);
 
             $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
 
-            $duration = Carbon::parse($time_mili)->toTimeString();
+            $duration = LyskillsCarbon::parse($time_mili,$toTimeString=true);
             if(file_exists(public_path('storage/'.$path1))){
                 // @ supress the error
                 @unlink(public_path('storage/'.$path1));
@@ -134,22 +140,11 @@ class VideoController extends Controller
 
             if($media){
                 $file_name = $media->lec_name;
-                if($file_name){
-                    $f_path = Storage::disk('s3')->exists($file_name);
-
-                    if($f_path){
-                        Storage::disk('s3')->delete($f_path);
-                    }
                     $media->delete();
                     return response()->json([
                         'status' => 'video has been deleted',
                         'video_url' => route('upload_video',['course_id' => $course_id, 'lecture_id' => $lec_id])
                     ]);
-                }else{
-                    return response()->json([
-                        'error' => 'video was not deleted because of some issues'
-                    ]);
-                }
             }
         }
     }
@@ -161,7 +156,7 @@ class VideoController extends Controller
             $this->validate_user($lec->lecture->course->id);
             if($lec){
                 $file_name = $lec->lec_path;
-                // dd($file_name);
+                // debug_dump($file_name);
                 if($file_name){
                     // $f_path = public_path('storage/'.$file_name);
                 $f_path = Storage::disk('s3')->exists($file_name);
@@ -209,6 +204,64 @@ class VideoController extends Controller
             return response()->json(
                'All video files have been saved'
             );
+
+        }else{
+            abort(403);
+        }
+    }
+
+    public function edit_video($course_id,$media_id,Request $request){
+        php_config();
+        if($request->ajax()){
+            try{
+            $course = $this->validate_user($course_id);
+
+            $request->validate([
+                'edit_video' => 'required|max:4500000|mimetypes:video/mp4,video/webm,video/ogg'
+            ]);
+            $file = $request->file('edit_video');
+            $f_name = $file->getClientOriginalName();
+            $f_mimetype = $file->getClientMimeType();
+
+            $path1 = $file->store('uploads','public');
+
+            $path = "uploads";
+
+            $path = $this->uploadData->upload($file, $f_name);
+
+
+            $getID3 = new \getID3;
+            $file = $getID3->analyze(public_path($this->st_path.$path1));
+
+            $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
+
+            $duration = LyskillsCarbon::parse($time_mili,$toTimeString=true);
+            if(file_exists(public_path($this->st_path.$path1))){
+                // @ supress the error
+                @unlink(public_path($this->st_path.$path1));
+            }
+            $media = Media::where("id", $media_id)->first();
+            $media->lec_name = $path;
+            $media->f_name = $f_name;
+            $media->course_id = $course_id;
+            $media->f_mimetype = $f_mimetype;
+            $media->duration = $duration ;
+            $media->time_in_mili = $time_mili ;
+            $media->is_free = !empty($request->set_free) ? 1 : 0;
+            $media->is_download = !empty($request->set_download) ? 1 : 0;
+            $media->update();
+
+            $course->updated_at = LyskillsCarbon::now();
+            $course->save();
+            return response()->json([
+                'path' => $path,
+                'media' => $media,
+                'delete' => route('delete_video',['course_id'=>$course_id, 'media_id' => $media->id]),
+                'f_name' => reduceCharIfAv($f_name,30)
+            ]);
+        }catch(Exception $d){
+            return server_logs($e=[true,$d], $request=[true,$request],$config=true);
+        }
 
         }else{
             abort(403);

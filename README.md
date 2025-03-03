@@ -123,11 +123,12 @@ npm run watch
 4. server logs `server_logs` function in `helper.php`
 5. server configuration `php_config` function in `helper.php`
 
-1) Add all global setting constants in `custom_lib .blade.php`
-2) custom javascript functions in `common_functions.js`
-3) show loader on user request `profile.js` and search for `hide loader` & `show loader`
-4) server logs `server_logs` function in `helper.php`
-5) server configuration `php_config` function in `helper.php`
+6. Add all global setting constants in `custom_lib .blade.php`
+7. custom javascript functions in `common_functions.js`
+8. show loader on user request `profile.js` and search for `hide loader` & `show loader`
+9. server logs `server_logs` function in `helper.php`
+10. server configuration `php_config` function in `helper.php`
+11. All php related dates or carbon classes is in ```LyskillsCarbon```
 
 ```
 8. Checkout storage on server

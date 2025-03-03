@@ -5,11 +5,13 @@ namespace Database\Seeders;
 use App\Models\SubCategory;
 use App\Models\Categories;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class SubCategorySeeder extends Seeder
 {
-    private $faker;
     public function __construct() {
+        $this->faker = Faker::create();  // Manually instantiate the Faker object
+
     }
     /**
      * Run the database seeds.

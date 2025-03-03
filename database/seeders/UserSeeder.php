@@ -1,58 +1,45 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-
-use Faker\Factory;
+use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class UserSeeder extends Seeder
 {
-
     public function __construct() {
+        // You can instantiate the Faker factory here if needed
+        $this->faker = Faker::create();  // Manually instantiate the Faker object
     }
+
     public function run()
     {
-        $fakeEmail = fake()->email();
-        echo $fakeEmail; // Outputs something like "john.doe@example.com"
-        // Get admin user or create one if doesn't exist
 
         // Create admin user
         User::factory()->create([
-            'name' => fake()->words(),
-            'email' => fake()->unique()->email,
-            'password' => Hash::make(fake()->words(1)),
+            'name' => $this->faker->name(), // 2 words, separated by space
+            'email' => $this->faker->unique()->email(),
+            'password' => Hash::make($this->faker->bothify('????####')), // 4 letters followed by 4 digits
             'is_admin' => true,
             'email_verified_at' => now()
         ]);
 
-        $fakeEmail = fake()->email();
-        echo $fakeEmail; // Outputs something like "john.doe@example.com"
-        // Get admin user or create one if doesn't exist
-
-        debug_logs("here");
-
         // Create instructor
+
         User::factory()->create([
-            'name' => fake()->name(),
-            'email' => fake()->unique()->email(),
-            'password' => Hash::make(fake()->words(10)),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->email(),
+            'password' => Hash::make($this->faker->bothify('????####')),
             'is_instructor' => true,
             'email_verified_at' => now()
         ]);
 
-        $fakeEmail = fake()->unique()->email();
-        debug_logs("here");
-        // Get admin user or create one if doesn't exist
 
-
-        // Create regular user
         User::factory()->create([
-            'name' => fake()->name(),
-            'email' => $fakeEmail,
-            'password' => Hash::make(fake()->email()),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->email(),  // Use the previous generated email
+            'password' => Hash::make($this->faker->bothify('????####')),
             'email_verified_at' => now()
         ]);
 

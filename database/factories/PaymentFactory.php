@@ -10,20 +10,17 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PaymentFactory extends Factory
 {
     protected $model = Payment::class;
-    private $faker;
-    public function __construct() {
-    }
-
+    
     public function definition()
     {
-        $amount = fake()->randomFloat(2, 10, 200);
+        $amount = $this->faker->randomFloat(2, 10, 200);
         
         return [
             'user_id' => User::factory(),
             'course_id' => Course::factory(),
             'amount' => $amount,
-            'payment_method' => fake()->randomElement(['stripe', 'paypal', 'bank']),
-            'transaction_id' => fake()->uuid,
+            'payment_method' => $this->faker->randomElement(['stripe', 'paypal', 'bank']),
+            'transaction_id' => $this->faker->uuid,
             'status' => 'completed',
             'currency' => 'USD',
             'payment_date' => now(),

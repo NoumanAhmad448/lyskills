@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +60,7 @@ class InstructorAuthController extends Controller
                 'expertise' => $request->expertise,
                 'teaching_experience' => $request->teaching_experience,
                 'qualification' => $request->qualification,
-                'email_verified_at' => Carbon::now()
+                'email_verified_at' => LyskillsCarbon::now()
 
             ]);
 

@@ -2,7 +2,7 @@
 use App\Models\CourseStatus;
 use App\Models\CourseEnrollment;
 use App\Models\InstructorEarning;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 @endphp
 {{-- <x-app-layout>     --}}
     @extends('layouts.dashboard_header')
@@ -149,12 +149,12 @@ use Carbon\Carbon;
                             <div class="col-md-3 d-flex justify-content-center align-items-center flex-column">
                                 @php 
                                     $m_en =  CourseEnrollment::where('course_id',$course->id)->whereMonth('created_at',
-                                    Carbon::now()->month)->
-                                    whereYear('created_at', Carbon::now()->year)->count();
+                                    LyskillsCarbon::currentMonth())->
+                                    whereYear('created_at', LyskillsCarbon::currentYear())->count();
                                     $m_ear = InstructorEarning::where('course_id',$course->id)->
                                     whereMonth('created_at',
-                                    Carbon::now()->month)->
-                                    whereYear('created_at', Carbon::now()->year)->sum('earning');
+                                    LyskillsCarbon::currentMonth())->
+                                    whereYear('created_at', LyskillsCarbon::currentYear())->sum('earning');
                                     
                                 @endphp
                                 @if($m_en) <div class="text-success"> This month Enrollment {{$m_en}} </div> @endif

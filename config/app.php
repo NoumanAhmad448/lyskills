@@ -27,6 +27,12 @@ return [
     */
 
     'env' => env('APP_ENV', 'dev'),
+    'dev_env' => 'dev',
+    'testing_env' => 'testing',
+    'live_env' => 'production',
+    /*
+    App env values are dev/testing/production
+    */
 
     'email' => env('MAIL_FROM_ADDRESS', ''),
 

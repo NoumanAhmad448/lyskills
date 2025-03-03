@@ -28,10 +28,10 @@
         "livewire/livewire": "^2.0",
         "paypal/paypal-checkout-sdk": "1.0.1",
         "paypal/rest-api-sdk-php": "^1.14",
-        "spatie/laravel-health": "^1.32",
-        "spatie/laravel-sluggable": "^3.4",
         "phpunit/phpunit": "^9.6",
-        "spatie/laravel-ignition": "^1.0"
+        "spatie/laravel-health": "^1.32",
+        "spatie/laravel-ignition": "^1.0",
+        "spatie/laravel-sluggable": "^3.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

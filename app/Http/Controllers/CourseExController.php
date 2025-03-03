@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade as PDF;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 class CourseExController extends Controller
 {
 
@@ -63,7 +63,7 @@ class CourseExController extends Controller
     public function createPdf()
     {
          $cert_no = rand();
-        $date = Carbon::now()->toDateString();
+        $date = LyskillsCarbon::now($toDateString=true);
         $course_name = "";
         $d = ['course' => $course_name, 'cert_no' => $cert_no, 'date' => $date, 'name' => auth()->user()->name];
         return view('course.certificate', $d);
@@ -74,7 +74,7 @@ class CourseExController extends Controller
 
     public function downloadCert($course_name){
         $cert_no = rand();
-        $date = Carbon::now()->toDateString();
+        $date = LyskillsCarbon::now($toDateString=true);
 
         $d = ['course' => $course_name, 'cert_no' => $cert_no, 'date' => $date, 'name' => auth()->user()->name];
 

@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Log;
 
 use App\Models\CronJobs;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Exception;
 use Illuminate\Console\Command;
 
@@ -44,13 +44,13 @@ class ClearLogFile extends Command {
             $this->info(__('messages.cnsl_msg', ['msg' => 'Logs have been cleared']));
             CronJobs::update_job($cron_id, [
                 config('table.status') => config('constants.successed'),
-                config('table.ends_at') => Carbon::now(),
+                config('table.ends_at') => LyskillsCarbon::now(),
             ]);
         } catch (Exception $e) {
             CronJobs::update_job($cron_id, [
                 config('table.status') => config('constants.error'),
                 config('table.message') => $e->getMessage(),
-                config('table.ends_at') => Carbon::now(),
+                config('table.ends_at') => LyskillsCarbon::now(),
             ]);
         }
     }

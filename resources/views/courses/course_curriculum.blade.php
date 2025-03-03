@@ -1147,7 +1147,63 @@ use App\Models\ResVideo;
 
         });
 
-
+        function videoResponse(data,upload_vid){
+            let response = `<section class="lecture_vid row p-3">
+                                                <div class="col-md-9">
+                                                <div class="form-check my-3">
+                                                        <input class="form-check-input is_free" type="checkbox"
+                                                        media_id="${data['media']}"
+                                                            id="is_free_${data['media']['id']}"
+                                                         name="set_free"
+                                                        ${data['media']['is_free'] ? "checked" : ''}
+                                                        >
+                                                        <label class="form-check-label" for="set_free">
+                                                            set video download
+                                                        </label>
+                                                    </div>
+                                                <div class="form-check my-3">
+                                                        <input class="form-check-input is_free" type="checkbox"
+                                                        media_id="${data['media']['id']}"
+                                                        id="is_download_${data['media']}" name="is_download"
+                                                        ${data['media']['is_download'] ? "checked" : ''}
+                                                        >
+                                                        <label class="form-check-label" for="is_download">
+                                                            set video free
+                                                        </label>
+                                                </div>`
+                                                if({{config('setting.en_showing_vid_val') ? 1 : 0}}){
+                                                    $response +=`
+                                                <section class="d-flex justify-content-start align-items-center my-3">
+                                                    <div class="col-3" name="access_duration">
+                                                        <label for="date_time">Until Valid Date?</label>
+                                                        <input p_d="${data['media']['access_duration']}" 
+                                                        value="${data['media']['access_duration']}" type="text"
+                                                        class="form-control date-picker
+                                                        access_duration_${data['media']['course_id']}" autocomplete="off"
+                                                        id="date_time" name="date_time">
+                                                    </div>
+                                                    <button class="saveAccess btn btn-info" style="margin-top: 2rem"
+                                                    data-course-id="${data['media']['course_id']}"
+                                                    data-lecture-id="${data['media']['lecture_id']}" class=''>Save</button>
+                                                </section>`
+                                                }
+                                                response += `
+                                                <div class="d-flex">
+                                                    <video width="500" height="240" controls oncontextmenu="return false;">
+                                                        <source src="${path}" type="${media['f_mimetype']}">
+                                                    </video>
+                                                </div>
+                                                <section class="mt-2">
+                                                    <h3 class="d-none d-md-block ml-3"> ${data['f_name']} </h3>
+                                                    <form url="${data['delete']}">
+                                                        <button type="button" class="btn btn-danger del_media"> Delete lecture </button>
+                                                    </form>
+                                                </section>
+                                                </div>
+                                            </section>
+                                        `
+                                        upload_vid.replaceWith(response);
+        }
         $('.sec-container').on('change', '.upload_video', function() {
             let current_file = $(this);
             let c_f_form = current_file.parents('.upload_video_form');
@@ -1220,43 +1276,7 @@ use App\Models\ResVideo;
                                     let video_btn = current_file.parents('.upload_video_con').prev('.lecture_container').find('.lec_content').first();
                                     video_btn.removeClass('lec_content').addClass('v_c_vid');
 
-                                    upload_vid.replaceWith(`<section class="lecture_vid row p-3">
-                                                <div class="col-md-9">
-                                                <div class="form-check my-3">
-                                                        <input class="form-check-input is_free" type="checkbox"
-                                                        media_id="${data['media']}"
-                                                            id="is_free_${data['media']['id']}"
-                                                         name="set_free"
-                                                        ${data['media']['is_free'] ? "checked" : ''}
-                                                        >
-                                                        <label class="form-check-label" for="set_free">
-                                                            set video download
-                                                        </label>
-                                                    </div>
-                                                <div class="form-check my-3">
-                                                        <input class="form-check-input is_free" type="checkbox"
-                                                        media_id="${data['media']['id']}"
-                                                        id="is_download_${data['media']}" name="is_download"
-                                                        ${data['media']['is_download'] ? "checked" : ''}
-                                                        >
-                                                        <label class="form-check-label" for="is_download">
-                                                            set video free
-                                                        </label>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        <video width="500" height="240" controls oncontextmenu="return false;">
-                                                            <source src="${path}" type="${media['f_mimetype']}">
-                                                        </video>
-                                                    </div>
-                                                    <section class="mt-2">
-                                                        <h3 class="d-none d-md-block ml-3"> ${data['f_name']} </h3>
-                                                        <form url="${data['delete']}">
-                                                            <button type="button" class="btn btn-danger del_media"> Delete lecture </button>
-                                                        </form>
-                                                    </section>
-                                                </div>
-                                            </section>
-                                        `);
+                                    videoResponse(data,upload_vid)
                                 }
                             },
                             error: function(data) {
@@ -1347,6 +1367,7 @@ use App\Models\ResVideo;
                                 show_message('something went wrong');
                                 progress_bar.parent().remove();
                                 current_file.attr('disabled', false);
+                                current_file.val('')
 
 
                             }
@@ -1566,7 +1587,7 @@ use App\Models\ResVideo;
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         }).done(function(d) {
-                            let success_msg = d['status'];
+                            let success_msg = d['status'] ?? "Something went wrong!";
                             let video_url = d['video_url'];
                             if (video_url) {
 
@@ -1589,7 +1610,7 @@ use App\Models\ResVideo;
                                 }
                             }
                             show_message(success_msg);
-                            location.reload();
+                            // location.reload();
 
 
                         }).fail(function() {

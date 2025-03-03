@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CronJobs extends CustomModel {
@@ -23,7 +23,7 @@ class CronJobs extends CustomModel {
         $record[config('table.name')] = $params[config('table.name')];
         $record[config('table.w_name')] = config('app.url');
         $record[config('table.status')] = $params[config('table.status')];
-        $record[config('table.starts_at')] = Carbon::now();
+        $record[config('table.starts_at')] = LyskillsCarbon::now();
 
         debug_logs($record);
         $id = self::create($record);

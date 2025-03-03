@@ -8,7 +8,7 @@ use App\Models\InstructorAnn;
 use App\Models\InstructorEarning;
 use App\Models\MonthlyPaymentModel;
 use App\Models\CourseHistory;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 

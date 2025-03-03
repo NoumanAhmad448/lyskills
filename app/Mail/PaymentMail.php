@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -32,8 +32,8 @@ class PaymentMail extends Mailable
      */
     public function build()
     {
-        $month = Carbon::now()->month-1;
-        $year = Carbon::now()->year;
+        $month = LyskillsCarbon::currentMonth() -1;
+        $year = LyskillsCarbon::currentYear();
         return $this->from(getAdminEmail())->subject("Month ".$month. " Year". $year. " Payment from Lyskills")->markdown('emails.monthly-payment');
     }
 }

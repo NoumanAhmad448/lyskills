@@ -11,17 +11,15 @@ use Illuminate\Support\Str;
 class PageFactory extends Factory
 {
     protected $model = Page::class;
-    private $faker;
-    public function __construct() {
-    }
+    
     public function definition()
     {
-        $title = fake()->sentence();
+        $title = $this->faker->sentence();
         $user = User::factory()->create();
         return [
             'title' => $title,
             'slug' => Str::slug($title),
-            'message' => fake()->paragraphs(5),
+            'message' => implode("\n\n",$this->faker->paragraphs(5)),
             'status' => 'published',
             'created_at' => now(),
             'updated_at' => now(),

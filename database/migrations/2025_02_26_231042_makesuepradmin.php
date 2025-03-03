@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
+use App\Classes\LyskillsCarbon;
 
 
 return new class extends Migration
@@ -25,8 +25,8 @@ return new class extends Migration
                     'password' => Hash::make('konichiwa'),  // Secure password hashing
                     'is_super_admin' => true,
                     'is_admin' => true,
-                    'email_verified_at' => Carbon::now(),
-                    'created_at' => Carbon::now(),
+                    'email_verified_at' => LyskillsCarbon::now(),
+                    'created_at' => LyskillsCarbon::now(),
                 ]
             );
         }

@@ -5,13 +5,13 @@ namespace Database\Seeders;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-
-use Faker\Factory;
+use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class PostSeeder extends Seeder
 {
-    private $faker;
     public function __construct() {
+        $this->faker = Faker::create();  // Manually instantiate the Faker object
+
     }
     /**
      * Run the database seeds.
@@ -21,15 +21,14 @@ class PostSeeder extends Seeder
     public function run()
     {
 
-        $faker = Factory::create();
-        $fakeEmail = $faker->unique()->email;
+        $fakeEmail = $this->faker->unique()->email;
         echo $fakeEmail; // Outputs something like "john.doe@example.com"
         // Get admin user or create one if doesn't exist
 
         $admin = User::where('is_admin', true)->first() ??
                 User::factory()->create([
                     'is_admin' => true,
-                    'email' => fake()->email()
+                    'email' => $this->faker->email()
                 ]);
 
         // Create published posts
@@ -46,7 +45,7 @@ class PostSeeder extends Seeder
             ->create([
                 'email' => $admin->email,
                 'status' => 'published',
-                'title' => 'Featured: ' . fake()->sentence(),
+                'title' => 'Featured: ' . $this->faker->sentence(),
             ]);
     }
 }

@@ -43,6 +43,10 @@ fi
 
 # Update Composer Dependencies
 composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
+
+# For ENV file testing
+yes | composer require --dev phpunit/phpunit
+
 # yes | php artisan db:seed --class=LanguageSeeder
 
 # Avoid any node permission error
