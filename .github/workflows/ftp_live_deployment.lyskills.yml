@@ -151,11 +151,12 @@ jobs:
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions 
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/views
           sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
+          
       - name: File permission
-        run:  yes | chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+        run:  yes | sudo chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
 
       - name: Show file structure
-        run: ls -l $GITHUB_WORKSPACE
+        run: sudo ls -l $GITHUB_WORKSPACE
 
       - name: check user
         run: whoami
