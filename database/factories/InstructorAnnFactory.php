@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\InstructorAnn;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Classes\LyskillsStr;
 
 class InstructorAnnFactory extends Factory
 {
@@ -12,7 +13,7 @@ class InstructorAnnFactory extends Factory
     public function definition()
     {
         return [
-            'message' => $this->faker->paragraph(),
+            'message' => LyskillsStr::limit($this->faker->paragraph()),
             'created_at' => $this->faker->dateTimeBetween('-1 month')
         ];
     }

@@ -151,9 +151,17 @@ jobs:
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions 
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/views
           sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
+      - name: File permission
+        run:  yes | chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
 
       - name: Show file structure
         run: ls -l $GITHUB_WORKSPACE
+
+      - name: check user
+        run: whoami
+
+      - name: Set folder ownership to current user
+        run: sudo chown -R $(whoami):$(whoami) $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
 
       - name: installing composer
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
