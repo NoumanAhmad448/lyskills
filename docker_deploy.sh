@@ -3,7 +3,7 @@
 # Function to install Docker
 install_docker() {
     echo "Installing Docker..."
-    
+
     # Update system packages
     sudo apt-get update -y
 
@@ -80,7 +80,7 @@ NETWORK_CONTAINER_NAME="${APP_NAME}-network"
 
 # Step 1: Stop and remove the running containers
 echo "Stopping and removing the containers..."
-docker compose down
+# docker compose down
 
 # Step 2: Rebuild the Docker containers (to apply any changes in Dockerfile or docker-compose)
 echo "Rebuilding Docker containers..."

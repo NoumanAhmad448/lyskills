@@ -38,6 +38,17 @@ jobs:
         with:
           fetch-depth: 0 # Fetch the entire repository
 
+      - name: Creating essential directoires
+        run: |
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/app
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/cache
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/views
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
+
+      - name: File permission
+        run: yes | sudo chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+
       - name: Set up SSH
         uses: webfactory/ssh-agent@836c84ec59a0e7bc0eabc79988384eb567561ee2
         with:
@@ -230,7 +241,6 @@ jobs:
       - name: Stop Docker containers
         run: |
           docker compose down
-
 
   laravel-deployment:
     runs-on: ubuntu-latest
