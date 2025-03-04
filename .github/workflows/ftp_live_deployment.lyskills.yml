@@ -3,41 +3,33 @@ name: Lyskills Deployment
 on:
   push:
     branches:
-      - master  # Only trigger when pushing to the 'master' branch
+      - master # Only trigger when pushing to the 'master' branch
   workflow_dispatch:
     inputs:
       deploy_type:
-        description: 'Choose deploy type'
+        description: "Choose deploy type"
         required: true
-        default: 'normal'
+        default: "normal"
         type: choice
         options:
           - docker
           - normal
 
 permissions:
-  contents: write  # Allows the workflow to push changes
-  actions: read    # Allows reading action logs
-  pull-requests: write  # Enables PR creation and updates
+  contents: write # Allows the workflow to push changes
+  actions: read # Allows reading action logs
+  pull-requests: write # Enables PR creation and updates
 
 jobs:
-  # test_condition:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-
-  #     - name: Debug deploy_type input
-  #       run: echo "Deploy Type: ${{ github.event.inputs.deploy_type }}"
-
   docker-deploy:
-    needs: laravel-deployment  # This makes test-mysql depend on the successful completion of setup-mysql
+    needs: laravel-deployment # This makes test-mysql depend on the successful completion of setup-mysql
     runs-on: ubuntu-latest
 
-    if: ${{ vars.DEPLOY_TYPE }} == 'docker'
+    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448"
     strategy:
       fail-fast: true
       matrix:
-        php: [8.1]  # You can add more PHP versions in the future if needed
+        php: [8.1] # You can add more PHP versions in the future if needed
         commit_msg: ["Fixes coding style"]
         container: ["lyskills-app"]
         app: ["lyskills-app"]
@@ -49,11 +41,11 @@ jobs:
           MYSQL_ROOT_PASSWORD: "${{secrets.DB_PASSWORD}}"
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 --bind-address=127.0.0.1
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Fetch the entire repository history
+          fetch-depth: 0 # Fetch the entire repository history
 
       - name: Setup PHP
         uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
@@ -127,7 +119,7 @@ jobs:
           sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
 
       - name: File permission
-        run:  yes | sudo chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+        run: yes | sudo chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
 
       - name: Show file structure
         run: sudo ls -l $GITHUB_WORKSPACE
@@ -198,11 +190,11 @@ jobs:
   laravel-deployment:
     runs-on: ubuntu-latest
     timeout-minutes: 1200
-    if: ${{ vars.DEPLOY_TYPE }} == 'laravel'
+    if: ${{ vars.DEPLOY_TYPE }} == 'laravel' && github.actor == "NoumanAhmad448"
     strategy:
       fail-fast: true
       matrix:
-        php: [8.1]  # You can add more PHP versions in the future if needed
+        php: [8.1] # You can add more PHP versions in the future if needed
         commit_msg: ["Fixes coding style"]
     services:
       mysql:
@@ -212,11 +204,14 @@ jobs:
           MYSQL_ROOT_PASSWORD: ${{secrets.DB_PASSWORD}}"
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options:
+          --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 --bind-address=127.0.0.1
+          # Restrict MySQL to listen on localhost (127.0.0.1)
+
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Fetch the entire repository history
+          fetch-depth: 0 # Fetch the entire repository history
 
       - name: Setup PHP
         uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
@@ -278,8 +273,6 @@ jobs:
           echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
           echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
 
-
-
       - name: Run Pint for code styling
         run: pint --config pint.json
 
@@ -292,7 +285,7 @@ jobs:
           sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
 
       - name: File permission
-        run:  yes | sudo chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+        run: yes | sudo chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
 
       - name: Show file structure
         run: sudo ls -l $GITHUB_WORKSPACE
@@ -351,14 +344,14 @@ jobs:
       #     REMOTE_USER: ${{ secrets.SSH_USERNAME }}
       #     TARGET: /
       #     EXCLUDE: "/dist/, /node_modules/ , /.git, /vendor/"
-          # SCRIPT_BEFORE: |
-          #   whoami
-          # SCRIPT_AFTER_REQUIRED: true
-          # SCRIPT_AFTER: |
-          #   cd ${{secrets.SERVER_PATH}} &&
-          #   sudo chmod -R 775 ${{secrets.SERVER_PATH}}/server_deploy.sh &&
-          #   sudo chown -R root:root ${{secrets.SERVER_PATH}}/server_deploy.sh &&
-          #   ./server_deploy.sh
+      # SCRIPT_BEFORE: |
+      #   whoami
+      # SCRIPT_AFTER_REQUIRED: true
+      # SCRIPT_AFTER: |
+      #   cd ${{secrets.SERVER_PATH}} &&
+      #   sudo chmod -R 775 ${{secrets.SERVER_PATH}}/server_deploy.sh &&
+      #   sudo chown -R root:root ${{secrets.SERVER_PATH}}/server_deploy.sh &&
+      #   ./server_deploy.sh
       # Step 5: Set up SSH
       - name: Set up SSH
         uses: webfactory/ssh-agent@836c84ec59a0e7bc0eabc79988384eb567561ee2
@@ -390,4 +383,3 @@ jobs:
             sudo chmod -R 775 ${{secrets.SERVER_PATH}}/server_deploy.sh &&
             sudo chown -R root:root ${{secrets.SERVER_PATH}}/server_deploy.sh &&
             ./server_deploy.sh
-
