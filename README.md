@@ -114,6 +114,21 @@ php artisan serve --port=8080
 ```
 npm run watch
 ```
+## Docker Support
+Run following commands for docker setup
+```
+docker compose build --no-cache
+docker compose up -d
+```
+and then
+```
+127.0.0.1:8081
+```
+in the browser.
+``` We also support deploying docker in your remote server. For more information, please review```
+```
+ftp_live_deployment.lyskills.yml
+```
 
 ## Development Guildlines
 

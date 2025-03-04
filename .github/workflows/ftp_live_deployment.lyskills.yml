@@ -21,6 +21,76 @@ permissions:
   pull-requests: write # Enables PR creation and updates
 
 jobs:
+  docker-deploy_remote:
+    needs: docker-deploy # This makes test-mysql depend on the successful completion of setup-mysql
+    runs-on: ubuntu-latest
+
+    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448"
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1] # You can add more PHP versions in the future if needed
+        commit_msg: ["Fixes coding style"]
+        container: ["lyskills-app"]
+        app: ["lyskills-app"]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch the entire repository 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build images using docker-compose
+        run: docker compose build
+
+      - name: Tag the image
+        run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+
+      - name: Push the image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+
+      - name: Stop Docker containers
+        run: |
+          docker compose down
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@836c84ec59a0e7bc0eabc79988384eb567561ee2
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Step 6: Add remote server to known hosts
+      - name: Add remote server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      # Step 6: Deploy using rsync
+      - name: Deploy using rsync
+        run: |
+          rsync -avz --delete --exclude='.env' \
+            --exclude='.env.testing' \
+            -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
+            ./ "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{secrets.SERVER_PATH}}/"
+
+      - name: SSH to server and deploy Docker image
+        uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
+        with:
+          username: ${{ secrets.SSH_USERNAME }}
+          host: ${{ secrets.SERVER_IP }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            cd ${{secrets.SERVER_PATH}} &&
+            sudo chmod -R 775 ${{secrets.SERVER_PATH}}/docker_deploy.sh &&
+            sudo chown -R root:root ${{secrets.SERVER_PATH}}/docker_deploy.sh &&
+            ./docker_deploy.sh
+
   docker-deploy:
     needs: laravel-deployment # This makes test-mysql depend on the successful completion of setup-mysql
     runs-on: ubuntu-latest
@@ -156,60 +226,6 @@ jobs:
 
       - name: Running migrations Tests
         run: php artisan migrate --force
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
-
-      - name: Log in to DockerHub
-        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      # - name: Build images using docker-compose
-      #   run: docker compose build
-
-      # - name: Tag the image
-      #   run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
-
-      # - name: Push the image to Docker Hub
-      #   run: docker push ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
-
-      - name: Stop Docker containers
-        run: |
-          docker compose down
-
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@836c84ec59a0e7bc0eabc79988384eb567561ee2
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # Step 6: Add remote server to known hosts
-      - name: Add remote server to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-
-      # Step 6: Deploy using rsync
-      - name: Deploy using rsync
-        run: |
-          rsync -avz --delete --exclude='.env' \
-            --exclude='.env.testing' \
-            -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
-            ./ "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{secrets.SERVER_PATH}}/"
-
-      - name: SSH to server and deploy Docker image
-        uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
-        with:
-          username: ${{ secrets.SSH_USERNAME }}
-          host: ${{ secrets.SERVER_IP }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: |
-            cd ${{secrets.SERVER_PATH}} &&
-            sudo chmod -R 775 ${{secrets.SERVER_PATH}}/docker_deploy.sh &&
-            sudo chown -R root:root ${{secrets.SERVER_PATH}}/docker_deploy.sh &&
-            ./docker_deploy.sh
 
   laravel-deployment:
     runs-on: ubuntu-latest

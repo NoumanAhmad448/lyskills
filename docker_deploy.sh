@@ -77,31 +77,31 @@ NETWORK_CONTAINER_NAME="${APP_NAME}-network"
 
 # Step 1: Stop and remove the running containers
 echo "Stopping and removing the containers..."
-docker-compose down
+docker compose down
 
 # Step 2: Rebuild the Docker containers (to apply any changes in Dockerfile or docker-compose)
 echo "Rebuilding Docker containers..."
-docker-compose build
+# docker compose build #Required only first time
 
 # Step 3: Bring up the containers again (detached mode)
 echo "Starting the containers..."
-docker-compose up -d
+docker compose up -d
 
 # Step 4: Clear Laravel caches (or any other app-related cache clearing command)
 echo "Clearing Laravel caches..."
-docker-compose exec $CONTAINER_NAME php artisan config:clear
-docker-compose exec $CONTAINER_NAME php artisan cache:clear
-docker-compose exec $CONTAINER_NAME php artisan view:clear
-docker-compose exec $CONTAINER_NAME php artisan route:clear
-docker-compose exec $CONTAINER_NAME php artisan optimize:clear
+docker compose exec $CONTAINER_NAME php artisan config:clear
+docker compose exec $CONTAINER_NAME php artisan cache:clear
+docker compose exec $CONTAINER_NAME php artisan view:clear
+docker compose exec $CONTAINER_NAME php artisan route:clear
+docker compose exec $CONTAINER_NAME php artisan optimize:clear
 
 # Step 5: Reload Nginx to apply any config changes (if using Nginx)
 echo "Reloading Nginx..."
-docker-compose exec $NGINX_CONTAINER_NAME nginx -s reload
+docker compose exec $NGINX_CONTAINER_NAME nginx -s reload
 
 # Step 7: Verify the sync between host and container (if using volumes)
 echo "Verifying that volumes are synced..."
-docker-compose exec $CONTAINER_NAME ls -l /var/www/html
+docker compose exec $CONTAINER_NAME ls -l /var/www/html
 
 # Step 8: Verifying the docker
 docker ps
@@ -110,8 +110,8 @@ if [ "$APP_ENV" != 'production' ]; then
     # For troubleshooting
     docker network inspect $NETWORK_CONTAINER_NAME
 
-    docker-compose exec $CONTAINER_NAME netstat -tulpn | grep php-fpm
+    docker compose exec $CONTAINER_NAME netstat -tulpn | grep php-fpm
 
-    docker-compose exec $CONTAINER_NAME cat /usr/local/etc/php-fpm.d/www.conf | grep "listen"
+    docker compose exec $CONTAINER_NAME cat /usr/local/etc/php-fpm.d/www.conf | grep "listen"
 fi
 echo "All done! Your Docker containers are up and running with the latest changes."
