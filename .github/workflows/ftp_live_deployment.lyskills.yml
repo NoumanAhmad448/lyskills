@@ -25,7 +25,7 @@ jobs:
     needs: docker-deploy # This makes test-mysql depend on the successful completion of setup-mysql
     runs-on: ubuntu-latest
 
-    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448"
+    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448" && false
     strategy:
       fail-fast: true
       matrix:
@@ -36,28 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Fetch the entire repository 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
-
-      - name: Log in to DockerHub
-        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build images using docker-compose
-        run: docker compose build
-
-      - name: Tag the image
-        run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
-
-      - name: Push the image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
-
-      - name: Stop Docker containers
-        run: |
-          docker compose down
+          fetch-depth: 0 # Fetch the entire repository
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@836c84ec59a0e7bc0eabc79988384eb567561ee2
@@ -226,6 +205,29 @@ jobs:
 
       - name: Running migrations Tests
         run: php artisan migrate --force
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build images using docker-compose
+        run: docker compose build
+
+      - name: Tag the image
+        run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+
+      - name: Push the image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+
+      - name: Stop Docker containers
+        run: |
+          docker compose down
+
 
   laravel-deployment:
     runs-on: ubuntu-latest
