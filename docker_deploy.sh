@@ -81,7 +81,7 @@ docker-compose down
 
 # Step 2: Rebuild the Docker containers (to apply any changes in Dockerfile or docker-compose)
 echo "Rebuilding Docker containers..."
-docker-compose build
+# docker-compose build #Required only first time
 
 # Step 3: Bring up the containers again (detached mode)
 echo "Starting the containers..."
