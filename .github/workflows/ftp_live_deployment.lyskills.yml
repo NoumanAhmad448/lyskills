@@ -161,6 +161,9 @@ jobs:
           echo "SLACK_URL=${{secrets.SLACK_URL}}"  >> .env
           echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
           echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
+          echo "DB_DATABASE=test_db"  >> .env
+          echo "DB_PASSWORD=root"  >> .env
+
 
       - name: Run Pint for code styling
         run: pint --config pint.json
