@@ -112,8 +112,6 @@ jobs:
           echo "SLACK_URL=${{secrets.SLACK_URL}}"  >> .env
           echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
           echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
-          MYSQL_IP=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql)
-          echo "DB_HOST=$MYSQL_IP" >> .env
 
       - name: Run Pint for code styling
         run: pint --config pint.json
@@ -167,14 +165,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build images using docker-compose
-        run: docker compose build
+      # - name: Build images using docker-compose
+      #   run: docker compose build
 
-      - name: Tag the image
-        run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+      # - name: Tag the image
+      #   run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
 
-      - name: Push the image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+      # - name: Push the image to Docker Hub
+      #   run: docker push ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
 
       - name: Stop Docker containers
         run: |
@@ -297,10 +295,6 @@ jobs:
           echo "SLACK_URL=${{secrets.SLACK_URL}}"  >> .env
           echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
           echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
-          MYSQL_IP=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql)
-          echo "DB_HOST=$MYSQL_IP" >> .env
-
-
 
       - name: Run Pint for code styling
         run: pint --config pint.json
