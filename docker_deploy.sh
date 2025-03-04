@@ -55,6 +55,9 @@ check_docker_compose() {
     else
         echo "❌ Docker Compose is NOT installed!"
         install_docker_compose
+        yes | sudo service docker restart
+        yes | sudo /etc/init.d/docker restart
+        yes | sudo snap restart docker
     fi
 }
 
@@ -114,4 +117,12 @@ if [ "$APP_ENV" != 'production' ]; then
 
     docker compose exec $CONTAINER_NAME cat /usr/local/etc/php-fpm.d/www.conf | grep "listen"
 fi
+
+echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+docker compose push
+
+# Logout for security
+echo "Logging out from Docker Hub..."
+docker logout
+
 echo "All done! Your Docker containers are up and running with the latest changes."
