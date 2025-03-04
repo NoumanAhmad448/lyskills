@@ -8,13 +8,14 @@ ARG APP_ENV
 
 # Set environment variable based on ARG
 ENV APP_ENV=${APP_ENV}
+ENV COMPOSER_PROCESS_TIMEOUT=600
 
 # Install necessary PHP extensions
 RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev zip git \
+    libpng-dev libjpeg-dev libfreetype6-dev zip git nano procps net-tools iproute2\
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql bcmath 
-    # gd json mbstring 
+    && docker-php-ext-install gd pdo pdo_mysql bcmath
+    # gd json mbstring
     # \
     # openssl     \
     # zip \
@@ -32,59 +33,79 @@ RUN apt-get update && apt-get install -y \
 
 # Verify BCMath is enabled
 RUN php -m | grep bcmath
+
 # Install Node.js 16 using curl
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Set the working directory
-WORKDIR /home/nomilyskills/public_html
-# Assuming WORKDIR is set previously
-RUN mkdir -p ${WORKDIR}/storage/app 
-RUN mkdir -p ${WORKDIR}/storage/framework/cache
-RUN mkdir -p ${WORKDIR}/storage/framework/sessions 
-RUN mkdir -p ${WORKDIR}/storage/framework/views
-RUN mkdir -p ${WORKDIR}/storage/logs
+WORKDIR /var/www/html
+RUN git config --global --add safe.directory /var/www/html
+RUN chmod -R 775 /var/www/html/
 
 # Copy the Laravel application code into the container
-COPY . /home/nomilyskills/public_html
+COPY . .
+
+# Assuming WORKDIR is set previously
+RUN mkdir -p ${WORKDIR}/storage/app
+RUN mkdir -p ${WORKDIR}/storage/framework/cache
+RUN mkdir -p ${WORKDIR}/storage/framework/sessions
+RUN mkdir -p ${WORKDIR}/storage/framework/views
+RUN mkdir -p ${WORKDIR}/storage/logs
+RUN mkdir -p ${WORKDIR}/bootstrap/cache
+
 
 # Set the correct permissions for Laravel files
-RUN mv .env.dev .env
+# RUN mv .env.dev .env
+
+RUN whoami
+
+# enlist the irectory
+RUN ls -l ${WORKDIR}
 
 # Set the correct permissions for Laravel files
-RUN if [ "dev" != "dev" ]; then \
-    chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/storage /home/nomilyskills/public_html/bootstrap/cache; \
-fi
+RUN chown -R $(whoami):$(whoami) /var/www/html/
+
 
 # Enable maintenance mode
 RUN php artisan down || true
 
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --no-cache
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
 
 #generate artisan key
 RUN yes | php artisan key:generate
+
 
 # Run database migrations (ensuring root runs them)
 RUN php artisan migrate --force
 
 # Clear caches
-RUN  php artisan cache:clear
-RUN  php artisan config:clear
-RUN  php artisan view:clear
+RUN php artisan cache:clear && php artisan config:clear && php artisan route:clear && \
+    php artisan view:clear && php artisan event:clear && php artisan clear-compiled && \
+    php artisan optimize:clear && \
+    php artisan cache:forget spatie.permission.cache
+
+# Node Versions
+RUN npm --version
+RUN node --version
 
 # Install Node.js dependencies
 RUN npm install
 
+# RUN npm audit fix
 
 # Run on production mode
 RUN npm run production
 
 # check project health notification
 RUN php artisan health:check --no-notification
+# RUN APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest
+
+RUN php artisan schedule:run >> /dev/null 2>&1
 
 RUN php artisan up
 

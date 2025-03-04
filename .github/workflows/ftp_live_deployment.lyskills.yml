@@ -31,15 +31,14 @@ jobs:
 
   docker-deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.deploy_type == 'docker' }}
+    if: ${{ vars.DEPLOY_TYPE }} == 'docker'
     strategy:
       fail-fast: true
       matrix:
         php: [8.1]  # You can add more PHP versions in the future if needed
         commit_msg: ["Fixes coding style"]
-        container: ["/lyskills-app"]
+        container: ["lyskills-app"]
         app: ["lyskills-app"]
-        server_path: ["/home/nomilyskills/public_html"]
 
     steps:
       - name: Checkout code
@@ -57,57 +56,76 @@ jobs:
         run: pint --config pint.json
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
 
       - name: Log in to DockerHub
-        uses: docker/login-action@v2
+        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     file: Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+
+      - name: Build images using docker-compose
+        run: docker compose build
+
+      - name: Tag the image
+        run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+
+      - name: Push the image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+
+      - name: Stop Docker containers
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}${{ matrix.container }}:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}${{ matrix.container }}:latest
+          docker compose down
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@836c84ec59a0e7bc0eabc79988384eb567561ee2
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # Step 6: Add remote server to known hosts
+      - name: Add remote server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      # Step 6: Deploy using rsync
+      - name: Deploy using rsync
+        run: |
+          rsync -avz --delete --exclude='.env' \
+            --exclude='.env.testing' \
+            -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
+            ./ "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{secrets.SERVER_PATH}}/"
 
       - name: SSH to server and deploy Docker image
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
         with:
           username: ${{ secrets.SSH_USERNAME }}
           host: ${{ secrets.SERVER_IP }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            # Log into Docker Hub on the remote server
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-            # Pull the latest image from Docker Hub
-            docker pull ${{ secrets.DOCKER_USERNAME }}${{ matrix.container }}:latest
-
-            # Stop and remove the existing container
-            docker stop ${{ matrix.app }} || true
-            docker rm ${{ matrix.app }} || true
-
-            # Run the new container with the latest image
-            docker run -d --name ${{ matrix.app }} -p 80:80 ${{ secrets.DOCKER_USERNAME }}${{ matrix.container }}:latest
-
-      - name: Build and start Docker containers
-        run: |
-          docker-compose -f docker-compose.yml up -d --build
-
-      - name: Stop Docker containers
-        run: |
-          docker-compose down
+            cd ${{secrets.SERVER_PATH}} &&
+            sudo chmod -R 775 ${{secrets.SERVER_PATH}}/docker_deploy.sh &&
+            sudo chown -R root:root ${{secrets.SERVER_PATH}}/docker_deploy.sh &&
+            ./docker_deploy.sh
 
   laravel-deployment:
     runs-on: ubuntu-latest
     timeout-minutes: 1200
+    if: ${{ vars.DEPLOY_TYPE }} == 'laravel'
     strategy:
       fail-fast: true
       matrix:
         php: [8.1]  # You can add more PHP versions in the future if needed
         commit_msg: ["Fixes coding style"]
-        server_path: ["/home/nomilyskills/public_html"]
     services:
       mysql:
         image: mysql:8
@@ -189,9 +207,9 @@ jobs:
 
       - name: Creating essential directoires
         run: |
-          sudo mkdir -p $GITHUB_WORKSPACE/storage/app 
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/app
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/cache
-          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions 
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/views
           sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
 
@@ -224,7 +242,7 @@ jobs:
         run: php artisan health:check --no-notification
 
       # - name: Run Tests
-      #   run: APP_ENV=testing php artisan test -v 
+      #   run: APP_ENV=testing php artisan test -v
       #   continue-on-error: true  # ✅ Allows pipeline to continue even if tests fail
 
       # - name: Sync files to server via FTP
@@ -259,13 +277,13 @@ jobs:
           #   whoami
           # SCRIPT_AFTER_REQUIRED: true
           # SCRIPT_AFTER: |
-          #   cd ${{ matrix.server_path }} &&
-          #   sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
-          #   sudo chown -R root:root ${{ matrix.server_path }}/server_deploy.sh &&
+          #   cd ${{secrets.SERVER_PATH}} &&
+          #   sudo chmod -R 775 ${{secrets.SERVER_PATH}}/server_deploy.sh &&
+          #   sudo chown -R root:root ${{secrets.SERVER_PATH}}/server_deploy.sh &&
           #   ./server_deploy.sh
       # Step 5: Set up SSH
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.7.0
+        uses: webfactory/ssh-agent@836c84ec59a0e7bc0eabc79988384eb567561ee2
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -274,15 +292,14 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-      
+
       # Step 6: Deploy using rsync
       - name: Deploy using rsync
         run: |
           rsync -avz --delete --exclude='.env' \
             --exclude='.env.testing' \
             -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" \
-            ./ "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{ matrix.server_path }}/"
-          
+            ./ "${{ secrets.SSH_USERNAME }}@${{ secrets.SERVER_IP }}:${{secrets.SERVER_PATH}}/"
 
       - name: Run server-side deployment script
         uses: appleboy/ssh-action@9817ef4a1793d4009d854d26cfb0ba4b615d5791
@@ -291,8 +308,8 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
-            cd ${{ matrix.server_path }} &&
-            sudo chmod -R 775 ${{ matrix.server_path }}/server_deploy.sh &&
-            sudo chown -R root:root ${{ matrix.server_path }}/server_deploy.sh &&
+            cd ${{secrets.SERVER_PATH}} &&
+            sudo chmod -R 775 ${{secrets.SERVER_PATH}}/server_deploy.sh &&
+            sudo chown -R root:root ${{secrets.SERVER_PATH}}/server_deploy.sh &&
             ./server_deploy.sh
 

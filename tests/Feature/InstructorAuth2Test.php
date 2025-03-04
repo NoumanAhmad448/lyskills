@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 class InstructorAuth2Test extends TestCase
 {
     use RefreshDatabase, WithFaker;
-    
+
     /** @test */
     public function logged_in_instructor_is_redirected_from_register()
     {
