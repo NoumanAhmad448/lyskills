@@ -18,21 +18,6 @@ RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev zip git nano procps net-tools iproute2\
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql bcmath
-    # gd json mbstring
-    # \
-    # openssl     \
-    # zip \
-    # intl \
-    # xml \
-    # dom \
-    # fileinfo \
-    # iconv \
-    # simplexml \
-    # soap \
-    # sockets \
-    # tokenizer \
-    # zlib
-    # curl
 
 # Verify BCMath is enabled
 RUN php -m | grep bcmath
@@ -68,7 +53,7 @@ RUN mkdir -p ${WORKDIR}/bootstrap/cache
 RUN whoami
 
 # enlist the irectory
-RUN ls -l ${WORKDIR}
+RUN ls -la ${WORKDIR}
 
 # Set the correct permissions for Laravel files
 RUN chown -R $(whoami):$(whoami) /var/www/html/
