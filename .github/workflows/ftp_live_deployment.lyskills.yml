@@ -140,12 +140,13 @@ jobs:
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
 
       - name: Checking databse credentials
-        run: echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}" && \
-              echo "DB_HOST=${{secrets.DB_HOST}}" && \
-              echo "DB_PORT=${{secrets.DB_PORT}}" && \
-              echo "DB_DATABASE=${{secrets.DB_DATABASE}}" && \
-              echo "DB_USERNAME=${{secrets.DB_USERNAME}}" && \
-              echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
+        run: |
+            echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}"
+            echo "DB_HOST=${{secrets.DB_HOST}}"
+            echo "DB_PORT=${{secrets.DB_PORT}}"
+            echo "DB_DATABASE=${{secrets.DB_DATABASE}}"
+            echo "DB_USERNAME=${{secrets.DB_USERNAME}}"
+            echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
 
       - name: install npm
         run: npm install
@@ -323,12 +324,13 @@ jobs:
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
 
       - name: Checking databse credentials
-        run: echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}" && \
-              echo "DB_HOST=${{secrets.DB_HOST}}" && \
-              echo "DB_PORT=${{secrets.DB_PORT}}" && \
-              echo "DB_DATABASE=${{secrets.DB_DATABASE}}" && \
-              echo "DB_USERNAME=${{secrets.DB_USERNAME}}" && \
-              echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
+        run: |
+            echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}"
+            echo "DB_HOST=${{secrets.DB_HOST}}"
+            echo "DB_PORT=${{secrets.DB_PORT}}"
+            echo "DB_DATABASE=${{secrets.DB_DATABASE}}"
+            echo "DB_USERNAME=${{secrets.DB_USERNAME}}"
+            echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
 
       - name: Running migrations Tests
         run: yes | php artisan migrate --force
