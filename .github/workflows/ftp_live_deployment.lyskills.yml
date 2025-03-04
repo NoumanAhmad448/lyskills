@@ -30,7 +30,9 @@ jobs:
   #       run: echo "Deploy Type: ${{ github.event.inputs.deploy_type }}"
 
   docker-deploy:
+    needs: laravel-deployment  # This makes test-mysql depend on the successful completion of setup-mysql
     runs-on: ubuntu-latest
+
     if: ${{ vars.DEPLOY_TYPE }} == 'docker'
     strategy:
       fail-fast: true
@@ -43,8 +45,10 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_DATABASE: test_db
+          MYSQL_DATABASE: "${{secrets.DB_DATABASE}}"
           MYSQL_ROOT_PASSWORD: root
+          MYSQL_USER: "${{secrets.DB_USERNAME}}"
+          MYSQL_PASSWORD: "${{secrets.DB_PASSWORD}}"
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
