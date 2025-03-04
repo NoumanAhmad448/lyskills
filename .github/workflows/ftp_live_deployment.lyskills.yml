@@ -39,10 +39,19 @@ jobs:
         commit_msg: ["Fixes coding style"]
         container: ["lyskills-app"]
         app: ["lyskills-app"]
-
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch the entire repository history
 
       - name: Setup PHP
         uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
@@ -52,8 +61,83 @@ jobs:
           tools: pint:1.16.1, phpdoc, composer:2.4.4
           coverage: none
 
+      - name: Set up Environment File
+        run: |
+          cp .env.testing.example .env
+          # Read the keys from the secrets.json file (no values)
+          # keys=$(cat secrets.json)
+
+          # # Loop through each key, get the value from GitHub Secrets and set it in the .env file
+          # following loop is not valid for github action
+          # for key in $keys; do
+          #   value=secrets.$key"
+          #   echo "$key=$value" >> .env
+          # done
+
+          echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}"  >> .env
+          echo "DB_HOST=${{secrets.DB_HOST}}"  >> .env
+          echo "DB_PORT=${{secrets.DB_PORT}}"  >> .env
+          echo "DB_DATABASE=${{secrets.DB_DATABASE}}"  >> .env
+          echo "DB_USERNAME=${{secrets.DB_USERNAME}}"  >> .env
+          echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"  >> .env
+          echo "MAIL_HOST=${{secrets.MAIL_HOST}}"  >> .env
+          echo "MAIL_USERNAME=${{secrets.MAIL_USERNAME}}"  >> .env
+          echo "MAIL_PASSWORD=${{secrets.MAIL_PASSWORD}}"  >> .env
+          echo "MAIL_FROM_ADDRESS=${{secrets.MAIL_FROM_ADDRESS}}"  >> .env
+          echo "AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}"  >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}"  >> .env
+          echo "AWS_DEFAULT_REGION=${{secrets.AWS_DEFAULT_REGION}}"  >> .env
+          echo "AWS_BUCKET=${{secrets.AWS_BUCKET}}"  >> .env
+          echo "NOCAPTCHA_SITEKEY=${{secrets.NOCAPTCHA_SITEKEY}}"  >> .env
+          echo "NOCAPTCHA_SECRET=${{secrets.NOCAPTCHA_SECRET}}"  >> .env
+          echo "GOOGLE_APP_KEY=${{secrets.GOOGLE_APP_KEY}}"  >> .env
+          echo "GOOGLE_SECURITY_KEY=${{secrets.GOOGLE_SECURITY_KEY}}"  >> .env
+          echo "FACEBOOK_APP_KEY=${{secrets.FACEBOOK_APP_KEY}}"  >> .env
+          echo "FACEBOOK_SECURITY_KEY=${{secrets.FACEBOOK_SECURITY_KEY}}"  >> .env
+          echo "LINKEDIN_APP_KEY=${{secrets.LINKEDIN_APP_KEY}}"  >> .env
+          echo "LINKEDIN_SECURITY_KEY=${{secrets.LINKEDIN_SECURITY_KEY}}"  >> .env
+          echo "STRIPE_KEY=${{secrets.STRIPE_KEY}}"  >> .env
+          echo "STRIPE_SECRET=${{secrets.STRIPE_SECRET}}"  >> .env
+          echo "PAYPAL_SANDBOX_CLIENT_ID=${{secrets.PAYPAL_SANDBOX_CLIENT_ID}}"  >> .env
+          echo "PAYPAL_SANDBOX_CLIENT_SECRET=${{secrets.PAYPAL_SANDBOX_CLIENT_SECRET}}"  >> .env
+          echo "PAYPAL_LIVE_CLIENT_ID=${{secrets.PAYPAL_LIVE_CLIENT_ID}}"  >> .env
+          echo "PAYPAL_LIVE_CLIENT_SECRET=${{secrets.PAYPAL_LIVE_CLIENT_SECRET}}"  >> .env
+          echo "DEBUG_JS=${{secrets.DEBUG_JS}}"  >> .env
+          echo "AWS_URL=${{secrets.AWS_URL}}"  >> .env
+          echo "NO_REPLY_EMAIL_PASS=${{secrets.NO_REPLY_EMAIL_PASS}}"  >> .env
+          echo "DB_TESTING_DATABASE=${{secrets.DB_TESTING_DATABASE}}"  >> .env
+          echo "DB_Laravel=${{secrets.DB_Laravel}}"  >> .env
+          echo "AWS_ENDPOINT=${{secrets.AWS_ENDPOINT}}"  >> .env
+          echo "CONTACT_US_MAIL=${{secrets.CONTACT_US_MAIL}}"  >> .env
+          echo "SLACK_URL=${{secrets.SLACK_URL}}"  >> .env
+          echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
+          echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
+
       - name: Run Pint for code styling
         run: pint --config pint.json
+
+      - name: Creating essential directoires
+        run: |
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/app
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/cache
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/views
+          sudo mkdir -p $GITHUB_WORKSPACE/storage/logs
+
+      - name: File permission
+        run:  yes | sudo chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+
+      - name: Show file structure
+        run: sudo ls -l $GITHUB_WORKSPACE
+
+      - name: check user
+        run: whoami
+
+      - name: Set folder ownership to current user
+        run: sudo chown -R $(whoami):$(whoami) $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+
+      - name: installing composer
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
