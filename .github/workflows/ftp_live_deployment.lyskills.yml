@@ -30,7 +30,9 @@ jobs:
   #       run: echo "Deploy Type: ${{ github.event.inputs.deploy_type }}"
 
   docker-deploy:
+    needs: laravel-deployment  # This makes test-mysql depend on the successful completion of setup-mysql
     runs-on: ubuntu-latest
+
     if: ${{ vars.DEPLOY_TYPE }} == 'docker'
     strategy:
       fail-fast: true
