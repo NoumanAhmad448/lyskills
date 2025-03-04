@@ -45,8 +45,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_DATABASE: test_db
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: "${{secrets.DB_DATABASE}}"
+          MYSQL_ROOT_PASSWORD: "${{secrets.DB_PASSWORD}}"
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -150,14 +150,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # - name: Build and push Docker image
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: .
-      #     file: Dockerfile
-      #     push: true
-      #     tags: ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
-
       - name: Build images using docker-compose
         run: docker compose build
 
@@ -216,8 +208,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_DATABASE: test_db
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: "${{secrets.DB_DATABASE}}"
+          MYSQL_ROOT_PASSWORD: ${{secrets.DB_PASSWORD}}"
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
