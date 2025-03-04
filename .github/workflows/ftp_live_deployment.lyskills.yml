@@ -108,6 +108,8 @@ jobs:
           echo "SLACK_URL=${{secrets.SLACK_URL}}"  >> .env
           echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
           echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
+          MYSQL_IP=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql)
+          echo "DB_HOST=$MYSQL_IP" >> .env
 
       - name: Run Pint for code styling
         run: pint --config pint.json
@@ -134,6 +136,15 @@ jobs:
 
       - name: installing composer
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
+
+      - name: Checking databse credentials
+        run: echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}" && \
+              echo "DB_HOST=${{secrets.DB_HOST}}" && \
+              echo "DB_PORT=${{secrets.DB_PORT}}" && \
+              echo "DB_DATABASE=${{secrets.DB_DATABASE}}" && \
+              echo "DB_USERNAME=${{secrets.DB_USERNAME}}" && \
+              echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
+
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
@@ -274,6 +285,9 @@ jobs:
           echo "SLACK_URL=${{secrets.SLACK_URL}}"  >> .env
           echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
           echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
+          MYSQL_IP=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql)
+          echo "DB_HOST=$MYSQL_IP" >> .env
+
 
       - name: Run Pint for code styling
         run: pint --config pint.json
@@ -300,6 +314,14 @@ jobs:
 
       - name: installing composer
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
+
+      - name: Checking databse credentials
+        run: echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}" && \
+              echo "DB_HOST=${{secrets.DB_HOST}}" && \
+              echo "DB_PORT=${{secrets.DB_PORT}}" && \
+              echo "DB_DATABASE=${{secrets.DB_DATABASE}}" && \
+              echo "DB_USERNAME=${{secrets.DB_USERNAME}}" && \
+              echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
 
       - name: Running migrations Tests
         run: yes | php artisan migrate --force
