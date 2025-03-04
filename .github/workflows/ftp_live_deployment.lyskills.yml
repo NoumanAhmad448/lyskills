@@ -37,8 +37,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_DATABASE: "${{secrets.DB_DATABASE}}"
-          MYSQL_ROOT_PASSWORD: "${{secrets.DB_PASSWORD}}"
+          MYSQL_DATABASE: test_db
+          MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -57,6 +57,10 @@ jobs:
           tools: pint:1.16.1, phpdoc, composer:2.4.4
           coverage: none
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'  # Specify the Node.js version you want to use (e.g., 14, 16, 18, etc.)
       - name: Set up Environment File
         run: |
           cp .env.testing.example .env
@@ -145,6 +149,14 @@ jobs:
               echo "DB_USERNAME=${{secrets.DB_USERNAME}}" && \
               echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
 
+      - name: install npm
+        run: npm install
+
+      - name: installing run production
+        run: npm run production
+
+      - name: Running migrations Tests
+        run: php artisan migrate --force
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
@@ -213,8 +225,8 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_DATABASE: "${{secrets.DB_DATABASE}}"
-          MYSQL_ROOT_PASSWORD: ${{secrets.DB_PASSWORD}}"
+          MYSQL_DATABASE: test_db
+          MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
         options:
@@ -287,6 +299,7 @@ jobs:
           echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
           MYSQL_IP=$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mysql)
           echo "DB_HOST=$MYSQL_IP" >> .env
+
 
 
       - name: Run Pint for code styling
