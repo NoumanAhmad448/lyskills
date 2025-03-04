@@ -2,7 +2,7 @@
 
 services:
   # lyskills app (PHP-FPM)
-  app:
+  lyskills-app:
     env_file:
       - .env  # This loads variables from .env
     build:
@@ -10,11 +10,13 @@ services:
       dockerfile: Dockerfile
     container_name: lyskills-app
     volumes:
-      - .:/home/nomilyskills/public_html
+      - .:/var/www/html  # Bind mount to sync your application code
+      - laravel_storage:/var/www/html/storage  # Named volume for persistent data (e.g., Laravel storage)
+      - laravel_logs:/var/www/html/storage/logs  # Named volume for logs
     networks:
       - lyskills-network
     environment:
-      - DB_HOST=db
+      - DB_HOST=host.docker.internal
       - DB_PORT=${DB_PORT}
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
@@ -22,12 +24,13 @@ services:
     depends_on:
       - db   # Ensure the app waits for db to start
 
-  # MySQL database
+    # MySQL database
   db:
     image: mysql:5.7
     container_name: lyskills-db
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
+      DB_HOST: host.docker.internal  # Connect to the MySQL on host machine
       MYSQL_USER: ${DB_USERNAME}       # Create user with the specified username
       MYSQL_PASSWORD: ${DB_PASSWORD}   # Set password for the created user
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Allow empty password for root user in local
@@ -39,17 +42,20 @@ services:
   # Nginx for reverse proxy
   nginx:
     image: nginx:alpine
-    container_name: nginx
+    container_name: lyskills-nginx
     ports:
       - 8081:80
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - .:/home/nomilyskills/public_html
+      - .:/var/www/html
     depends_on:
-      - app
+      - lyskills-app
     networks:
       - lyskills-network
 
 networks:
   lyskills-network:
     driver: bridge
+volumes:
+  laravel_storage: {}
+  laravel_logs: {}
