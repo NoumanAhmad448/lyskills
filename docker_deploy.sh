@@ -90,6 +90,19 @@ docker compose build #Required only first time add --no-cache
 echo "Starting the containers..."
 docker compose up -d
 
+# Enable maintenance mode
+docker compose exec $CONTAINER_NAME php artisan down || true
+
+
+docker compose exec $CONTAINER_NAME composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
+
+#generate artisan key
+docker compose exec $CONTAINER_NAME yes | php artisan key:generate
+
+
+# Run database migrations (ensuring root runs them)
+docker compose exec $CONTAINER_NAME php artisan migrate --force
+
 # Step 4: Clear Laravel caches (or any other app-related cache clearing command)
 echo "Clearing Laravel caches..."
 docker compose exec $CONTAINER_NAME php artisan config:clear
@@ -97,6 +110,27 @@ docker compose exec $CONTAINER_NAME php artisan cache:clear
 docker compose exec $CONTAINER_NAME php artisan view:clear
 docker compose exec $CONTAINER_NAME php artisan route:clear
 docker compose exec $CONTAINER_NAME php artisan optimize:clear
+
+# Node Versions
+docker compose exec $CONTAINER_NAME npm --version
+docker compose exec $CONTAINER_NAME node --version
+
+# Install Node.js dependencies
+docker compose exec $CONTAINER_NAME npm install
+
+docker compose exec $CONTAINER_NAME npm audit fix || true
+
+# Run on production mode
+docker compose exec $CONTAINER_NAME npm run production
+
+# check project health notification
+docker compose exec $CONTAINER_NAME php artisan health:check --no-notification
+
+docker compose exec $CONTAINER_NAME APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest
+
+docker compose exec $CONTAINER_NAME php artisan schedule:run >> /dev/null 2>&1
+
+docker compose exec $CONTAINER_NAME php artisan up
 
 # Step 5: Reload Nginx to apply any config changes (if using Nginx)
 echo "Reloading Nginx..."

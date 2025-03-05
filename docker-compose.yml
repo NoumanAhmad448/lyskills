@@ -53,6 +53,17 @@ services:
     networks:
       - lyskills-network
 
+  node:
+    image: node:20
+    container_name: node_app
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    environment:
+      NODE_ENV: "${APP_ENV}"
+    networks:
+      - lyskills-network
+
 networks:
   lyskills-network:
     driver: bridge
