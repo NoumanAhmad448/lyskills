@@ -16,7 +16,7 @@ services:
     networks:
       - lyskills-network
     environment:
-      - DB_HOST={DB_CONNECTION}
+      - DB_HOST=${DB_CONNECTION}
       - DB_PORT=${DB_PORT}
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
