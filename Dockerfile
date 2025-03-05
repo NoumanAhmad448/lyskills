@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
 # Verify BCMath is enabled
 RUN php -m | grep bcmath
 
-RUN COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set the working directory
 WORKDIR /var/www/html
