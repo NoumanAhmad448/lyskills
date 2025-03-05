@@ -14,6 +14,34 @@ ENV COMPOSER_PROCESS_TIMEOUT=600
 # git nano procps net-tools iproute2
 # include the above packages if needed
 
+# Function to check if nvm is installed
+
+RUN  echo "Installing nvm..."
+RUN  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+  RUN export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" \
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  RUN echo "nvm installed successfully."
+
+
+RUN  export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" \
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+RUN echo "nvm loaded successfully."
+
+
+# Main script logic
+RUN  nvm --version
+
+RUN export NVM_DIR="$HOME/.nvm"
+RUN [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Check if the correct Node.js version is installed
+RUN echo "Node.js version is NOT v20.18.3. Installing..."
+RUN  nvm install 20.18.3
+
+
+# Use the correct Node.js version
+RUN nvm use 20.18.3
+
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev zip git nano procps net-tools iproute2\
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
