@@ -128,7 +128,7 @@ nvm use 20.18.3
 # rm -rf ~/.nvm/.cache
 # rm -rf /tmp/*
 
-Install Node.js dependencies
+# Install Node.js dependencies
 /root/.nvm/versions/node/v20.18.3/bin/npm install
 
 # Fix npm audit issues

@@ -116,16 +116,16 @@ docker compose exec $CONTAINER_NAME php artisan route:clear
 docker compose exec $CONTAINER_NAME php artisan optimize:clear
 
 # Node Versions
-docker compose exec $NODE_CONTAINER_NAME npm --version
-docker compose exec $NODE_CONTAINER_NAME node --version
+docker compose exec $CONTAINER_NAME npm --version
+docker compose exec $CONTAINER_NAME node --version
 
 # Install Node.js dependencies
-docker compose exec $NODE_CONTAINER_NAME npm install
+docker compose exec $CONTAINER_NAME npm install
 
-docker compose exec $NODE_CONTAINER_NAME npm audit fix || true
+docker compose exec $CONTAINER_NAME npm audit fix || true
 
 # Run on production mode
-docker compose exec $NODE_CONTAINER_NAME npm run production
+docker compose exec $CONTAINER_NAME npm run production
 
 # check project health notification
 docker compose exec $CONTAINER_NAME php artisan health:check --no-notification
