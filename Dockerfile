@@ -15,8 +15,21 @@ ENV COMPOSER_PROCESS_TIMEOUT=600
 # include the above packages if needed
 
 # Install Node.js 20.x (direct method without NVM)
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - \
-    && apk add --no-cache nodejs npm
+# Download and install nvm:
+RUN    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+
+# in lieu of restarting the shell
+RUN    \. "$HOME/.nvm/nvm.sh"
+
+# Download and install Node.js:
+RUN    nvm install 20
+
+# Verify the Node.js version:
+RUN node -v # Should print "v20.18.3".
+RUN nvm current # Should print "v20.18.3".
+
+# Verify npm version:
+RUN npm -v # Should print "10.8.2".
 
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev zip git nano procps net-tools iproute2\
