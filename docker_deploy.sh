@@ -157,7 +157,7 @@ if [ "$APP_ENV" != 'production' ]; then
 fi
 
 echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-docker compose push
+docker compose push $CONTAINER_NAME
 
 # Logout for security
 echo "Logging out from Docker Hub..."
