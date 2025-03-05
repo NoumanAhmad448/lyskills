@@ -103,9 +103,11 @@ docker compose exec $CONTAINER_NAME composer install --no-interaction --prefer-d
 #generate artisan key
 docker compose exec $CONTAINER_NAME yes | php artisan key:generate
 
+# checking docker container
+docker ps
 
 # Run database migrations (ensuring root runs them)
-docker compose exec $CONTAINER_NAME php artisan migrate --force
+sleep 10 && docker compose exec $CONTAINER_NAME php artisan migrate --force
 
 # Step 4: Clear Laravel caches (or any other app-related cache clearing command)
 echo "Clearing Laravel caches..."
