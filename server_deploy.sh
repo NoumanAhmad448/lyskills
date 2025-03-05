@@ -4,9 +4,9 @@
 yes | php artisan down
 
 # Create necessary directories
-mkdir -p /home/nomilyskills/public_html/storage/app 
+mkdir -p /home/nomilyskills/public_html/storage/app
 mkdir -p /home/nomilyskills/public_html/storage/framework/cache
-mkdir -p /home/nomilyskills/public_html/storage/framework/sessions 
+mkdir -p /home/nomilyskills/public_html/storage/framework/sessions
 mkdir -p /home/nomilyskills/public_html/storage/framework/views
 mkdir -p /home/nomilyskills/public_html/storage/logs
 

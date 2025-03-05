@@ -73,14 +73,18 @@ else
     exit 1
 fi
 
+sudo chmod -R 775 /home/nomilyskills/public_html/
+sudo chown -R root:root /home/nomilyskills/public_html/
+
 # Set the environment for your Laravel app (or adjust for other apps)
 CONTAINER_NAME="${APP_NAME}-app"
 NGINX_CONTAINER_NAME="${APP_NAME}-nginx"
 NETWORK_CONTAINER_NAME="${APP_NAME}-network"
+NODE_CONTAINER_NAME="${APP_NAME}-node"
 
 # Step 1: Stop and remove the running containers
 echo "Stopping and removing the containers..."
-# docker compose down
+docker compose down
 
 # Step 2: Rebuild the Docker containers (to apply any changes in Dockerfile or docker-compose)
 echo "Rebuilding Docker containers..."
@@ -112,16 +116,16 @@ docker compose exec $CONTAINER_NAME php artisan route:clear
 docker compose exec $CONTAINER_NAME php artisan optimize:clear
 
 # Node Versions
-docker compose exec $CONTAINER_NAME npm --version
-docker compose exec $CONTAINER_NAME node --version
+docker compose exec $NODE_CONTAINER_NAME npm --version
+docker compose exec $NODE_CONTAINER_NAME node --version
 
 # Install Node.js dependencies
-docker compose exec $CONTAINER_NAME npm install
+docker compose exec $NODE_CONTAINER_NAME npm install
 
-docker compose exec $CONTAINER_NAME npm audit fix || true
+docker compose exec $NODE_CONTAINER_NAME npm audit fix || true
 
 # Run on production mode
-docker compose exec $CONTAINER_NAME npm run production
+docker compose exec $NODE_CONTAINER_NAME npm run production
 
 # check project health notification
 docker compose exec $CONTAINER_NAME php artisan health:check --no-notification
