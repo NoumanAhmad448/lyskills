@@ -70,7 +70,7 @@ RUN yes | php artisan key:generate
 
 
 # Run database migrations (ensuring root runs them)
-RUN php artisan migrate --force
+# RUN php artisan migrate --force
 
 # Clear caches
 RUN php artisan cache:clear && php artisan config:clear && php artisan route:clear && \
