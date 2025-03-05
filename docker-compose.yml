@@ -37,7 +37,7 @@ services:
     networks:
       - lyskills-network
     ports:
-      - 3306:3306
+      - 3307:3306
 
   # Nginx for reverse proxy
   nginx:
