@@ -16,7 +16,7 @@ services:
     networks:
       - lyskills-network
     environment:
-      - DB_HOST=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
@@ -30,7 +30,7 @@ services:
     container_name: lyskills-db
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
-      DB_HOST: ${DB_CONNECTION}  # Connect to the MySQL on host machine
+      DB_HOST: ${DB_HOST}  # Connect to the MySQL on host machine
       MYSQL_USER: ${DB_USERNAME}       # Create user with the specified username
       MYSQL_PASSWORD: ${DB_PASSWORD}   # Set password for the created user
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Allow empty password for root user in local
