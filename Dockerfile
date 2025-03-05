@@ -15,29 +15,23 @@ ENV COMPOSER_PROCESS_TIMEOUT=600
 # include the above packages if needed
 
 # Install Node.js 20.x (direct method without NVM)
-# Download and install nvm:
-RUN    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+# Set environment variables for NVM
+ENV NVM_DIR="/root/.nvm"
 
-# in lieu of restarting the shell
-RUN    \. "$HOME/.nvm/nvm.sh"
+# Install NVM
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 
-# Download and install Node.js:
-RUN    nvm install 20
+# Load NVM and install Node.js
+RUN bash -c "source $NVM_DIR/nvm.sh && \
+    nvm install 20.18.3 && \
+    nvm use 20.18.3 && \
+    nvm alias default 20.18.3"
 
-# Verify the Node.js version:
-RUN node -v # Should print "v20.18.3".
-RUN nvm current # Should print "v20.18.3".
+# Ensure Node.js and npm are accessible
+ENV PATH="$NVM_DIR/versions/node/v20.18.3/bin:$PATH"
 
-# Verify npm version:
-RUN npm -v # Should print "10.8.2".
-
-RUN apt-get update && apt-get install -y \
-    libpng-dev libjpeg-dev libfreetype6-dev zip git nano procps net-tools iproute2\
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql bcmath
-
-# check node version
-RUN node -v
+# Verify installation
+RUN node -v && npm -v
 
 # Verify BCMath is enabled
 RUN php -m | grep bcmath
