@@ -23,9 +23,9 @@ permissions:
 jobs:
   docker-deploy_remote:
     needs: docker-deploy # This makes test-mysql depend on the successful completion of setup-mysql
+    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448" && ${{ false }}
     runs-on: ubuntu-latest
 
-    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448" && false
     strategy:
       fail-fast: true
       matrix:
@@ -82,10 +82,10 @@ jobs:
             ./docker_deploy.sh
 
   docker-deploy:
+    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448" && ${{ false }}
     needs: laravel-deployment # This makes test-mysql depend on the successful completion of setup-mysql
     runs-on: ubuntu-latest
 
-    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448"
     strategy:
       fail-fast: true
       matrix:
