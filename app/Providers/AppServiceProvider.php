@@ -37,11 +37,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if(trim(config('app.env')) == "dev"){
+        if(trim(config('app.env')) == config("setting.roles.dev")){
             $this->app['request']->server->set('HTTP', true);
-            resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme('http');
+            resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme(config("setting.http"));
+            URL::forceScheme(config("setting.http"));
         }
-        URL::forceScheme('http');
     }
 
     /**
@@ -68,9 +68,9 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         }
-        if(trim(config('app.env')) == "dev"){
-            URL::forceScheme('http');
-            resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme('http');
+        if(trim(config('app.env')) == config("setting.roles.dev")){
+            URL::forceScheme(config("setting.http"));
+            resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme(config("setting.http"));
         }
         $checks = [
             DatabaseCheck::new(),
