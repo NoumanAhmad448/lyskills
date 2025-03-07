@@ -9,6 +9,7 @@ mkdir -p /home/nomilyskills/public_html/storage/framework/cache
 mkdir -p /home/nomilyskills/public_html/storage/framework/sessions
 mkdir -p /home/nomilyskills/public_html/storage/framework/views
 mkdir -p /home/nomilyskills/public_html/storage/logs
+mkdir -p /home/nomilyskills/public_html/bootstrap/cache
 
 # Generate artisan key
 yes | php artisan key:generate

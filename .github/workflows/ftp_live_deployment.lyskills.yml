@@ -334,6 +334,7 @@ jobs:
       - name: Creating essential directoires
         run: |
           sudo mkdir -p $GITHUB_WORKSPACE/storage/app
+          sudo mkdir -p $GITHUB_WORKSPACE/bootstrap/cache
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/cache
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/sessions
           sudo mkdir -p $GITHUB_WORKSPACE/storage/framework/views
