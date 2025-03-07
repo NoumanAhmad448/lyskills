@@ -35,7 +35,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'email_verified_at',
         'is_blogger',
-        'is_admin'
+        'is_admin',
+        'is_role'
     ];
 
     /**
@@ -86,7 +87,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin(): bool
     {
-        return $this->role === config('settings.roles.admin');
+        return $this->role === config('settings.roles.admin') || $this->is_admin == 1;
     }
 
     /**
@@ -94,7 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isInstructor(): bool
     {
-        return $this->role === config('settings.roles.instructor');
+        return $this->role === config('settings.roles.instructor') || $this->instructor === 1;
     }
 
     /**
@@ -102,7 +103,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isSuperAdmin(): bool
     {
-        return $this->role === config('settings.roles.super_admin');
+        return $this->role === config('settings.roles.super_admin') && $this->is_super_admin === 1;
     }
 
     /**
@@ -110,6 +111,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isDev(): bool
     {
-        return $this->role === config('settings.roles.dev');
+        debug_logs($this->role);
+        return $this->role == config('settings.roles.dev');
+
     }
 }

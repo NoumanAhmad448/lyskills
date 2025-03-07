@@ -151,6 +151,9 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                                 @endif
                                 <a style="font-size: 0.9rem !important" class="pt-2  dropdown-item" href="{{ route('public_faq') }}"> {{__('Help')}}</a>
                                 <a style="font-size: 0.9rem !important" class="pt-1 dropdown-item" href="{{ route('logout_user') }}"> {{__('Logout')}}</a>
+                                @if(auth()?->user()?->role == config('setting.roles.dev'))
+                                <a style="font-size: 0.9rem !important" class="pt-1 dropdown-item" href="{{ route('health') }}"> {{__('health')}}</a>
+                                @endif
                             </div>
                         </div>
                         @else

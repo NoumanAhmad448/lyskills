@@ -17,8 +17,6 @@ $constant = "test";
                 <div id="{{$constant}}notifications" class="hidden {{ $lastRanAt->diffInMinutes() > 5 ? 'text-red-400' : 'text-gray-400 dark:text-gray-500' }} text-sm text-center font-medium">
                     {{ __('health::notifications.check_results_from') }} {{ $lastRanAt->diffForHumans() }}
                 </div>
-                
-
             @endif
 
         </div>

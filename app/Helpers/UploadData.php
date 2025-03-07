@@ -2,11 +2,11 @@
 
 namespace App\Helpers;
 
-use App\interfaces\UploadDataIn;
+use App\interfaces\UploadDataInterface;
 use Illuminate\Support\Facades\Storage;
 
 
-class UploadData implements UploadDataIn{
+class UploadData implements UploadDataInterface{
     private $dir_path = "";
     private $disk = "";
     private $default_setting = [
