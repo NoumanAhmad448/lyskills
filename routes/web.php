@@ -538,5 +538,5 @@ require __DIR__ . '/home_controller.php';
 require __DIR__ . '/user_controller.php';
 
 if(trim(config('app.env')) == config("setting.roles.dev")){
-    URL::forceScheme('http');
+    URL::forceScheme(config("setting.http"));
 }

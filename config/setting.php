@@ -1,6 +1,7 @@
 <?php
 
 $site_settings = [
+        "http" => "http",
         'roles' => [
                 'admin' => 'admin',
                 'instructor' => 'instructor',

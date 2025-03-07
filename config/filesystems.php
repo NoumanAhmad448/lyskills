@@ -69,8 +69,6 @@ return [
 
         // Keep Visibility always null because amazon does not allow to set visibility for the file to public
         // 'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-        // "visibility" => env('AWS_VIS'."public"),
-            // 'throw' => false,
             // 'report' => false,
 
     ],
