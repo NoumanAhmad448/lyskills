@@ -13,7 +13,7 @@ class UploadData implements UploadDataInterface{
         "isImage" => true,
         "isVideo" => false,
         "imageStoragePath" => "storage/img/",
-        "videoStoragePath" => "uploads/"
+        "videoStoragePath" => "uploads"
     ];
 
 
@@ -44,31 +44,35 @@ class UploadData implements UploadDataInterface{
         // $this->createDirectory();
         // Never and Ever Call the above funtion
 
+        $path_creator = time() . uniqid() . str_replace(' ', '-',$file_name);
+
         // upload image
         if($this->default_setting['isImage']){
             if(config("app.debug")){
                 $this->default_setting['imageStoragePath'];
             }
-            $path = $this->default_setting['imageStoragePath'].time() . uniqid() . str_replace(' ', '-',$file_name);
+            $path = $this->default_setting['imageStoragePath'].$path_creator;
 
         }else if($this->default_setting['isVideo']){
-            $path = $this->default_setting['videoStoragePath'].time() . uniqid() . str_replace(' ', '-',$file_name);
+            $path = $this->default_setting['videoStoragePath'];
         }
+
         debug_logs("Before Uploading...!");
         debug_logs($path);
         $response = "";
+
         // Check environment
         try{
-            if(config('app.env') === 'dev') {
-                $response = Storage::disk($this->disk)->put($path, $object);
-            } else {
-                $response = Storage::disk($this->disk)->put($path, $object);
-            }
+            $response = Storage::disk($this->disk)->put($path, $object);
 
         }catch(\Exception $e){
             debug_logs($e);
         }
+
         debug_logs($response);
+        if($this->default_setting['isVideo']){
+            $path = $response;
+        }
         debug_logs("After Uploading...!");
         debug_logs($path);
 

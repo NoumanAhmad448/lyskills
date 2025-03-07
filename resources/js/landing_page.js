@@ -162,6 +162,7 @@ $(function() {
                     setInterval(function(){
                         file_err.text('');
                         current_file.removeClass('is-invalid');
+                        current_file.val("")
                     },10000);
                 }
                 else if(parseInt(file.size/1024/1024) > 4096){
@@ -169,6 +170,7 @@ $(function() {
                     current_file.addClass('is-invalid');
                     setInterval(function(){
                         file_err.text('');
+                        current_file.val("")
                         current_file.removeClass('is-invalid');
                     },10000);
 
@@ -220,6 +222,7 @@ $(function() {
                                 location.reload();
                             },
                             error: function(data){
+                                current_file.val("")
                                 current_file.attr('disabled',false);
                                 vid_p_con.addClass('d-none');
                                 vid_p_bar.attr('aria-valuenow',0);
