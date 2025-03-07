@@ -1,12 +1,12 @@
 $(function() {
 
-   
+
 
     $('.ct_btn').click(function(){
-        
+
         let c = $(this);
         let p = c.parents('.create_btn_row').first();
-        
+
         if(p.nextAll('.c_con').length == 0){
             p.after(`
                 <section class="c_con" >

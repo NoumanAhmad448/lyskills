@@ -12,8 +12,10 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $users = User::where('is_super_admin',null)->where('is_admin',null)->where('is_blogger',null)->
-            select('id','name','email','is_student','is_instructor','created_at')->
+            $users = User::where('is_super_admin',null)->where('is_admin',null)
+            ->where('is_blogger',null)
+            ->where('role', "!=", config('setting.roles.dev'))
+            ->select('id','name','email','is_student','is_instructor','created_at')->
             orderByDesc('created_at')->simplePaginate(20);
         // dd($users);
         $title = 'user_title';

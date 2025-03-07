@@ -1,4 +1,4 @@
-@extends('admin.admin_main')
+@extends('dev.dev_main')
 @section('page-css')
 @endsection
 @section('content')
