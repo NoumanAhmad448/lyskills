@@ -61,15 +61,17 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY',''),
             'region' => env('AWS_DEFAULT_REGION',''),
             'bucket' => env('AWS_BUCKET',''),
-            'url' => env('AWS_URL',''),
-            'endpoint' => env('AWS_ENDPOINT'.''),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
-            'report' => false,
+            'visibility' => null,
+            'url' => env('AWS_BUCKET_URL',''),
+            'endpoint' => env('AWS_ENDPOINT',''),
             'scheme'  => 'http',
-
         ],
+
+        // Keep Visibility always null because amazon does not allow to set visibility for the file to public
+        // 'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         // "visibility" => env('AWS_VIS'."public"),
+            // 'throw' => false,
+            // 'report' => false,
 
     ],
 
