@@ -1,6 +1,13 @@
 <?php
 
 $site_settings = [
+        'roles' => [
+                'admin' => 'admin',
+                'instructor' => 'instructor',
+                'super_admin' => 'super_admin',
+                'dev' => 'dev',
+                'user' => 'user', // Default role
+        ],
         "s3Url" => env('AWS_URL'),
         "no_reply_email_pass" => env('NO_REPLY_EMAIL_PASS'),
         "max_tble_size" => 9_0000000,

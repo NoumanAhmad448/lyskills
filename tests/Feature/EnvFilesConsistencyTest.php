@@ -20,6 +20,7 @@ class EnvFilesConsistencyTest extends TestCase
 
         // Check each environment file
         foreach ($envFiles as $envFile) {
+            debug_logs($envFile);
             $envFilePath = base_path($envFile);
 
             // Skip if the file doesn't exist

@@ -3,11 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\CourseExController;
 use App\Http\Controllers\CourseEx2Controller;
 use App\Http\Controllers\CourseEx3Controller;
 use App\Http\Controllers\VideoController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DescriptionController;
 use App\Http\Controllers\ArticleController;
@@ -19,7 +17,6 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SayonaraController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminFaqController;
 use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\AdminPostController;
@@ -36,7 +33,6 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubCategories;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\SetttingController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\StoreUserController;
@@ -46,26 +42,14 @@ use App\Http\Controllers\WithdrawPaymentController;
 use App\Http\Livewire\AdminController as LivewireAdminController;
 use App\Http\Livewire\BloggerHome;
 use App\Http\Livewire\BloggerLoginPanel;
-use App\Http\Livewire\CreateAdmin as CreateAdminByAdmin;
-use App\Http\Livewire\CreateBlogger;
-use App\Http\Livewire\EditAdmin;
 use Illuminate\Http\Request;
-use App\Http\Controllers\EasypaisaController;
-use App\Http\Controllers\InstructorAuthController;
-use App\Http\Controllers\HealthCheckResultsController;
+use Illuminate\Support\Facades\URL;
 
-// Route::get('go-live-with-nouman', [HomeController::class, 'aritsanLive']);
 
 Route::post('/back', function(){
 return redirect()->route('index');
 })->name('back');
 
-Route::get('/', [HomeController::class, 'index'])->name('index');
-Route::get('post/{slug}', [HomeController::class, 'post'])->name('public_posts');
-Route::get('posts', [HomeController::class, 'posts'])->name('all_public_posts');
-Route::get('page/{slug}', [HomeController::class, 'page'])->name('public_pages');
-Route::get('faq/{slug}', [HomeController::class, 'faq'])->name('public_faqs');
-Route::get('faqs', [HomeController::class, 'faqs'])->name('public_faq');
 
 // social login
 Route::get('/login/google', [SocialController::class, 'googleVerification'])->name('google-login');
@@ -95,7 +79,7 @@ $request->user()->sendEmailVerificationNotification();
 return back()->with('status', 'verification email has been sent. please check your email address');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', 
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard',
 [DashboardController::class, 'index']
 )->name('dashboard');
 
@@ -308,48 +292,10 @@ Route::post('instructor/course/{course}/change-the-course-url', [CourseEx3Contro
 });
 
 
-Route::get('/admin',[AdminController::class, 'admin_panel'])->name('admin');
 
-Route::post('/admin/post', [AdminController::class, 'login'])->name('admin_a');
-
-Route::get('/index/index', [AdminController::class, 'index'])->middleware('admin')->name('a_home');
-
-Route::get('/user_logout', [HomeController::class, 'logout'])->name('logout_user');
-Route::post('/user_logout_post', [HomeController::class, 'logout'])->name('logout_post');
 
 Route::middleware(['auth', 'admin','verified'])->group(function () {
-Route::get('/logout', [AdminController::class, 'logout'])->name('a_logout');
-Route::get('/course-history-delete', [AdminController::class, 'courseHistory'])->name('course_del');
-Route::get('/users', [UserController::class, 'index'])->name('a_users');
-Route::get('/edit-users/{user}', [UserController::class, 'edit'])->name('a_e_users');
-Route::put('/update-users/{user}', [UserController::class, 'update'])->name('a_u_users');
-Route::delete('/delete-users/{user}', [UserController::class, 'delete'])->name('a_d_users');
 
-Route::post('/sorting-users', [UserController::class, 'sortingUser'])->name('sorting_users');
-Route::get('/sorting-users', [UserController::class, 'index']);
-
-Route::post('/search-users', [UserController::class, 'searchUser'])->name('search_users');
-Route::get('/search-users', [UserController::class, 'index']);
-
-Route::get('/all-assignments', [AdminController::class, 'getAss'])->name('a-asses');
-
-Route::post('/all-assignments-sorting', [AdminController::class, 'assSorting'])->name('a_a_sorting');
-Route::get('/all-assignments-sorting', [AdminController::class, 'getAss']);
-
-Route::post('/all-assignments-searching', [AdminController::class, 'searching'])->name('a_a_searching');
-Route::get('/all-assignments-searching', [AdminController::class, 'getAss']);
-
-Route::get('/get-courses', [AdminController::class, 'viewCourse'])->name('a_courses');
-Route::get('/get-draft-courses', [AdminController::class, 'draftCourse'])->name('draft_course');
-Route::get('/get-published-courses', [AdminController::class, 'publishedCourse'])->name('p_courses');
-Route::post('/all-courses-sorting', [AdminController::class, 'courseSorting'])->name('a_c_sorting');
-Route::get('/all-courses-sorting', [AdminController::class, 'viewCourse']);
-
-Route::get('/course-xuesheng/{course}', [AdminController::class, 'xueshiXuesheng'])->name("xueshiXuesheng");
-Route::post('/course-xuesheng', [AdminController::class, 'xueshiXueshengPost'])->name("xueshiXueshengPost");
-
-Route::post('/all-courses-searching', [AdminController::class, 'courseSearching'])->name('a_c_searching');
-Route::get('/all-courses-searching', [AdminController::class, 'viewCourse']);
 
 Route::get('admin/show-post', [AdminPostController::class, 'view'])->name('admin_v_p');
 Route::get('admin/create-post', [AdminPostController::class, 'createPost'])->name('admin_c_p');
@@ -414,11 +360,6 @@ Route::get('admin/setting/general-setting', [SetttingController::class, 'general
 Route::get('admin/setting/lms-setting', [SetttingController::class, 'lms_setting'])->name('admin_lms_setting');
 Route::post('admin/setting/lms-setting', [SetttingController::class, 'save_lms_setting'])->name('admin_p_lms_setting');
 
-Route::get('admin/password/change-password', [AdminController::class, 'changePassword'])->name('admin_change_pass');
-Route::patch('admin/password/change-password', [AdminController::class, 'changePasswordP'])->name('admin_p_change_pass');
-
-Route::get('admin/setting/payment-share-setting', [AdminController::class, 'sharePayment'])->name('a_share_payment');
-Route::post('admin/setting/payment-share-setting', [AdminController::class, 'sharePostPayment'])->name('a_p_share_payment');
 
 Route::get('admin/setting/payment-gateway-setting', [SetttingController::class, 'paymentGateways'])->name('a_payment_gateways');
 Route::post('admin/setting/strip-payment-setting', [SetttingController::class, 'storeStripPayment'])->name('a_strip_payment');
@@ -471,21 +412,11 @@ Route::get('admin/{i}/edit-show-course-user-on-dashboard', [UserAnnController::c
 Route::put('admin/{i}/edit-course-user-on-dashboard', [UserAnnController::class, 'edit'])->name('____edit_user');
 Route::post('admin/{i}/delete-course-user-on-dashboard', [UserAnnController::class, 'delete'])->name('____delete_user');
 
-Route::get('admin/create-bloggers', CreateBlogger::class)->middleware('super_admin')->name('create_blogger___');
-Route::post('admin/post-bloggers', [BloggerController::class,'store_blogger'])->middleware('super_admin')->name('store_blogger___');
-Route::put('admin/create-bloggers/{user}', [BloggerController::class, 'updateBlogger'])->middleware('super_admin')->name('update_blogger___');
 Route::get('admin/show-bloggers', [BloggerController::class, 'show'])->name('show_blogger___');
-Route::get('admin/edit-bloggers/{user}', [BloggerController::class, 'edit'])->middleware('super_admin')->name('edit_blogger___');
-Route::delete('admin/delete-bloggers/{user}', [BloggerController::class, 'delete'])->middleware('super_admin')->name('delete_blogger___');
 
-Route::get('admin/create-sub-admins', CreateAdminByAdmin::class)->middleware('super_admin')->name('create_admin');
-Route::post('admin/post-admins', [CreateSubAdminController::class,'storeSubAdmin'])->middleware('super_admin')->name('store_admin');
 Route::put('admin/update-admin-profile/{user}', [CreateSubAdminController::class, 'updateAdmin'])->name('update_admins');
 Route::get('admin/show-admins', LivewireAdminController::class)->name('show_sub_admins');
-Route::get('admin/edit-admin/{user}', EditAdmin::class)->middleware('super_admin')->name('edit_admin___');
-Route::delete('admin/delete-admin/{user}', [BloggerController::class, 'delete'])->middleware('super_admin')->name('delete_admin___');
 
-Route::get('admin/instructor-earning-detail/{id}', [AdminController::class, 'getInsDetailedEaning'])->name('total-earning-detail');
 
 });
 
@@ -503,7 +434,7 @@ Route::post('post/{post}/change-status', [BloggerPostController::class, 'changeS
 Route::delete('post/{post}/delete-post', [BloggerPostController::class, 'delete'])->name('blogger_p_delete');
 
 Route::get('post/{post}/edit-post', [BloggerPostController::class, 'editPost'])->name('blogger_edit_p');
-Route::put('post/{post}/update-post', [BloggerPostController::class, 'updatePost'])->name('blogger_update_p'); 
+Route::put('post/{post}/update-post', [BloggerPostController::class, 'updatePost'])->name('blogger_update_p');
 
 Route::get('show-faq', [BloggerFaqController::class, 'view'])->name('blogger_v_faq');
 Route::get('create-faq', [BloggerFaqController::class, 'createFaq'])->name('blogger_c_faq');
@@ -573,33 +504,10 @@ Route::post('crop-image-upload', [ProfileController::class,'uploadCropImage'])->
 });
 
 
-Route::middleware(['auth', 'admin','verified'])->group(function () {
-Route::get('send-email', [AdminController::class, 'sendEmail'])->name('a-send-email');
-Route::post('send-email', [AdminController::class, 'sendEmailPost'])->name('a-p-send-email');
-
-Route::get('admin/new-offline-enrollment', [AdminController::class, 'nEn'])->name('n_en');
-Route::post('admin/new-offline-enrollment/user/{user}/course/{course}', [AdminController::class, 'nEnP'])->name('n_en_p');
-
-});
-
-Route::get('contact-us', [HomeController::class, 'contactUs'])->name('contact-us');
-Route::post('contact-us', [HomeController::class, 'contactUsPost'])->name('contact-us-post');
-
-Route::post('ckeditor/upload', [HomeController::class, 'upload'])->name('ckeditor.upload');
-// Route::get('test', function(){
-// return view('testing');
-// });
-Route::post('get-search', [HomeController::class, 'getSearch'])->name('get-search');
-Route::post('course-search', [HomeController::class, 'userSearch'])->name('c-search-page');
-Route::get('show-search-course/{keyword}', [HomeController::class, 'showSearchCourse'])->name('s-search-page');
-
-
-
 Route::middleware(['verified','auth'])->group(function () {
 Route::post('student/course/coupon', [CourseEx2Controller::class, 'coupon'])->name('coupon');
 Route::post('student/course/enroll-now/{course}', [CourseEx2Controller::class, 'enrollNow'])->name('enroll-now');
 });
-
 
 
 Route::middleware(['auth', 'admin','verified'])->prefix('admin')->group(function () {
@@ -616,47 +524,19 @@ Route::middleware('auth')->post('/paypal-integration/{slug}', [PaypalController:
 Route::middleware('auth')->get('payment-success', [PaypalController::class, 'paymentSuccess'])->name('success.payment');
 
 
-Route::middleware('auth')->post('rating-course', [CourseExController::class, 'ratingCourse'])->name('rating-course');
-
-Route::middleware('auth')->get('create-pdf-file', [CourseExController::class, 'createPdf'])->name('create-pdf');
-
-Route::middleware('auth')->get('download-certificate/{course_name}', [CourseExController::class, 'downloadCert'])->name('down-cert');
-
-
 Route::post('e/{course_id}/{media_id}/edit_video', [VideoController::class, 'edit_video'])->name('e_video');
 
+// Include route files
+require __DIR__ . '/dev_routes.php';
+require __DIR__ . '/super_admin_routes.php';
+require __DIR__ . '/course_ex_controller_routes.php';
+require __DIR__ . '/course_ex_controller_routes.php';
+require __DIR__ . '/easypaisa_controller.php';
+require __DIR__ . '/instructor_auth_controller.php';
+require __DIR__ . '/admin_controller.php';
+require __DIR__ . '/home_controller.php';
+require __DIR__ . '/user_controller.php';
 
-Route::get('get-many-roles', [HomeController::class, 'getManyRoles']);
-
-Route::middleware('auth')->get('get-currency-exchange', [EasypaisaController::class, 'getPayment'])->name('get-easy-p');
-Route::middleware('auth')->get('get-paid-via-easypay', [EasypaisaController::class, 'getEasypay'])->name('get-easy-pay');
-Route::middleware('auth')->get('easypaisa-initiate-request/{course}/with-nouman/{randomtoken}', [EasypaisaController::class, 'getStarted'])->name('haji-me');
-Route::middleware('auth')->post('get-paid-via-easypay', [EasypaisaController::class, 'getHashKeyEn'])->name('get-easy-pay-enc');
-Route::middleware('auth')->get('get-token-via-easypay', [EasypaisaController::class, 'getEasypayToken'])->name('get-token-pay');
-
-
-
-Route::middleware('auth')->get('instructor/comments/course/{course_name}', [CourseExController::class, 'comment'])->name('laoshi-comment');
-Route::middleware('auth')->post('instructor/comments', [CourseExController::class, 'commentPost'])->name('laoshi-commentPost');
-Route::middleware('auth')->patch('instructor/comments/update', [CourseExController::class, 'commentUpdate'])->name('laoshi-commentUpdate');
-Route::middleware('auth')->post('instructor/comments/delete', [CourseExController::class, 'commentDelete'])->name('laoshi-commentDelete');
-
-Route::middleware('auth')->get('laoshi-de/comments/{course}', [CourseExController::class, 'readComments'])->name('laoshi_de_c');
-
-Route::middleware('auth')->post('set-all-videos-downlabable/{course}', [CourseExController::class, 'setVidDown'])->name('setVidDown');
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/homepage', [AdminController::class,'homepage'])->name('admin.homepage');
-    Route::post('/admin/homepage/update', [AdminController::class,'homepageUpdate'])->name('admin.homepage.update');
-    Route::get('/health', HealthCheckResultsController::class)->name('health');
-
-});
-
-// Instructor Authentication Routes
-Route::get('/instructor/register', [InstructorAuthController::class, 'showRegister'])
-    ->name('instructor.register');
-Route::post('/instructor/register', [InstructorAuthController::class, 'register']);
-
-Route::get('/instructor/login', [InstructorAuthController::class, 'showLogin'])
-    ->name('instructor.login');
-Route::post('/instructor/login', [InstructorAuthController::class, 'login']);
+if(trim(config('app.env')) == config("setting.roles.dev")){
+    URL::forceScheme('http');
+}

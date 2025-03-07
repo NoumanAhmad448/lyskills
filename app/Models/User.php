@@ -83,4 +83,33 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(WishList::class,'user_id');
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === config('settings.roles.admin');
+    }
+
+    /**
+     * Check if the user has the 'instructor' role.
+     */
+    public function isInstructor(): bool
+    {
+        return $this->role === config('settings.roles.instructor');
+    }
+
+    /**
+     * Check if the user has the 'super_admin' role.
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->role === config('settings.roles.super_admin');
+    }
+
+    /**
+     * Check if the user has the 'dev' role.
+     */
+    public function isDev(): bool
+    {
+        return $this->role === config('settings.roles.dev');
+    }
 }

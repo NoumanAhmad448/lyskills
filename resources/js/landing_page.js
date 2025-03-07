@@ -127,7 +127,7 @@ $(function() {
                 course_img.attr('src', img_path);
                 p_con.addClass('d-none');
                 current.attr('disabled',false);
-
+                current.val(null);
 
             },
             error: function(d){
@@ -138,6 +138,7 @@ $(function() {
                 current.attr('disabled',false);
                 $('.upload_img').val(null)
                 popup_message(d)
+                current.val("")
             }
         });
 

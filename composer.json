@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "anhskohbo/no-captcha": "^3.3",
+        "aws/aws-sdk-php": "^3.342",
         "barryvdh/laravel-dompdf": "^2.0",
         "cocur/slugify": "^4.0",
         "dragon-code/laravel-migration-actions": "^2.9",

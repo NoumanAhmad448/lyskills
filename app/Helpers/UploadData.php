@@ -2,14 +2,16 @@
 
 namespace App\Helpers;
 
+use App\interfaces\UploadDataIn;
 use Illuminate\Support\Facades\Storage;
 
-class UploadData{
+
+class UploadData implements UploadDataIn{
     private $dir_path = "";
     private $disk = "";
     private $default_setting = [
-        "isImage" => true, 
-        "isVideo" => false, 
+        "isImage" => true,
+        "isVideo" => false,
         "imageStoragePath" => "storage/img/",
         "videoStoragePath" => "uploads/"
     ];
@@ -17,7 +19,7 @@ class UploadData{
 
     public function __construct(){
         $this->dir_path = config("setting.dir_path");
-        $this->disk = config('app.env') === config("app.dev_env") ? 'public' : 's3';
+        $this->disk = config('filesystems.default');
 
         if(config("app.debug")){
             debug_logs(config("filesystems.disks.$this->disk"));
@@ -28,10 +30,10 @@ class UploadData{
         if(config("app.debug") && false){
             $this->default_setting["imageStoragePath"] = "";
             $this->default_setting["videoStoragePath"] = "";
-        } 
+        }
     }
 
-    public static function changeDisk($disk){
+    public function changeDisk($disk){
         $this->disk = $disk;
         return $this;
     }
@@ -40,7 +42,7 @@ class UploadData{
     {
 
         // $this->createDirectory();
-        // Never and Ever Call the above funtion 
+        // Never and Ever Call the above funtion
 
         // upload image
         if($this->default_setting['isImage']){
@@ -48,22 +50,33 @@ class UploadData{
                 $this->default_setting['imageStoragePath'];
             }
             $path = $this->default_setting['imageStoragePath'].time() . uniqid() . str_replace(' ', '-',$file_name);
-            
+
         }else if($this->default_setting['isVideo']){
             $path = $this->default_setting['videoStoragePath'].time() . uniqid() . str_replace(' ', '-',$file_name);
         }
+        debug_logs("Before Uploading...!");
+        debug_logs($path);
+        $response = "";
         // Check environment
-        if(config('app.env') === 'local') {
-            Storage::disk($this->disk)->put($path, $object);
-        } else {
-            Storage::disk($this->disk)->put($path, $object);
+        try{
+            if(config('app.env') === 'dev') {
+                $response = Storage::disk($this->disk)->put($path, $object);
+            } else {
+                $response = Storage::disk($this->disk)->put($path, $object);
+            }
+
+        }catch(\Exception $e){
+            debug_logs($e);
         }
-        
+        debug_logs($response);
+        debug_logs("After Uploading...!");
+        debug_logs($path);
+
         return $path;
-    
+
     }
-    
-    public function uploadVid(){
+
+    public function enableVideoUploading(){
         $this->default_setting["isVideo"] = true;
         $this->default_setting["isImage"] = false;
         return $this;

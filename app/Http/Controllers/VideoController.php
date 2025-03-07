@@ -16,15 +16,19 @@ use App\Helpers\uploadData;
 
 class VideoController extends Controller
 {
+    protected $uploadData;
+    private $st_path;
+
     public function __construct() {
         $this->uploadData = new uploadData;
-        $this->uploadData = $this->uploadData->uploadVid();
+        $this->uploadData = $this->uploadData->enableVideoUploading();
         $this->st_path = "storage";
     }
+
     function validate_user($course_id){
         return Course::where([['user_id',Auth::id()],['id', $course_id]])->firstOrFail();
     }
-    
+
     public function set_video_free(Request $request, $media_id)
     {
         try{

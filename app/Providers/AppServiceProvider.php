@@ -27,6 +27,7 @@ use Spatie\SecurityAdvisoriesHealthCheck\SecurityAdvisoriesCheck;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -36,9 +37,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if(trim(config('app.env')) === "dev"){
-            URL::forceScheme('http');
+        if(trim(config('app.env')) == "dev"){
+            $this->app['request']->server->set('HTTP', true);
+            resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme('http');
         }
+        URL::forceScheme('http');
     }
 
     /**
@@ -65,8 +68,9 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         }
-        if(trim(config('app.env')) === "dev"){
+        if(trim(config('app.env')) == "dev"){
             URL::forceScheme('http');
+            resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme('http');
         }
         $checks = [
             DatabaseCheck::new(),

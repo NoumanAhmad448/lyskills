@@ -18,6 +18,8 @@ use App\Helpers\UploadData;
 
 class LandingPageController extends Controller
 {
+    protected $uploadData;
+
     public function __construct() {
         $this->uploadData = new UploadData();
     }
@@ -140,8 +142,8 @@ class LandingPageController extends Controller
             $f_mime_type = $file->getClientMimeType();
             $f_name = $file->getClientOriginalName();
 
-            $file_path = $this->uploadData->uploadVid()->upload($file, $f_name);
-  
+            $file_path = $this->uploadData->enableVideoUploading()->upload($file, $f_name);
+
 
             $course_vid = $course->course_vid;
             if ($course_vid) {
