@@ -16,10 +16,10 @@ class LyskillsCarbon
     private static $date_form = "Y-m-d";
     private static $db_date_form = "Y-m-d H:i:s";
 
-    public function __construct() {
-        $this->date_format = "Y-m-d";
-        $this->db_date_format = 'Y-m-d H:i:s';
+    public static function  setDate($date) {
+        return Carbon::parse($date);
     }
+
     public static function diffInDays($date1, $date2)
     {
         $date1 = self::parse($date1);
@@ -61,8 +61,16 @@ class LyskillsCarbon
      * @param string $date2
      * @return int
      */
-    public static function diffInMinutes($date1, $date2)
+    public static function diffInMinutes($date1="", $date2="")
     {
+        if(empty($date1)){
+            $date1 = Carbon::now();
+        }
+
+        if(empty($date2)){
+            $date2 = Carbon::now();
+        }
+
         $date1 = Carbon::parse($date1);
         $date2 = Carbon::parse($date2);
 

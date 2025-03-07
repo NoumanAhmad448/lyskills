@@ -92,29 +92,31 @@
                     </li>
                     <hr/>
                     <li class="nav-item">
-                        <a class="nav-link text-dark " href="{{route('admin_view_categories')}}" id="a_c"> 
+                        <a class="nav-link text-dark " href="{{route('admin_view_categories')}}" id="a_c">
                             <i class="fa fa-filter" aria-hidden="true"></i>
                              Categories
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark " href="{{route('admin_show_medias')}}" id="a_media"> 
+                        <a class="nav-link text-dark " href="{{route('admin_show_medias')}}" id="a_media">
                             <i class="fa fa-video-camera" aria-hidden="true"></i>
                             Media Manager
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark " href="{{route('admin.homepage')}}" id="homepage"> 
+                        <a class="nav-link text-dark " href="{{route('admin.homepage')}}" id="homepage">
                             <i class="fa fa-home" aria-hidden="true"></i>
                             Home Page Settings
                         </a>
                     </li>
+                    @if(auth()?->user()?->role == config('setting.roles.dev'))
                     <li class="nav-item">
                         <a class="nav-link text-dark " href="{{route('health')}}" id="health">
                             <i class="fa fa-home" aria-hidden="true"></i>
                             Project Health
                         </a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <div class="nav-link text-dark cursor_pointer" id="a_setting"> <i class="fa fa-cog" aria-hidden="true"></i>
                             Setting

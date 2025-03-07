@@ -19,7 +19,7 @@ class HealthCheckResultsController {
         $checkResults = $resultStore->latestResults();
 
         return view('health', [
-            'lastRanAt' => new Carbon($checkResults?->finishedAt),
+            'lastRanAt' =>  LyskillsCarbon::setDate($checkResults?->finishedAt),
             'checkResults' => $checkResults,
             'assets' => $health->assets(),
             'theme' => config('health.theme'),

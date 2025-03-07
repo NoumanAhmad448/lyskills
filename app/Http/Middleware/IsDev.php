@@ -11,7 +11,7 @@ class IsDev
     public function handle(Request $request, Closure $next)
     {
         // Check if the user is authenticated and has the 'dev' role
-        if (Auth::check() && Auth::user()->isDev()) {
+        if (Auth::check() && Auth::user()?->role === config('setting.roles.dev')) {
             return $next($request);
         }
 
