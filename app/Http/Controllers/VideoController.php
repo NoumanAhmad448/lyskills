@@ -12,7 +12,7 @@ use App\Classes\LyskillsCarbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Helpers\uploadData;
+use App\Helpers\UploadData;
 
 class VideoController extends Controller
 {
@@ -20,7 +20,7 @@ class VideoController extends Controller
     private $st_path;
 
     public function __construct() {
-        $this->uploadData = new uploadData;
+        $this->uploadData = new UploadData;
         $this->uploadData = $this->uploadData->enableVideoUploading();
         $this->st_path = "storage";
     }
