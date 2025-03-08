@@ -3,13 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
+Route::get('/admin', [AdminController::class, 'admin_panel'])->name('admin');
+Route::post('/admin/post', [AdminController::class, 'login'])->name('admin_a');
+
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
     Route::post('/admin/homepage/update', [AdminController::class, 'homepageUpdate'])->name('admin.homepage.update');
-    Route::get('/admin', [AdminController::class, 'admin_panel'])->name('admin');
-
-    Route::post('/admin/post', [AdminController::class, 'login'])->name('admin_a');
-
     Route::get('/index/index', [AdminController::class, 'index'])->middleware('admin')->name('a_home');
 });
 
