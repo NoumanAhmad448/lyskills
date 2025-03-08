@@ -1220,6 +1220,7 @@ use App\Models\ResVideo;
                         file_err.removeClass('d-block').addClass('d-none').text();
                         current_file.removeClass('is-invalid');
                     }, 10000);
+                    current_file.val('');
                 } else if (parseInt(file.size / 1024 / 1024 / 1024) > 4.2) {
                     file_err.addClass('d-block').text('File size cannot exceed from 4GB');
                     current_file.addClass('is-invalid');
@@ -1227,6 +1228,7 @@ use App\Models\ResVideo;
                         file_err.removeClass('d-block').addClass('d-none').text();
                         current_file.removeClass('is-invalid');
                     }, 10000);
+                    current_file.val('');
 
                 } else {
                     current_file.attr('disabled', true);
@@ -1277,6 +1279,7 @@ use App\Models\ResVideo;
                                     video_btn.removeClass('lec_content').addClass('v_c_vid');
 
                                     videoResponse(data,upload_vid)
+                                    current_file.val('');
                                 }
                             },
                             error: function(data) {
@@ -1296,6 +1299,7 @@ use App\Models\ResVideo;
                                         show_err.addClass('d-none').removeClass('d-block');
                                     }, 15000);
                                 }
+                                current_file.val('');
                             }
                         });
                     }
