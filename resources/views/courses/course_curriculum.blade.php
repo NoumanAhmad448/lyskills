@@ -1147,7 +1147,7 @@ use App\Models\ResVideo;
 
         });
 
-        function videoResponse(data,upload_vid){
+        function videoResponse(data,upload_vid,path,media){
             let response = `<section class="lecture_vid row p-3">
                                                 <div class="col-md-9">
                                                 <div class="form-check my-3">
@@ -1176,7 +1176,7 @@ use App\Models\ResVideo;
                                                 <section class="d-flex justify-content-start align-items-center my-3">
                                                     <div class="col-3" name="access_duration">
                                                         <label for="date_time">Until Valid Date?</label>
-                                                        <input p_d="${data['media']['access_duration']}" 
+                                                        <input p_d="${data['media']['access_duration']}"
                                                         value="${data['media']['access_duration']}" type="text"
                                                         class="form-control date-picker
                                                         access_duration_${data['media']['course_id']}" autocomplete="off"
@@ -1278,11 +1278,12 @@ use App\Models\ResVideo;
                                     let video_btn = current_file.parents('.upload_video_con').prev('.lecture_container').find('.lec_content').first();
                                     video_btn.removeClass('lec_content').addClass('v_c_vid');
 
-                                    videoResponse(data,upload_vid)
+                                    videoResponse(data,upload_vid,path,media)
                                     current_file.val('');
                                 }
                             },
                             error: function(data) {
+                                current_file.val('');
                                 progress_bar.parent().remove();
                                 current_file.attr('disabled', false);
                                 let show_err = c_f_form.children('.video_err');
@@ -1299,7 +1300,6 @@ use App\Models\ResVideo;
                                         show_err.addClass('d-none').removeClass('d-block');
                                     }, 15000);
                                 }
-                                current_file.val('');
                             }
                         });
                     }
@@ -1612,6 +1612,7 @@ use App\Models\ResVideo;
                                         form.parents('.lecture_vid').first().remove();
                                     }
                                 }
+                                location.reload();
                             }
                             show_message(success_msg);
                             // location.reload();
