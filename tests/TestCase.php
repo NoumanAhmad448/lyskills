@@ -4,7 +4,6 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -26,5 +25,7 @@ abstract class TestCase extends BaseTestCase
         // Seed the database for testing
         // check the following seeder the future
         $this->seed(\Database\Seeders\DatabaseSeeder::class);
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
     }
 }

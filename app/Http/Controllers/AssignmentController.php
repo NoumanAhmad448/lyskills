@@ -29,7 +29,8 @@ class AssignmentController extends Controller
         try {
             $request->validate([
                 'ass_title' => 'required|max:255',
-                'lec_no' => 'required'
+                'lec_no' => 'required',
+                "due_date" => "nullable"
             ]);
 
             $title = $request->ass_title;
@@ -51,13 +52,17 @@ class AssignmentController extends Controller
                         $ass->course_no = $course_id;
                         $ass_no = $count_assign ? $count_assign += 1 : '1';
                         $ass->ass_no = $ass_no;
+                        if($request->due_date){
+                            $ass->due_date = $request->due_date;
+                        }
                         $ass->save();
 
-
+                        $ass->fresh();
                         return response()->json([
                             'status' => 'Title has been saved',
                             'ass_no' => $ass_no,
                             'ass_title' => $title,
+                            'ass_id' => $ass->id,
                             'title_edit' => route('update_assign', ['assign' => $ass]),
                             'delete_assign' => route('delete_assign', ['assign' => $ass]),
                             'add_ass' => route('add_ass', ['assign' => $ass]),
@@ -286,6 +291,7 @@ class AssignmentController extends Controller
         // Validate the request
         $request->validate([
             'submission_file' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            "course_id" => "required",
             'comments' => ['nullable', new IsScriptAttack],
         ]);
 
@@ -318,7 +324,7 @@ class AssignmentController extends Controller
             'message' => 'Assignment submitted successfully.',
             'file_path' => $filePath,
             'is_late' => $isLate,
-        ]);
+        ],200);
     }
     public function scoreUpdate(Request $request, AssignmentSubmition $assignment)
     {
@@ -339,6 +345,6 @@ class AssignmentController extends Controller
             'message' => 'Assignment Score submitted successfully.',
             'score' => $request->score,
             'feedback' => $request->feedback
-        ]);
+        ],200);
     }
 }

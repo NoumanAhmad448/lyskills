@@ -10,6 +10,7 @@ class AssignmentSubmition extends Model
     use HasFactory;
 
     protected $table = "assignments_submission";
+    public $timestamps = false;
     protected $guarded = [];
 
     public function student(){

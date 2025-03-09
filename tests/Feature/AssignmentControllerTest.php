@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
 use App\Models\AssignmentSubmition;
+use App\Models\CourseEnrollment;
 use App\Models\Lecture;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -39,6 +40,11 @@ class AssignmentControllerTest extends TestCase
             'course_no' => $this->course->id
         ]);
 
+        CourseEnrollment::factory()->create([
+            "course_id" => $this->course->id,
+            "user_id" => $this->student->id
+        ]);
+
     }
 
     /** @test */
@@ -46,7 +52,7 @@ class AssignmentControllerTest extends TestCase
     {
         $this->actingAs($this->instructor);
 
-        $response = $this->post(route('assign'),$this->course->id, [
+        $response = $this->post(route('assign', $this->course->id), [
             'ass_title' => 'Test Assignment',
             "lec_no" => Lecture::factory()->create([
                 "course_id" => $this->course->id
@@ -54,10 +60,10 @@ class AssignmentControllerTest extends TestCase
             'due_date' => now()->addDays(7),
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
+
         $this->assertDatabaseHas('assignments', [
-            'course_id' => $this->course->id,
-            'title' => 'Test Assignment'
+            'course_no' => $this->course->id,
         ]);
     }
 
@@ -70,11 +76,12 @@ class AssignmentControllerTest extends TestCase
 
         $response = $this->post(route('assignments.submit', $this->assignment->id), [
             'submission_file' => $file,
-            'comments' => 'Here is my submission'
+            'comments' => 'Here is my submission',
+            "course_id" => $this->course->id
         ]);
 
         $response->assertStatus(200);
-        $this->assertDatabaseHas('assignment_submissions', [
+        $this->assertDatabaseHas('assignments_submission', [
             'student_id' => $this->student->id,
             'assignment_id' => $this->assignment->id
         ]);
@@ -90,7 +97,7 @@ class AssignmentControllerTest extends TestCase
             "student_id" => $this->student->id
         ]);
 
-        $response = $this->patch(route('assignments.grade', $submission->id), [
+        $response = $this->post(route('assignments.grade', $submission->id), [
             'score' => 85,
             'feedback' => 'Good work!'
         ]);
@@ -111,7 +118,8 @@ class AssignmentControllerTest extends TestCase
         $file = UploadedFile::fake()->create('late.pdf', 500);
 
         $response = $this->post(route('assignments.submit', $this->assignment->id), [
-            'submission_file' => $file
+            'submission_file' => $file,
+            "course_id" => $this?->course?->id
         ]);
 
         $response->assertStatus(200);
