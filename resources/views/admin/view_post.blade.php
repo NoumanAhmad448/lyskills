@@ -30,7 +30,6 @@
                     <th scope="col"> Edit </th>
                     <th scope="col"> Delete </th>
                     <th scope="col"> link </th>
-                    
                 </tr>
                 </thead>
                 <tbody>
@@ -40,10 +39,10 @@
                         <td>
                             <form action="{{route('admin_cs_p',compact('post'))}}" method="post">
                                 @csrf
-                                <input type="checkbox" name="status" class="change_status" @if($status === "published") checked @endif/> 
+                                <input type="checkbox" name="status" class="change_status" @if($status === "published") checked @endif/>
                             </form>
                         </td>
-                        
+
                         <td> {{ $post->name }}</td>
                         <td> {{ $post->email }} </td>
                         <td >
@@ -52,7 +51,7 @@
                             </div>
                         </td>
                         <td> {{ $post->title }}</td>
-                        <td> 
+                        <td>
                             <div class="text-success" > 
                              <a href="{{route('admin_edit_p', compact('post'))}}">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>

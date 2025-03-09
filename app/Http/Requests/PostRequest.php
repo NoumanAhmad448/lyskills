@@ -14,7 +14,7 @@ class PostRequest extends FormRequest
      */
     public function authorize()
     {
-        return isAdmin() || ($this->user() && $this->user()->is_admin);
+        return isAdmin() || ($this?->user() && $this?->user()?->is_admin);
     }
 
     /**
@@ -25,7 +25,6 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            //
         ];
     }
 }

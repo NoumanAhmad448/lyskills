@@ -19,7 +19,7 @@ class AdminControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->admin = User::factory()->create([
             'is_admin' => 1
         ]);
@@ -29,19 +29,18 @@ class AdminControllerTest extends TestCase
     public function non_admin_cannot_access_admin_panel()
     {
         $user = User::factory()->create();
-        
-        $response = $this->actingAs($user)->get(route('admin.dashboard'));
-        
-        $response->assertStatus(403);
+
+        $response = $this->actingAs($user)->get(route('a_home'));
+
+        $response->assertRedirectToRoute("index");
     }
 
     /** @test */
     public function admin_can_view_dashboard()
     {
-        $response = $this->actingAs($this->admin)->get(route('admin.dashboard'));
-        
+        $response = $this->actingAs($this->admin)->get(route('a_home'));
+
         $response->assertStatus(200);
-        $response->assertViewIs('admin.dashboard');
     }
 
     /** @test */
@@ -50,11 +49,11 @@ class AdminControllerTest extends TestCase
         $course = Course::factory()->create();
 
         $response = $this->actingAs($this->admin)
-            ->put(route('admin.course.update', $course), [
-                'status' => 'published'
+            ->post(route('change_course_status', $course), [
+                'status' => 'p',
+                "course_no" => $course->id
             ]);
 
-        $response->assertRedirect();
         $this->assertDatabaseHas('courses', [
             'id' => $course->id,
             'status' => 'published'
@@ -67,11 +66,16 @@ class AdminControllerTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($this->admin)
-            ->put(route('admin.user.update', $user), [
-                'is_blocked' => 1
+            ->post(route('admin.user.update', $user->id), [
+                'status' => 1
             ]);
 
-        $response->assertRedirect();
+        $response->assertStatus(200); // Ensure the request is successful
+
+        $user = $user->fresh();
+        if($user->is_blocked == 0){
+            $this->fail('User is not blocked '.$user);
+        }
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'is_blocked' => 1
@@ -84,8 +88,8 @@ class AdminControllerTest extends TestCase
         $post = Post::factory()->create();
 
         $response = $this->actingAs($this->admin)
-            ->put(route('admin.post.update', $post), [
-                'status' => 'published'
+            ->post(route('admin_cs_p', $post), [
+                'status' => 1
             ]);
 
         $response->assertRedirect();

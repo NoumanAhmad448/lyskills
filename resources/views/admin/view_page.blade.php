@@ -22,7 +22,7 @@
                 <thead>
                 <tr>
                     <th scope="col">Mark</th>
-                   
+
                     <th scope="col"> Name </th>
                     <th scope="col"> Email </th>
                     <th scope="col"> Status </th>
@@ -30,7 +30,7 @@
                     <th scope="col"> Edit </th>
                     <th scope="col"> Delete </th>
                     <th scope="col"> link </th>
-                    
+
                 </tr>
                 </thead>
                 <tbody>
@@ -40,10 +40,10 @@
                         <td>
                             <form action="{{route('admin_cs_page',compact('page'))}}" method="post">
                                 @csrf
-                                <input type="checkbox" name="status" class="change_status" @if($status === "published") checked @endif/> 
+                                <input type="checkbox" name="status" class="change_status" @if($status === "published") checked @endif/>
                             </form>
                         </td>
-                        
+
                         <td> {{ $page->name }}</td>
                         <td> {{ $page->email }} </td>
                         <td >
@@ -65,13 +65,12 @@
                                 @method('delete')
                                 <div class="text-danger delete_page cursor_pointer"> <i class="fa fa-trash" aria-hidden="true"></i>  </div>
                             </form>
-                        </div>    
+                        </div>
                         </td>
 
                         <td>
                             <a href="{{route('public_pages', ['slug' => $page->slug])}}" target="_blank"> Link </a>
                         </td>
-                        
                     </tr>
                 @endforeach
                 </tbody>
@@ -82,7 +81,7 @@
             <div> @if($pages) Total {{$pages->count()}} @endif </div>
             <div> {{ $pages->links() }} </div>
         </div>
-        
+
 
         @else
             <div class="jumbotron text-center bg-white mt-5">
@@ -90,13 +89,13 @@
                 <div > You have not created any page yet. Please create new page by clicking the button create page </div>
             </div>
         @endif
-     
+
 @endsection
 
 
 @section('page-js')
-    <script>  
-        $(function(){  
+    <script>
+        $(function(){
             $('#a_page').addClass('bg-website text-white').removeClass('text-dark font-weight-bold');
             setTimeout(() => {
                 $('.alert').fadeOut();

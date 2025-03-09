@@ -18,7 +18,6 @@ use App\Http\Controllers\PricingController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SayonaraController;
 use App\Http\Controllers\AdminFaqController;
-use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\BloggerController;
 use App\Http\Controllers\BloggerFaqController;
@@ -307,15 +306,6 @@ Route::delete('admin/post/{post}/delete-post', [AdminPostController::class, 'del
 Route::get('admin/post/{post}/edit-post', [AdminPostController::class, 'editPost'])->name('admin_edit_p');
 Route::put('admin/post/{post}/update-post', [AdminPostController::class, 'updatePost'])->name('admin_update_p');
 
-Route::get('admin/show-page', [AdminPageController::class, 'view'])->name('admin_v_page');
-Route::get('admin/create-page', [AdminPageController::class, 'createPage'])->name('admin_c_page');
-Route::post('admin/create-page', [AdminPageController::class, 'savePage'])->name('admin_s_page');
-
-Route::post('admin/page/{page}/change-status', [AdminPageController::class, 'changeStatus'])->name('admin_cs_page');
-Route::delete('admin/page/{page}/delete-page', [AdminPageController::class, 'delete'])->name('admin_page_delete');
-
-Route::get('admin/page/{page}/edit-page', [AdminPageController::class, 'editPage'])->name('admin_edit_page');
-Route::put('admin/page/{page}/update-page', [AdminPageController::class, 'updatePage'])->name('admin_update_page');
 
 Route::get('admin/show-faq', [AdminFaqController::class, 'view'])->name('admin_v_faq');
 Route::get('admin/create-faq', [AdminFaqController::class, 'createFaq'])->name('admin_c_faq');
@@ -536,6 +526,9 @@ require __DIR__ . '/instructor_auth_controller.php';
 require __DIR__ . '/admin_controller.php';
 require __DIR__ . '/home_controller.php';
 require __DIR__ . '/user_controller.php';
+require __DIR__ . '/admin_users.php';
+require __DIR__ . '/admin_page.php';
+require __DIR__ . '/cron_job.php';
 
 if(trim(config('app.env')) == config("setting.roles.dev")){
     URL::forceScheme(config("setting.http"));

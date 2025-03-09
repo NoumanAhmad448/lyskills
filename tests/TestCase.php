@@ -19,7 +19,7 @@ abstract class TestCase extends BaseTestCase
         if (config('database.current_db') !== config('database.testing_db')) {
             $msg = 'Not using testing database! Current DB:' . config('database.current_db');
             debug_logs($msg);
-            
+
             throw new \Exception($msg);
         }
 

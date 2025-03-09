@@ -81,9 +81,8 @@ class AdminPostController extends Controller
     {
         try {
             $request->validated();
-            $status = $post->status;
 
-            if ($status == "unpublished") {
+            if ($request->status == 1) {
                 $post->status = "published";
             } else {
                 $post->status = "unpublished";

@@ -30,6 +30,7 @@ return [
     'dev_env' => 'dev',
     'testing_env' => 'testing',
     'live_env' => 'production',
+    "url" => env('APP_URL', 'http://localhost'),
     /*
     App env values are dev/testing/production
     */
