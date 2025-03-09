@@ -26,6 +26,9 @@ use Spatie\Health\Facades\Health;
 use Spatie\SecurityAdvisoriesHealthCheck\SecurityAdvisoriesCheck;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\CronJobs;
+use Database\Factories\CronJobsFactory;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -37,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if(trim(config('app.env')) == config("setting.roles.dev")){
+        if (trim(config('app.env')) == config("setting.roles.dev")) {
             $this->app['request']->server->set('HTTP', true);
             resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme(config("setting.http"));
             URL::forceScheme(config("setting.http"));
@@ -51,53 +54,55 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Factory::factoryForModel(CronJobs::class, CronJobsFactory::class);
+
         try {
             DB::connection()->getPdo();  // Try to connect to the database
-        if(Schema::hasTable('socials')){
-        $social = Social::first();
-        if($social){
-            $social->setSocialMedia();
-        }
-        }
-
-        if(Schema::hasTable('config_settings')){
-            $settings = ConfigSetting::all();
-            if($settings){
-                foreach ($settings as $setting){
-                    config(["setting.".$setting->key => false]);
+            if (Schema::hasTable('socials')) {
+                $social = Social::first();
+                if ($social) {
+                    $social->setSocialMedia();
                 }
             }
-        }
-        if(trim(config('app.env')) == config("setting.roles.dev")){
-            URL::forceScheme(config("setting.http"));
-            resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme(config("setting.http"));
-        }
-        $checks = [
-            DatabaseCheck::new(),
-            CacheCheck::new(),
-            OptimizedAppCheck::new()
-                ->checkConfig()
-                ->checkRoutes(),
-            DatabaseConnectionCountCheck::new()
-                ->failWhenMoreConnectionsThan(100),
-            DatabaseTableSizeCheck::new()
-                ->table(config('table.users'), maxSizeInMb: config('setting.max_tble_size')),
-            DebugModeCheck::new(),
-            GoogleCaptcha::new(),
-            DatabaseSizeCheck::new(),
-            SlackKeys::new(),
-        ];
 
-        if (in_array(config('app.env'), ['production', 'prod'])) {
-            $checks[] = Js_Debug::new();
-            // $checks[] = CpuLoadCheck::new()->failWhenLoadIsHigherInTheLast15Minutes(2.0);
-            $checks[] = EnvironmentCheck::new();
-            $checks[] = UsedDiskSpaceCheck::new();
-            $checks[] = PingCheck::new()->url(config('app.url'))->retryTimes(config('setting.retry_time'));
+            if (Schema::hasTable('config_settings')) {
+                $settings = ConfigSetting::all();
+                if ($settings) {
+                    foreach ($settings as $setting) {
+                        config(["setting." . $setting->key => false]);
+                    }
+                }
+            }
+            if (trim(config('app.env')) == config("setting.roles.dev")) {
+                URL::forceScheme(config("setting.http"));
+                resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme(config("setting.http"));
+            }
+            $checks = [
+                DatabaseCheck::new(),
+                CacheCheck::new(),
+                OptimizedAppCheck::new()
+                    ->checkConfig()
+                    ->checkRoutes(),
+                DatabaseConnectionCountCheck::new()
+                    ->failWhenMoreConnectionsThan(100),
+                DatabaseTableSizeCheck::new()
+                    ->table(config('table.users'), maxSizeInMb: config('setting.max_tble_size')),
+                DebugModeCheck::new(),
+                GoogleCaptcha::new(),
+                DatabaseSizeCheck::new(),
+                SlackKeys::new(),
+            ];
+
+            if (in_array(config('app.env'), ['production', 'prod'])) {
+                $checks[] = Js_Debug::new();
+                // $checks[] = CpuLoadCheck::new()->failWhenLoadIsHigherInTheLast15Minutes(2.0);
+                $checks[] = EnvironmentCheck::new();
+                $checks[] = UsedDiskSpaceCheck::new();
+                $checks[] = PingCheck::new()->url(config('app.url'))->retryTimes(config('setting.retry_time'));
+            }
+            Health::checks($checks);
+        } catch (\Exception $e) {
+            Log::error('Database connection failed: ' . $e->getMessage());
         }
-        Health::checks($checks);
-    } catch (\Exception $e) {
-        Log::error('Database connection failed: ' . $e->getMessage());
-    }
     }
 }

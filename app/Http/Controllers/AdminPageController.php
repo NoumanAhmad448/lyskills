@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\UploadData;
 use App\Http\Requests\PostRequest;
 use App\Models\Page;
+use App\Rules\IsScriptAttack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Cocur\Slugify\Slugify;
@@ -40,8 +41,8 @@ class AdminPageController extends Controller
 
         try {
             $request->validate([
-                'title' => ['required', 'max:1000', new PageDuplicateTitle],
-                'message' => 'required',
+                'title' => ['required', 'max:1000', new PageDuplicateTitle, new IsScriptAttack],
+                'message' => ['required', new IsScriptAttack],
                 'upload_img' => 'nullable|image|mimes:jpeg,png,jpg|max:5000',
             ]);
 
@@ -80,9 +81,7 @@ class AdminPageController extends Controller
     {
         try {
             $request->validated();
-            $status = $page->status;
-
-            if ($status == "unpublished") {
+            if ($request->status == 1) {
                 $page->status = "published";
             } else {
                 $page->status = "unpublished";

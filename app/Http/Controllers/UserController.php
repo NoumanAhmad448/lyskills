@@ -12,16 +12,15 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $users = User::where('is_super_admin',null)->where('is_admin',null)
-            ->where('is_blogger',null)
-            ->where('role', "!=", config('setting.roles.dev'))
-            ->select('id','name','email','is_student','is_instructor','created_at')->
-            orderByDesc('created_at')->simplePaginate(20);
-        // dd($users);
-        $title = 'user_title';
-        $order = "ai";
-        $search_item = '';
-        return view('admin.users',compact('users','title','order','search_item'));
+            $users = User::where('is_super_admin', null)->where('is_admin', null)
+                ->where('is_blogger', null)
+                ->where('role', "!=", config('setting.roles.dev'))
+                ->select('id', 'name', 'email', 'is_student', 'is_instructor', 'created_at')->orderByDesc('created_at')->simplePaginate(20);
+            // dd($users);
+            $title = 'user_title';
+            $order = "ai";
+            $search_item = '';
+            return view('admin.users', compact('users', 'title', 'order', 'search_item'));
         } catch (\Throwable $th) {
             return back();
         }
@@ -29,12 +28,12 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-       try {
-        $title = 'user_title';
-        return view('admin.edit-user',compact('user','title'));
-       } catch (\Throwable $th) {
-           return back();
-       }
+        try {
+            $title = 'user_title';
+            return view('admin.edit-user', compact('user', 'title'));
+        } catch (\Throwable $th) {
+            return back();
+        }
     }
 
     public function update(UpdateUserReq $request, User $user)
@@ -42,36 +41,35 @@ class UserController extends Controller
         try {
             $data = $request->validated();
 
-        if(is_xss($data['name']) || is_xss($data['email'])){
-            abort(403);
-        }else{
-            $user->name = $data['name'];
-            $user->email = $data['email'];
-            if(array_key_exists('student',$data)){
-                $user->is_student = 1;
-            }else{
-                $user->is_student = 0;
-            }
-            if(array_key_exists('instructor',$data)){
-                $user->is_instructor = 1;
-            }else{
-                $user->is_instructor = 0;
-            }
+            if (is_xss($data['name']) || is_xss($data['email'])) {
+                abort(403);
+            } else {
+                $user->name = $data['name'];
+                $user->email = $data['email'];
+                if (array_key_exists('student', $data)) {
+                    $user->is_student = 1;
+                } else {
+                    $user->is_student = 0;
+                }
+                if (array_key_exists('instructor', $data)) {
+                    $user->is_instructor = 1;
+                } else {
+                    $user->is_instructor = 0;
+                }
 
-            $user->save();
+                $user->save();
 
-            return back()->with('status', 'Updated');
-        }
+                return back()->with('status', 'Updated');
+            }
         } catch (\Throwable $th) {
             return back();
         }
-
     }
 
     public function delete(User $user)
     {
         try {
-            if(Auth::user()->is_admin){
+            if (Auth::user()->is_admin) {
                 $user->delete();
                 return response()->json([
                     'status' => 'deleted'
@@ -84,51 +82,72 @@ class UserController extends Controller
 
     public function sortingUser(Request $request)
     {
-       try {
-        $order = $request->input('sorting');
-        switch ($order) {
-            case 'ai':
-                $users = User::simplePaginate(10);
-                break;
-            case 'di':
-                $users = User::orderByDesc('id')->simplePaginate(10);
-                break;
-            case 'an':
-                $users = User::orderBy('name')->simplePaginate(10);
-                break;
-            case 'dn':
-                $users = User::orderByDesc('name')->simplePaginate(10);
-                break;
-            case 'ae':
-                $users = User::orderBy('email')->simplePaginate(10);
-                break;
-            default:
-                $users = User::orderByDesc('email')->simplePaginate(10);
-                break;
-        }
+        try {
+            $order = $request->input('sorting');
+            switch ($order) {
+                case 'ai':
+                    $users = User::simplePaginate(10);
+                    break;
+                case 'di':
+                    $users = User::orderByDesc('id')->simplePaginate(10);
+                    break;
+                case 'an':
+                    $users = User::orderBy('name')->simplePaginate(10);
+                    break;
+                case 'dn':
+                    $users = User::orderByDesc('name')->simplePaginate(10);
+                    break;
+                case 'ae':
+                    $users = User::orderBy('email')->simplePaginate(10);
+                    break;
+                default:
+                    $users = User::orderByDesc('email')->simplePaginate(10);
+                    break;
+            }
 
-        $title = 'user_title';
-        $search_item = '';
-        return view('admin.users',compact('users','title','order','search_item'));
-       } catch (\Throwable $th) {
-           return back();
-       }
+            $title = 'user_title';
+            $search_item = '';
+            return view('admin.users', compact('users', 'title', 'order', 'search_item'));
+        } catch (\Throwable $th) {
+            return back();
+        }
     }
 
     public function searchUser(Request $request)
     {
-       try {
-        $search_item = $request->input('search_item');
-        $search_item = removeSpace($search_item);
-        $search_item = $search_item;
-        $users = User::where('name','like',$search_item.'%')->orWhere('email','like', $search_item.'%')->simplePaginate(10);
-        $title = 'user_title';
-        $order = "ai";
+        try {
+            $search_item = $request->input('search_item');
+            $search_item = removeSpace($search_item);
+            $search_item = $search_item;
+            $users = User::where('name', 'like', $search_item . '%')->orWhere('email', 'like', $search_item . '%')->simplePaginate(10);
+            $title = 'user_title';
+            $order = "ai";
 
-        return view('admin.users',compact('users','title','order','search_item'));
-       } catch (\Throwable $th) {
-           return back();
-       }
+            return view('admin.users', compact('users', 'title', 'order', 'search_item'));
+        } catch (\Throwable $th) {
+            return back();
+        }
+    }
+    public function blockUser(Request $request, User $user)
+    {
+        // Validate the request
+        $request->validate([
+            'status' => 'required|boolean' // Ensures the status is either 0 or 1
+        ]);
 
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Update the is_blocked status
+        $user->is_blocked = $request->status    ? 1 : 0;
+        $user->save();
+
+
+        return response()->json([
+            'message' => $request->status ? 'User has been blocked' : 'User has been unblocked',
+            'user' => $user
+        ], 200);
     }
 }

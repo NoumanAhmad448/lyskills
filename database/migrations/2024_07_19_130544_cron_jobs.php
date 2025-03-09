@@ -11,19 +11,19 @@ return new class extends Migration {
      * @return void
      */
     public function up() {
-        if (! Schema::hasTable(config('table.cron_jobs'))) {
-            Schema::create(config('table.cron_jobs'), function (Blueprint $table) {
-                $table->increments(config('table.primary_key'))->comment('Primary Key');
-                $table->string(config('table.name'))->comment('Job name');
-                $table->text(config('table.w_name'))->nullable()->comment('Website Name');
-                $table->enum(config('table.status'), [
-                    config('constants.idle'),
-                    config('constants.successed'),
-                    config('constants.error'),
+        if (! Schema::hasTable('cron_jobs')) {
+            Schema::create('cron_jobs', function (Blueprint $table) {
+                $table->increments("id")->comment('Primary Key');
+                $table->string("name")->comment('Job name');
+                $table->text("w_name")->nullable()->comment('Website Name');
+                $table->enum('status', [
+                    'idle',
+                    'successed',
+                    'error'
                 ])->nullable()->comment('Status');
-                $table->text(config('table.message'))->nullable()->comment('Message on error/successful');
-                $table->timestamp(config('table.starts_at'))->useCurrent()->comment('Start Job Timestamp');
-                $table->timestamp(config('table.ends_at'))->useCurrent()->comment('End Job Timestamp');
+                $table->text("message")->nullable()->comment('Message on error/successful');
+                $table->timestamp('starts_at')->useCurrent()->comment('Start Job Timestamp');
+                $table->timestamp('ends_at')->useCurrent()->comment('End Job Timestamp');
             });
         }
     }

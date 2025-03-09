@@ -154,6 +154,9 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                                 @if(auth()?->user()?->role == config('setting.roles.dev'))
                                 <a style="font-size: 0.9rem !important" class="pt-1 dropdown-item" href="{{ route('health') }}"> {{__('health')}}</a>
                                 @endif
+                                @if(auth()?->user()?->is_admin || auth()?->user()?->is_super_admin)
+                                <a style="font-size: 0.9rem !important" class="pt-1 dropdown-item" href="{{ route('a_home') }}"> {{__('Admin Dashboard')}}</a>
+                                @endif
                             </div>
                         </div>
                         @else

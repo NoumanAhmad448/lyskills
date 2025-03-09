@@ -116,4 +116,8 @@ class LyskillsCarbon
         return self::now()->month;
     }
 
+    public static function createFromTimestamp($time){
+        return Carbon::createFromTimestamp($time);
+    }
+
 }

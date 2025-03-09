@@ -50,6 +50,11 @@
                             <i class="fa fa-home" aria-hidden="true"></i> Delete Project
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('dev.get.cron_jobs')}}">
+                            <i class="fa fa-home" aria-hidden="true"></i> Cron Jobs
+                        </a>
+                    </li>
                 </ul>
             </div>
 

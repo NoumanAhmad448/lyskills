@@ -20,7 +20,7 @@ class CreateAssignmentsTable extends Migration
             $table->string('course_no',255)->nullable();
             $table->string('ass_f_name')->nullable();
             $table->string('ass_f_path')->nullable();
-            $table->string('ass_no',255)->nullable();            
+            $table->string('ass_no',255)->nullable();
             $table->string('ass_ans_f_name')->nullable();
             $table->string('ass_ans_f_path')->nullable();
 

@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class CourseHistoryFactory extends Factory
 {
     protected $model = CourseHistory::class;
-   
-
 
     public function definition()
     {
@@ -24,4 +22,4 @@ class CourseHistoryFactory extends Factory
             'created_at' => $this->faker->dateTimeBetween('-1 year')
         ];
     }
-} 
+}

@@ -3,6 +3,7 @@
 // resources/lang/en/messages.php
 
 return [
+    "cnsl_msg" => "Message: :msg",
     'new_en' => 'New Enrollment',
     'user_title' => 'Users',
     'admin' => 'Admin',
