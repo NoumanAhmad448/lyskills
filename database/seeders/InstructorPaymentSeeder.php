@@ -54,4 +54,4 @@ class InstructorPaymentSeeder extends Seeder
         // Create instructor announcements
         InstructorAnn::factory()->count(10)->create();
     }
-} 
+}

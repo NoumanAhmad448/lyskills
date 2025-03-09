@@ -50,15 +50,6 @@ jobs:
         - name: Set up Environment File
           run: |
             cp .env.testing.example .env
-            # Read the keys from the secrets.json file (no values)
-            # keys=$(cat secrets.json)
-
-            # # Loop through each key, get the value from GitHub Secrets and set it in the .env file
-            # following loop is not valid for github action
-            # for key in $keys; do
-            #   value=secrets.$key"
-            #   echo "$key=$value" >> .env
-            # done
 
             echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}"  >> .env
             echo "DB_HOST=${{secrets.DB_HOST}}"  >> .env
@@ -98,6 +89,11 @@ jobs:
             echo "SLACK_URL=${{secrets.SLACK_URL}}"  >> .env
             echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
             echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
+
+            cp .env .env.testing
+            echo "DB_DATABASE=${{secrets.DB_TESTING_DATABASE}}"  >> .env.testing
+
+
 
         - name: Creating essential directoires
           run: |
@@ -152,4 +148,5 @@ jobs:
           run: |
             APP_ENV=testing php artisan test --filter AdminPageControllerTest -v
             APP_ENV=testing php artisan test --filter AdminControllerTest -v
+            App_ENV=testing php artisan test --filter AnalyticsControllerTest -v
           continue-on-error: true  # ✅ Allows pipeline to continue even if tests fail

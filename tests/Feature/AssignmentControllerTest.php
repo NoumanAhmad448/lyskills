@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\Assignment;
 use App\Models\AssignmentSubmission;
+use App\Models\AssignmentSubmition;
+use App\Models\Lecture;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,17 +27,18 @@ class AssignmentControllerTest extends TestCase
     {
         parent::setUp();
         Storage::fake('public');
-        
+
         $this->instructor = User::factory()->create(['is_instructor' => 1]);
         $this->student = User::factory()->create();
-        
+
         $this->course = Course::factory()->create([
             'user_id' => $this->instructor->id
         ]);
 
         $this->assignment = Assignment::factory()->create([
-            'course_id' => $this->course->id
+            'course_no' => $this->course->id
         ]);
+
     }
 
     /** @test */
@@ -43,13 +46,12 @@ class AssignmentControllerTest extends TestCase
     {
         $this->actingAs($this->instructor);
 
-        $response = $this->post(route('assignments.store'), [
-            'course_id' => $this->course->id,
-            'title' => 'Test Assignment',
-            'description' => 'Assignment description',
+        $response = $this->post(route('assign'),$this->course->id, [
+            'ass_title' => 'Test Assignment',
+            "lec_no" => Lecture::factory()->create([
+                "course_id" => $this->course->id
+            ])->id,
             'due_date' => now()->addDays(7),
-            'max_score' => 100,
-            'file_requirements' => 'pdf,doc,docx'
         ]);
 
         $response->assertStatus(201);
@@ -66,14 +68,14 @@ class AssignmentControllerTest extends TestCase
 
         $file = UploadedFile::fake()->create('assignment.pdf', 500);
 
-        $response = $this->post(route('assignments.submit', $this->assignment), [
+        $response = $this->post(route('assignments.submit', $this->assignment->id), [
             'submission_file' => $file,
             'comments' => 'Here is my submission'
         ]);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('assignment_submissions', [
-            'user_id' => $this->student->id,
+            'student_id' => $this->student->id,
             'assignment_id' => $this->assignment->id
         ]);
     }
@@ -83,11 +85,12 @@ class AssignmentControllerTest extends TestCase
     {
         $this->actingAs($this->instructor);
 
-        $submission = AssignmentSubmission::factory()->create([
-            'assignment_id' => $this->assignment->id
+        $submission = AssignmentSubmition::factory()->create([
+            'assignment_id' => $this->assignment->id,
+            "student_id" => $this->student->id
         ]);
 
-        $response = $this->patch(route('assignments.grade', $submission), [
+        $response = $this->patch(route('assignments.grade', $submission->id), [
             'score' => 85,
             'feedback' => 'Good work!'
         ]);
@@ -100,22 +103,22 @@ class AssignmentControllerTest extends TestCase
     public function submission_is_marked_late_after_due_date()
     {
         $this->actingAs($this->student);
-        
+
         $this->assignment->update([
             'due_date' => now()->subDays(1)
         ]);
 
         $file = UploadedFile::fake()->create('late.pdf', 500);
 
-        $response = $this->post(route('assignments.submit', $this->assignment), [
+        $response = $this->post(route('assignments.submit', $this->assignment->id), [
             'submission_file' => $file
         ]);
 
         $response->assertStatus(200);
-        $this->assertDatabaseHas('assignment_submissions', [
-            'user_id' => $this->student->id,
+        $this->assertDatabaseHas('assignments_submission', [
+            'student_id' => $this->student->id,
             'assignment_id' => $this->assignment->id,
             'is_late' => true
         ]);
     }
-} 
+}

@@ -177,9 +177,6 @@ Route::delete('instructor/lec/{lec_id}/delete_file', [OtherFilesController::clas
 Route::post('instructor/file/{file_id}', [OtherFilesController::class, 'prev_file'])
 ->name('prev_file');
 
-Route::post('instructor/{course}/assigment', [AssignmentController::class, 'assign'])
-->name('assign');
-
 Route::post('instructor/{assign}/update', [AssignmentController::class, 'update'])
 ->name('update_assign');
 
@@ -529,6 +526,7 @@ require __DIR__ . '/user_controller.php';
 require __DIR__ . '/admin_users.php';
 require __DIR__ . '/admin_page.php';
 require __DIR__ . '/cron_job.php';
+require __DIR__ . '/assignment.php';
 
 if(trim(config('app.env')) == config("setting.roles.dev")){
     URL::forceScheme(config("setting.http"));

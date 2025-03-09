@@ -25,7 +25,7 @@ class AdminControllerTest extends TestCase
         ]);
     }
 
-    /** @test */
+
     public function non_admin_cannot_access_admin_panel()
     {
         $user = User::factory()->create();

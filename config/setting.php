@@ -9,6 +9,7 @@ $site_settings = [
                 'dev' => 'dev',
                 'user' => 'user', // Default role
         ],
+        "cron_paginate" => 40,
         "s3Url" => env('AWS_URL'),
         "no_reply_email_pass" => env('NO_REPLY_EMAIL_PASS'),
         "max_tble_size" => 9_0000000,

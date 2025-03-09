@@ -22,7 +22,7 @@ class CourseControllerTest extends TestCase
     {
         parent::setUp();
         Storage::fake('public');
-        
+
         $this->instructor = User::factory()->create([
             'is_instructor' => 1
         ]);

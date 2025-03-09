@@ -2,16 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UploadData;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Lecture;
 use App\Models\Assignment;
 use App\Models\AssDescription;
+use App\Models\AssignmentSubmition;
+use App\Models\CourseEnrollment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+use App\Models\Enrollment;
+use App\Rules\IsScriptAttack;
 
 class AssignmentController extends Controller
 {
+    protected $upload_data;
+
+    public function __construct()
+    {
+        $this->upload_data = new UploadData;
+    }
     public function assign(Request $request, Course $course)
     {
         try {
@@ -267,5 +279,66 @@ class AssignmentController extends Controller
         } catch (\Throwable $th) {
             return back();
         }
+    }
+
+    public function submit(Request $request, Assignment $assignment)
+    {
+        // Validate the request
+        $request->validate([
+            'submission_file' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'comments' => ['nullable', new IsScriptAttack],
+        ]);
+
+        // Check if the logged-in user is enrolled in the course
+        $enrollment = CourseEnrollment::where('user_id', Auth::id())
+            ->where('course_id', $request->course_id)
+            ->exists();
+
+        if (!$enrollment) {
+            return response()->json(['error' => 'You are not enrolled in this course.'], 403);
+        }
+
+        // Upload the file to Amazon S3
+        $file = $request->file('submission_file');
+        $filePath = $this->upload_data->upload($file, $file->getClientOriginalName());
+
+        // Check if the submission is late
+        $dueDate = $assignment->due_dat ?? now();
+        $isLate = Carbon::now()->greaterThan($dueDate);
+
+        // Update the assignment record
+        AssignmentSubmition::create([
+            'submission_file' => $filePath,
+            'student_id' => Auth()->id(),
+            'is_late' => $isLate,
+            "assignment_id" => $assignment->id
+        ]);
+
+        return response()->json([
+            'message' => 'Assignment submitted successfully.',
+            'file_path' => $filePath,
+            'is_late' => $isLate,
+        ]);
+    }
+    public function scoreUpdate(Request $request, AssignmentSubmition $assignment)
+    {
+        // Validate the request
+        $request->validate([
+            'score' => 'required',
+            'feedback' => ['nullable', new IsScriptAttack],
+        ]);
+
+
+        // Update the assignment record
+        $assignment->update([
+            'score' => $request->score,
+            'feedback' => $request->feedback
+        ]);
+
+        return response()->json([
+            'message' => 'Assignment Score submitted successfully.',
+            'score' => $request->score,
+            'feedback' => $request->feedback
+        ]);
     }
 }
