@@ -132,6 +132,9 @@ jobs:
               echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
 
         - name: Running migrations Tests
+          run: yes | php artisan storage:link-custom
+
+        - name: Running migrations Tests
           run: yes | php artisan migrate --force
 
         - name: Running Cache
