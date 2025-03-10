@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UploadData;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
@@ -14,10 +15,16 @@ use Illuminate\Support\Facades\Storage;
 
 class BloggerPostController extends Controller
 {
+    protected $uploadData;
+
+    public function __construct()
+    {
+        $this->uploadData = new UploadData;
+    }
     public function view()
     {
         try {
-            $setting = Setting::select('isBlog','isFaq')->first();
+            $setting = Setting::select('isBlog', 'isFaq')->first();
             if ($setting->isBlog) {
                 $posts = Post::orderByDesc('created_at')->simplePaginate(10);
                 $title = "posts";
@@ -53,10 +60,9 @@ class BloggerPostController extends Controller
 
             $request->validate([
                 'title' => ['required', 'max:1000', new DuplicateTitle],
-                'message' => 'required',
+                'message' => ['required'],
                 'upload_img' => 'required|image|mimes:jpeg,png,jpg|max:5000',
             ]);
-
         }
         try {
             if ($permission->isBlog) {
@@ -65,7 +71,7 @@ class BloggerPostController extends Controller
                 $img = $request->upload_img;
                 $f_name = $img->getClientOriginalName();
 
-                $path = $this->saveImage($img,$f_name);
+                $path = $this->uploadData->upload($img, $f_name);
                 $data['f_name'] =  $f_name;
                 $data['upload_img'] = $path;
 
@@ -87,10 +93,10 @@ class BloggerPostController extends Controller
                 return back();
             }
         } catch (\Throwable $th) {
-            if(config("app.debug")){
+            if (config("app.debug")) {
                 dd($th->getMessage());
-            }else{
-                return back()->with('error','unable to process the request');
+            } else {
+                return back()->with('error', 'unable to process the request');
             }
         }
     }
@@ -147,29 +153,14 @@ class BloggerPostController extends Controller
                 return back();
             }
         } catch (\Throwable $th) {
-            if(config("app.debug")){
+            if (config("app.debug")) {
                 dd($th->getMessage());
-            }else{
+            } else {
                 return back();
             }
         }
     }
 
-    private function saveImage($img,$f_name)
-    {
-        $manager = new ImageManager();
-
-        $image = $manager->make($img)->resize(300, 200);
-        $path = "img/".time() . uniqid() . str_replace(' ', '-',$f_name);
-
-        $dir_path = "storage/img";
-        if(!Storage::disk("s3")->exists($dir_path)) {
-            Storage::disk("s3")->makeDirectory($dir_path, 0775, true);
-        }
-
-        Storage::disk("s3")->put($path, $image->stream()->__toString());
-        return $path;
-    }
     public function updatePost(Request $request, Post $post)
     {
         try {
@@ -185,7 +176,7 @@ class BloggerPostController extends Controller
                 $img = $request->upload_img;
                 if ($img) {
                     $f_name = $img->getClientOriginalName();
-                    $path = $this->saveImage($img,$f_name);
+                    $path = $this->uploadData->upload($img, $f_name);
                     $data['f_name'] =  $f_name;
                     $data['upload_img'] = $path;
                 }
@@ -206,12 +197,9 @@ class BloggerPostController extends Controller
                 return back();
             }
         } catch (\Throwable $th) {
-            if(config("app.debug"))
-            {
+            if (config("app.debug")) {
                 dd($th->getMessage());
-            }
-            else
-            {
+            } else {
                 return back();
             }
         }

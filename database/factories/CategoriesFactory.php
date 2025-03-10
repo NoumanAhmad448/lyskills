@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Categories;
+use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -14,7 +15,7 @@ class CategoriesFactory extends Factory
      * @var string
      */
     protected $model = Categories::class;
-  
+
     /**
      * Define the model's default state.
      *
@@ -25,9 +26,7 @@ class CategoriesFactory extends Factory
         $name = $this->faker->name();
         return [
             'name' => ucwords($name),
-            'value' => Str::slug($name),
-            'description' => $this->faker->sentence(),
-            'status' => 'active',
+            'value' => (new Slugify)->slugify($name),
             'created_at' => now(),
             'updated_at' => now(),
         ];
@@ -78,4 +77,4 @@ class CategoriesFactory extends Factory
             ];
         });
     }
-} 
+}
