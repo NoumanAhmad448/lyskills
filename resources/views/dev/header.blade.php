@@ -8,7 +8,8 @@
     <meta name="description" content="@if(isset($desc)) {{ $desc }} @else {{__('description.default')}}  @endif">
     <link rel="canonical" href="{{ url()->current() }}">
     <link rel="shortcut icon" href="{{asset('img/favicon.png')}}">
-
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
     @include("lib.custom_lib")
 
     @yield('page-css')
@@ -53,6 +54,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('dev.get.cron_jobs')}}">
                             <i class="fa fa-home" aria-hidden="true"></i> Cron Jobs
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('dev.syncSchedule')}}">
+                            <i class="fa fa-home" aria-hidden="true"></i> Scheduled Cron Jobs
                         </a>
                     </li>
                 </ul>

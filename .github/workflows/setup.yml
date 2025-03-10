@@ -49,9 +49,9 @@ jobs:
 
         - name: Create additional databases
           run: |
-            mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE ${{secrets.DB_DATABASE}};
-            CREATE DATABASE ${{secrets.DB_TESTING_DATABASE}};
-            CREATE DATABASE ${{secrets.DB_Laravel}};
+            mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS ${{secrets.DB_DATABASE}};
+            CREATE DATABASE IF NOT EXISTS ${{secrets.DB_TESTING_DATABASE}};
+            CREATE DATABASE IF NOT EXISTS ${{secrets.DB_Laravel}};
             "
             mysql -h 127.0.0.1 -u root -proot -e "SHOW DATABASES;"
             # CREATE USER 'username'@'%' IDENTIFIED BY 'password';
