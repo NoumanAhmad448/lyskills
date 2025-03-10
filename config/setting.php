@@ -63,7 +63,6 @@ $site_settings = [
         "base_env" => env("BASE_ENV"),
         "env_files" => [
                 '.env',
-                '.env.dev',
                 '.env.live.example',
                 '.env.dev.example',
         ],

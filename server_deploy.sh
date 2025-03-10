@@ -53,6 +53,9 @@ yes | composer require --dev phpunit/phpunit
 # Avoid any node permission error
 sudo chown -R root:root /home/nomilyskills/public_html/
 
+# Create a custom link of public folder with storage folder
+yes | php artisan storage:link-custom
+
 # Run database migrations
 yes | php artisan migrate --force
 
@@ -151,6 +154,9 @@ sudo chmod 444 /home/nomilyskills/public_html/.env
 
 # Run cron
 php artisan schedule:run >> /dev/null 2>&1
+
+# TO save all the logs in the the databse table
+php artisan schedule-monitor:sync
 
 # Disable maintenance mode
 php artisan up

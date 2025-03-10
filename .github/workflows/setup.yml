@@ -47,6 +47,16 @@ jobs:
               tools: pint:1.16.1, phpdoc, composer:2.4.4
               coverage: none
 
+        - name: Create additional databases
+          run: |
+            mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS ${{secrets.DB_DATABASE}};
+            CREATE DATABASE IF NOT EXISTS ${{secrets.DB_TESTING_DATABASE}};
+            CREATE DATABASE IF NOT EXISTS ${{secrets.DB_Laravel}};
+            "
+            mysql -h 127.0.0.1 -u root -proot -e "SHOW DATABASES;"
+            # CREATE USER 'username'@'%' IDENTIFIED BY 'password';
+            # GRANT ALL PRIVILEGES ON database_name.* | *.* TO 'username'@'%';
+
         - name: Set up Environment File
           run: |
             cp .env.testing.example .env
@@ -132,6 +142,9 @@ jobs:
               echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
 
         - name: Running migrations Tests
+          run: yes | php artisan storage:link-custom
+
+        - name: Running migrations Tests
           run: yes | php artisan migrate --force
 
         - name: Running Cache
@@ -146,6 +159,7 @@ jobs:
 
         - name: Run Tests
           run: |
+            # APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest -v
             APP_ENV=testing php artisan test --filter AdminPageControllerTest -v
             APP_ENV=testing php artisan test --filter AdminControllerTest -v
             App_ENV=testing php artisan test --filter AnalyticsControllerTest -v
