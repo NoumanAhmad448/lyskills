@@ -155,5 +155,8 @@ sudo chmod 444 /home/nomilyskills/public_html/.env
 # Run cron
 php artisan schedule:run >> /dev/null 2>&1
 
+# TO save all the logs in the the databse table
+php artisan schedule-monitor:sync
+
 # Disable maintenance mode
 php artisan up

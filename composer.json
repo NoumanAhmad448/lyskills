@@ -32,6 +32,7 @@
         "phpunit/phpunit": "^9.6",
         "spatie/laravel-health": "^1.32",
         "spatie/laravel-ignition": "^1.0",
+        "spatie/laravel-schedule-monitor": "^3.10",
         "spatie/laravel-sluggable": "^3.4"
     },
     "require-dev": {
