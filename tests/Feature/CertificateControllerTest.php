@@ -22,10 +22,10 @@ class CertificateControllerTest extends TestCase
     {
         parent::setUp();
         Storage::fake('public');
-        
+
         $this->student = User::factory()->create();
         $instructor = User::factory()->create(['is_instructor' => 1]);
-        
+
         $this->course = Course::factory()->create([
             'user_id' => $instructor->id
         ]);
@@ -121,4 +121,4 @@ class CertificateControllerTest extends TestCase
             $certificate2->verification_code
         );
     }
-} 
+}

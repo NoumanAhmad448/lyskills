@@ -16,11 +16,10 @@ class SlackKeys extends Check
             && config('health.notifications.slack.channel')
             && config('health.notifications.slack.username')
         ) {
-            $result->notificationMessage("Enabled");
-            return $result->ok();
+            return $result->ok("Enabled");
         } else {
             $result->notificationMessage("Disbled");
-            return $result->failed();
+            return $result->failed("one or more slack keys in env are missing");
         }
     }
 }
