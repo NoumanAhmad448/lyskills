@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CheckUrlAccessibility;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\Log\ClearLogFile;
@@ -28,6 +29,8 @@ class Kernel extends ConsoleKernel
         // $schedule->command('create:dir')->everyMinute();
         $schedule->command(\Spatie\Health\Commands\RunHealthChecksCommand::class)->hourly();
         $schedule->command(ClearLogFile::class)->weekly();
+        $schedule->command(CheckUrlAccessibility::class)->daily();
+        $schedule->command('telescope:prune')->daily();
     }
 
     /**
