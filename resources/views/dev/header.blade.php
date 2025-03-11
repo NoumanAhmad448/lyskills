@@ -61,6 +61,11 @@
                             <i class="fa fa-home" aria-hidden="true"></i> Scheduled Cron Jobs
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dev/telescope">
+                            <i class="fa fa-home" aria-hidden="true"></i> telescope
+                        </a>
+                    </li>
                 </ul>
             </div>
 
