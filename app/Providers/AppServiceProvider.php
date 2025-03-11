@@ -45,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
             resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme(config("setting.http"));
             URL::forceScheme(config("setting.http"));
         }
+        $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+        $this->app->register(TelescopeServiceProvider::class);
     }
 
     /**
