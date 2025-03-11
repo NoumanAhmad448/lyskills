@@ -60,7 +60,7 @@ $site_settings = [
         "set_time_limit" => 60000,
         "upload_max_filesize" => '2000M',
         "memory_limit" => '8096M',
-        "base_env" => env("BASE_ENV"),
+        "base_env" => env("BASE_ENV", '.env'),
         "env_files" => [
                 '.env',
                 '.env.live.example',

@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\CourseEnrollment;
 use App\Models\InstructorEarning;
-use App\Models\Revenue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 

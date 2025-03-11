@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Assignment;
-use App\Models\AssignmentSubmission;
 use App\Models\AssignmentSubmition;
 use App\Models\CourseEnrollment;
 use App\Models\Lecture;

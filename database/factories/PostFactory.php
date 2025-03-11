@@ -11,7 +11,7 @@ class PostFactory extends Factory
 {
     protected $model = Post::class;
 
-   
+
     public function definition()
     {
         $user = User::factory()->create();
@@ -22,7 +22,7 @@ class PostFactory extends Factory
             'slug' => Str::slug($title),
             'message' => implode("\n\n",$this->faker->paragraphs()),
             'email' => $user->email,
-            'status' => 'published',
+            'status' => 'unpublished',
             'upload_img' => 'posts/default.jpg',
             'f_name' => 'default.jpg',
             'created_at' => now(),

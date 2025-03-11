@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Setting;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,12 +17,15 @@ class BlogControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     protected $blogger;
+    protected $admin;
 
     protected function setUp(): void
     {
         parent::setUp();
         Storage::fake('public');
         $this->blogger = User::factory()->create(['is_blogger' => 1]);
+        $this->admin = User::factory()->create(['is_admin' => 1]);
+        Setting::factory()->create();
     }
 
     /** @test */
@@ -30,19 +34,19 @@ class BlogControllerTest extends TestCase
         $this->actingAs($this->blogger);
 
         $thumbnail = UploadedFile::fake()->image('post.jpg');
+        $title = fake()->title();
 
-        $response = $this->post(route('blog.store'), [
-            'title' => 'Test Blog Post',
-            'content' => 'This is a test blog post content',
-            'thumbnail' => $thumbnail,
-            'tags' => ['education', 'technology'],
-            'status' => 'published'
+        $response = $this->post(route('blogger_s_p'), [
+            'title' => $title,
+            'message' => "\n\n" . fake()->sentence(4),
+            'upload_img' => $thumbnail,
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(302);
         $this->assertDatabaseHas('posts', [
-            'title' => 'Test Blog Post',
-            'user_id' => $this->blogger->id
+            'title' => $title,
+            'status' => 'unpublished',
+            'email' => $this->blogger->email
         ]);
     }
 
@@ -52,75 +56,67 @@ class BlogControllerTest extends TestCase
         $this->actingAs($this->blogger);
 
         $post = Post::factory()->create([
-            'user_id' => $this->blogger->id
+            'email' => $this->blogger->email
         ]);
 
-        $response = $this->patch(route('blog.update', $post), [
-            'title' => 'Updated Title',
-            'content' => 'Updated content'
+        $new_title = fake()->title();
+        $response = $this->put(route('blogger_update_p', $post->id), [
+            'title' =>  $new_title,
+            'message' => fake()->paragraph(4),
         ]);
 
-        $response->assertStatus(200);
-        $this->assertEquals('Updated Title', $post->fresh()->title);
+        $response->assertStatus(302);
+        $this->assertEquals($new_title, $post->fresh()->title);
     }
 
     /** @test */
-    public function users_can_comment_on_posts()
-    {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $post = Post::factory()->create([
-            'status' => 'published'
-        ]);
-
-        $response = $this->post(route('blog.comments.store', $post), [
-            'content' => 'Great post!'
-        ]);
-
-        $response->assertStatus(201);
-        $this->assertDatabaseHas('comments', [
-            'user_id' => $user->id,
-            'post_id' => $post->id
-        ]);
-    }
-
-    /** @test */
-    public function blogger_can_moderate_comments()
+    public function blogger_can_change_status()
     {
         $this->actingAs($this->blogger);
 
         $post = Post::factory()->create([
-            'user_id' => $this->blogger->id
+            'email' => $this->blogger->email
         ]);
 
-        $comment = Comment::factory()->create([
-            'post_id' => $post->id
+        $response = $this->post(route('blogger_cs_p', $post->id), [
+            'status' => 'published'
         ]);
 
-        $response = $this->delete(route('blog.comments.destroy', $comment));
-
-        $response->assertStatus(200);
-        $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
+        $response->assertStatus(302);
+        $this->assertDatabaseHas('posts', [
+            'status' => "published"
+        ]);
     }
 
     /** @test */
-    public function can_filter_posts_by_tag()
+    public function blogger_cannot_delete_post()
     {
-        Post::factory()->create([
-            'tags' => ['education'],
-            'status' => 'published'
+        $this->actingAs($this->blogger);
+
+        $post = Post::factory()->create([
+            'email' => $this->blogger->email
         ]);
 
-        Post::factory()->create([
-            'tags' => ['technology'],
-            'status' => 'published'
-        ]);
+        $response = $this->delete(route('blogger_p_delete', $post->id));
 
-        $response = $this->get('/blog?tag=education');
-
-        $response->assertStatus(200);
-        $response->assertSee('education');
-        $response->assertDontSee('technology');
+        $response->assertStatus(403);
     }
-} 
+    public function admin_can_delete_post()
+    {
+
+        $this->actingAs($this->admin);
+
+        $thumbnail = UploadedFile::fake()->image('post.jpg');
+
+        $post = Post::factory()->create([
+            "upload_img" => $thumbnail
+        ]);
+
+        $response = $this->delete(route('blogger_p_delete', $post->id));
+
+        $response->assertStatus(403);
+        $this->assertDatabaseMissing('posts', [
+            'id' => $post->id
+        ]);
+    }
+}

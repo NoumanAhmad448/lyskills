@@ -3,8 +3,9 @@
 namespace App\Helpers;
 
 use App\interfaces\UploadDataInterface;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-
+use Intervention\Image\ImageManager;
 
 class UploadData implements UploadDataInterface{
     private $dir_path = "";
@@ -16,10 +17,13 @@ class UploadData implements UploadDataInterface{
         "videoStoragePath" => "uploads"
     ];
 
+    protected $manager;
 
     public function __construct(){
         $this->dir_path = config("setting.dir_path");
         $this->disk = config('filesystems.default');
+        $this->manager = new ImageManager();
+
 
         if(config("app.debug")){
             debug_logs(config("filesystems.disks.$this->disk"));
@@ -38,7 +42,7 @@ class UploadData implements UploadDataInterface{
         return $this;
     }
 
-    public function upload($object, $file_name, $params=[])
+    public function upload($object, $file_name, $params=["width" => 300, "height" => 200])
     {
 
         // $this->createDirectory();
@@ -52,6 +56,10 @@ class UploadData implements UploadDataInterface{
                 $this->default_setting['imageStoragePath'];
             }
             $path = $this->default_setting['imageStoragePath'].$path_creator;
+            if($object instanceof UploadedFile && in_array(strtolower($object->getClientOriginalExtension()), ['jpg', 'png', 'gif', 'bmp', 'webp'])){
+                $object = $this?->manager?->make($object)->resize($params["width"], $params["height"])
+                            ->stream()->__toString();
+            }
 
         }else if($this->default_setting['isVideo']){
             $path = $this->default_setting['videoStoragePath'];
