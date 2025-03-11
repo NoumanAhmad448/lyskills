@@ -56,7 +56,7 @@ class UploadData implements UploadDataInterface{
                 $this->default_setting['imageStoragePath'];
             }
             $path = $this->default_setting['imageStoragePath'].$path_creator;
-            if($object instanceof UploadedFile && !in_array(strtolower($object->getClientOriginalExtension()), ['jpg', 'png', 'gif', 'bmp', 'webp'])){
+            if($object instanceof UploadedFile && in_array(strtolower($object->getClientOriginalExtension()), ['jpg', 'png', 'gif', 'bmp', 'webp'])){
                 $object = $this?->manager?->make($object)->resize($params["width"], $params["height"])
                             ->stream()->__toString();
             }
