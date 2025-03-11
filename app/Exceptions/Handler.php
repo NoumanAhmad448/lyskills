@@ -2,7 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Notifications\SlackErrorNotification;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Notification;
+use Throwable;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class Handler extends ExceptionHandler
 {
@@ -33,5 +38,32 @@ class Handler extends ExceptionHandler
     public function register()
     {
         //
+    }
+
+    /**
+     * Report or log an exception.
+     *
+     * @param  \Exception  $exception
+     * @return void
+     */
+    public function report(Throwable $exception)
+    {
+        // Send Slack notification only in production
+        if (app()->environment('production') && $this->isHttp500Error($exception)) {
+            Notification::route("slack", config("health.notifications.slack.webhook_url"))->notify(new SlackErrorNotification($exception));
+        }
+
+        parent::report($exception);
+    }
+
+    /**
+     * Check if the exception is a 500 error.
+     *
+     * @param  \Exception  $exception
+     * @return bool
+     */
+    protected function isHttp500Error(Throwable $exception)
+    {
+        return method_exists($exception, 'getStatusCode') && $exception instanceof HttpException && $exception?->getStatusCode() === 500;
     }
 }
