@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Notification;
 if (! function_exists('custom_dump')) {
     function custom_dump($input): void
     {
-        if (config("app.debug")) {
+        if (config("app.debug") && config("lms.force_debug")) {
             dump($input);
         }
     }
