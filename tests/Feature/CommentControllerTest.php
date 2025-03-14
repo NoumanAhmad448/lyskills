@@ -19,12 +19,13 @@ class CommentControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->user = User::factory()->create();
         $instructor = User::factory()->create(['is_instructor' => 1]);
-        
+
         $this->course = Course::factory()->create([
-            'user_id' => $instructor->id
+            'user_id' => $instructor->id,
+            "status" => config("setting.course_status.published")
         ]);
     }
 
@@ -32,17 +33,17 @@ class CommentControllerTest extends TestCase
     public function enrolled_student_can_comment()
     {
         $this->actingAs($this->user);
-
-        $response = $this->post(route('comments.store'), [
-            'course_id' => $this->course->id,
-            'content' => 'Great course!'
+        $message = $this->faker->sentence;
+        $response = $this->post(route('laoshi-commentPost'), [
+            'course_slug' => $this->course->id,
+            'message' =>  $message
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(302);
         $this->assertDatabaseHas('comments', [
             'user_id' => $this->user->id,
             'course_id' => $this->course->id,
-            'content' => 'Great course!'
+            'comment' => $message
         ]);
     }
 
@@ -56,12 +57,13 @@ class CommentControllerTest extends TestCase
             'course_id' => $this->course->id
         ]);
 
-        $response = $this->patch(route('comments.update', $comment), [
-            'content' => 'Updated comment'
+        $response = $this->patch(route('laoshi-commentUpdate'), [
+            "comm_id" => $comment->id,
+            'new_msg' => 'Updated comment'
         ]);
 
-        $response->assertStatus(200);
-        $this->assertEquals('Updated comment', $comment->fresh()->content);
+        $response->assertStatus(302);
+        $this->assertEquals('Updated comment', $comment->fresh()->comment);
     }
 
     /** @test */
@@ -75,8 +77,8 @@ class CommentControllerTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $response = $this->patch(route('comments.update', $comment), [
-            'content' => 'Trying to update'
+        $response = $this->patch(route('laoshi-commentUpdate', $comment), [
+            'new_msg' => 'Trying to update'
         ]);
 
         $response->assertStatus(403);
@@ -92,9 +94,11 @@ class CommentControllerTest extends TestCase
             'course_id' => $this->course->id
         ]);
 
-        $response = $this->delete(route('comments.destroy', $comment));
+        $response = $this->post(route('laoshi-commentDelete'), [
+            'message_id' => $comment->id
+        ]);
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
     }
-} 
+}

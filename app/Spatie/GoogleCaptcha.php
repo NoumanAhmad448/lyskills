@@ -13,11 +13,9 @@ class GoogleCaptcha extends Check
         $result->shortSummary('Google Captcha key/secret enabled/disabled');
 
         if (config('app.google_captcha_key') && config('app.google_captcha_secret')) {
-            $result->notificationMessage("Enabled");
-            return $result->ok();
+            return $result->ok("Fine");
         } else {
-            $result->notificationMessage("Disbled");
-            return $result->failed();
+            return $result->failed("Google captcha key(s) is missing");
         }
     }
 }

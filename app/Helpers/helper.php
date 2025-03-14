@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Notification;
 if (! function_exists('custom_dump')) {
     function custom_dump($input): void
     {
-        if (config("app.debug")) {
+        if (config("app.debug") && config("lms.force_debug")) {
             dump($input);
         }
     }
@@ -251,11 +251,15 @@ if (!function_exists('server_logs')) {
 
 
 if (! function_exists('debug_logs')) {
-    function debug_logs($input): void
+    function debug_logs($input, $trace = false): void
     {
         if (config('app.debug')) {
             custom_dump($input);
             custom_dump(config('setting.dash_lines'));
+
+            if ($trace) {
+                debug_backtrace(2);
+            }
         }
     }
 }

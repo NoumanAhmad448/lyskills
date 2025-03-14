@@ -205,7 +205,7 @@ return [
 
     'aliases' => [
         // 'Recaptcha' => Mostafaznv\Recaptcha\Facades\Recaptcha::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         "Slugify" => Cocur\Slugify\Bridge\Laravel\SlugifyFacade::class,

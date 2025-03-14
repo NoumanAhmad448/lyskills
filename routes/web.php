@@ -22,6 +22,7 @@ use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\BloggerController;
 use App\Http\Controllers\BloggerFaqController;
 use App\Http\Controllers\BloggerPostController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CreateSubAdminController;
 use App\Http\Controllers\InstructorPayment;
 use App\Http\Controllers\InstructorPaymentController;
@@ -76,9 +77,6 @@ $request->user()->sendEmailVerificationNotification();
 return back()->with('status', 'verification email has been sent. please check your email address');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard',
-[DashboardController::class, 'index']
-)->name('dashboard');
 
 Route::middleware(['auth','verified'])->group(function () {
 
@@ -90,13 +88,6 @@ Route::post('/courses/create/{id}/{course_id}', [CourseController::class, 'store
 Route::post('/create_course', [CourseController::class, 'createCourse'])
 ->name('create_course');
 
-
-Route::get('/course/{course_id}/manage/goals', [DashboardController::class, 'show'])
-->name('courses_dashboard');
-
-Route::post('/course/{course_id}/manage/goals', [DashboardController::class, 'save_record'])
-->name('courses_dashboard_post');
-
 Route::get('instructor/course/{course_id}/manage/course-structure', [DashboardController::class, 'course_structure'])
 ->name('course_structure');
 
@@ -105,9 +96,6 @@ Route::get('instructor/course/{course_id}/manage/setup', [DashboardController::c
 
 Route::get('instructor/course/{course_id}/manage/film', [DashboardController::class, 'course_film'])
 ->name('courses_film_edit');
-
-Route::get('instructor/course/{course_id}/manage/curriculum', [DashboardController::class, 'course_curriculum'])
-->name('courses_curriculum');
 
 Route::post('/save-access-duration', [MediaController::class, 'saveAccessDuration'])
 ->name('saveAccessDuration');
@@ -226,47 +214,12 @@ Route::put('instructor/quiz/{quizzes}/update_quiz', [QuizController::class, 'upd
 Route::delete('instructor/quiz/{quizzes}/delete-quizzes', [QuizController::class, 'deleteQuizzes'])
 ->name('del_quizzes');
 
-Route::get('instructor/course/{course}/course-landing', [LandingPageController::class, 'landing_page'])
-->name('landing_page');
-
-
-Route::post('instructor/course/{course}/course-landing', [LandingPageController::class, 'store_landing_page'])
-->name('landing_page_post');
-
 
 Route::post('instructor/course/{course}/course-image', [LandingPageController::class, 'course_img'])
 ->name('course_img');
 
 Route::post('instructor/course/{course}/course-video', [LandingPageController::class, 'course_vid'])
 ->name('course_vid');
-
-
-Route::get('instructor/course/{course}/pricing', [PricingController::class, 'pricing'])
-->name('pricing');
-
-Route::post('instructor/course/{course}/pricing', [PricingController::class, 'savePricing'])
-->name('pricingPost');
-
-Route::get('instructor/course/{course}/promotion', [PromotionController::class, 'promotion'])
-->name('promotion');
-
-Route::post('instructor/course/{course}/coupon', [PromotionController::class, 'saveCoupon'])
-->name('saveCoupon');
-
-Route::post('instructor/coupon/{promotion}/update_coupon', [PromotionController::class, 'updateCoupon'])
-->name('updateCoupon');
-
-Route::delete('instructor/coupon/{promotion}/delete_coupon', [PromotionController::class, 'deleteCoupon'])
-->name('delete_coupon');
-
-Route::get('instructor/course/{course}/final_message', [SayonaraController::class, 'sayonara'])
-->name('zaijian');
-
-Route::post('instructor/course/{course}/final_message', [SayonaraController::class, 'storeSayonara'])
-->name('zaijianPost');
-
-Route::post('instructor/course/{course}/submit-course', [SayonaraController::class, 'submitCourse'])
-->name('submitCourse');
 
 Route::post('instructor/course/{course}/upload-bulk-loader', [VideoController::class, 'uploadBulkLoader'])
 ->name('bulk_loader');
@@ -353,8 +306,6 @@ Route::post('admin/setting/linkedin-account-settings', [SocialController::class,
 Route::get('admin/setting/blogger-setting', [SetttingController::class, 'blog'])->name('blogger-setting');
 Route::post('admin/setting/blogger-setting', [SetttingController::class, 'blogPost'])->name('blogger-setting-post');
 
-Route::get('admin/courses/new-courses', [CourseController::class, 'newCourse'])->name('i_new_courses');
-
 Route::get('admin/courses/change-price/{course}', [CourseController::class, 'changePrice'])->name('admin_change_price');
 Route::patch('admin/courses/change-price/{course}', [CourseController::class, 'changePricePost'])->name('admin_change_price_post');
 
@@ -416,16 +367,11 @@ Route::get('blogger-logout', [BloggerFaqController::class, 'logout'])->name('b_l
 });
 
 Route::get('categories/{category}', [CategoriesController::class, 'showCategory'])->name('user-categories');
-Route::get('course/{slug}', [CourseEx3Controller::class, 'showCourse'])->name('user-course');
 Route::get('show-all-courses', [CourseEx3Controller::class, 'showAllCourses'])->name('show-all-courses');
 Route::post('update-lecture-status/{media_id}', [VideoController::class, 'set_video_free'])->name('update-lecture-status');
 
 Route::middleware(['verified','auth'])->group(function () {
 
-Route::get('Instructor/instructor-profile', [ProfileController::class, 'getProfile'])->name('i-profile');
-Route::post('instructor-profile', [ProfileController::class, 'saveProfile'])->name('i-profile-post');
-
-Route::get('instructor/instructor-payment', [InstructorPaymentController::class, 'paymentGateways'])->name('i-payment-setting');
 Route::post('instructor/bank-detail', [InstructorPaymentController::class, 'storeBankPayment'])->name('i_bank_payment');
 Route::post('instructor/paypal-detail', [InstructorPaymentController::class, 'storePaypalPayment'])->name('i_paypal_payment_withdraw');
 Route::post('instructor/payoneer-detail', [InstructorPaymentController::class, 'storePayoneerPayment'])->name('i_payoneer_payment_withdraw');
@@ -458,7 +404,6 @@ Route::get('course/{slug}/payment-with-credit-card', [PaymentController::class, 
 Route::post('course/{slug}/payment-with-credit-card', [PaymentController::class, 'creditPaymentPost'])->name('credit_card_pay_post');
 
 Route::get('student/payment-history', [PaymentController::class, 'paymentHis'])->name('pay_his');
-Route::get('instructor/purchase-history', [PaymentController::class, 'purHis'])->name('purHis');
 
 Route::get('student/my-learning', [CourseEx2Controller::class, 'myLearning'])->name('myLearning');
 Route::post('student/offline-payment', [CourseEx2Controller::class, 'offlinePayment'])->name('offline-payment');

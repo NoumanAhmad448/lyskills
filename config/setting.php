@@ -1,6 +1,12 @@
 <?php
 
 $site_settings = [
+        "course_status" => [
+                "draft" => "draft",
+                "published" => "published",
+                "unpublished" => "unpublished",
+                "deleted" => "deleted",
+        ],
         "http" => "http",
         'roles' => [
                 'admin' => 'admin',

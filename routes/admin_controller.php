@@ -31,8 +31,6 @@ Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(functio
     Route::get('/all-assignments-searching', [AdminController::class, 'getAss']);
 
     Route::get('/get-courses', [AdminController::class, 'viewCourse'])->name('a_courses');
-    Route::get('/get-draft-courses', [AdminController::class, 'draftCourse'])->name('draft_course');
-    Route::get('/get-published-courses', [AdminController::class, 'publishedCourse'])->name('p_courses');
     Route::post('/all-courses-sorting', [AdminController::class, 'courseSorting'])->name('a_c_sorting');
     Route::get('/all-courses-sorting', [AdminController::class, 'viewCourse']);
 

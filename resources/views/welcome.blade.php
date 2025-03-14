@@ -112,6 +112,7 @@ use App\Models\RatingModal;
     </div>
     @endif
 @endif
+
 @if(config("setting.all_categories"))
     @if(isset($cs) && $cs->count())
     <div class="container-fluid my-4">

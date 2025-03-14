@@ -23,12 +23,8 @@ use Spatie\Health\Checks\Checks\OptimizedAppCheck;
 use Spatie\Health\Checks\Checks\PingCheck;
 use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
 use Spatie\Health\Facades\Health;
-use Spatie\SecurityAdvisoriesHealthCheck\SecurityAdvisoriesCheck;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\CronJobs;
-use Database\Factories\CronJobsFactory;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -95,7 +91,9 @@ class AppServiceProvider extends ServiceProvider
                 SlackKeys::new(),
             ];
 
-            if (in_array(config('app.env'), ['production', 'prod'])) {
+            $checks = [];
+
+            if (in_array(config('app.env'), [config("app.live_env"), 'prod'])) {
                 $checks[] = Js_Debug::new();
                 // $checks[] = CpuLoadCheck::new()->failWhenLoadIsHigherInTheLast15Minutes(2.0);
                 $checks[] = EnvironmentCheck::new();

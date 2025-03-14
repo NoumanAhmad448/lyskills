@@ -12,12 +12,10 @@ class Js_Debug extends Check
         $result = Result::make();
         $result->shortSummary('JS Debugging enabled/disabled');
 
-        if (config('app.js_debug')) {
-            $result->notificationMessage("Enabled");
-            return $result->failed();
+        if (config('app.js_debugs')) {
+            return $result->failed("JS debugging is expected to be false");
         } else {
-            $result->notificationMessage("Disbled");
-            return $result->ok();
+            return $result->ok("ok");
         }
     }
 }
