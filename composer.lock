@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a40631abd39dd0141b8915045f9aef5a",
+    "content-hash": "2c6c596e091b523a4c04f6110a53e29e",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -1381,16 +1381,16 @@
         },
         {
             "name": "eren/lms",
-            "version": "1.5",
+            "version": "1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NoumanAhmad448/lms.git",
-                "reference": "857efc3c0283ee8d72b56834254405ce604f0457"
+                "reference": "f32913575a89e3c12e0848730df3f4d96a97c2aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/857efc3c0283ee8d72b56834254405ce604f0457",
-                "reference": "857efc3c0283ee8d72b56834254405ce604f0457",
+                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/f32913575a89e3c12e0848730df3f4d96a97c2aa",
+                "reference": "f32913575a89e3c12e0848730df3f4d96a97c2aa",
                 "shasum": ""
             },
             "require": {
@@ -1451,9 +1451,9 @@
             "description": "It provides the user to create, maintain and upload the video based coures  on their website",
             "support": {
                 "issues": "https://github.com/NoumanAhmad448/lms/issues",
-                "source": "https://github.com/NoumanAhmad448/lms/tree/v1.5"
+                "source": "https://github.com/NoumanAhmad448/lms/tree/v1.0"
             },
-            "time": "2025-03-15T18:36:49+00:00"
+            "time": "2025-03-15T19:00:18+00:00"
         },
         {
             "name": "firebase/php-jwt",
