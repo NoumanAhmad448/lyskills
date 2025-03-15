@@ -225,7 +225,6 @@ Route::get('blogger-logout', [BloggerFaqController::class, 'logout'])->name('b_l
 
 });
 
-Route::get('show-all-courses', [CourseEx3Controller::class, 'showAllCourses'])->name('show-all-courses');
 Route::post('update-lecture-status/{media_id}', [VideoController::class, 'set_video_free'])->name('update-lecture-status');
 
 Route::middleware(['verified','auth'])->group(function () {
@@ -237,7 +236,7 @@ Route::post('instructor/jazzcash-detail', [InstructorPaymentController::class, '
 Route::post('instructor/easypaisa-detail', [InstructorPaymentController::class, 'storeEasypaisaPayment'])->name('i_easypaisa_payment_withdraw');
 
 Route::delete('student/course/remove-from-wish-list/{slug}', [StudentController::class, 'removeFromWishlist'])->name('remove-wishlist-course');
-Route::get('student/my-learning', [StudentController::class, 'myLearning'])->name('my-learning-courses-list');
+Route::get('student/my-learnings', [StudentController::class, 'myLearning'])->name('my-learning-courses-list');
 Route::get('student/my-cart', [StudentController::class, 'myCart'])->name('mycart-student');
 Route::get('student/notification', [StudentController::class, 'getNotify'])->name('get-notify-by-instructor');
 Route::get('student/send-message', [StudentController::class, 'sendMsg'])->name('fa-msg-to-laoshi');
@@ -249,9 +248,7 @@ Route::post('student/contact-with-instructor', [CourseEx3Controller::class, 'con
 
 Route::get('student/contacts-instructor', [CourseEx2Controller::class, 'chatIns'])->name('chat_w_i');
 
-
 });
-
 
 Route::middleware(['verified','auth'])->group(function () {
 Route::post('student/course/coupon', [CourseEx2Controller::class, 'coupon'])->name('coupon');

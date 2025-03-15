@@ -188,6 +188,7 @@ return [
         Cocur\Slugify\Bridge\Laravel\SlugifyServiceProvider::class,
         // Laravel\Socialite\Facades\Socialite::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+        Eren\Lms\Providers\Lmsserviceprovider::class,
         // Mostafaznv\Recaptcha\RecaptchaServiceProvider::class,
 
     ],
