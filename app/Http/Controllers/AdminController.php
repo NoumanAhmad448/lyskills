@@ -546,7 +546,8 @@ class AdminController extends Controller
             $price_in_do = $course_d?->price?->pricing;
 
             $lyskills = new LyskillsPayment($user, $course, 'offline payment');
-            $response = $lyskills->courseEnrollment($price_in_do, $course_d?->user?->id);
+            $response = $lyskills->courseEnrollment($price_in_do, $course_d?->user_id);
+            debug_logs($response);
             if ($response['status'] === false) {
                 return back()->with('error', 'there is a problem in the course enrollment');
             }
@@ -605,9 +606,9 @@ class AdminController extends Controller
         try {
             $title = 'homepage';
             $desc = 'Manage home page settings';
-            
+
             $settings = Setting::first();
-            
+
             return view('admin.homepage.index', compact('title', 'desc', 'settings'));
         } catch (Exception $e) {
             if(config("app.debug")){

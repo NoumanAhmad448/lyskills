@@ -15,8 +15,8 @@ Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(functio
     Route::get('send-email', [AdminController::class, 'sendEmail'])->name('a-send-email');
     Route::post('send-email', [AdminController::class, 'sendEmailPost'])->name('a-p-send-email');
 
-    Route::get('admin/new-offline-enrollment', [AdminController::class, 'nEn'])->name('n_en');
-    Route::post('admin/new-offline-enrollment/user/{user}/course/{course}', [AdminController::class, 'nEnP'])->name('n_en_p');
+    Route::get('new-offline-enrollment', [AdminController::class, 'nEn'])->name('n_en');
+    Route::post('new-offline-enrollment/user/{user}/course/{course}', [AdminController::class, 'nEnP'])->name('n_en_p');
 
     Route::get('/course-history-delete', [AdminController::class, 'courseHistory'])->name('course_del');
 

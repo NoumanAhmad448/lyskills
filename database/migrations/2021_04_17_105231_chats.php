@@ -17,7 +17,7 @@ class Chats extends Migration
             $table->increments('id');
             $table->string('f_user_id');
             $table->string('r_user_id');
-            $table->text('message');            
+            $table->text('message');
             $table->timestamps();
         });
     }

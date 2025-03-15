@@ -2,15 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Rating;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\RatingModal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RatingFactory extends Factory
 {
-    protected $model = Rating::class;
-    
+    protected $model = RatingModal::class;
+
 
     public function definition()
     {
@@ -41,4 +41,4 @@ class RatingFactory extends Factory
             ];
         });
     }
-} 
+}

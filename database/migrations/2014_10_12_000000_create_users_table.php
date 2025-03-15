@@ -23,9 +23,9 @@ class CreateUsersTable extends Migration
             $table->boolean('is_student')->default(true);
             $table->text('remember_token')->nullable();
             $table->boolean('is_instructor')->nullable();
-            $table->boolean('is_admin')->nullable();           
-            $table->boolean('is_blogger')->nullable();                       
-            $table->boolean('is_super_admin')->nullable();                       
+            $table->boolean('is_admin')->nullable();
+            $table->boolean('is_blogger')->nullable();
+            $table->boolean('is_super_admin')->nullable();
             $table->text('profile_photo_path')->nullable();
             $table->timestamps();
         });
