@@ -92,12 +92,6 @@
                     </li>
                     <hr/>
                     <li class="nav-item">
-                        <a class="nav-link text-dark " href="{{route('admin_view_categories')}}" id="a_c">
-                            <i class="fa fa-filter" aria-hidden="true"></i>
-                             Categories
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link text-dark " href="{{route('admin_show_medias')}}" id="a_media">
                             <i class="fa fa-video-camera" aria-hidden="true"></i>
                             Media Manager

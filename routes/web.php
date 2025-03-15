@@ -85,9 +85,6 @@ Route::get('/courses/create/{id}/{course_id}', [CourseController::class, 'index'
 Route::post('/courses/create/{id}/{course_id}', [CourseController::class, 'storeCourseDetail'])
 ->name('courses_instructions');
 
-Route::post('/create_course', [CourseController::class, 'createCourse'])
-->name('create_course');
-
 Route::get('instructor/course/{course_id}/manage/course-structure', [DashboardController::class, 'course_structure'])
 ->name('course_structure');
 
@@ -99,142 +96,6 @@ Route::get('instructor/course/{course_id}/manage/film', [DashboardController::cl
 
 Route::post('/save-access-duration', [MediaController::class, 'saveAccessDuration'])
 ->name('saveAccessDuration');
-
-Route::post('instructor/course/{course_id}/manage/section_title', [DashboardController::class, 'course_curriculum_post'])
-->name('courses_curriculum_post');
-
-Route::post('instructor/course/{course_id}/manage/lec_name', [DashboardController::class, 'lec_name_post'])
-->name('lec_name_post');
-
-
-Route::post('instructor/course/{course_id}/manage/lec_name_edit', [DashboardController::class, 'lec_name_edit_post'])
-->name('lec_name_edit_post');
-
-Route::post('instructor/course/{course_id}/manage/lec_name_edit', [DashboardController::class, 'lec_name_edit_post'])
-->name('lec_name_edit_post');
-
-Route::delete('instructor/course/{course_id}/manage/course_delete', [DashboardController::class, 'course_delete'])
-->name('course_delete');
-
-Route::delete('instructor/course/{course_id}/{lecture_id}/manage/lecture_delete', [DashboardController::class, 'lecture_delete'])
-->name('lecture_delete');
-
-
-Route::post('instructor/course/{course_id}/{section_id}/manage/section_delete', [DashboardController::class, 'section_delete'])
-->name('section_delete');
-
-
-Route::post('instructor/course/{course_id}/{lecture_id}/upload_video', [VideoController::class, 'upload_video'])
-->name('upload_video');
-
-Route::delete('instructor/course/{course_id}/{media_id}/delete_video', [VideoController::class, 'delete_video'])
-->name('delete_video');
-
-Route::post('instructor/course/{course_id}/{media_id}/edit_video', [VideoController::class, 'edit_video'])
-->name('edit_video1');
-
-Route::post('i/video/course/{course_id}/{media_id}/e_vid', [VideoController::class, 'edit_video'])
-->name('edit_video');
-
-
-Route::post('instructor/course/{course_id}/{lec_id}/add_descrption', [DescriptionController::class, 'add_desc'])
-->name('add_desc');
-
-Route::post('instructor/lec/{lec_id}/uploadVideo', [DashboardController::class, 'upload_vid_res'])
-->name('upload_vid_res');
-
-
-Route::delete('instructor/lec/{lec_id}/delete_video', [VideoController::class, 'delete_uploaded_video'])
-->name('delete_uploaded_video');
-
-Route::post('instructor/lec/{lec_id}/article', [ArticleController::class, 'article'])
-->name('article');
-
-
-Route::post('instructor/lec/{lec_id}/external_resource', [ExResController::class, 'link'])
-->name('ex_res');
-
-Route::post('instructor/lec/{lec_id}/other_files', [OtherFilesController::class, 'index'])
-->name('other_files');
-
-Route::delete('instructor/lec/{lec_id}/delete_file', [OtherFilesController::class, 'delete'])
-->name('delete_file');
-
-Route::post('instructor/file/{file_id}', [OtherFilesController::class, 'prev_file'])
-->name('prev_file');
-
-Route::post('instructor/{assign}/update', [AssignmentController::class, 'update'])
-->name('update_assign');
-
-Route::delete('instructor/{assign}/delete', [AssignmentController::class, 'delete'])
-->name('delete_assign');
-
-Route::post('instructor/assignment/{assign}/add-description', [AssignmentController::class, 'addDesc'])
-->name('add_assign_desc');
-
-Route::post('instructor/{assign}/add-ass', [AssignmentController::class, 'addAss'])
-->name('add_ass');
-
-Route::post('instructor/{assign}/add-solution', [AssignmentController::class, 'addSol'])
-->name('add_sol');
-
-Route::delete('instructor/{assign}/delete_file', [AssignmentController::class, 'deleteFile'])
-->name('delete_ass_file');
-
-Route::post('instructor/{file_id}/file_download', [AssignmentController::class, 'download'])
-->name('prev_ass_file');
-
-Route::delete('instructor/assignment/{assign}/solution/delete_file', [AssignmentController::class, 'solFileDel'])
-->name('delete_sol_file');
-
-Route::post('instructor/assignment/{file_id}/solution/file_download', [AssignmentController::class, 'solDown'])
-->name('prev_sola_file');
-
-Route::post('instructor/{course}/quiz', [QuizController::class, 'quiz'])
-->name('quiz');
-Route::post('instructor/quiz/{quiz}/update', [QuizController::class, 'update'])
-->name('update_quiz');
-
-Route::delete('instructor/quiz/{quiz}/delete', [QuizController::class, 'delete'])
-->name('delete_quiz');
-
-Route::post('instructor/quiz/{quiz}/add-description', [QuizController::class, 'addDesc'])
-->name('add_quiz_desc');
-
-Route::post('instructor/quiz/{quiz}/add-quiz', [QuizController::class, 'addQuiz'])
-->name('add_quizzs');
-
-Route::post('instructor/quiz/{quizzes}/edit-quizzes', [QuizController::class, 'editQuizzes'])
-->name('edit_quizzes');
-
-
-Route::put('instructor/quiz/{quizzes}/update_quiz', [QuizController::class, 'updateQuiz'])
-->name('update_quizzes');
-
-Route::delete('instructor/quiz/{quizzes}/delete-quizzes', [QuizController::class, 'deleteQuizzes'])
-->name('del_quizzes');
-
-
-Route::post('instructor/course/{course}/course-image', [LandingPageController::class, 'course_img'])
-->name('course_img');
-
-Route::post('instructor/course/{course}/course-video', [LandingPageController::class, 'course_vid'])
-->name('course_vid');
-
-Route::post('instructor/course/{course}/upload-bulk-loader', [VideoController::class, 'uploadBulkLoader'])
-->name('bulk_loader');
-
-Route::get('instructor/course/{course}/setting-course-status', [CourseEx3Controller::class, 'setting'])
-->name('setting');
-
-Route::post('instructor/course/{course}/setting-course-status', [CourseEx3Controller::class, 'PostSetting'])
-->name('post_setting');
-
-Route::post('instructor/course/{course}/setting-delete-course', [CourseEx3Controller::class, 'delCourseSetting'])
-->name('del-course_setting');
-
-Route::post('instructor/course/{course}/change-the-course-url', [CourseEx3Controller::class, 'changeURL'])
-->name('course-change-url');
 
 });
 
@@ -266,8 +127,6 @@ Route::get('admin/faq/{faq}/edit-faq', [AdminFaqController::class, 'editFaq'])->
 Route::put('admin/faq/{faq}/update-faq', [AdminFaqController::class, 'updateFaq'])->name('admin_update_faq');
 
 Route::get('admin/show-all-medias', [MediaController::class, 'show'])->name('admin_show_medias');
-
-Route::post('admin/change-course-status', [CourseController::class, 'changeStatus'])->name('change_course_status');
 
 Route::get('admin/show-popular-courses', [CourseController::class, 'showPC'])->name('s_p_c');
 
@@ -366,7 +225,6 @@ Route::get('blogger-logout', [BloggerFaqController::class, 'logout'])->name('b_l
 
 });
 
-Route::get('categories/{category}', [CategoriesController::class, 'showCategory'])->name('user-categories');
 Route::get('show-all-courses', [CourseEx3Controller::class, 'showAllCourses'])->name('show-all-courses');
 Route::post('update-lecture-status/{media_id}', [VideoController::class, 'set_video_free'])->name('update-lecture-status');
 
@@ -378,8 +236,6 @@ Route::post('instructor/payoneer-detail', [InstructorPaymentController::class, '
 Route::post('instructor/jazzcash-detail', [InstructorPaymentController::class, 'storeJazzcashPayment'])->name('i_jazzcash_payment_withdraw');
 Route::post('instructor/easypaisa-detail', [InstructorPaymentController::class, 'storeEasypaisaPayment'])->name('i_easypaisa_payment_withdraw');
 
-Route::post('student/wish-list-courses/{slug}', [StudentController::class, 'wishlistCourse'])->name('wishlist-course-post');
-Route::get('student/wish-list-courses', [StudentController::class, 'getWishlistCourse'])->name('get-wishlist-course');
 Route::delete('student/course/remove-from-wish-list/{slug}', [StudentController::class, 'removeFromWishlist'])->name('remove-wishlist-course');
 Route::get('student/my-learning', [StudentController::class, 'myLearning'])->name('my-learning-courses-list');
 Route::get('student/my-cart', [StudentController::class, 'myCart'])->name('mycart-student');
@@ -387,29 +243,12 @@ Route::get('student/notification', [StudentController::class, 'getNotify'])->nam
 Route::get('student/send-message', [StudentController::class, 'sendMsg'])->name('fa-msg-to-laoshi');
 Route::get('student/saved-payment-detail', [StudentController::class, 'savedPaymentDetail'])->name('saveQian');
 Route::get('student/purchase-history', [StudentController::class, 'maiHistory'])->name('maiHistory');
-Route::get('course/{slug}/video/uploads/{video}', [CourseEx3Controller::class, 'showVideo'])->name('video-page');
-
-Route::get('courses/public-announcement', [CourseEx3Controller::class, 'publicAnn'])->name('public-ann');
-Route::post('courses/public-announcement', [CourseEx3Controller::class, 'publicAnnPost'])->name('public-ann-post');
 
 Route::get('student/contact-with-instructor', [CourseEx3Controller::class, 'contactIns'])->name('con-ins');
 Route::post('student/contact-with-instructor', [CourseEx3Controller::class, 'contactInsPost'])->name('con-ins-post');
 
 Route::get('student/contacts-instructor', [CourseEx2Controller::class, 'chatIns'])->name('chat_w_i');
-Route::get('student/email-to-instructor', [CourseEx2Controller::class, 'emailToIns'])->name('email_to_ins');
-Route::post('student/email-to-instructor', [CourseEx2Controller::class, 'emailToInsPost'])->name('email_to_ins_post');
 
-Route::get('course/{slug}/available-payment-methods', [PaymentController::class, 'availablePayMe'])->name('a_payment_methods');
-Route::get('course/{slug}/payment-with-credit-card', [PaymentController::class, 'creditPayment'])->name('credit_card_payment');
-Route::post('course/{slug}/payment-with-credit-card', [PaymentController::class, 'creditPaymentPost'])->name('credit_card_pay_post');
-
-Route::get('student/payment-history', [PaymentController::class, 'paymentHis'])->name('pay_his');
-
-Route::get('student/my-learning', [CourseEx2Controller::class, 'myLearning'])->name('myLearning');
-Route::post('student/offline-payment', [CourseEx2Controller::class, 'offlinePayment'])->name('offline-payment');
-Route::get('student/get-certificate', [CourseEx2Controller::class, 'getCerti'])->name('getCerti');
-// Route::get('student/get-certificate', [CourseEx2Controller::class, 'getCerti'])->name('getCerti');
-Route::post('crop-image-upload', [ProfileController::class,'uploadCropImage'])->name('upload_profile');
 
 });
 

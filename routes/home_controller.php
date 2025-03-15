@@ -21,7 +21,5 @@ Route::post('ckeditor/upload', [HomeController::class, 'upload'])->name('ckedito
 // return view('testing');
 // });
 Route::post('get-search', [HomeController::class, 'getSearch'])->name('get-search');
-Route::post('course-search', [HomeController::class, 'userSearch'])->name('c-search-page');
-Route::get('show-search-course/{keyword}', [HomeController::class, 'showSearchCourse'])->name('s-search-page');
 
 Route::get('get-many-roles', [HomeController::class, 'getManyRoles']);

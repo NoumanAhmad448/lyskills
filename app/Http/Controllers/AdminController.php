@@ -543,10 +543,10 @@ class AdminController extends Controller
         try {
             $user_d = User::findOrFail($user);
             $course_d = Course::findOrFail($course);
-            $price_in_do = $course_d->price->pricing;
+            $price_in_do = $course_d?->price?->pricing;
 
             $lyskills = new LyskillsPayment($user, $course, 'offline payment');
-            $response = $lyskills->courseEnrollment($price_in_do, $course_d->user->id);
+            $response = $lyskills->courseEnrollment($price_in_do, $course_d?->user?->id);
             if ($response['status'] === false) {
                 return back()->with('error', 'there is a problem in the course enrollment');
             }
