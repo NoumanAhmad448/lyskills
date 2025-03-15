@@ -10,6 +10,7 @@ use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class CourseSeeder extends Seeder
 {
+    protected $faker;
     public function __construct() {
         // You can instantiate the Faker factory here if needed
         $this->faker = Faker::create();  // Manually instantiate the Faker object

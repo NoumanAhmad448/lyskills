@@ -10,7 +10,8 @@ use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class PaymentSeeder extends Seeder
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->faker = Faker::create();  // Manually instantiate the Faker object
 
     }
@@ -18,7 +19,7 @@ class PaymentSeeder extends Seeder
     {
         // Get all students
         $students = User::where('is_student', true)->get();
-        
+
         // Get all courses
         $courses = Course::all();
 
@@ -44,4 +45,4 @@ class PaymentSeeder extends Seeder
             ->failed()
             ->create();
     }
-} 
+}

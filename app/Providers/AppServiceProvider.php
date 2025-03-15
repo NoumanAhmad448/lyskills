@@ -91,8 +91,6 @@ class AppServiceProvider extends ServiceProvider
                 SlackKeys::new(),
             ];
 
-            $checks = [];
-
             if (in_array(config('app.env'), [config("app.live_env"), 'prod'])) {
                 $checks[] = Js_Debug::new();
                 // $checks[] = CpuLoadCheck::new()->failWhenLoadIsHigherInTheLast15Minutes(2.0);

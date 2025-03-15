@@ -65,7 +65,8 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
             <div id="loading" class="spinner-border text-info text-center" style="width: 90px; height: 90px" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-        </section>' !!}
+        </section>'
+    !!}
         @php Cache::store('file')->put('isLoaderLoaded', true, 3600); @endphp
     @endif
     @if(isset($ann) && $ann->count())

@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class PaymentFactory extends Factory
 {
     protected $model = Payment::class;
-    
+
     public function definition()
     {
         $amount = $this->faker->randomFloat(2, 10, 200);
-        
+
         return [
             'user_id' => User::factory(),
             'course_id' => Course::factory(),
@@ -46,4 +46,4 @@ class PaymentFactory extends Factory
             ];
         });
     }
-} 
+}

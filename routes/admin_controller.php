@@ -9,17 +9,15 @@ Route::post('/admin/post', [AdminController::class, 'login'])->name('admin_a');
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
     Route::post('/admin/homepage/update', [AdminController::class, 'homepageUpdate'])->name('admin.homepage.update');
-    Route::get('/index/index', [AdminController::class, 'index'])->middleware('admin')->name('a_home');
 });
 
 Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
     Route::get('send-email', [AdminController::class, 'sendEmail'])->name('a-send-email');
     Route::post('send-email', [AdminController::class, 'sendEmailPost'])->name('a-p-send-email');
 
-    Route::get('admin/new-offline-enrollment', [AdminController::class, 'nEn'])->name('n_en');
-    Route::post('admin/new-offline-enrollment/user/{user}/course/{course}', [AdminController::class, 'nEnP'])->name('n_en_p');
+    Route::get('new-offline-enrollment', [AdminController::class, 'nEn'])->name('n_en');
+    Route::post('new-offline-enrollment/user/{user}/course/{course}', [AdminController::class, 'nEnP'])->name('n_en_p');
 
-    Route::get('/logout', [AdminController::class, 'logout'])->name('a_logout');
     Route::get('/course-history-delete', [AdminController::class, 'courseHistory'])->name('course_del');
 
     Route::get('/all-assignments', [AdminController::class, 'getAss'])->name('a-asses');

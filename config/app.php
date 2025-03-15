@@ -189,7 +189,6 @@ return [
         // Laravel\Socialite\Facades\Socialite::class,
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         // Mostafaznv\Recaptcha\RecaptchaServiceProvider::class,
-
     ],
 
     /*
