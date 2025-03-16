@@ -9,10 +9,10 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <title id="seo_title"> @if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif </title>
+    <title id="seo_title"> @if(isset($title)){{ $title }} @else {{ __('lms::messages.site_title') }} @endif </title>
     <meta id="seo_desc" name="description"
         content="@if(isset($desc) && $desc !== '' ) {{ $desc }} @else {{__('description.default')}}  @endif">
-    <meta property="og:title" content="@if(isset($title)){{ $title }} @else {{ config('app.name') }} @endif">
+    <meta property="og:title" content="@if(isset($title)){{ $title }} @else {{ __('lms::messages.site_title') }} @endif">
     <meta id="seo_fb" property="og:description"
         content="@if(isset($desc) && $desc !== '') {{ $desc }} @else {{__('description.default')}}  @endif">
     <link rel="canonical" href="{{ url()->current() }}">

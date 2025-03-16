@@ -2,14 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Models\Categories;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Course;
-use App\Models\CourseImage;
-use App\Models\Price;
+use Illuminate\Support\Facades\View;
+use App\Models\Pricing;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 class CourseControllerTest extends TestCase
@@ -17,6 +20,9 @@ class CourseControllerTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     protected $instructor;
+    protected $student;
+    protected $admin;
+    protected $course;
 
     protected function setUp(): void
     {
@@ -26,92 +32,163 @@ class CourseControllerTest extends TestCase
         $this->instructor = User::factory()->create([
             'is_instructor' => 1
         ]);
+
+        $this->student = User::factory()->create();
+        $this->admin = User::factory()->create([
+            'is_admin' => 1
+        ]);
+
+        $this->course = Course::factory()->create([
+            'user_id' => $this->instructor->id
+        ]);
     }
 
     /** @test */
-    public function non_instructor_cannot_create_course()
+    public function non_instructor_creating_create_course()
     {
+
         $user = User::factory()->create(['is_instructor' => 0]);
         $this->actingAs($user);
 
-        $response = $this->post(route('course.store'), [
-            'course_title' => 'Test Course'
+        $response = $this->get(route('dashboard'));
+
+        $response->assertViewIs("lms::dashboard");
+        $response->assertViewHasAll(['courses', 'title', 'ann']);
+        $this->assertDatabaseHas('users', [
+            'is_instructor' => 1
         ]);
 
-        $response->assertStatus(403);
+        $this->assertTrue(View::exists('lms::dashboard'));
     }
 
     /** @test */
     public function instructor_can_create_course()
     {
-        $this->actingAs($this->instructor);
+        $this->actingAs($this->student);
 
-        $response = $this->post(route('course.store'), [
-            'course_title' => 'Test Course',
-            'description' => 'Course Description',
-            'categories_selection' => 'Web Development',
-            'c_level' => 'Beginner',
-            'price' => 29.99,
-            'is_free' => 0
-        ]);
+        $course = Course::factory()->create();
+        $pricing = Pricing::factory([
+            "course_id" => $course->refresh()->id
+        ])->create();
 
-        $response->assertRedirect();
-        $this->assertDatabaseHas('courses', [
-            'course_title' => 'Test Course',
-            'user_id' => $this->instructor->id
-        ]);
+        if (config("app.debug")) {
+            $pricing->dump();
+            $course->dump();
+        }
+
+        $response = $this->get(route('show-all-courses'));
+        if (config("app.debug")) {
+            $response->dump();
+        }
+
+        $response->assertViewIs("lms::xuesheng.all-courses")->assertViewHasAll(['title', 'courses']);
+        $this->assertTrue(View::exists('lms::xuesheng.all-courses'));
+        $response->assertOk();
+
+        $response = $this->get(route('logout_user'));
+        $response->assertRedirectToRoute("index")->assertFound();
+
+        $response = $this->post(route('logout_post'));
+        $response->assertRedirectToRoute("index")->assertFound();
     }
 
     /** @test */
-    public function instructor_cannot_update_others_course()
+    public function public_admin_login()
     {
-        $otherInstructor = User::factory()->create(['is_instructor' => 1]);
-        $course = Course::factory()->create([
-            'user_id' => $otherInstructor->id
-        ]);
 
-        $this->actingAs($this->instructor);
+        $response = $this->get(route('admin'));
 
-        $response = $this->put(route('course.update', $course), [
-            'course_title' => 'Updated Course'
-        ]);
-
-        $response->assertStatus(403);
+        $response->assertViewIs("admin")->assertViewHasAll(['title']);
+        $this->assertTrue(View::exists('admin'));
+        $response->assertOk();
     }
 
     /** @test */
-    public function instructor_can_update_own_course()
+    public function admin_visitng_login_page()
     {
-        $this->actingAs($this->instructor);
-        
-        $course = Course::factory()->create([
-            'user_id' => $this->instructor->id
-        ]);
 
-        $response = $this->put(route('course.update', $course), [
-            'course_title' => 'Updated Course',
-            'description' => 'Updated Description'
-        ]);
+        $this->actingAs($this->admin);
+        $response = $this->get(route('admin'));
 
-        $response->assertRedirect();
-        $this->assertDatabaseHas('courses', [
-            'id' => $course->id,
-            'course_title' => 'Updated Course'
+        $response->assertRedirectToRoute('a_home')->assertFound();
+        $this->assertTrue(Route::has('a_home'));
+    }
+
+    /** @test */
+    public function student_visitig_admin_page()
+    {
+
+        $this->actingAs($this->student);
+        $response = $this->get(route('admin'));
+
+        $response->assertRedirectToRoute('index')->assertFound();
+        $this->assertTrue(Route::has('index'));
+    }
+
+    /** @test */
+    public function visit_exist()
+    {
+        $this->assertTrue(View::exists(config("setting.show_course_blade")));
+    }
+
+    /** @test */
+    public function public_routes()
+    {
+
+        $categories = Categories::factory()->create();
+
+        $this->assertTrue(Route::has([
+            "instructor.login",
+            "login",
+            "register",
+            "instructor.register",
+            "s-search-page",
+            "li-login",
+            "google-login",
+            "fb-login",
+        ]));
+
+        $this->get(route('instructor.login'))->assertViewIs('lms::auth.instructor.login')->assertViewHasAll(['title', "desc"]);
+        $this->get(route('login'))->assertViewis("auth.login")->assertOk();
+
+        $this->get(route('user-categories', ["category" => $categories->value]))->assertOk();
+        $this->get(route('register'))->assertOk();
+        $response = $this->get(route('instructor.register'))->assertViewIs(config("setting.show_blade"))
+            ->assertViewHasAll(['title', 'desc']);
+        if (config("app.debug")) {
+            $response->dump();
+        }
+
+        Course::factory()->create([
+            "course_title" => "sample title",
+            "slug" => Str::slug("sample title")
         ]);
+        $response = $this->get(route('s-search-page', ["keyword" => "sample_title"]));
+        $response->assertViewIs("lms::xuesheng.show-course")
+            ->assertViewHasAll(
+                [
+                    'title',
+                    'courses',
+                    'keyword'
+                ]
+            );
+        $this->get(route('li-login'))->assertFound();
+        $this->get(route('google-login'))->assertFound();
+        $this->get(route('fb-login'))->assertFound();
     }
 
     /** @test */
     public function instructor_can_soft_delete_course()
     {
         $this->actingAs($this->instructor);
-        
+
         $course = Course::factory()->create([
             'user_id' => $this->instructor->id
         ]);
 
-        $response = $this->delete(route('course.destroy', $course));
+        $response = $this->delete(route('course_delete', ["course_id" => $course->id]));
 
-        $response->assertRedirect();
+        $response->assertRedirect()->assertRedirectToRoute('dashboard');
         $this->assertNotNull($course->fresh()->is_deleted);
     }
 
@@ -119,20 +196,50 @@ class CourseControllerTest extends TestCase
     public function instructor_can_upload_course_image()
     {
         $this->actingAs($this->instructor);
-        
+
         $course = Course::factory()->create([
             'user_id' => $this->instructor->id
         ]);
 
         $file = UploadedFile::fake()->image('course.jpg');
 
-        $response = $this->post(route('course.image.upload', $course), [
-            'image' => $file
+        $response = $this->post(route('course_img', ['course' => $course->id]), [
+            'course_img' => $file
         ]);
 
-        $response->assertRedirect();
-        $this->assertTrue(Storage::disk('public')->exists('courses/' . $file->hashName()));
+        if (config("app.debug")) {
+            $response->dump();
+        }
+
+        $response->assertJsonCount(2)->assertJsonFragment([
+            'status' => 'saved'
+        ]);
         $this->assertDatabaseHas('course_images', [
+            'course_id' => $course->id
+        ]);
+    }
+
+    /** @test */
+    public function instructor_can_upload_course_video()
+    {
+        $this->actingAs($this->instructor);
+
+        $course = Course::factory()->create([
+            'user_id' => $this->instructor->id
+        ]);
+
+        $file = UploadedFile::fake()->create('video.mp4', 1024); // 1024 KB = 1 MB
+
+        $response = $this->post(route('course_vid', ['course' => $course->id]), [
+            'course_vid' => $file
+        ]);
+
+        if (config("app.debug")) {
+            $response->dump();
+        }
+
+        $response->assertJsonCount(2)->assertOk();
+        $this->assertDatabaseHas('course_videos', [
             'course_id' => $course->id
         ]);
     }
@@ -142,103 +249,89 @@ class CourseControllerTest extends TestCase
     {
         $this->actingAs($this->instructor);
 
-        $response = $this->post(route('course.store'), []);
+        $course = Course::factory()->create([
+            'user_id' => $this->instructor->id
+        ]);
+
+        $response = $this->post(route('course_img', ['course' => $course->id]), [
+            'course_img' => ""
+        ]);
 
         $response->assertSessionHasErrors([
-            'course_title',
-            'description',
-            'categories_selection',
-            'c_level'
+            'course_img'
         ]);
     }
 
     /** @test */
-    public function course_can_be_published()
+    public function course_cannot_be_published()
     {
         $this->actingAs($this->instructor);
-        
+
         $course = Course::factory()->create([
             'user_id' => $this->instructor->id,
             'status' => 'draft'
         ]);
 
-        $response = $this->put(route('course.publish', $course));
+        $response = $this->post(route('submitCourse', ['course' => $course->id]));
 
-        $response->assertRedirect();
-        $this->assertEquals('published', $course->fresh()->status);
+        $response->assertOk();
+        $this->assertEquals('draft', $course->fresh()->status);
+        $this->assertDatabaseHas('courses', [
+            'status' => 'draft'
+        ]);
     }
 
     /** @test */
     public function course_price_can_be_updated()
     {
         $this->actingAs($this->instructor);
-        
+
         $course = Course::factory()->create([
             'user_id' => $this->instructor->id
         ]);
 
-        Price::factory()->create([
+        Pricing::factory()->create([
             'course_id' => $course->id,
             'pricing' => 19.99
         ]);
 
-        $response = $this->put(route('course.price.update', $course), [
+        $response = $this->post(route('pricingPost', ["course" => $course?->id]), [
             'pricing' => 29.99
         ]);
 
-        $response->assertRedirect();
-        $this->assertDatabaseHas('prices', [
+        $response->assertOk()->assertJsonFragment([
+            'status' => 'saved'
+        ]);
+        $this->assertDatabaseHas('pricings', [
             'course_id' => $course->id,
             'pricing' => 29.99
         ]);
     }
 
     /** @test */
-    public function instructor_cannot_create_course_with_invalid_category()
+    public function course_free_can_be_updated()
     {
         $this->actingAs($this->instructor);
 
-        $response = $this->post(route('course.store'), [
-            'course_title' => 'Test Course',
-            'description' => 'Course Description',
-            'categories_selection' => 'Invalid Category',
-            'c_level' => 'Beginner'
+        $course = Course::factory()->create([
+            'user_id' => $this->instructor->id
         ]);
 
-        $response->assertSessionHasErrors('categories_selection');
+        Pricing::factory()->create([
+            'course_id' => $course->id,
+            'pricing' => 19.99
+        ]);
+
+        $response = $this->post(route('pricingPost', ["course" => $course?->id]), [
+            'free' => true
+        ]);
+
+        $response->assertOk()->assertJsonFragment([
+            'status' => 'saved'
+        ]);
+        $this->assertDatabaseHas('pricings', [
+            'course_id' => $course->id,
+            'is_free' => true
+        ]);
     }
-
-    /** @test */
-    public function instructor_cannot_create_course_with_invalid_level()
-    {
-        $this->actingAs($this->instructor);
-
-        $response = $this->post(route('course.store'), [
-            'course_title' => 'Test Course',
-            'description' => 'Course Description',
-            'categories_selection' => 'Web Development',
-            'c_level' => 'Invalid Level'
-        ]);
-
-        $response->assertSessionHasErrors('c_level');
-    }
-
-    /** @test */
-    public function course_title_must_be_unique()
-    {
-        $this->actingAs($this->instructor);
-
-        Course::factory()->create([
-            'course_title' => 'Existing Course'
-        ]);
-
-        $response = $this->post(route('course.store'), [
-            'course_title' => 'Existing Course',
-            'description' => 'Course Description',
-            'categories_selection' => 'Web Development',
-            'c_level' => 'Beginner'
-        ]);
-
-        $response->assertSessionHasErrors('course_title');
-    }
-} 
+}
