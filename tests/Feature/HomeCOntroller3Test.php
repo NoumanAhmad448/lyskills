@@ -65,7 +65,7 @@ class HomeController3Test extends TestCase
 
         foreach ($maliciousInputs as $input) {
             $response = $this->get('/show-search-course/' . $input);
-            
+
             // Check that the output is properly escaped
             $response->assertDontSee($input, false);
             $response->assertSee(htmlspecialchars($input, ENT_QUOTES, 'UTF-8'), false);
