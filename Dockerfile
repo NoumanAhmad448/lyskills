@@ -78,8 +78,9 @@ RUN php artisan route:clear
 RUN php artisan optimize:clear
 
 
-RUN if $APP_ENV == 'dev' npm install ;fi
-RUN if $APP_ENV == 'dev' composer install ;fi
+RUN if [$APP_ENV == 'dev']; then npm install ;fi
+RUN if [$APP_ENV == 'dev']; then composer install ;fi
+RUN if [$APP_ENV == 'dev']; then php artisan migrate ;fi
 
 # Expose the port 9000 for PHP-FPM
 EXPOSE 9000
