@@ -75,7 +75,7 @@
                                 <option value=""> Select Language </option>
                                 @php$langs = LanguageModal::select('id', 'name')->get();
 
-                                @endphp
+                                                                                                                                @endphp ?> ?> ?>
                                 @if (isset($langs) && $langs)
                                     @foreach ($langs as $lang)
                                         <option value="{{ $lang->id ?? null }}"
@@ -108,11 +108,11 @@
             <div class="row">
                 <div class="col-md-6">
                     @php$course_img = $course->course_image;
-                        $path = null;
-                        if ($course_img) {
-                            $path = $course_img->image_path;
-                        }
-                    @endphp
+                                                                                                $path = null;
+                                                                                                if ($course_img) {
+                                                                                                    $path = $course_img->image_path;
+                                                                                                }
+                                                                                @endphp ?> ?> ?>
                     <img src="@if ($path) {{ config('setting.s3Url') . $path }} @else {{ asset('img/thumbnail.jpg') }} @endif"
                         alt="Course Thumbnail" class="img-fluid course_img" width="750" height="450" />
                 </div>

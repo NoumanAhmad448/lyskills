@@ -11,7 +11,7 @@
 
                 @foreach ($media as $m)
                     @php$path = asset('storage/' . $m->lec_name);
-                    @endphp
+                                                                                @endphp ?> ?> ?>
 
                     <div class="col-md-4">
                         <video class="w-100" controls>

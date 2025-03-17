@@ -32,7 +32,8 @@ use App\Models\RatingModal;
                                 <a href="{{ route('user-course', ['slug' => $course->slug]) }}">
                                     @if ($ci)
                                         <img class="card-img-top img-fluid"
-                                            src="{{ config('setting.s3Url') . $ci->image_path }}" alt="{{ $ci->image_name }}">
+                                            src="{{ config('setting.s3Url') . $ci->image_path }}"
+                                            alt="{{ $ci->image_name }}">
                                     @endif
                                 </a>
                                 @php

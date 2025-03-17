@@ -33,8 +33,8 @@
                         There's no wrong answer. We can help you achieve your goals even if you don't have much time.
                     </p>
                     <form id="nextform"
-                        action="{{ route('courses_instructions', ['id' => $id + 1, 'course_id' => $course_id]) }}" method="POST"
-                        class="mt-5">
+                        action="{{ route('courses_instructions', ['id' => $id + 1, 'course_id' => $course_id]) }}"
+                        method="POST" class="mt-5">
                         @csrf
 
                         <section class="d-flex flex-column">

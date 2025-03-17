@@ -24,8 +24,7 @@
         {{-- <h1> Credit Card </h1> --}}
         @include('session_msg')
 
-        <form action="{{ route('credit_card_pay_post', ['slug' => $slug]) }}" method="POST" class="my-3"
-            id="paymentForm">
+        <form action="{{ route('credit_card_pay_post', ['slug' => $slug]) }}" method="POST" class="my-3" id="paymentForm">
             @csrf
             <input type="hidden" name="payment_method" id="payment_method" value="" />
             {{-- <input type="submit" value="submit"> --}}
@@ -57,7 +56,7 @@
     <script>
         const stripe = Stripe(
             'pk_live_51HgB5sKqvwo7IBqOHR7UDYA4BTeqzl8rW7jNrTviy8ZQBQomKMmscf0AmAjcOzLQoAkrJebIuoAPl7qHQO2twwGH00TGvUjKte'
-            );
+        );
 
         const elements = stripe.elements();
         const cardElement = elements.create('card');

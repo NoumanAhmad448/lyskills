@@ -128,8 +128,8 @@
                             </td>
                             <td> <a href="{{ route('laoshi_de_c', ['course' => $course->id]) }}" class="cursor_pointer">
                                     Comments </a> </td>
-                            <td> <a href="{{ route('xueshiXuesheng', ['course' => $course->id]) }}"
-                                    class="cursor_pointer"> Enroll/Unenroll Students </a> </td>
+                            <td> <a href="{{ route('xueshiXuesheng', ['course' => $course->id]) }}" class="cursor_pointer">
+                                    Enroll/Unenroll Students </a> </td>
                         </tr>
                         <input type="hidden" id="course_status_change" value="{{ route('change_course_status') }}">
                     @endforeach

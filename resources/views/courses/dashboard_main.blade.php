@@ -14,7 +14,8 @@
 
             <ul class="nav flex-column text-info">
                 <li class="nav-item">
-                    <a class="nav-link text-info" href="{{ route('landing_page', compact('course')) }}" id="landing_page">
+                    <a class="nav-link text-info" href="{{ route('landing_page', compact('course')) }}"
+                        id="landing_page">
                         @if ($course->status == 'draft')
                             @php
                                 $c_status = CourseStatus::where('course_id', $course->id)->first();

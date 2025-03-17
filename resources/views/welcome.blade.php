@@ -172,8 +172,8 @@ use App\Models\RatingModal;
                         <h2 class="my-2">{{ __('homepage.posts.recent') }}</h2>
                         <div class="row">
                             <div class="col-md-8 offset-md-2">
-                                <img src="{{ config('setting.s3Url') . $post->upload_img }}" alt="{{ $post->f_name ?? '' }}"
-                                    class="img-fluid" />
+                                <img src="{{ config('setting.s3Url') . $post->upload_img }}"
+                                    alt="{{ $post->f_name ?? '' }}" class="img-fluid" />
                             </div>
                         </div>
                         <h3 class="text-center mt-2 text-uppercase">

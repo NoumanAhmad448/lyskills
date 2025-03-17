@@ -91,18 +91,18 @@
                             @if ($lecs->count())
                                 @foreach ($lecs as $lec)
                                     @php$lec_id = $lec->id;
-                                        $media = $lec->media;
-                                        $desc = Description::where('lecture_id', $lec_id)->first();
-                                        $res = $lec->res_vid;
-                                        $article = $lec->article;
-                                        $ex_res = $lec->ex_res;
-                                        $other_file = $lec->other_file;
-                                        $should_show_res = $res || $article || $ex_res || $other_file;
+                                                                                                                                                                $media = $lec->media;
+                                                                                                                                                                $desc = Description::where('lecture_id', $lec_id)->first();
+                                                                                                                                                                $res = $lec->res_vid;
+                                                                                                                                                                $article = $lec->article;
+                                                                                                                                                                $ex_res = $lec->ex_res;
+                                                                                                                                                                $other_file = $lec->other_file;
+                                                                                                                                                                $should_show_res = $res || $article || $ex_res || $other_file;
 
-                                        $assigns = $lec->assign;
-                                        $quizzs = $lec->quizzs;
+                                                                                                                                                                $assigns = $lec->assign;
+                                                                                                                                                                $quizzs = $lec->quizzs;
 
-                                    @endphp
+                                                                                                                                                @endphp ?> ?> ?>
                                     <div class="mt-3 container lecture_container bg-white p-3 border">
 
                                         <div class="row">
@@ -113,7 +113,8 @@
                                                     <div class="ml-md-3 font-weight-normal"> {{ $lec->lec_name }} </div>
                                                     <div
                                                         class="lec_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
-                                                        <i class="las la-pencil-alt"></i> </div>
+                                                        <i class="las la-pencil-alt"></i>
+                                                    </div>
                                                     <form
                                                         action="{{ route('lecture_delete', ['course_id' => $course_id, 'lecture_id' => $lec_id]) }}"
                                                         method="post">
@@ -121,7 +122,8 @@
                                                         @csrf
                                                         <div
                                                             class="lec_delete ml-md-3 text-danger d-inline d-md-block cursor_pointer">
-                                                            <i class="las la-trash-alt"></i> </div>
+                                                            <i class="las la-trash-alt"></i>
+                                                        </div>
                                                     </form>
                                                 </section>
                                             </div>
@@ -263,7 +265,8 @@
                                             @if ($res)
                                                 <div
                                                     class="pt-3 text-center res_hover_view py-md-2 font-weight-normal btn show_uploaded_vid website-outline">
-                                                    <i class="las la-caret-down"></i> Uploaded Video </div>
+                                                    <i class="las la-caret-down"></i> Uploaded Video
+                                                </div>
                                             @else
                                                 <div class="video_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"
                                                     upload_video_url="{{ route('upload_vid_res', ['lec_id' => $lec_id]) }}">
@@ -272,7 +275,8 @@
                                             @if ($article)
                                                 <div
                                                     class="btn article_res_show pt-3 text-center res_hover_view py-md-2 font-weight-normal website-outline">
-                                                    <i class="las la-caret-down"></i> Article </div>
+                                                    <i class="las la-caret-down"></i> Article
+                                                </div>
                                             @else
                                                 <div
                                                     class="article_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
@@ -282,7 +286,8 @@
                                             @if ($ex_res)
                                                 <div
                                                     class="external_res_show website-outline pt-3 text-center py-md-2 btn font-weight-normal">
-                                                    <i class="las la-caret-down"></i> External Resource </div>
+                                                    <i class="las la-caret-down"></i> External Resource
+                                                </div>
                                             @else
                                                 <div
                                                     class="external_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
@@ -291,7 +296,8 @@
                                             @if ($other_file)
                                                 <div
                                                     class="other_res_show website-outline btn pt-3 text-center res_hover_view py-md-2 font-weight-normal">
-                                                    <i class="las la-caret-down"></i> Other Files </div>
+                                                    <i class="las la-caret-down"></i> Other Files
+                                                </div>
                                             @else
                                                 <div
                                                     class="other_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
@@ -396,16 +402,17 @@
                                                         <section
                                                             class="lec_small_container d-md-flex align-items-md-center">
                                                             @php$ass_title = $assign->title ?? '';
-                                                                if (!$ass_title) {
-                                                                    $ass_title = reduceCharIfAv($ass_title, 30);
-                                                                }
+                                                                                                                                                                                                                                                                if (!$ass_title) {
+                                                                                                                                                                                                                                                                    $ass_title = reduceCharIfAv($ass_title, 30);
+                                                                                                                                                                                                                                                                }
 
-                                                            @endphp
+                                                                                                                                                                                                                                                @endphp ?> ?> ?>
                                                             <div class="ass_title ml-md-3 font-weight-normal">
                                                                 {{ $ass_title }}</div>
                                                             <div title_edit="{{ route('update_assign', ['assign' => $assign]) }}"
                                                                 class=" assign_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
-                                                                <i class="las la-pencil-alt"></i> </div>
+                                                                <i class="las la-pencil-alt"></i>
+                                                            </div>
                                                             <form
                                                                 action="{{ route('delete_assign', ['assign' => $assign]) }}"
                                                                 method="post">
@@ -413,7 +420,8 @@
                                                                 @method('delete')
                                                                 <div
                                                                     class="assign_del ml-md-3 text-danger d-inline d-md-block cursor_pointer">
-                                                                    <i class="las la-trash-alt"></i> </div>
+                                                                    <i class="las la-trash-alt"></i>
+                                                                </div>
                                                             </form>
                                                         </section>
                                                     </div>
@@ -526,20 +534,22 @@
                                                                 {{ reduceCharIfAv($quiz->title, 30) }} </div>
                                                             <div title_edit="{{ route('update_quiz', compact('quiz')) }}"
                                                                 class="quiz_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
-                                                                <i class="las la-pencil-alt"></i> </div>
+                                                                <i class="las la-pencil-alt"></i>
+                                                            </div>
                                                             <form action="{{ route('delete_quiz', compact('quiz')) }}"
                                                                 method="post">
                                                                 @method('delete')
                                                                 @csrf
                                                                 <div
                                                                     class="quiz_del ml-md-3 text-danger d-inline d-md-block cursor_pointer">
-                                                                    <i class="las la-trash-alt"></i> </div>
+                                                                    <i class="las la-trash-alt"></i>
+                                                                </div>
                                                             </form>
                                                         </section>
                                                     </div>
                                                     <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
                                                         @php$quiz_desc = $quiz->quiz_desc;
-                                                        $quizzes = $quiz->quizzes; @endphp
+                                                                                                                                                                                                                                $quizzes = $quiz->quizzes; @endphp ?> ?> ?>
                                                         <div class="@if ($quiz_desc) quiz_s_op  @else quiz_desc @endif btn website-outline "
                                                             desc_url="{{ route('add_quiz_desc', compact('quiz')) }}">
                                                             @if ($quiz_desc)
@@ -625,10 +635,12 @@
                                                                 <div class="col-md-6 d-flex">
                                                                     <div class="cursor_pointer edit_quiz text-info"
                                                                         quiz_edit_url="{{ route('edit_quizzes', ['quizzes' => $q]) }}">
-                                                                        <i class="las la-pencil-alt"></i> </div>
+                                                                        <i class="las la-pencil-alt"></i>
+                                                                    </div>
                                                                     <div class="cursor_pointer del_quiz ml-3 text-danger"
                                                                         quiz_del_url="{{ route('del_quizzes', ['quizzes' => $q]) }}">
-                                                                        <i class="las la-trash-alt"></i> </div>
+                                                                        <i class="las la-trash-alt"></i>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -872,7 +884,7 @@
                 let add_btn = $(this);
                 let sec_title = add_btn.find('input').val();
                 let sec_no = parseInt(add_btn.parent().prev().children('.sec1').find('.sec_no').text()
-                .trim());
+                    .trim());
 
                 $.ajax({
                         url: "{{ route('courses_curriculum_post', compact('course_id')) }}",
@@ -896,7 +908,7 @@
                                 let returned_title = d['sec_title'];
                                 returned_title = returned_title;
                                 let title_sec_container = add_btn.parents('.title_sec_container')
-                                .first();
+                                    .first();
                                 // title_sec_container.removeClass('col-md-10').addClass('col-md-8');
                                 add_btn.replaceWith(`
                             <div class="sec_title ml-md-2">
@@ -1425,7 +1437,7 @@
                                     xhr.upload.addEventListener("progress", function(evt) {
                                         if (evt.lengthComputable) {
                                             var percentComplete = evt.loaded / evt
-                                            .total;
+                                                .total;
                                             let c_progress = Math.round(
                                                 percentComplete * 100);
                                             progress_bar.attr('aria-valuenow',
@@ -1451,7 +1463,7 @@
                                                 '.upload_video_con').prev('.lecture_container')
                                             .find('.lec_content').first();
                                         video_btn.removeClass('lec_content').addClass(
-                                        'v_c_vid');
+                                            'v_c_vid');
 
                                         videoResponse(data, upload_vid, path, media)
                                         current_file.val('');
@@ -1525,7 +1537,7 @@
                                     xhr.upload.addEventListener("progress", function(evt) {
                                         if (evt.lengthComputable) {
                                             var percentComplete = evt.loaded / evt
-                                            .total;
+                                                .total;
                                             let c_progress = Math.round(
                                                 percentComplete * 100);
                                             progress_bar.attr('aria-valuenow',
@@ -1543,7 +1555,7 @@
                                     // console.error(data[path]);
                                     let path = data['path'];
                                     let upload_vid = current_file.parents('.lecture_vid')
-                                    .first().find('source').first();
+                                        .first().find('source').first();
                                     upload_vid.attr('src', path);
                                     let media = data['media'];
 
@@ -1615,7 +1627,7 @@
                                     xhr.upload.addEventListener("progress", function(evt) {
                                         if (evt.lengthComputable) {
                                             var percentComplete = evt.loaded / evt
-                                            .total;
+                                                .total;
                                             let c_progress = Math.round(
                                                 percentComplete * 100);
                                             progress_bar.attr('aria-valuenow',
@@ -1632,7 +1644,7 @@
                                     current_file.attr('disabled', false);
                                     let path = data['path'];
                                     let upload_vid = current_file.parents('.up_vid_res')
-                                .first();
+                                        .first();
                                     let media = data['media'];
                                     let res = current_file.parents('.up_vid_res').prev(
                                         '.resources');
@@ -1805,7 +1817,7 @@
                                                         'video_url', video_url);
                                             } else {
                                                 let v_c_p_can = lecture_container.find(
-                                                '.v_c_p_can');
+                                                    '.v_c_p_can');
                                                 if (v_c_p_can) {
                                                     v_c_p_can.html(
                                                             '<i class="las la-plus"></i> Video')
@@ -2233,7 +2245,7 @@
                             }).fail(function(d) {
                                 show_message(
                                     'Your video was not deleted because of technical problem. Please try again.'
-                                    );
+                                );
                                 console.log(d.responseText);
                             });
                         }
@@ -2657,7 +2669,7 @@
                                     xhr.upload.addEventListener("progress", function(evt) {
                                         if (evt.lengthComputable) {
                                             var percentComplete = evt.loaded / evt
-                                            .total;
+                                                .total;
                                             let c_progress = Math.round(
                                                 percentComplete * 100);
                                             progress_bar.attr('aria-valuenow',
@@ -3185,7 +3197,7 @@
                                     xhr.upload.addEventListener("progress", function(evt) {
                                         if (evt.lengthComputable) {
                                             var percentComplete = evt.loaded / evt
-                                            .total;
+                                                .total;
                                             let c_progress = Math.round(
                                                 percentComplete * 100);
                                             progress_bar.attr('aria-valuenow',
@@ -3383,7 +3395,7 @@
                                     xhr.upload.addEventListener("progress", function(evt) {
                                         if (evt.lengthComputable) {
                                             var percentComplete = evt.loaded / evt
-                                            .total;
+                                                .total;
                                             let c_progress = Math.round(
                                                 percentComplete * 100);
                                             progress_bar.attr('aria-valuenow',
@@ -3482,7 +3494,7 @@
                 let data = $(this).serializeArray()
                 let parent_elem = $(this).parents('.lecture_layer').first();
                 let lec_no = parent_elem.prevAll('.lecture_container').first().find('.lec_no').text()
-            .trim();
+                    .trim();
 
                 if (lec_no) {
 
@@ -4239,7 +4251,7 @@
                             form.prop('disabled', false);
                             show_message(
                                 'Only MP4,webm and ogg files are allowed. Please choose one of them'
-                                );
+                            );
 
                         }
                     });
@@ -4250,7 +4262,7 @@
             $("#close").click(function() {
                 if (confirm(
                         'Close the window will just hide the uploading process and you can easily show it by clicking the bulk uploader button'
-                        )) {
+                    )) {
                     $('#bulk').modal('hide');
                 }
             });

@@ -39,10 +39,10 @@ use App\Models\Media;
                         <ul class="ml-4 mt-2 list-group">
                             <h4 class="text-capitalize font-bold mb-4"> {{ $sec->section_title ?? '' }} </h4>
                             @php$lectures = Lecture::where([
-                                    ['course_id', $course->id],
-                                    ['sec_no', '=', $sec->section_no],
-                                ])->get();
-                            @endphp
+                                                                                                                                    ['course_id', $course->id],
+                                                                                                                                    ['sec_no', '=', $sec->section_no],
+                                                                                                                                ])->get();
+                                                                                                                @endphp ?> ?> ?>
 
                             @if ($lectures->count())
                                 @foreach ($lectures as $lec)
@@ -102,10 +102,10 @@ use App\Models\Media;
                     </div>
                 @endif
                 <!--
-                    it requires three libraries to be imported.
-                    two of them are css files and one is js file
-                    all of them mentioned above in @page-css
-                 -->
+                                it requires three libraries to be imported.
+                                two of them are css files and one is js file
+                                all of them mentioned above in @page-css
+                             -->
                 <media-player
                     src="@if (file_exists(public_path('storage/' . $media->lec_name))) {{ asset('storage/' . $media->lec_name) }}@else{{ config('setting.s3Url') }}{{ $media->lec_name }} @endif"
                     aspect-ratio="16/9" type="{{ $media->f_mimetype ?? '' }}"

@@ -191,7 +191,8 @@
                             l_errs.addClass("text-danger").text(errors['learnable_skill'][0]);
                         } else if ("course_requirement" in errors) {
                             re_errs.addClass("text-danger").text(errors['course_requirement'][
-                                0]);
+                                0
+                            ]);
                         } else if ("targeting_student" in errors) {
                             target_errs.addClass("text-danger").text(errors['targeting_student']
                                 [0]);
