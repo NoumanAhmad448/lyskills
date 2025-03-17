@@ -91,18 +91,18 @@
                             @if ($lecs->count())
                                 @foreach ($lecs as $lec)
                                     @php$lec_id = $lec->id;
-                                                                                                                                                                $media = $lec->media;
-                                                                                                                                                                $desc = Description::where('lecture_id', $lec_id)->first();
-                                                                                                                                                                $res = $lec->res_vid;
-                                                                                                                                                                $article = $lec->article;
-                                                                                                                                                                $ex_res = $lec->ex_res;
-                                                                                                                                                                $other_file = $lec->other_file;
-                                                                                                                                                                $should_show_res = $res || $article || $ex_res || $other_file;
+                                                                                                                                                                                                        $media = $lec->media;
+                                                                                                                                                                                                        $desc = Description::where('lecture_id', $lec_id)->first();
+                                                                                                                                                                                                        $res = $lec->res_vid;
+                                                                                                                                                                                                        $article = $lec->article;
+                                                                                                                                                                                                        $ex_res = $lec->ex_res;
+                                                                                                                                                                                                        $other_file = $lec->other_file;
+                                                                                                                                                                                                        $should_show_res = $res || $article || $ex_res || $other_file;
 
-                                                                                                                                                                $assigns = $lec->assign;
-                                                                                                                                                                $quizzs = $lec->quizzs;
+                                                                                                                                                                                                        $assigns = $lec->assign;
+                                                                                                                                                                                                        $quizzs = $lec->quizzs;
 
-                                                                                                                                                @endphp ?> ?> ?>
+                                                                                                                                                                                    @endphp ?> ?> ?> ?>
                                     <div class="mt-3 container lecture_container bg-white p-3 border">
 
                                         <div class="row">
@@ -402,11 +402,11 @@
                                                         <section
                                                             class="lec_small_container d-md-flex align-items-md-center">
                                                             @php$ass_title = $assign->title ?? '';
-                                                                                                                                                                                                                                                                if (!$ass_title) {
-                                                                                                                                                                                                                                                                    $ass_title = reduceCharIfAv($ass_title, 30);
-                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                if (!$ass_title) {
+                                                                                                                                                                                                                                                                                                                                    $ass_title = reduceCharIfAv($ass_title, 30);
+                                                                                                                                                                                                                                                                                                                                }
 
-                                                                                                                                                                                                                                                @endphp ?> ?> ?>
+                                                                                                                                                                                                                                                                                                            @endphp ?> ?> ?> ?>
                                                             <div class="ass_title ml-md-3 font-weight-normal">
                                                                 {{ $ass_title }}</div>
                                                             <div title_edit="{{ route('update_assign', ['assign' => $assign]) }}"
@@ -549,7 +549,7 @@
                                                     </div>
                                                     <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
                                                         @php$quiz_desc = $quiz->quiz_desc;
-                                                                                                                                                                                                                                $quizzes = $quiz->quizzes; @endphp ?> ?> ?>
+                                                                                                                                                                                                                                                                                        $quizzes = $quiz->quizzes; @endphp ?> ?> ?> ?>
                                                         <div class="@if ($quiz_desc) quiz_s_op  @else quiz_desc @endif btn website-outline "
                                                             desc_url="{{ route('add_quiz_desc', compact('quiz')) }}">
                                                             @if ($quiz_desc)

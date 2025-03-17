@@ -10,10 +10,10 @@ use App\Models\Course;
             <div class="row">
                 @foreach ($courses as $c)
                     @php$course = Course::where('id', $c->c_id)->first();
-                                                                                                if (!$course) {
-                                                                                                    continue;
-                                                                                                }
-                                                                                $ci = $course->course_image; @endphp ?> ?> ?>
+                                                                                                                        if (!$course) {
+                                                                                                                            continue;
+                                                                                                                        }
+                                                                                                    $ci = $course->course_image; @endphp ?> ?> ?> ?>
 
                     <div class="col-md-3 my-5">
                         @if ($course->slug)
