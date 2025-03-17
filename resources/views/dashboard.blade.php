@@ -74,16 +74,16 @@
                                         class="text-dark" style="font-size: 1.2rem">
                                 @endif
                                 @php$course_title = $course->course_title;
-                                                                                                                                                                                    // if($course_title && strlen($course_title) > 20){
-                                                                                                                                                                                    //   echo substr($course_title , 0, 20) . '...';
-                                                                                                                                                                                    // }else
-                                                                                                                                                                                    if ($course_title) {
-                                                                                                                                                                                        echo $course_title;
-                                                                                                                                                                                    } else {
-                                                                                                                                                                                        echo 'No title';
-                                                                                                                                                                                    }
-                                                                                                                                                                                    $course_id = $course->id;
-                                                                                                                                                                @endphp ?> ?> ?> ?>
+                                                                                                                                                                                                                        // if($course_title && strlen($course_title) > 20){
+                                                                                                                                                                                                                        //   echo substr($course_title , 0, 20) . '...';
+                                                                                                                                                                                                                        // }else
+                                                                                                                                                                                                                        if ($course_title) {
+                                                                                                                                                                                                                            echo $course_title;
+                                                                                                                                                                                                                        } else {
+                                                                                                                                                                                                                            echo 'No title';
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                        $course_id = $course->id;
+                                                                                                                                                                                                @endphp ?> ?> ?> ?> ?>
                                 @if ($course->slug)
                                     </a>
                                 @endif

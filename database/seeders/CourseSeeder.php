@@ -40,15 +40,18 @@ class CourseSeeder extends Seeder
         // LanguageSeeder::class,
         // ]);
 
-        dump($instructor);
+        if (config("app.debug")) {
+            dump($instructor);
+        }
         // Get IT category or create it
         $itCategory = Categories::where('value', 'it')->first() ??
             Categories::factory()->create([
                 'name' => 'Information Technology',
                 'value' => 'it'
             ]);
-
-        dump($itCategory);
+        if (config("app.debug")) {
+            dump($itCategory);
+        }
         // Create one draft course
         $course = Course::factory()
             ->create([
@@ -57,18 +60,25 @@ class CourseSeeder extends Seeder
                 'status' => 'published',
                 'is_draft' => true
             ]);
-        dump($course);
+        if (config("app.debug")) {
+            dump($course);
+        }
 
         Pricing::factory()->create([
             'course_id' => $course->id,
             'pricing' => 19.99
         ]);
 
-        dump($course->price);
+        if (config("app.debug")) {
+
+            dump($course->price);
+        }
 
         // Create courses for other categories
         Categories::where('value', '!=', 'it')->get()->each(function ($category) use ($instructor) {
-            dump("inside the loop");
+            if (config("app.debug")) {
+                dump("inside the loop");
+            }
 
             $course = Course::factory()
                 ->count(2)
@@ -78,7 +88,10 @@ class CourseSeeder extends Seeder
                     'status' => 'published',
                     'is_draft' => false
                 ]);
-            dump($course);
+            if (config("app.debug")) {
+
+                dump($course);
+            }
             $course->each(function ($course) {
                 Pricing::factory()->create([
                     'course_id' => $course->id,
@@ -86,8 +99,8 @@ class CourseSeeder extends Seeder
                 ]);
 
                 Media::factory()
-                ->set_lecture($course->id)
-                ->create();
+                    ->set_lecture($course->id)
+                    ->create();
 
                 CourseImage::factory()->create([
                     'course_id' => $course->id,
@@ -97,7 +110,10 @@ class CourseSeeder extends Seeder
                         'course_id' => $course->id,
                     ]
                 );
-                dump($course->price);
+                if (config("app.debug")) {
+
+                    dump($course->price);
+                }
             });
         });
     }

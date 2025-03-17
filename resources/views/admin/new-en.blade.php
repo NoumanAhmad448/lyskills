@@ -28,11 +28,11 @@
                 <tbody>
                     @foreach ($of_ens as $post)
                         @php$name = $post->user->name;
-                                                                                                                                            $email = $post->user->email;
-                                                                                                                                            $course_title =
-                                                                                                                                                $post->course && $post->course->course_title ? $post->course->course_title : '';
-                                                                                                                                            $user = $post->user && $post->user->id ? $post->user->id : '';
-                                                                                                                        $course = $post->course && $post->course->id ? $post->course->id : ''; @endphp ?> ?> ?> ?>
+                                                                                                                                                                        $email = $post->user->email;
+                                                                                                                                                                        $course_title =
+                                                                                                                                                                            $post->course && $post->course->course_title ? $post->course->course_title : '';
+                                                                                                                                                                        $user = $post->user && $post->user->id ? $post->user->id : '';
+                                                                                                                                                $course = $post->course && $post->course->id ? $post->course->id : ''; @endphp ?> ?> ?> ?> ?>
                         @if ($course_title)
                             <tr>
                                 <td>
