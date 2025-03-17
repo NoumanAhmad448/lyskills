@@ -5,13 +5,18 @@ namespace Database\Seeders;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Categories;
+use App\Models\CourseImage;
+use App\Models\CourseVideo;
+use App\Models\Media;
+use App\Models\Pricing;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class CourseSeeder extends Seeder
 {
     protected $faker;
-    public function __construct() {
+    public function __construct()
+    {
         // You can instantiate the Faker factory here if needed
         $this->faker = Faker::create();  // Manually instantiate the Faker object
     }
@@ -25,40 +30,47 @@ class CourseSeeder extends Seeder
     {
         // Get or create instructor
         $instructor = User::where('is_instructor', true)->first() ??
-                     User::factory()->create([
-                         'is_instructor' => true,
-                         'email' => $this->faker->email()
-                     ]);
+            User::factory()->create([
+                'is_instructor' => true,
+                'email' => $this->faker->email()
+            ]);
 
+        // $this->call([
+        // CategoriesSeeder::class,
+        // LanguageSeeder::class,
+        // ]);
+
+        dump($instructor);
         // Get IT category or create it
         $itCategory = Categories::where('value', 'it')->first() ??
-                     Categories::factory()->create([
-                         'name' => 'Information Technology',
-                         'value' => 'it'
-                     ]);
+            Categories::factory()->create([
+                'name' => 'Information Technology',
+                'value' => 'it'
+            ]);
 
-        // Create published courses
-        Course::factory()
-            ->count(3)
+        dump($itCategory);
+        // Create one draft course
+        $course = Course::factory()
             ->create([
                 'user_id' => $instructor->id,
                 'categories_selection' => $itCategory->value,
                 'status' => 'published',
-                'is_draft' => false
-            ]);
-
-        // Create one draft course
-        Course::factory()
-            ->create([
-                'user_id' => $instructor->id,
-                'categories_selection' => $itCategory->value,
-                'status' => 'draft',
                 'is_draft' => true
             ]);
+        dump($course);
+
+        Pricing::factory()->create([
+            'course_id' => $course->id,
+            'pricing' => 19.99
+        ]);
+
+        dump($course->price);
 
         // Create courses for other categories
         Categories::where('value', '!=', 'it')->get()->each(function ($category) use ($instructor) {
-            Course::factory()
+            dump("inside the loop");
+
+            $course = Course::factory()
                 ->count(2)
                 ->create([
                     'user_id' => $instructor->id,
@@ -66,6 +78,27 @@ class CourseSeeder extends Seeder
                     'status' => 'published',
                     'is_draft' => false
                 ]);
+            dump($course);
+            $course->each(function ($course) {
+                Pricing::factory()->create([
+                    'course_id' => $course->id,
+                    'pricing' => 19.99
+                ]);
+
+                Media::factory()
+                ->set_lecture($course->id)
+                ->create();
+
+                CourseImage::factory()->create([
+                    'course_id' => $course->id,
+                ]);
+                CourseVideo::factory()->create(
+                    [
+                        'course_id' => $course->id,
+                    ]
+                );
+                dump($course->price);
+            });
         });
     }
 }

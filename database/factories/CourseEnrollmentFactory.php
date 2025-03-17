@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Course;
 use App\Models\CourseEnrollment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +21,8 @@ class CourseEnrollmentFactory extends Factory
     public function definition()
     {
         return [
-            'course_id' => $this->faker->randomDigit,
-            'user_id' => $this->faker->randomDigit,
+            'course_id' => Course::factory()->create()->id,
+            'user_id' => User::factory()->create()->id,
         ];
     }
 }

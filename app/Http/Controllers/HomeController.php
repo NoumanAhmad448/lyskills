@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         try {
-            $title = __('messages.site_title');
+            $title = __('lms::messages.site_title');
             $desc = __('description.home');
             $cs = Categories::select('id', 'name', 'value')->get();
             $post = Post::where('status', 'published')->select('id', 'title', 'message', 'upload_img', 'f_name', 'slug')->orderByDesc('created_at')->first();
@@ -275,43 +275,4 @@ class HomeController extends Controller
         }
     }
 
-
-    public function getManyRoles()
-    {
-        // $u = u::with('r')->get();
-        // dd($u);
-        $r = R::with('u')->get();
-        dd($r);
-    }
-
-
-    public function convertVideo()
-    {
-        $path = 'uploads/Lecture-1.mp4';
-
-    try {
-
-        $start = \FFMpeg\Coordinate\TimeCode::fromSeconds(10);
-        $clipFilter = new \FFMpeg\Filters\Video\ClipFilter($start);
-
-        FFMpeg::fromDisk('public_path')->open($path)
-        ->addWatermark(function(WatermarkFactory $watermark) {
-            $watermark->openUrl('https://lyskills.com/img/logo.jpg')
-                ->right(25)
-                ->bottom(25)
-                ->width(100)
-                ->height(100)
-                ->greyscale()
-                ->quality(100)
-                ;
-        })
-        ->export()
-        ->toDisk('public')
-        ->inFormat(new \FFMpeg\Format\Video\X264)
-        ->save('uploads/'.'abf.mp4');
-
-    } catch (\Throwable $th) {
-        dd($th->getMessage());
-    }
-    }
 }

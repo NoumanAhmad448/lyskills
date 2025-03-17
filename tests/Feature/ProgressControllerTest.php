@@ -5,10 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\CourseEnrollment;
 use App\Models\Lecture;
-use App\Models\CourseProgress;
+use App\Models\Media;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class ProgressControllerTest extends TestCase
 {
@@ -17,102 +20,161 @@ class ProgressControllerTest extends TestCase
     protected $student;
     protected $course;
     protected $lecture;
+    protected $media;
+    protected $instructor;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->student = User::factory()->create();
-        $instructor = User::factory()->create(['is_instructor' => 1]);
-        
+        $this->instructor = User::factory()->create(['is_instructor' => 1]);
+
         $this->course = Course::factory()->create([
-            'user_id' => $instructor->id
+            'user_id' => $this->instructor->id
         ]);
 
         $this->lecture = Lecture::factory()->create([
             'course_id' => $this->course->id
         ]);
-    }
 
-    /** @test */
-    public function student_can_mark_lecture_as_completed()
-    {
-        $this->actingAs($this->student);
-
-        $response = $this->post(route('progress.mark-complete'), [
-            'lecture_id' => $this->lecture->id
-        ]);
-
-        $response->assertStatus(200);
-        $this->assertDatabaseHas('course_progress', [
-            'user_id' => $this->student->id,
-            'lecture_id' => $this->lecture->id,
-            'completed' => true
+        $this->media = Media::factory()->create([
+            "course_id" => $this->course->id,
+            "lecture_id" => $this->lecture->id
         ]);
     }
 
     /** @test */
-    public function student_can_track_overall_course_progress()
+    public function student_can_view_videos()
     {
         $this->actingAs($this->student);
 
-        // Create multiple lectures
-        $lectures = Lecture::factory()->count(4)->create([
-            'course_id' => $this->course->id
-        ]);
+        CourseEnrollment::factory([
+            "course_id" => $this->course->id,
+            "user_id" => $this->student->id
+        ])->create();
 
-        // Mark some lectures as complete
-        foreach($lectures->take(2) as $lecture) {
-            CourseProgress::create([
-                'user_id' => $this->student->id,
-                'lecture_id' => $lecture->id,
-                'completed' => true
-            ]);
+        $response = $this->get(route('video-page', [
+            "slug" => $this->course->slug,
+            "video" => explode("/", $this->media->lec_name)[1],
+        ]));
+
+        $response->assertOk()->assertViewIs("lms::xuesheng.course-content")->assertViewHasAll([
+            'course',
+            'title',
+            'media',
+            'desc',
+            'm_lec',
+            'c_anns',
+            'should_usr_hv_acs'
+        ]);
+    }
+    /** @test */
+    public function student_down_certificate()
+    {
+        $this->actingAs($this->student);
+
+        $response = $this->get(route('down-cert', [
+            "course_name" => fake()->name(),
+        ]));
+
+        $response->assertOk();
+    }
+
+    /** @test **/
+    public function ins_can_change_video_url()
+    {
+        $this->actingAs($this->instructor);
+        $slug = fake()->name();
+        $response = $this->post(
+            route(
+                'course-change-url',
+                [
+                    "course" => $this->course->id,
+                ]
+            ),
+            ["slug" => $slug]
+        );
+        if (config("app.debug")) {
+            $response->dump();
+            dump($slug);
+            dump("I am hr");
+            dump(Course::find($this->course->id));
         }
 
-        $response = $this->get(route('progress.show', $this->course));
+        $response->assertFound()->assertSessionDoesntHaveErrors();
+        $this->assertDatabaseHas("courses", [
+            "slug" => Str::slug($slug),
+            "id" => $this->course->id,
+            "has_u_update_url" => true
+        ]);
 
-        $response->assertStatus(200);
-        $response->assertViewHas('progress_percentage', 50);
+        $slug = fake()->name();
+        $response = $this->post(
+            route(
+                'course-change-url',
+                [
+                    "course" => $this->course->id,
+                ]
+            ),
+            ["slug" => $slug]
+        );
+
+        $this->assertDatabaseMissing("courses", [
+            "slug" => Str::slug($slug),
+            "id" => $this->course->id,
+            "has_u_update_url" => true
+        ]);
+    }
+
+    /** @test * */
+    public function set_all_videos_downable()
+    {
+        $this->actingAs($this->instructor);
+        $response = $this->post(route("setVidDown", [
+            "course" => $this->course->id
+        ]), [
+            "set_free" => true
+        ]);
+
+        $response->assertOk()
+            ->assertJsonCount(2)->assertJsonStructure([
+                "success",
+                "debug"
+            ]);
+
+        $media = Media::where("course_id", $this->course->id)->get();
+        if (config("app.debug")) {
+            dump($media);
+        }
+        $media->each(function ($media) {
+            $this->assertEquals($media->is_download, 1);
+        });
     }
 
     /** @test */
-    public function student_can_resume_course()
+    public function uploadingVideos()
     {
-        $this->actingAs($this->student);
 
-        $lastViewedLecture = Lecture::factory()->create([
-            'course_id' => $this->course->id
+        $this->actingAs($this->instructor);
+        $lec = Lecture::factory([
+            "course_id" => $this->course->id
+        ])->create();
+
+        $response = $this->withHeaders([
+            'X-Requested-With' => 'XMLHttpRequest',
+        ])->post(route("upload_vid_res", [
+            "lec_id" => $lec->id
+        ]), [
+            "upload_video" =>  UploadedFile::fake()->create('video.mp4', 1024)
         ]);
 
-        CourseProgress::create([
-            'user_id' => $this->student->id,
-            'lecture_id' => $lastViewedLecture->id,
-            'last_viewed_at' => now()
-        ]);
-
-        $response = $this->get(route('progress.resume', $this->course));
-
-        $response->assertStatus(302);
-        $response->assertRedirect(route('lectures.show', $lastViewedLecture));
+        $response->assertOk()
+            ->assertJsonCount(4)->assertJsonStructure([
+                "path",
+                "media",
+                "delete",
+                "f_name"
+            ]);
     }
-
-    /** @test */
-    public function progress_is_synced_across_devices()
-    {
-        $this->actingAs($this->student);
-
-        $response = $this->post(route('progress.sync'), [
-            'lecture_id' => $this->lecture->id,
-            'timestamp' => 300, // 5 minutes into video
-            'device_id' => 'device_123'
-        ]);
-
-        $response->assertStatus(200);
-        $this->assertDatabaseHas('course_progress', [
-            'user_id' => $this->student->id,
-            'lecture_id' => $this->lecture->id,
-            'timestamp' => 300
-        ]);
-    }
-} 
+}

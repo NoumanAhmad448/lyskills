@@ -59,7 +59,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                 <div class="col-md-2">
                     <div class="d-md-flex align-items-md-center">
                         @if(config("setting.show_site_log"))
-                        <a href="{{route('index')}}" class=""> <img src="{{asset('img/logo.jpg')}}" alt="lms"
+                        <a href="{{route('index')}}" class=""> <img src="{{asset('img/logo.jpg')}}" alt="Lykills"
                         width="80" class="img-fluid" /> </a>
                         @endif
                 @if(config("setting.category_menu"))
@@ -110,7 +110,7 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                         </a>
                         @else
                         <a href="{{route('instructor.register')}}" class="ml-3 mt-5 mt-md-3 text-dark">
-                            {{ __('Teach on lms')}} </a>
+                            {{ __('Teach on Lykills')}} </a>
                         @endif
                     </div>
                 </div>

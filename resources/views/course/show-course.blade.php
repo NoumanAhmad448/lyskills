@@ -170,7 +170,7 @@
                         </form>
                     @endunless
 
-                    @if ($course->slug) 
+                    @if ($course->slug)
                         @if ($course->lecture)
                             @if ($course->lecture->media)
                                 @if ($course->lecture && $course->lecture->media && $course->lecture->media->lec_name)

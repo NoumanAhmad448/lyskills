@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Course;
 use App\Models\Lecture;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,7 +22,10 @@ class LectureFactory extends Factory
         return [
             "lec_name" => $this->faker->name(),
             "lec_no" => $this->faker->randomNumber(),
-            "sec_no" => $this->faker->randomNumber()
+            "sec_no" => $this->faker->randomNumber(),
+            "course_id" => Course::factory()->create()->id,
+            "created_at" => now(),
+            "updated_at" => now()
         ];
     }
 }

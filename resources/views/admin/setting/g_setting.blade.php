@@ -29,7 +29,7 @@
                 <h5 class="py-2"> Website Title </h5>            
             </div>
             <div class="col-md-6">                
-                <div> {{ __('messages.site_title') }} </div>
+                <div> {{ __('lms::messages.site_title') }} </div>
             </div>            
         </div>
         <hr/>

@@ -93,10 +93,10 @@ use App\Models\RatingModal;
                             </section>
                         </div>
                         @endif
-                        <p class="card-text text-capitalize  mb-0  mt-1 d-flex font-bold"> @if($course->price->is_free)
+                        <p class="card-text text-capitalize  mb-0  mt-1 d-flex font-bold"> @if($course?->price?->is_free)
                             {{ __('homepage.courses.free') }}
-                            @else <span style="font-weight:bold"> ${{ $course->price->pricing ?? '' }} </span>
-                            @php $total_p = ((int)$course->price->pricing)+20 @endphp
+                            @else <span style="font-weight:bold"> ${{ $course?->price?->pricing ?? '' }} </span>
+                            @php $total_p = ((int)$course?->price?->pricing)+20 @endphp
                             <del class="ml-2"> ${{ $total_p }} </del>
                             @endif
                         </p>
