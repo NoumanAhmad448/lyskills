@@ -56,7 +56,7 @@ class CourseController1Test extends TestCase
     {
         $this->actingAs($this->instructor);
 
-        $this->get(route('setting', ["course" => $this->course]))->dump()->assertOk()
+        $this->get(route('setting', ["course" => $this->course]))->assertOk()
             ->assertViewIs("lms::courses.change-course-status-setting")
             ->assertViewHasAll([
                 'title',
