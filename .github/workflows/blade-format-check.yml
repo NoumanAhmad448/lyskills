@@ -3,7 +3,7 @@ name: Blade Format Check
 on:
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - 'resources/views/**/*.blade.php'
 
