@@ -50,9 +50,8 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <input id="password" type="password"
-                                            class="form-control @error('password') is-invalid @enderror" 
-                                            name="password" required autocomplete="current-password"
-                                            placeholder="password min 8 digits">
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            required autocomplete="current-password" placeholder="password min 8 digits">
                                         <div class="input-group-append">
                                             <span class="input-group-text bg-info cursor-pointer text-white" id="show_pass">
                                                 <i class="fa fa-eye" aria-hidden="true"></i>

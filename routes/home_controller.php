@@ -22,4 +22,3 @@ Route::post('ckeditor/upload', [HomeController::class, 'upload'])->name('ckedito
 // });
 Route::post('get-search', [HomeController::class, 'getSearch'])->name('get-search');
 
-Route::get('get-many-roles', [HomeController::class, 'getManyRoles']);

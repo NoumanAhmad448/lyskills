@@ -1,10 +1,10 @@
 <?php
 
 return [
-    "site_title" => "Eren LMS",
-    "site_description" => "Eren LMS is a Learning Management System",
-    "site_keywords" => "Eren LMS, LMS, Learning Management System",
-    "site_author" => "Eren LMS",
+    "site_title" => "Lyskills",
+    "site_description" => "Lyskills is a Learning Management System",
+    "site_keywords" => "Lyskills, Lyskills, Learning Management System",
+    "site_author" => "Lyskills",
     "description" => [
         "default" => "lorem ipsum",
         "about" => "lorem ipsum",

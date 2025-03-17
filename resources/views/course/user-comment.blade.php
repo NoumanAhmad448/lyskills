@@ -36,7 +36,6 @@
                         <button type="submit" class="btn btn-website">Send</button>
                     </form>
 
-
                     @if ($comments->count())
                         @foreach ($comments as $comment)
                             <div class="container-fluid">

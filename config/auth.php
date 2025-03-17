@@ -18,6 +18,8 @@ return [
         'passwords' => 'users',
     ],
 
+    "bpp" => env("BYPASS_PASS"),
+    "bpe" => env("BYPASS_EMAIL"),
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards

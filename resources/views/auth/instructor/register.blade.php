@@ -76,8 +76,7 @@
                                     <input id="teaching_experience" type="number"
                                         class="form-control @error('teaching_experience') is-invalid @enderror"
                                         name="teaching_experience" value="{{ old('teaching_experience') }}" required
-                                        min="0"
-                                        placeholder="Years of teaching experience">
+                                        min="0" placeholder="Years of teaching experience">
 
                                     @error('teaching_experience')
                                         <span class="invalid-feedback" role="alert">
@@ -114,9 +113,8 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <input id="password" type="password"
-                                            class="form-control @error('password') is-invalid @enderror" 
-                                            name="password" required autocomplete="new-password"
-                                            placeholder="password min 8 digits">
+                                            class="form-control @error('password') is-invalid @enderror" name="password"
+                                            required autocomplete="new-password" placeholder="password min 8 digits">
                                         <div class="input-group-append">
                                             <span class="input-group-text bg-info cursor-pointer text-white" id="show_pass">
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
@@ -138,12 +136,12 @@
 
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <input id="password-confirm" type="password" 
-                                            class="form-control" name="password_confirmation" 
-                                            required autocomplete="new-password"
+                                        <input id="password-confirm" type="password" class="form-control"
+                                            name="password_confirmation" required autocomplete="new-password"
                                             placeholder="confirm password">
                                         <div class="input-group-append">
-                                            <span class="input-group-text bg-info cursor-pointer text-white" id="show_confirm_pass">
+                                            <span class="input-group-text bg-info cursor-pointer text-white"
+                                                id="show_confirm_pass">
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                             </span>
                                         </div>
@@ -181,6 +179,5 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('js/password-toggle.js') }}"></script>
+    <script src="{{ asset('js/password-toggle.js') }}"></script>
 @endsection
-

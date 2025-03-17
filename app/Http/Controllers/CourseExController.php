@@ -12,6 +12,8 @@ use App\Rules\IsScriptAttack;
 use Exception;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use App\Classes\LyskillsCarbon;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\File as FacadesFile;
 
 class CourseExController extends Controller
 {
@@ -62,11 +64,12 @@ class CourseExController extends Controller
         $d = ['course' => $course_name, 'cert_no' => $cert_no, 'date' => $date, 'name' => auth()->user()->name];
 
         $path = asset('img/certificate.jpg');
-
-        $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
-        $img = 'data:image/' . $type . ';base64,' . base64_encode($data);
-        $d['img'] = $img;
+        if(FacadesFile::exists($path)){
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $img = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $d['img'] = $img;
+        }
         return PDF::loadView("course.certificate", $d)->setPaper('a4', 'landscape')->setWarnings(false)->stream('certificate.pdf');
     }
 
@@ -172,7 +175,7 @@ class CourseExController extends Controller
         try {
             $course_id = $course;
             $course = Course::where("id", $course_id)->first();
-            if (!empty($course)) {
+            if (!empty($course) && auth()->id() == $course->user_id) {
                 $set_free = !empty($request->set_free) ? 1 : 0;
                 Media::where("course_id", $course_id)->update(["is_download" => $set_free]);
                 $debug = "";
@@ -193,7 +196,7 @@ class CourseExController extends Controller
             }
         } catch (Exception $e) {
             if (config("app.debug")) {
-                dd($e->getMessage());
+                debug_logs($e->getMessage());
             } else {
                 return response()->json([
                     'err' => config("setting.err_msg", 400),

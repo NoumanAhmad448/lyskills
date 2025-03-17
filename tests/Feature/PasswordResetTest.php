@@ -9,16 +9,36 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Course;
+use Illuminate\Support\Facades\Storage;
 
 class PasswordResetTest extends TestCase
 {
-    use RefreshDatabase;
+
+    use RefreshDatabase, WithFaker;
+
+    protected $student;
+    protected $course;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Storage::fake('public');
+
+        $this->student = User::factory()->create();
+        $instructor = User::factory()->create(['is_instructor' => 1]);
+
+        $this->course = Course::factory()->create([
+            'user_id' => $instructor->id
+        ]);
+    }
 
     /** @test */
     public function user_can_view_password_reset_request_form()
     {
         $response = $this->get(route('password.request'));
-        
+
         $response->assertStatus(200);
         $response->assertViewIs('auth.forgot-password');
     }
@@ -144,4 +164,4 @@ class PasswordResetTest extends TestCase
 
         $response->assertSessionHasErrors('email');
     }
-} 
+}

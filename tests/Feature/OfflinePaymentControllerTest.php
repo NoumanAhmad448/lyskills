@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Course;
-use App\Models\OfflinePayment;
 use App\Models\Pricing;
 use App\Models\Setting as ModelsSetting;
 use Illuminate\Http\UploadedFile;

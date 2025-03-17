@@ -5,13 +5,13 @@
                 <h1 class="pb-5 font-semibold text-xl text-gray-600">{{ __('messages.mprofile') }}</h1>
                 <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
                     @include(config('files.forms') . 'my_profile')
-                    @cannot (config("policy.is_super_admin"))
-                        @can(config("policy.has_not_id"))
+                    @cannot(config('policy.is_super_admin'))
+                        @can(config('policy.has_not_id'))
                             @include(config('files.forms') . 'col', [
-                                config("vars.input") => config('files.forms') . 'submit',
-                                config("vars.move_btn_right") => true,
-                                config('vars.id') => config("table.SubmitButton"),
-                                config('vars.text') => __("label.SubmitButton"),
+                                config('vars.input') => config('files.forms') . 'submit',
+                                config('vars.move_btn_right') => true,
+                                config('vars.id') => config('table.SubmitButton'),
+                                config('vars.text') => __('label.SubmitButton'),
                             ])
                         @endcan
                     @else

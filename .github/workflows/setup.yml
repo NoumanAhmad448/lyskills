@@ -159,16 +159,21 @@ jobs:
 
         - name: Run Tests
           run: |
-            # APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest -v
-            APP_ENV=testing php artisan test --filter CommandsTest -v
-            APP_ENV=testing php artisan test --filter AdminPageControllerTest -v
-            APP_ENV=testing php artisan test --filter AdminControllerTest -v
-            App_ENV=testing php artisan test --filter AnalyticsControllerTest -v
-            APP_ENV=testing php artisan test --filter AssignmentControllerTes -v
-            APP_ENV=testing php artisan test --filter BlogControllerTest -v
-            APP_ENV=testing php artisan test --filter CategoryControllerTest -v
-            APP_ENV=testing php artisan test --filter CommentControllerTest -v
-            APP_ENV=testing php artisan test --filter OfflinePaymentControllerTest -v
-            APP_ENV=testing php artisan test --filter CourseControllerTest -v
-            APP_ENV=testing php artisan test --filter CourseController1Test -v
+            # APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest
+            APP_ENV=testing php artisan test --filter CommandsTest
+            APP_ENV=testing php artisan test --filter AdminPageControllerTest
+            APP_ENV=testing php artisan test --filter AdminControllerTest
+            App_ENV=testing php artisan test --filter AnalyticsControllerTest
+            APP_ENV=testing php artisan test --filter AssignmentControllerTes
+            APP_ENV=testing php artisan test --filter BlogControllerTest
+            APP_ENV=testing php artisan test --filter CategoryControllerTest
+            APP_ENV=testing php artisan test --filter CommentControllerTest
+            APP_ENV=testing php artisan test --filter OfflinePaymentControllerTest
+            APP_ENV=testing php artisan test --filter CourseControllerTest
+            APP_ENV=testing php artisan test --filter CourseController1Test
+            APP_ENV=testing php artisan test --filter CourseController2Test
+            APP_ENV=testing php artisan test --filter PasswordResetTest
+            APP_ENV=testing php artisan test --filter PaymentControllerTest
+            APP_ENV=testing php artisan test --filter ProfileControllerTest
+            APP_ENV=testing php artisan test --filter ProgressControllerTest
           continue-on-error: true  # ✅ Allows pipeline to continue even if tests fail

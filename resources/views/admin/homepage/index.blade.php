@@ -7,7 +7,7 @@
         <div class="card-body">
             <form action="{{ route('admin.homepage.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                
+
                 <div class="form-group">
                     <h4>{{ __('homepage.titles.photo_section') }}</h4>
                     <div class="row">
@@ -18,12 +18,10 @@
                     </div>
                     <div class="mt-3">
                         <h5>{{ __('homepage.titles.current_photo') }}</h5>
-                        @if($settings && $settings->homepage_photo)
-                            <img src="{{ config('setting.s3Url').$settings->homepage_photo }}" 
-                                 class="img-fluid" 
-                                 style="max-height: 300px; box-shadow: 0px 10px 10px 3px #605f5b;" 
-                                 alt="{{ __('homepage.alt_text.homepage_photo') }}"
-                                 id="student_img"/>
+                        @if ($settings && $settings->homepage_photo)
+                            <img src="{{ config('setting.s3Url') . $settings->homepage_photo }}" class="img-fluid"
+                                style="max-height: 300px; box-shadow: 0px 10px 10px 3px #605f5b;"
+                                alt="{{ __('homepage.alt_text.homepage_photo') }}" id="student_img" />
                             <div class="mt-2">
                                 <small class="text-muted">
                                     {{ __('homepage.labels.original_filename') }}: {{ $settings->homepage_photo_name }}<br>
@@ -31,11 +29,9 @@
                                 </small>
                             </div>
                         @else
-                            <img src="{{ asset('img/student.jpg') }}" 
-                                 class="img-fluid" 
-                                 style="max-height: 300px; box-shadow: 0px 10px 10px 3px #605f5b;" 
-                                 alt="{{ __('homepage.alt_text.student') }}"
-                                 id="student_img"/>
+                            <img src="{{ asset('img/student.jpg') }}" class="img-fluid"
+                                style="max-height: 300px; box-shadow: 0px 10px 10px 3px #605f5b;"
+                                alt="{{ __('homepage.alt_text.student') }}" id="student_img" />
                         @endif
                     </div>
                 </div>
@@ -46,4 +42,4 @@
             </form>
         </div>
     </div>
-@endsection 
+@endsection

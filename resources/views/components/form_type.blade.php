@@ -1,4 +1,4 @@
 @php
-$method = $method ?? "PATCH";
+    $method = $method ?? 'PATCH';
 @endphp
 @method($method)

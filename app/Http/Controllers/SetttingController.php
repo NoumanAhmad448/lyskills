@@ -23,7 +23,7 @@ class SetttingController extends Controller
     public function lms_setting()
     {
         try {
-            $title = 'lms';
+            $title = config("app.name");
             $s =  Setting::first();
             return view('admin.setting.lms_setting', compact('title', 's'));
         } catch (\Throwable $th) {

@@ -1,10 +1,10 @@
 @component('mail::message')
-# hi nomi
+    # hi nomi
 
-This is just a testing email. Please ignore
-@component('mail::button', ['url' => 'www.google.com'])
-Button Text
-@endcomponent
+    This is just a testing email. Please ignore
+    @component('mail::button', ['url' => 'www.google.com'])
+        Button Text
+    @endcomponent
 
-Thanks,<br>
+    Thanks,<br>
 @endcomponent

@@ -5,13 +5,8 @@
 @endsection
 
 @section('content')
-    @livewire('bloggers',['users' => $users])
+    @livewire('bloggers', ['users' => $users])
 @endsection
 
-
 @section('page-js')
-
-  
-    
-
 @endsection

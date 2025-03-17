@@ -27,30 +27,11 @@ class CategoriesSeeder extends Seeder
             [
                 'name' => 'Marketing',
                 'value' => 'marketing'
-            ],
-            [
-                'name' => 'Design',
-                'value' => 'design'
-            ],
-            [
-                'name' => 'Development',
-                'value' => 'development'
-            ],
-            [
-                'name' => 'Finance',
-                'value' => 'finance'
-            ],
-            [
-                'name' => 'Health',
-                'value' => 'health'
-            ],
-            [
-                'name' => 'Music',
-                'value' => 'music'
             ]
         ];
 
         foreach ($categories as $category) {
+            dump($categories);
             Categories::create($category);
         }
     }
