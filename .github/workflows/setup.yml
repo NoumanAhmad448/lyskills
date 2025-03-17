@@ -175,4 +175,5 @@ jobs:
             APP_ENV=testing php artisan test --filter PasswordResetTest -v
             APP_ENV=testing php artisan test --filter PaymentControllerTest -v
             APP_ENV=testing php artisan test --filter ProfileControllerTest -v
+            APP_ENV=testing php artisan test --filter ProgressControllerTest -v
           continue-on-error: true  # ✅ Allows pipeline to continue even if tests fail
