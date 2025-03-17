@@ -22,12 +22,11 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
 {{-- should alway be in the end --}}
 <script>
     debug = '{{ config('app.debug') ? 1 : 0 }}';
     debug = debug == "1" ? true : false;
     let err_msg = '{{ config('setting.err_msg') }}';
 </script>
-<script src='{{ asset('js/common_functions.js')}}'></script>
+<script src='{{ asset('js/common_functions.js') }}'></script>
 {{-- should not include after this line --}}

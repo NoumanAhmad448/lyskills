@@ -8,14 +8,12 @@
         /*width: 100% !important;*/
     }
 
-
     .name {
         position: absolute;
         top: 200;
         left: 420;
         font-size: 1.4rem;
         text-transform: uppercase;
-
     }
 
     .course_name {
@@ -24,7 +22,6 @@
         left: 420;
         font-size: 1.4rem;
         text-transform: uppercase;
-
     }
 
     .cert_no {
@@ -42,7 +39,6 @@
         left: 370;
         font-size: 1.1rem;
         text-transform: uppercase;
-
     }
 
     .img {
@@ -50,10 +46,8 @@
         top: 0;
         left: 0;
         height: 100%;
-
     }
 </style>
-
 
 <div class="main">
     @if (isset($img))

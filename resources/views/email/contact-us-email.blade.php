@@ -1,24 +1,22 @@
 @component('mail::message')
-# HI 
+    # HI
 
-{{ $body ?? '' }}
+    {{ $body ?? '' }}
 
+    <div>
+        Name {{ $name ?? '' }}
+    </div>
+    <div>
+        Email {{ $email ?? '' }}
+    </div>
+    <div>
+        Mobile {{ $mobile ?? '' }}
+    </div>
+    <div>
+        Country
+        {{ $country ?? '' }}
+    </div>
 
-<div>
-    Name  {{$name ?? ''}} 
-</div>
-<div>
-    Email {{ $email ?? ''}} 
-</div>
-<div>
-    Mobile {{ $mobile ?? '' }}
-</div>
-<div>
-    Country 
-    {{ $country ?? ''   }}
-</div>
-    
-
-Thanks,<br>
-{{ config('app.name') }}
+    Thanks,<br>
+    {{ config('app.name') }}
 @endcomponent

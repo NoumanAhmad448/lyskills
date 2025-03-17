@@ -10,8 +10,8 @@
                 @if ($cron_jobs->count())
                     <div class="d-flex justify-content-end">
                         <a href="" class="btn btn-lg btn-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        Create Cron Job
-                    </a>
+                            Create Cron Job
+                        </a>
                     </div>
                     <div class="table-responsive mt-2">
                         <table class="table table-hover table-striped">
@@ -31,8 +31,7 @@
                                     <tr>
                                         @php $status = $cron_job->status; @endphp
                                         <td>
-                                            <form action=""
-                                                method="post">
+                                            <form action="" method="post">
                                                 @csrf
                                                 <input type="checkbox" name="status" class="change_status"
                                                     @if ($status === 'published') checked @endif />

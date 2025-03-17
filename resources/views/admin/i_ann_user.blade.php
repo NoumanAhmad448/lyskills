@@ -6,12 +6,12 @@
 @section('content')
     <x-create-notification>
         <section>
-            <h1> Create Notification 
+            <h1> Create Notification
             </h1>
-            <hr/>
+            <hr />
         </section>
         <x-slot name="createNotifcationForm">
-        <form action="{{route('p_info_user')}}" method="POST">                
+            <form action="{{ route('p_info_user') }}" method="POST">
                 @include('session_msg')
                 @csrf
                 @if ($errors->any())
@@ -24,21 +24,20 @@
                     </div>
                 @endif
                 <div class="form-group">
-                  <label for="message">Message </label>
-                  <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" rows="10"                  
-                  placeholder="Enter the message">{{old('message')}}</textarea>                                    
-                </div>                
+                    <label for="message">Message </label>
+                    <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" rows="10"
+                        placeholder="Enter the message">{{ old('message') }}</textarea>
+                </div>
                 <button type="submit" class="btn btn-primary"> Make Live </button>
-              </form>
+            </form>
         </x-slot>
-    </x-create-notification>    
+    </x-create-notification>
 @endsection
-
 
 @section('page-js')
     <script>
-        $(function(){
-            function makeVanish(){
+        $(function() {
+            function makeVanish() {
                 $('textarea').removeClass('is-invalid');
                 $('.alert').fadeOut();
             }
@@ -46,13 +45,9 @@
                 makeVanish();
             }, 10000);
 
-            $('textarea').click(function(){
+            $('textarea').click(function() {
                 makeVanish();
             })
         });
     </script>
 @endsection
-
-
-
-

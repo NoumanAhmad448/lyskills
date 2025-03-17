@@ -149,7 +149,6 @@
         </div>
     @endif
 
-
     <div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false" id="course-delete">
         <div class="modal-dialog">
             <div class="modal-content">

@@ -65,7 +65,7 @@
                         @endif
 
                         <div class="mt-2">
-                            Last updated {{ LyskillsCarbon::parse($course->updated_at,true) ?? '' }}
+                            Last updated {{ LyskillsCarbon::parse($course->updated_at, true) ?? '' }}
                         </div>
                         @if (!empty($total_en) && config('setting.course_enrollment_count'))
                             <div class="m2-1">
@@ -77,8 +77,6 @@
                                 Language: {{ $course->lang->name ?? '' }}
                             </div>
                         @endif
-
-
 
                         <div class="mt-2">
                             <section class="d-flex">
@@ -212,7 +210,7 @@
                     @if ($quizzes)
                         <div> {{ $quizzes }} Quizzes </div>
                     @endif
-                    @php 
+                    @php
                     $ass = $course->assignments->count(); @endphp
                     @if ($ass)
                         <div> {{ $ass }} Assignments </div>
@@ -352,8 +350,8 @@
                                             <div class="card-body">
                                                 @php
                                                     $lectures = Lecture::where('course_id', $course->id)
-                                                    ->where('sec_no', $sec->section_no)
-                                                    ->get();
+                                                        ->where('sec_no', $sec->section_no)
+                                                        ->get();
                                                 @endphp
                                                 @if ($lectures->count())
                                                     @foreach ($lectures as $lec)
@@ -483,7 +481,6 @@
                 </div>
             </div>
         @endif
-
 
         @if ($rating_avg)
             <section class="mb-5">
@@ -706,7 +703,6 @@
     </div>
     </div>
     </div>
-
 
     <div class="modal" tabindex="-1" id="course_share_modal" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">

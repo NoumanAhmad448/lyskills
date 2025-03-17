@@ -1,8 +1,8 @@
 <div>
-    
+
     <div> {{ $slot }} </div>
     {{ $create_notification }}
-    <hr/>
+    <hr />
     {{ $instructors }}
-    
+
 </div>

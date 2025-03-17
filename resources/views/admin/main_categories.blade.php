@@ -1,6 +1,5 @@
 @extends('admin.admin_main')
 
-
 @section('content')
     <h1> Categories </h1>
     <p> Create,edit, update, and delete your category </p>
@@ -45,8 +44,6 @@
                         </tr>
                     @endforeach
 
-
-
                 </tbody>
             </table>
         </div>
@@ -57,18 +54,13 @@
 
 @endsection
 
-
-
-
-
-
 @section('page-js')
     <script>
         $(function() {
             $('.del').click(function() {
                 if (confirm(
                         'Are you sure to delete this category? Deleting this category will delete all its sub categories as well'
-                        )) {
+                    )) {
                     $(this).parents('form').first().submit();
                 }
             });

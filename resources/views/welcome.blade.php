@@ -4,212 +4,242 @@ use App\Models\RatingModal;
 ?>
 @extends(config('setting.guest_blade'))
 @section('page-css')
-{{-- <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> --}}
+    {{-- <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" /> --}}
     <style>
         /* fix-height */
-        .fix-height{
-                height: 23rem !important;
+        .fix-height {
+            height: 23rem !important;
         }
+
         @media all and (max-width: 576px) {
-            .fix-height{
+            .fix-height {
                 height: 26rem !important;
             }
         }
     </style>
 @endsection
 @section('content')
-{{-- <section class="d-flex justify-content-center align-items-center loading-section">
+    {{-- <section class="d-flex justify-content-center align-items-center loading-section">
     <div id="loading" class="spinner-border text-info text-center" style="width: 90px; height: 90px" role="status">
         <span class="sr-only">Loading...</span>
     </div>
 </section> --}}
-@include('session_msg')
-@if(config("setting.homepage_image"))
-<div class="container-fluid mt-3">
-    <div class="row">
-        <div class="col-md-10 offset-md-1">
-            <section style="position: relative">
-                @php
-                    $settings = App\Models\Setting::first();
-                @endphp
-                <img src="{{ $settings && $settings->homepage_photo ? config('setting.s3Url').$settings->homepage_photo : asset('img/student.jpg') }}"
-                     alt="{{ __('homepage.alt_text.student') }}"
-                     class="img-fluid mx-auto d-block"
-                     id="student_img"
-                     style="box-shadow: 0px 10px 10px 3px #605f5b;"/>
-                <a href="{{route('register')}}"
-                   class="btn btn-outline-website d-none"
-                   style="position: absolute; top: 0;left: 0;">
-                    {{ __('homepage.buttons.instructor') }}
-                </a>
-            </section>
-        </div>
-    </div>
-</div>
-@endif
-
-@if(config("setting.show_courses_main_page"))
-    @if($courses && $courses->count())
-    <div class="container-fluid my-5">
-        @if(config("setting.main_courses_heading"))
-            <h2>{{ __('homepage.courses.available') }}</h2>
-        @endif
-        <div class="d-flex justify-content-end">
-            <a href="{{route('show-all-courses')}}" class="btn btn-website btn-lg">{{ __('homepage.courses.all') }}</a>
-        </div>
-        <div class="row mt-2 row-cols-md-5">
-            @foreach ($courses as $course)
-            <div class="col-12 col-md mt-2">
-                @if($course->slug)
-                <div class="card fix-height" style="box-shadow: 0px 1px 1px 1px #bbb8af;">
-                    <a href="{{route('user-course', ['slug' => $course->slug])}}">
-                        @if($course->course_image) <img class="card-img-top img-fluid"
-                            src="{{config('setting.s3Url').$course->course_image->image_path}}"
-                            alt="{{ $course->course_image->image_name }}"> @endif
-                    </a>
-
-                    @php
-                        $rating_avg = (float) RatingModal::where('course_id',$course->id)->avg('rating');
-                        $rated_by_students = (int) RatingModal::where('course_id',$course->id)->count('rating');
-                    @endphp
-
-
-                    {{-- <div class="card-body" style="/height: 180px"> --}}
-                    <div class="card-body" style="height: 150px">
-                        <h5 class="card-title font-bold text-capitalize" style="font-size: 1.1rem;font-weight:bold"> {{ reduceCharIfAv($course->course_title ?? '', 40)}} </h5>
-                        <a href="{{route('user-course', $course->slug ?? '')}}#profile" class="card-text text-capitalize mb-0 mt-1"><span class=""> {{ reduceWithStripping($course->user->name ?? 0,20) ?? '' }} </span>
+    @include('session_msg')
+    @if (config('setting.homepage_image'))
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <section style="position: relative">
+                        @php
+                            $settings = App\Models\Setting::first();
+                        @endphp
+                        <img src="{{ $settings && $settings->homepage_photo ? config('setting.s3Url') . $settings->homepage_photo : asset('img/student.jpg') }}"
+                            alt="{{ __('homepage.alt_text.student') }}" class="img-fluid mx-auto d-block" id="student_img"
+                            style="box-shadow: 0px 10px 10px 3px #605f5b;" />
+                        <a href="{{ route('register') }}" class="btn btn-outline-website d-none"
+                            style="position: absolute; top: 0;left: 0;">
+                            {{ __('homepage.buttons.instructor') }}
                         </a>
-                        <p class="mb-0 mt-1 @if($course->categories_selection == 'it') {{ 'text-uppercase' }} @else {{ 'text-capitalize'}} @endif">  {{ reduceWithStripping($course->categories_selection,20) ?? '' }} </p>
-                        @if($rating_avg)
-                        <div class="d-flex align-items-center">
-                            <section id="rating" class="d-flex align-items-center" style="cursor: pointer">
-                                ({{round($rating_avg,2)}})
-                                <span class="fa fa-star  @if($rating_avg >= 1) {{'text-warning'}}  @endif" no="1"></span>
-                                <span class="fa fa-star ml-1  @if($rating_avg >= 2) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="2"></span>
-                                <span class="fa fa-star ml-1  @if($rating_avg >= 3) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="3"></span>
-                                <span class="fa fa-star ml-1  @if($rating_avg >= 4) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="4"></span>
-                                <span class="fa fa-star ml-1  @if($rating_avg >= 5) {{'text-warning'}}  @endif" style="text-size: 1.3rem;" no="5"></span>
-                                <span class="ml-1">( {{ $rated_by_students}} )</span>
-                            </section>
-                        </div>
-                        @endif
-                        <p class="card-text text-capitalize  mb-0  mt-1 d-flex font-bold"> @if($course?->price?->is_free)
-                            {{ __('homepage.courses.free') }}
-                            @else <span style="font-weight:bold"> ${{ $course?->price?->pricing ?? '' }} </span>
-                            @php $total_p = ((int)$course?->price?->pricing)+20 @endphp
-                            <del class="ml-2"> ${{ $total_p }} </del>
-                            @endif
-                        </p>
-                    </div>
+                    </section>
                 </div>
+            </div>
+        </div>
+    @endif
+
+    @if (config('setting.show_courses_main_page'))
+        @if ($courses && $courses->count())
+            <div class="container-fluid my-5">
+                @if (config('setting.main_courses_heading'))
+                    <h2>{{ __('homepage.courses.available') }}</h2>
                 @endif
-            </div>
-            @endforeach
-        </div>
-        <div class="d-flex justify-content-end my-3">
-            <a href="{{route('show-all-courses')}}" class="btn btn-website btn-lg">{{ __('homepage.courses.next') }}</a>
-        </div>
-    </div>
-    @endif
-@endif
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('show-all-courses') }}"
+                        class="btn btn-website btn-lg">{{ __('homepage.courses.all') }}</a>
+                </div>
+                <div class="row mt-2 row-cols-md-5">
+                    @foreach ($courses as $course)
+                        <div class="col-12 col-md mt-2">
+                            @if ($course->slug)
+                                <div class="card fix-height" style="box-shadow: 0px 1px 1px 1px #bbb8af;">
+                                    <a href="{{ route('user-course', ['slug' => $course->slug]) }}">
+                                        @if ($course->course_image)
+                                            <img class="card-img-top img-fluid"
+                                                src="{{ config('setting.s3Url') . $course->course_image->image_path }}"
+                                                alt="{{ $course->course_image->image_name }}">
+                                        @endif
+                                    </a>
 
-@if(config("setting.all_categories"))
-    @if(isset($cs) && $cs->count())
-    <div class="container-fluid my-4">
-        <h2>{{ __('homepage.categories.title') }}</h2>
-        <div class="row my-2">
-            @foreach ($cs as $c )
-            <div class="col-md-3 mt-3">
-                <div class="card text-center">
-                    <a href="{{ route('user-categories',['category' => $c->value]) }}" class="p-3 btn-website font-bold" style="font-weight: bold">
-                        {{ $c->name ?? "" }}
-                    </a>
+                                    @php
+                                        $rating_avg = (float) RatingModal::where('course_id', $course->id)->avg(
+                                            'rating',
+                                        );
+                                        $rated_by_students = (int) RatingModal::where('course_id', $course->id)->count(
+                                            'rating',
+                                        );
+                                    @endphp
+
+                                    {{-- <div class="card-body" style="/height: 180px"> --}}
+                                    <div class="card-body" style="height: 150px">
+                                        <h5 class="card-title font-bold text-capitalize"
+                                            style="font-size: 1.1rem;font-weight:bold">
+                                            {{ reduceCharIfAv($course->course_title ?? '', 40) }} </h5>
+                                        <a href="{{ route('user-course', $course->slug ?? '') }}#profile"
+                                            class="card-text text-capitalize mb-0 mt-1"><span class="">
+                                                {{ reduceWithStripping($course->user->name ?? 0, 20) ?? '' }} </span>
+                                        </a>
+                                        <p
+                                            class="mb-0 mt-1 @if ($course->categories_selection == 'it') {{ 'text-uppercase' }} @else {{ 'text-capitalize' }} @endif">
+                                            {{ reduceWithStripping($course->categories_selection, 20) ?? '' }} </p>
+                                        @if ($rating_avg)
+                                            <div class="d-flex align-items-center">
+                                                <section id="rating" class="d-flex align-items-center"
+                                                    style="cursor: pointer">
+                                                    ({{ round($rating_avg, 2) }})
+                                                    <span
+                                                        class="fa fa-star  @if ($rating_avg >= 1) {{ 'text-warning' }} @endif"
+                                                        no="1"></span>
+                                                    <span
+                                                        class="fa fa-star ml-1  @if ($rating_avg >= 2) {{ 'text-warning' }} @endif"
+                                                        style="text-size: 1.3rem;" no="2"></span>
+                                                    <span
+                                                        class="fa fa-star ml-1  @if ($rating_avg >= 3) {{ 'text-warning' }} @endif"
+                                                        style="text-size: 1.3rem;" no="3"></span>
+                                                    <span
+                                                        class="fa fa-star ml-1  @if ($rating_avg >= 4) {{ 'text-warning' }} @endif"
+                                                        style="text-size: 1.3rem;" no="4"></span>
+                                                    <span
+                                                        class="fa fa-star ml-1  @if ($rating_avg >= 5) {{ 'text-warning' }} @endif"
+                                                        style="text-size: 1.3rem;" no="5"></span>
+                                                    <span class="ml-1">( {{ $rated_by_students }} )</span>
+                                                </section>
+                                            </div>
+                                        @endif
+                                        <p class="card-text text-capitalize  mb-0  mt-1 d-flex font-bold">
+                                            @if ($course?->price?->is_free)
+                                                {{ __('homepage.courses.free') }}
+                                            @else
+                                                <span style="font-weight:bold"> ${{ $course?->price?->pricing ?? '' }}
+                                                </span>
+                                                @php $total_p = ((int)$course?->price?->pricing)+20 @endphp
+                                                <del class="ml-2"> ${{ $total_p }} </del>
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+                <div class="d-flex justify-content-end my-3">
+                    <a href="{{ route('show-all-courses') }}"
+                        class="btn btn-website btn-lg">{{ __('homepage.courses.next') }}</a>
                 </div>
             </div>
-            @endforeach
-        </div>
-    </div>
+        @endif
     @endif
-@endif
 
-@if(config("setting.all_posts"))
-    @if (isset($post) && $post)
+    @if (config('setting.all_categories'))
+        @if (isset($cs) && $cs->count())
+            <div class="container-fluid my-4">
+                <h2>{{ __('homepage.categories.title') }}</h2>
+                <div class="row my-2">
+                    @foreach ($cs as $c)
+                        <div class="col-md-3 mt-3">
+                            <div class="card text-center">
+                                <a href="{{ route('user-categories', ['category' => $c->value]) }}"
+                                    class="p-3 btn-website font-bold" style="font-weight: bold">
+                                    {{ $c->name ?? '' }}
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+    @endif
+
+    @if (config('setting.all_posts'))
+        @if (isset($post) && $post)
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('all_public_posts') }}"
+                                class="btn btn-lg btn-website">{{ __('homepage.posts.all') }}</a>
+                        </div>
+                    </div>
+                    <div class="col-md-8 offset-md-2">
+                        <h2 class="my-2">{{ __('homepage.posts.recent') }}</h2>
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                <img src="{{ config('setting.s3Url') . $post->upload_img }}" alt="{{ $post->f_name ?? '' }}"
+                                    class="img-fluid" />
+                            </div>
+                        </div>
+                        <h3 class="text-center mt-2 text-uppercase">
+                            {{ $post->title }}
+                        </h3>
+                        <div class="mt-2">
+                            {!! reduceWithStripping($post->message, 300) !!}
+                        </div>
+                        <a href="{{ route('public_posts', ['slug' => $post->slug]) }}"
+                            class="btn btn-website my-2 float-right">{{ __('homepage.posts.read_more') }}</a>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endif
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="d-flex justify-content-end">
-                    <a href="{{route('all_public_posts')}}" class="btn btn-lg btn-website">{{ __('homepage.posts.all') }}</a>
-                </div>
+        <div class="jumbotron bg-website text-white my-2 text-center">
+            <h2>{{ __('homepage.instructor.title') }}</h2>
+            <div class="my-1">
+                {{ __('homepage.instructor.description') }}
             </div>
-            <div class="col-md-8 offset-md-2">
-                <h2 class="my-2">{{ __('homepage.posts.recent') }}</h2>
+            <a href="{{ route('instructor.register') }}" class="btn btn-website border">
+                {{ __('homepage.instructor.cta') }}
+            </a>
+        </div>
+    </div>
+    @if (config('setting.all_faqs'))
+        @if (isset($faq) && $faq)
+            <div class="container-fluid my-3">
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('public_faq') }}"
+                                class="btn btn-lg btn-website">{{ __('homepage.faq.all') }}</a>
+                        </div>
+                    </div>
                     <div class="col-md-8 offset-md-2">
-                        <img src="{{config('setting.s3Url').$post->upload_img}}" alt="{{$post->f_name ?? '' }}"
-                            class="img-fluid" />
+                        <h2 class="my-2">{{ __('homepage.faq.recent') }}</h2>
+                        <div class="row">
+                            <div class="col-md-8 offset-md-2">
+                                <img src="{{ config('setting.s3Url') . $faq->upload_img }}" alt="{{ $faq->f_name ?? '' }}"
+                                    class="img-fluid" />
+                            </div>
+                        </div>
+                        <h3 class="text-center mt-2 text-uppercase">
+                            {{ $faq->title }}
+                        </h3>
+                        <div class="mt-2">
+                            {!! reduceWithStripping($faq->message, 300) !!}
+                        </div>
+                        <a href="{{ route('public_faqs', ['slug' => $faq->slug]) }}"
+                            class="btn btn-website my-2 float-right">
+                            {{ __('homepage.faq.read_more') }}
+                        </a>
                     </div>
                 </div>
-                <h3 class="text-center mt-2 text-uppercase">
-                    {{ $post->title }}
-                </h3>
-                <div class="mt-2">
-                    {!! reduceWithStripping($post->message,300) !!}
-                </div>
-                <a href="{{route('public_posts',['slug' => $post->slug])}}" class="btn btn-website my-2 float-right">{{ __('homepage.posts.read_more') }}</a>
             </div>
-        </div>
-    </div>
+        @endif
     @endif
-@endif
-<div class="container-fluid">
-    <div class="jumbotron bg-website text-white my-2 text-center">
-        <h2>{{ __('homepage.instructor.title') }}</h2>
-        <div class="my-1">
-            {{ __('homepage.instructor.description') }}
-        </div>
-        <a href="{{ route('instructor.register') }}" class="btn btn-website border">
-            {{ __('homepage.instructor.cta') }}
-        </a>
-    </div>
-</div>
-@if(config("setting.all_faqs"))
-    @if (isset($faq) && $faq)
-    <div class="container-fluid my-3">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="d-flex justify-content-end">
-                    <a href="{{route('public_faq')}}" class="btn btn-lg btn-website">{{ __('homepage.faq.all') }}</a>
-                </div>
-            </div>
-            <div class="col-md-8 offset-md-2">
-                <h2 class="my-2">{{ __('homepage.faq.recent') }}</h2>
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <img src="{{config('setting.s3Url').$faq->upload_img}}" alt="{{$faq->f_name ?? '' }}" class="img-fluid" />
-                    </div>
-                </div>
-                <h3 class="text-center mt-2 text-uppercase">
-                    {{ $faq->title }}
-                </h3>
-                <div class="mt-2">
-                    {!! reduceWithStripping($faq->message,300) !!}
-                </div>
-                <a href="{{route('public_faqs',['slug' => $faq->slug])}}" class="btn btn-website my-2 float-right">
-                    {{ __('homepage.faq.read_more') }}
-                </a>
-            </div>
-        </div>
-    </div>
-    @endif
-@endif
 @endsection
 
-
 @section('script')
-    @if(config('setting.aos_js'))
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    @if (config('setting.aos_js'))
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
         <script>
             AOS.init();
-    </script>
+        </script>
     @endif
 @endsection

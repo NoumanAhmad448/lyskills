@@ -13,7 +13,7 @@
                 <button type="button"
                     class="bg-blue-500 rounded-2xl mt-3 hover:bg-blue-700 text-white font-semibold py-2
                         px-4 border border-gray-400 shadow">
-                    <a href="{{ route('land_create') }}"> {{__("messages.reg_land") }} </a>
+                    <a href="{{ route('land_create') }}"> {{ __('messages.reg_land') }} </a>
                 </button>
             @endif
         </div>

@@ -16,12 +16,12 @@
     <label for="{{ config('form.email') }}" class="mb-2.5 block font-medium text-black dark:text-white">
         {{ __('label.EmailAddress') }}</label>
     <div class="relative">
-        <input type="email" placeholder="{{ __('label.EmailAddressSample') }}"
-            name="{{ config('form.email') }}" id="{{ config('form.email') }}"
+        <input type="email" placeholder="{{ __('label.EmailAddressSample') }}" name="{{ config('form.email') }}"
+            id="{{ config('form.email') }}"
             class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
 
         <span class="absolute right-4 top-4">
-            @include(config("files.components").'.email_svg')
+            @include(config('files.components') . '.email_svg')
         </span>
     </div>
 
