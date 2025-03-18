@@ -83,134 +83,135 @@
                                 {{-- prettier-ignore --}}
 
                                 @if ($course->slug)
-                                    </a>
-                                @endif
-                                <div style="font-size: 0.9rem" class="mt-2 "> <a target="_blank"
-                                        href="{{ route('laoshi_de_c', ['course' => $course->id]) }}"
-                                        class="text-primary">Comments</a></div>
-                            </h4>
-                        </div>
-                        <div class="col-md-1 d-flex align-items-center ">
-                            @php
-                                $status = $course->status;
-                            @endphp
-                            <div
-                                class="badge @if ($status == 'draft') {{ __('badge-warning') }} 
+                                </a>
+        @endif
+        <div style="font-size: 0.9rem" class="mt-2 "> <a target="_blank"
+                href="{{ route('laoshi_de_c', ['course' => $course->id]) }}" class="text-primary">Comments</a></div>
+        </h4>
+    </div>
+    <div class="col-md-1 d-flex align-items-center ">
+        @php
+            $status = $course->status;
+        @endphp
+        <div
+            class="badge @if ($status == 'draft') {{ __('badge-warning') }} 
                                     @elseif($status == 'published') {{ __('badge-success') }}
                                     @elseif($status == 'unpublished') {{ __('badge-danger') }}
                                     @elseif($status == 'pending') {{ __('badge-info') }} 
                                     @elseif($status == 'block') {{ __('badge-danger') }} @endif">
-                                {{ $status ?? '' }} </div>
-                        </div>
+            {{ $status ?? '' }} </div>
+    </div>
 
-                        <div class="col-md-3 d-flex align-items-center">
-                            <a class="mt-2 ml-0 ml-md-3 btn btn-primary edit"
-                                href="{{ route('landing_page', ['course' => $course_id]) }}" data-toggle="tooltip"
-                                data-placement="top" title="Edit Course"> <i class="las la-pen"></i> Edit </a>
-                            <form action="{{ route('course_delete', ['course_id' => $course_id]) }}" method="post"
-                                class="course_delete_form f_{{ $course_id }}">
-                                @csrf
-                                @method('delete')
+    <div class="col-md-3 d-flex align-items-center">
+        <a class="mt-2 ml-0 ml-md-3 btn btn-primary edit" href="{{ route('landing_page', ['course' => $course_id]) }}"
+            data-toggle="tooltip" data-placement="top" title="Edit Course"> <i class="las la-pen"></i> Edit </a>
+        <form action="{{ route('course_delete', ['course_id' => $course_id]) }}" method="post"
+            class="course_delete_form f_{{ $course_id }}">
+            @csrf
+            @method('delete')
 
-                                <a class="mt-2 ml-3 btn btn-danger delete_course" id="f_{{ $course_id }}"
-                                    data-toggle="tooltip" data-placement="top" title="Delete Course"><i
-                                        class="las la-trash-alt"></i> Delete </a>
-                            </form>
-                        </div>
+            <a class="mt-2 ml-3 btn btn-danger delete_course" id="f_{{ $course_id }}" data-toggle="tooltip"
+                data-placement="top" title="Delete Course"><i class="las la-trash-alt"></i> Delete </a>
+        </form>
+    </div>
 
-                        @if ($course->status == 'draft')
-                            <div class="col-md-2 mt-4 pt-3">
-                                @php
-                                    $c_status = CourseStatus::where('course_id', $course->id)->first();
-                                    if (isset($c_status)) {
-                                        $progress = 0;
-                                        $progress =
-                                            (int) $c_status->target_ur_students +
-                                            (int) $c_status->curriculum +
-                                            (int) $c_status->landing_page +
-                                            (int) $c_status->pricing +
-                                            (int) $c_status->message +
-                                            (int) $c_status->course_img +
-                                            (int) $c_status->course_video;
-                                    }
-                                @endphp
-                                @if (!empty($progress))
-                                    <div class="progress">
-                                        <div class="progress-bar @if ($progress != 100) {{ __('progress-bar-striped') }} @endif  progress-bar-animated
+    @if ($course->status == 'draft')
+        <div class="col-md-2 mt-4 pt-3">
+            @php
+                $c_status = CourseStatus::where('course_id', $course->id)->first();
+                if (isset($c_status)) {
+                    $progress = 0;
+                    $progress =
+                        (int) $c_status->target_ur_students +
+                        (int) $c_status->curriculum +
+                        (int) $c_status->landing_page +
+                        (int) $c_status->pricing +
+                        (int) $c_status->message +
+                        (int) $c_status->course_img +
+                        (int) $c_status->course_video;
+                }
+            @endphp
+            @if (!empty($progress))
+                <div class="progress">
+                    <div class="progress-bar @if ($progress != 100) {{ __('progress-bar-striped') }} @endif  progress-bar-animated
                                          @if ($progress == 100) {{ __('bg-info') }} @endif"
-                                            role="progressbar" aria-valuenow="{{ $progress }}" aria-valuemin="0"
-                                            aria-valuemax="100" style="width: {{ $progress }}%"> {{ $progress }}%
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @elseif($course->status == 'pending')
-                            <div class="col-md-3 d-flex justify-content-center align-items-center flex-column">
-                                Submitted at : {{ $course->updated_at }}
-                            </div>
-                        @else
-                            <div class="col-md-3 d-flex justify-content-center align-items-center flex-column">
-                                @php
-                                    $m_en = CourseEnrollment::where('course_id', $course->id)
-                                        ->whereMonth('created_at', LyskillsCarbon::currentMonth())
-                                        ->whereYear('created_at', LyskillsCarbon::currentYear())
-                                        ->count();
-                                    $m_ear = InstructorEarning::where('course_id', $course->id)
-                                        ->whereMonth('created_at', LyskillsCarbon::currentMonth())
-                                        ->whereYear('created_at', LyskillsCarbon::currentYear())
-                                        ->sum('earning');
-
-                                @endphp
-                                @if ($m_en)
-                                    <div class="text-success"> This month Enrollment {{ $m_en }} </div>
-                                @endif
-                                @if ($m_ear)
-                                    <div class="text-success"> This month Income ${{ $m_ear }} </div>
-                                @endif
-                            </div>
-                        @endif
-                    </div>
-
-                </div>
-
-            </div>
-        @endforeach
-        <div class="container mb-3">
-            {{ $courses->links() }}
-        </div>
-
-        {{-- course delete modal  --}}
-        <div class="modal" tabindex="-1" id="course_delete">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-static-website">
-                        <h5 class="modal-title font-weight-bold">Delete the Course?</h5>
-                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body ">
-                        <div> You ara about to delete the course.Deleting it will delete all the videos, quizzes, assignment
-                            and
-                            all other content from the website.
-                        </div>
-                        <div class="text-danger">
-                            If we find any student enrolled in your course, you will not be able to delete it because we
-                            promise our students to provide them course content for life time.
-                        </div>
-
-                        <hr>
-                        <div> For more information, Please check our <a href=""> Policy </a> </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="las la-times"></i>
-                            Cancel </button>
-                        <button type="button" class="btn btn-danger delete"> <i class="las la-trash-alt"></i> Delete
-                        </button>
+                        role="progressbar" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"
+                        style="width: {{ $progress }}%"> {{ $progress }}%
                     </div>
                 </div>
+            @endif
+        </div>
+    @elseif($course->status == 'pending')
+        <div class="col-md-3 d-flex justify-content-center align-items-center flex-column">
+            Submitted at : {{ $course->updated_at }}
+        </div>
+    @else
+        <div class="col-md-3 d-flex justify-content-center align-items-center flex-column">
+            {{-- prettier-ignore --}}
+
+            @php
+            $m_en = CourseEnrollment::where('course_id', $course->id)
+            ->whereMonth('created_at', LyskillsCarbon::currentMonth())
+            ->whereYear('created_at', LyskillsCarbon::currentYear())
+            ->count();
+            $m_ear = InstructorEarning::where('course_id', $course->id)
+            ->whereMonth('created_at', LyskillsCarbon::currentMonth())
+            ->whereYear('created_at', LyskillsCarbon::currentYear())
+            ->sum('earning');
+
+            @endphp
+            {{-- prettier-ignore --}}
+
+            @if ($m_en)
+            <div class="text-success"> This month Enrollment {{ $m_en }} </div>
+    @endif
+    @if ($m_ear)
+        <div class="text-success"> This month Income ${{ $m_ear }} </div>
+    @endif
+    </div>
+    @endif
+    </div>
+
+    </div>
+
+    </div>
+    @endforeach
+    <div class="container mb-3">
+        {{ $courses->links() }}
+    </div>
+
+    {{-- course delete modal  --}}
+    <div class="modal" tabindex="-1" id="course_delete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-static-website">
+                    <h5 class="modal-title font-weight-bold">Delete the Course?</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body ">
+                    <div> You ara about to delete the course.Deleting it will delete all the videos, quizzes, assignment
+                        and
+                        all other content from the website.
+                    </div>
+                    <div class="text-danger">
+                        If we find any student enrolled in your course, you will not be able to delete it because we
+                        promise our students to provide them course content for life time.
+                    </div>
+
+                    <hr>
+                    <div> For more information, Please check our <a href=""> Policy </a> </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="las la-times"></i>
+                        Cancel </button>
+                    <button type="button" class="btn btn-danger delete"> <i class="las la-trash-alt"></i> Delete
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
 
     </div>
 @endsection

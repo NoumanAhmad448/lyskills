@@ -10,25 +10,25 @@
             <div class="row">
 
                 @foreach ($media as $m)
-                                        {{-- prettier-ignore --}}
+                    {{-- prettier-ignore --}}
 
                     @php
                     $path = asset('storage/' . $m->lec_name);
                     @endphp
-                        {{-- prettier-ignore --}}
+                    {{-- prettier-ignore --}}
 
                     <div class="col-md-4">
-                        <video class="w-100" controls>
-                            <source src="{!! $path !!}" type="{!! $m->f_mimetype !!}">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                @endforeach
-            @else
-                <div class="jumbotron text-center">
-                    <h3> No Data Found </h3>
-                    <p> No one has uploaded any video yet </p>
-                </div>
+                    <video class="w-100" controls>
+                        <source src="{!! $path !!}" type="{!! $m->f_mimetype !!}">
+                        Your browser does not support the video tag.
+                    </video>
+            </div>
+    @endforeach
+@else
+    <div class="jumbotron text-center">
+        <h3> No Data Found </h3>
+        <p> No one has uploaded any video yet </p>
+    </div>
     @endif
     </div>
     </div>

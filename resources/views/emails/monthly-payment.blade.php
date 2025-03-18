@@ -3,10 +3,14 @@
 
     We have sent you your monthly payment. Please check our website for further information.
     Your {{ $email }} has registered on our website.
-    @component('mail::button', ['url' => '{{ config('app.url') }}'])
-        {{ config('app.name') }}
-    @endcomponent
+    {{-- prettier-ignore --}}
 
-    Thanks,<br>
-    {{ config('app.name') }}
+    @component('mail::button', ['url' => '{{ config('app.url') }}'])
+    {{-- prettier-ignore --}}
+
+        {{ config('app.name') }}
+@endcomponent
+
+Thanks,<br>
+{{ config('app.name') }}
 @endcomponent

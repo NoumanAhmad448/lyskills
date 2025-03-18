@@ -73,19 +73,19 @@
                             <select class="js-example-responsive js-states form-control" id="lang" name="lang"
                                 style="height: 2rem !important">
                                 <option value=""> Select Language </option>
-                                                        {{-- prettier-ignore --}}
+                                {{-- prettier-ignore --}}
 
                                 @php
                                 $langs = LanguageModal::select('id', 'name')->get();
                                 @endphp
-                                                        {{-- prettier-ignore --}}
+                                {{-- prettier-ignore --}}
 
                                 @if (isset($langs) && $langs)
-                                    @foreach ($langs as $lang)
-                                        <option value="{{ $lang->id ?? null }}"
-                                            @if (isset($course) && $course->lang_id === $lang->id) {{ __('selected') }} @endif>
-                                            {{ $lang->name ?? null }} </option>
-                                    @endforeach
+                                @foreach ($langs as $lang)
+                                    <option value="{{ $lang->id ?? null }}"
+                                        @if (isset($course) && $course->lang_id === $lang->id) {{ __('selected') }} @endif>
+                                        {{ $lang->name ?? null }} </option>
+                                @endforeach
                                 @endif
                             </select>
                         </div>
@@ -111,14 +111,19 @@
             <div class="mb-2"> Course Image (size 600x590)</div>
             <div class="row">
                 <div class="col-md-6">
-                    @php$course_img = $course->course_image;
-                                                                                                                                                                        $path = null;
-                                                                                                                                                                        if ($course_img) {
-                                                                                                                                                                            $path = $course_img->image_path;
-                                                                                                                                                                        }
-                                                                                                                                            @endphp 
+                    {{-- prettier-ignore --}}
+
+                    @php
+                    $course_img = $course->course_image;
+                    $path = null;
+                    if ($course_img) {
+                    $path = $course_img->image_path;
+                    }
+                    @endphp
+                    {{-- prettier-ignore --}}
+
                     <img src="@if ($path) {{ config('setting.s3Url') . $path }} @else {{ asset('img/thumbnail.jpg') }} @endif"
-                        alt="Course Thumbnail" class="img-fluid course_img" width="750" height="450" />
+                    alt="Course Thumbnail" class="img-fluid course_img" width="750" height="450" />
                 </div>
                 <div class="col-md-6">
                     <section class="d-flex justify-content-center align-items-center flex-column h-100">
