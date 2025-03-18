@@ -89,599 +89,632 @@
                             ->get();
 
                             @endphp
-                            {{-- prettier-ignore --}}
+                            {{-- prettier-ignore-end --}}
 
                             @if ($lecs->count())
-                            @foreach ($lecs as $lec)
-                                {{-- prettier-ignore --}}
+                                @foreach ($lecs as $lec)
+                                    {{-- prettier-ignore --}}
 
                                     @php
-                                $lec_id = $lec->id;
-                                $media = $lec->media;
-                                $desc = Description::where('lecture_id', $lec_id)->first();
-                                $res = $lec->res_vid;
-                                $article = $lec->article;
-                                $ex_res = $lec->ex_res;
-                                $other_file = $lec->other_file;
-                                $should_show_res = $res || $article || $ex_res || $other_file;
+                                    $lec_id = $lec->id;
+                                    $media = $lec->media;
+                                    $desc = Description::where('lecture_id', $lec_id)->first();
+                                    $res = $lec->res_vid;
+                                    $article = $lec->article;
+                                    $ex_res = $lec->ex_res;
+                                    $other_file = $lec->other_file;
+                                    $should_show_res = $res || $article || $ex_res || $other_file;
 
-                                $assigns = $lec->assign;
-                                $quizzs = $lec->quizzs;
+                                    $assigns = $lec->assign;
+                                    $quizzs = $lec->quizzs;
 
-                                @endphp
-                                {{-- prettier-ignore --}}
+                                    @endphp
+                                    {{-- prettier-ignore-end --}}
 
                                     <div class="mt-3 container lecture_container bg-white p-3 border">
 
-                                <div class="row">
-                                    <div class="col-md-6 d-md-flex align-items-md-center">
-                                        <div class="d-none"> Lecture <span class="lec_no"> {{ $lec->lec_no ?? '' }}
-                                            </span> </div>
-                                        <section class="lec_small_container d-md-flex align-items-md-center">
-                                            <div class="ml-md-3 font-weight-normal"> {{ $lec->lec_name }} </div>
-                                            <div class="lec_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
-                                                <i class="las la-pencil-alt"></i>
+                                        <div class="row">
+                                            <div class="col-md-6 d-md-flex align-items-md-center">
+                                                <div class="d-none"> Lecture <span class="lec_no"> {{ $lec->lec_no ?? '' }}
+                                                    </span> </div>
+                                                <section class="lec_small_container d-md-flex align-items-md-center">
+                                                    <div class="ml-md-3 font-weight-normal"> {{ $lec->lec_name }} </div>
+                                                    <div
+                                                        class="lec_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
+                                                        <i class="las la-pencil-alt"></i>
+                                                    </div>
+                                                    <form
+                                                        action="{{ route('lecture_delete', ['course_id' => $course_id, 'lecture_id' => $lec_id]) }}"
+                                                        method="post">
+                                                        @method('delete')
+                                                        @csrf
+                                                        <div
+                                                            class="lec_delete ml-md-3 text-danger d-inline d-md-block cursor_pointer">
+                                                            <i class="las la-trash-alt"></i>
+                                                        </div>
+                                                    </form>
+                                                </section>
                                             </div>
-                                            <form
-                                                action="{{ route('lecture_delete', ['course_id' => $course_id, 'lecture_id' => $lec_id]) }}"
-                                                method="post">
-                                                @method('delete')
-                                                @csrf
-                                                <div
-                                                    class="lec_delete ml-md-3 text-danger d-inline d-md-block cursor_pointer">
-                                                    <i class="las la-trash-alt"></i>
+                                            <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
+                                                @if ($media)
+                                                    <div class="v_c_vid  btn website-outline">
+                                                        <i class="las la-caret-down"></i> Video
+                                                    </div>
+                                                @else
+                                                    <div class="lec_content btn website-outline"
+                                                        video_url="{{ route('upload_video', ['course_id' => $course_id, 'lecture_id' => $lec_id]) }}">
+                                                        <i class="las la-plus"></i> Video
+                                                    </div>
+                                                @endif
+                                                @if ($desc)
+                                                    <div class="lec_desc_update_php btn website-outline ml-2">
+                                                        <i class="las la-caret-down"></i> Description
+                                                    </div>
+                                                @else
+                                                    <div class="lec_desc btn website-outline ml-2"
+                                                        desc_url="{{ route('add_desc', ['course_id' => $course_id, 'lec_id' => $lec_id]) }}">
+                                                        <i class="las la-plus"></i> Description
+                                                    </div>
+                                                @endif
+                                                @if ($should_show_res)
+                                                    <div class="added_res btn website-outline ml-md-2 mt-2 mt-md-0 "
+                                                        ex_res_url="{{ route('ex_res', ['lec_id' => $lec_id]) }}"
+                                                        article_url="{{ route('article', ['lec_id' => $lec_id]) }}"
+                                                        other_files_url="{{ route('other_files', ['lec_id' => $lec_id]) }}">
+                                                        <i class="las la-caret-down"></i> Resource
+                                                    </div>
+                                                @else
+                                                    <div class="lec_more btn website-outline ml-md-2 mt-2 mt-md-0 "
+                                                        res_vid="{{ route('upload_vid_res', ['lec_id' => $lec_id]) }}"
+                                                        article_url="{{ route('article', ['lec_id' => $lec_id]) }}"
+                                                        ex_res_url="{{ route('ex_res', ['lec_id' => $lec_id]) }}"
+                                                        other_files_url="{{ route('other_files', ['lec_id' => $lec_id]) }}">
+                                                        <i class="las la-plus"></i> Resource
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if ($media)
+                                        <section class="lecture_vid row p-3 d-none">
+                                            <div class="col-md-12">
+                                                <div class="form-check my-3">
+                                                    <input class="form-check-input is_free" type="checkbox"
+                                                        media_id="{{ $media->id }}" id="is_free_{{ $media->id }}"
+                                                        @if ($media->is_free) {{ 'checked' }} @endif
+                                                        url="{{ route('update-lecture-status', ['media_id' => $media->id]) }}">
+                                                    <label class="form-check-label" for="set_free">
+                                                        set video free
+                                                    </label>
                                                 </div>
+
+                                                <div class="form-check my-3">
+                                                    <input class="form-check-input is_download is_free" type="checkbox"
+                                                        id="is_download_{{ $media->id }}"
+                                                        media_id="{{ $media->id }}"
+                                                        @if ($media->is_download) {{ 'checked' }} @endif
+                                                        url="{{ route('update-lecture-status', ['media_id' => $media->id]) }}">
+                                                    <label class="form-check-label" for="is_download">
+                                                        set video download
+                                                    </label>
+                                                </div>
+                                                @if ($media->id && config('setting.en_showing_vid_val'))
+                                                    <section class="d-flex justify-content-start align-items-center my-3">
+                                                        <div class="col-3" name="access_duration">
+                                                            <label for="date_time">Until Valid Date?</label>
+                                                            <input p_d="{{ $media?->access_duration }}"
+                                                                value="{{ $media?->access_duration }}" type="text"
+                                                                class="form-control date-picker access_duration_{{ $course_id }}"
+                                                                autocomplete="off" id="date_time" name="date_time">
+                                                        </div>
+                                                        <button class="saveAccess btn btn-info" style="margin-top: 2rem"
+                                                            data-course-id="{{ $course_id }}"
+                                                            data-lecture-id="{{ $lec->id }}"
+                                                            class=''>Save</button>
+                                                    </section>
+                                                @endif
+                                                <div class="d-flex">
+                                                    <video width="500" height="240" controls preload="auto"
+                                                        oncontextmenu="return false;">
+                                                        <source
+                                                            src="{{ config('setting.s3Url') }}{{ $media->lec_name }} "
+                                                            type="{{ $media->f_mimetype ?? '' }}">
+                                                    </video>
+                                                </div>
+                                                <section class="mt-2">
+                                                    <h3 class="d-none d-md-block ml-3"> {{ $media->f_name ?? '' }} </h3>
+                                                    <section class="d-flex upload_video_con">
+                                                        <form
+                                                            url="{{ route('delete_video', ['course_id' => $course_id, 'media_id' => $media->id]) }}">
+                                                            <button type="button" class="btn btn-danger del_media">
+                                                                Delete lecture </button>
+                                                        </form>
+                                                        <form
+                                                            url="{{ route('e_video', ['course_id' => $course_id, 'media_id' => $media->id]) }}"
+                                                            class="ml-2 edit_form">
+                                                            <input type="file" name="edit_video"
+                                                                class="custom-file-input edit_video d-none"
+                                                                id="edit_video">
+                                                            <label for="edit_video" class="btn btn-website"> Edit lecture
+                                                            </label>
+                                                        </form>
+                                                    </section>
+                                                </section>
+                                            </div>
+
+                                        </section>
+                                    @endif
+                                    @if ($desc)
+                                        <div class="lec_desc_con bg-white border p-2 p-md-5 d-none">
+                                            <form
+                                                desc_form_url="{{ route('add_desc', ['course_id' => $course_id, 'lec_id' => $lec_id]) }}">
+                                                <h3 class="text-center"> Description of Lecture </h3>
+                                                <p class="font-weight-normal text-center"> This description will be shown
+                                                    in the end of provided video. From this, students
+                                                    will be able to get an idea about the lecture </p>
+                                                <div class="form-group">
+                                                    <textarea class="form-control desc_detail" name="lec_desc" id="lec_desc" rows="5" cols="50"
+                                                        placeholder="Put all possible detail of related video">{{ $desc->description }}</textarea>
+
+                                                </div>
+                                                <div
+                                                    class="show_message show_message-danger d-none text-center desc_err_msg">
+                                                </div>
+
+                                                <button type="button" class="btn bg-static-website add_desc_btn">Save
+                                                    Description</button>
+
+                                            </form>
+                                        </div>
+                                    @endif
+                                    @if ($should_show_res)
+                                        <div
+                                            class="container resources bg-white  justify-content-md-between py-2 p-md-4 border d-none">
+                                            @if ($res)
+                                                <div
+                                                    class="pt-3 text-center res_hover_view py-md-2 font-weight-normal btn show_uploaded_vid website-outline">
+                                                    <i class="las la-caret-down"></i> Uploaded Video
+                                                </div>
+                                            @else
+                                                <div class="video_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"
+                                                    upload_video_url="{{ route('upload_vid_res', ['lec_id' => $lec_id]) }}">
+                                                    Upload Video </div>
+                                            @endif
+                                            @if ($article)
+                                                <div
+                                                    class="btn article_res_show pt-3 text-center res_hover_view py-md-2 font-weight-normal website-outline">
+                                                    <i class="las la-caret-down"></i> Article
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="article_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
+                                                    Article </div>
+                                            @endif
+
+                                            @if ($ex_res)
+                                                <div
+                                                    class="external_res_show website-outline pt-3 text-center py-md-2 btn font-weight-normal">
+                                                    <i class="las la-caret-down"></i> External Resource
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="external_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
+                                                    External Resource </div>
+                                            @endif
+                                            @if ($other_file)
+                                                <div
+                                                    class="other_res_show website-outline btn pt-3 text-center res_hover_view py-md-2 font-weight-normal">
+                                                    <i class="las la-caret-down"></i> Other Files
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="other_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
+                                                    Other Files </div>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    @if ($res)
+                                        <section class="uploaded_video row p-3 d-none">
+                                            <div class="col-md-9">
+                                                <div class="d-flex">
+                                                    <video width="500" height="240" controls
+                                                        oncontextmenu="return false;">
+                                                        @php $vid_path= $res->lec_path; @endphp
+                                                        <source src="{{ config('setting.s3Url') }}{{ $vid_path }}"
+                                                            type="{{ $res->f_mimetype }}">
+                                                    </video>
+                                                </div>
+                                                <section class="mt-2">
+                                                    <h3 class="d-none d-md-block ml-3"> {{ $res->f_name }} </h3>
+                                                    <form url="{{ route('delete_uploaded_video', $res->id) }}">
+                                                        <button type="button" class="btn btn-danger del_uploaded_vid">
+                                                            Delete lecture </button>
+                                                    </form>
+                                                </section>
+                                            </div>
+                                        </section>
+                                    @endif
+                                    @if ($article)
+                                        <section class="up_article_res bg-white p-2 p-md-4 border d-none">
+                                            <h3 class="text-center"> Add Extra Article </h3>
+                                            <p class="text-white bg-info px-2 py-1"> This provided article may help your
+                                                students to enhance their capibilities and might help to understand your
+                                                lecture in a better and organized way </p>
+                                            <form article_url="{{ route('article', ['lec_id' => $lec_id]) }}"
+                                                class="article_form">
+
+                                                <div class="form-group">
+                                                    <textarea class="form-control article_text" name="article_text" id="article_text" rows="10"
+                                                        placeholder="Please type the article that might help students to learn more">{{ $article->article_txt }}</textarea>
+                                                </div>
+                                                <span class="float-right font-weight-normal"> upto 1500 words</span>
+                                                <button type="submit" class="btn btn-info"> <i class="las la-save"></i>
+                                                    Save Article </button>
                                             </form>
                                         </section>
-                                    </div>
-                                    <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
-                                        @if ($media)
-                                            <div class="v_c_vid  btn website-outline">
-                                                <i class="las la-caret-down"></i> Video
-                                            </div>
-                                        @else
-                                            <div class="lec_content btn website-outline"
-                                                video_url="{{ route('upload_video', ['course_id' => $course_id, 'lecture_id' => $lec_id]) }}">
-                                                <i class="las la-plus"></i> Video
-                                            </div>
-                                        @endif
-                                        @if ($desc)
-                                            <div class="lec_desc_update_php btn website-outline ml-2">
-                                                <i class="las la-caret-down"></i> Description
-                                            </div>
-                                        @else
-                                            <div class="lec_desc btn website-outline ml-2"
-                                                desc_url="{{ route('add_desc', ['course_id' => $course_id, 'lec_id' => $lec_id]) }}">
-                                                <i class="las la-plus"></i> Description
-                                            </div>
-                                        @endif
-                                        @if ($should_show_res)
-                                            <div class="added_res btn website-outline ml-md-2 mt-2 mt-md-0 "
-                                                ex_res_url="{{ route('ex_res', ['lec_id' => $lec_id]) }}"
-                                                article_url="{{ route('article', ['lec_id' => $lec_id]) }}"
-                                                other_files_url="{{ route('other_files', ['lec_id' => $lec_id]) }}">
-                                                <i class="las la-caret-down"></i> Resource
-                                            </div>
-                                        @else
-                                            <div class="lec_more btn website-outline ml-md-2 mt-2 mt-md-0 "
-                                                res_vid="{{ route('upload_vid_res', ['lec_id' => $lec_id]) }}"
-                                                article_url="{{ route('article', ['lec_id' => $lec_id]) }}"
-                                                ex_res_url="{{ route('ex_res', ['lec_id' => $lec_id]) }}"
-                                                other_files_url="{{ route('other_files', ['lec_id' => $lec_id]) }}">
-                                                <i class="las la-plus"></i> Resource
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-                    </div>
-                    @if ($media)
-                        <section class="lecture_vid row p-3 d-none">
-                            <div class="col-md-12">
-                                <div class="form-check my-3">
-                                    <input class="form-check-input is_free" type="checkbox" media_id="{{ $media->id }}"
-                                        id="is_free_{{ $media->id }}"
-                                        @if ($media->is_free) {{ 'checked' }} @endif
-                                        url="{{ route('update-lecture-status', ['media_id' => $media->id]) }}">
-                                    <label class="form-check-label" for="set_free">
-                                        set video free
-                                    </label>
-                                </div>
+                                    @endif
 
-                                <div class="form-check my-3">
-                                    <input class="form-check-input is_download is_free" type="checkbox"
-                                        id="is_download_{{ $media->id }}" media_id="{{ $media->id }}"
-                                        @if ($media->is_download) {{ 'checked' }} @endif
-                                        url="{{ route('update-lecture-status', ['media_id' => $media->id]) }}">
-                                    <label class="form-check-label" for="is_download">
-                                        set video download
-                                    </label>
-                                </div>
-                                @if ($media->id && config('setting.en_showing_vid_val'))
-                                    <section class="d-flex justify-content-start align-items-center my-3">
-                                        <div class="col-3" name="access_duration">
-                                            <label for="date_time">Until Valid Date?</label>
-                                            <input p_d="{{ $media?->access_duration }}"
-                                                value="{{ $media?->access_duration }}" type="text"
-                                                class="form-control date-picker access_duration_{{ $course_id }}"
-                                                autocomplete="off" id="date_time" name="date_time">
-                                        </div>
-                                        <button class="saveAccess btn btn-info" style="margin-top: 2rem"
-                                            data-course-id="{{ $course_id }}" data-lecture-id="{{ $lec->id }}"
-                                            class=''>Save</button>
-                                    </section>
-                                @endif
-                                <div class="d-flex">
-                                    <video width="500" height="240" controls preload="auto"
-                                        oncontextmenu="return false;">
-                                        <source src="{{ config('setting.s3Url') }}{{ $media->lec_name }} "
-                                            type="{{ $media->f_mimetype ?? '' }}">
-                                    </video>
-                                </div>
-                                <section class="mt-2">
-                                    <h3 class="d-none d-md-block ml-3"> {{ $media->f_name ?? '' }} </h3>
-                                    <section class="d-flex upload_video_con">
-                                        <form
-                                            url="{{ route('delete_video', ['course_id' => $course_id, 'media_id' => $media->id]) }}">
-                                            <button type="button" class="btn btn-danger del_media">
-                                                Delete lecture </button>
-                                        </form>
-                                        <form
-                                            url="{{ route('e_video', ['course_id' => $course_id, 'media_id' => $media->id]) }}"
-                                            class="ml-2 edit_form">
-                                            <input type="file" name="edit_video"
-                                                class="custom-file-input edit_video d-none" id="edit_video">
-                                            <label for="edit_video" class="btn btn-website"> Edit lecture
-                                            </label>
-                                        </form>
-                                    </section>
-                                </section>
-                            </div>
+                                    @if ($ex_res)
+                                        <section class="ex_res_con bg-white p-2 p-md-4 border d-none">
+                                            <h3 class="text-center"> Add YouTube Link </h3>
+                                            <p class="text-white bg-info px-2 py-1"> Provide the link that you think might
+                                                help your students to understand the lecture more clearly </p>
+                                            <form ex_res_url="{{ route('ex_res', ['lec_id' => $lec_id]) }}"
+                                                class="ex_url_form">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="ex_res_title"
+                                                        name="ex_res_title" placeholder="Title"
+                                                        value="{{ $ex_res->title ?? '' }}">
+                                                    <span class="font-weight-normal"> Title must have max 60 words</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="url" class="form-control" id="ex_res_link"
+                                                        name="ex_res_link" placeholder="YouTube link"
+                                                        value="{{ $ex_res->link ?? '' }}">
+                                                    <span class="font-weight-normal"> The above provided link must be
+                                                        youtube link otherwise your video will not be shown to others</span>
 
-                        </section>
-                    @endif
-                    @if ($desc)
-                        <div class="lec_desc_con bg-white border p-2 p-md-5 d-none">
-                            <form
-                                desc_form_url="{{ route('add_desc', ['course_id' => $course_id, 'lec_id' => $lec_id]) }}">
-                                <h3 class="text-center"> Description of Lecture </h3>
-                                <p class="font-weight-normal text-center"> This description will be shown
-                                    in the end of provided video. From this, students
-                                    will be able to get an idea about the lecture </p>
-                                <div class="form-group">
-                                    <textarea class="form-control desc_detail" name="lec_desc" id="lec_desc" rows="5" cols="50"
-                                        placeholder="Put all possible detail of related video">{{ $desc->description }}</textarea>
+                                                </div>
+                                                <button type="submit" class="btn btn-info"> <i class="las la-save"></i>
+                                                    Save Link </button>
+                                            </form>
+                                        </section>
+                                    @endif
 
-                                </div>
-                                <div class="show_message show_message-danger d-none text-center desc_err_msg">
-                                </div>
+                                    @if ($other_file)
+                                        <section class="other_files_con bg-white p-2 p-md-4 border d-none">
+                                            <h3 class="text-center"> Upload Extra Documents </h3>
+                                            <p class="text-info px-2 py-1"> Upload any pdf file that you might think help
+                                                your students to understand your lecture more clearly.
+                                                Please note that you can only upload one document. </p>
+                                            <form class="delete_other_file d-flex align-items-center"
+                                                delete_o_f_url="{{ route('delete_file', ['lec_id' => $lec_id]) }}">
+                                                <div prev_url="{{ route('prev_file', ['file_id' => $other_file->id]) }}"
+                                                    class="cursor_pointer file_preview"> {{ $other_file->f_name ?? '' }}
+                                                </div>
+                                                <button type="submit" class="btn btn-danger ml-3"> <i
+                                                        class="las la-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </section>
+                                    @endif
 
-                                <button type="button" class="btn bg-static-website add_desc_btn">Save
-                                    Description</button>
-
-                            </form>
-                        </div>
-                    @endif
-                    @if ($should_show_res)
-                        <div class="container resources bg-white  justify-content-md-between py-2 p-md-4 border d-none">
-                            @if ($res)
-                                <div
-                                    class="pt-3 text-center res_hover_view py-md-2 font-weight-normal btn show_uploaded_vid website-outline">
-                                    <i class="las la-caret-down"></i> Uploaded Video
-                                </div>
-                            @else
-                                <div class="video_res pt-3 text-center res_hover_view py-md-2 font-weight-normal"
-                                    upload_video_url="{{ route('upload_vid_res', ['lec_id' => $lec_id]) }}">
-                                    Upload Video </div>
-                            @endif
-                            @if ($article)
-                                <div
-                                    class="btn article_res_show pt-3 text-center res_hover_view py-md-2 font-weight-normal website-outline">
-                                    <i class="las la-caret-down"></i> Article
-                                </div>
-                            @else
-                                <div class="article_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
-                                    Article </div>
-                            @endif
-
-                            @if ($ex_res)
-                                <div
-                                    class="external_res_show website-outline pt-3 text-center py-md-2 btn font-weight-normal">
-                                    <i class="las la-caret-down"></i> External Resource
-                                </div>
-                            @else
-                                <div class="external_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
-                                    External Resource </div>
-                            @endif
-                            @if ($other_file)
-                                <div
-                                    class="other_res_show website-outline btn pt-3 text-center res_hover_view py-md-2 font-weight-normal">
-                                    <i class="las la-caret-down"></i> Other Files
-                                </div>
-                            @else
-                                <div class="other_res pt-3 text-center res_hover_view py-md-2 font-weight-normal">
-                                    Other Files </div>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if ($res)
-                        <section class="uploaded_video row p-3 d-none">
-                            <div class="col-md-9">
-                                <div class="d-flex">
-                                    <video width="500" height="240" controls oncontextmenu="return false;">
-                                        @php $vid_path= $res->lec_path; @endphp
-                                        <source src="{{ config('setting.s3Url') }}{{ $vid_path }}"
-                                            type="{{ $res->f_mimetype }}">
-                                    </video>
-                                </div>
-                                <section class="mt-2">
-                                    <h3 class="d-none d-md-block ml-3"> {{ $res->f_name }} </h3>
-                                    <form url="{{ route('delete_uploaded_video', $res->id) }}">
-                                        <button type="button" class="btn btn-danger del_uploaded_vid">
-                                            Delete lecture </button>
-                                    </form>
-                                </section>
-                            </div>
-                        </section>
-                    @endif
-                    @if ($article)
-                        <section class="up_article_res bg-white p-2 p-md-4 border d-none">
-                            <h3 class="text-center"> Add Extra Article </h3>
-                            <p class="text-white bg-info px-2 py-1"> This provided article may help your
-                                students to enhance their capibilities and might help to understand your
-                                lecture in a better and organized way </p>
-                            <form article_url="{{ route('article', ['lec_id' => $lec_id]) }}" class="article_form">
-
-                                <div class="form-group">
-                                    <textarea class="form-control article_text" name="article_text" id="article_text" rows="10"
-                                        placeholder="Please type the article that might help students to learn more">{{ $article->article_txt }}</textarea>
-                                </div>
-                                <span class="float-right font-weight-normal"> upto 1500 words</span>
-                                <button type="submit" class="btn btn-info"> <i class="las la-save"></i>
-                                    Save Article </button>
-                            </form>
-                        </section>
-                    @endif
-
-                    @if ($ex_res)
-                        <section class="ex_res_con bg-white p-2 p-md-4 border d-none">
-                            <h3 class="text-center"> Add YouTube Link </h3>
-                            <p class="text-white bg-info px-2 py-1"> Provide the link that you think might
-                                help your students to understand the lecture more clearly </p>
-                            <form ex_res_url="{{ route('ex_res', ['lec_id' => $lec_id]) }}" class="ex_url_form">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="ex_res_title" name="ex_res_title"
-                                        placeholder="Title" value="{{ $ex_res->title ?? '' }}">
-                                    <span class="font-weight-normal"> Title must have max 60 words</span>
-                                </div>
-                                <div class="form-group">
-                                    <input type="url" class="form-control" id="ex_res_link" name="ex_res_link"
-                                        placeholder="YouTube link" value="{{ $ex_res->link ?? '' }}">
-                                    <span class="font-weight-normal"> The above provided link must be
-                                        youtube link otherwise your video will not be shown to others</span>
-
-                                </div>
-                                <button type="submit" class="btn btn-info"> <i class="las la-save"></i>
-                                    Save Link </button>
-                            </form>
-                        </section>
-                    @endif
-
-                    @if ($other_file)
-                        <section class="other_files_con bg-white p-2 p-md-4 border d-none">
-                            <h3 class="text-center"> Upload Extra Documents </h3>
-                            <p class="text-info px-2 py-1"> Upload any pdf file that you might think help
-                                your students to understand your lecture more clearly.
-                                Please note that you can only upload one document. </p>
-                            <form class="delete_other_file d-flex align-items-center"
-                                delete_o_f_url="{{ route('delete_file', ['lec_id' => $lec_id]) }}">
-                                <div prev_url="{{ route('prev_file', ['file_id' => $other_file->id]) }}"
-                                    class="cursor_pointer file_preview"> {{ $other_file->f_name ?? '' }}
-                                </div>
-                                <button type="submit" class="btn btn-danger ml-3"> <i class="las la-trash-alt"></i>
-                                </button>
-                            </form>
-                        </section>
-                    @endif
-
-                    @if ($assigns->count())
-                        @foreach ($assigns as $assign)
-                            @php $ass_desc = $assign->ass_desc; @endphp
-                            <div class="my-3 container assign_con bg-white p-3 border">
-                                <div class="row">
-                                    <div class="col-md-6 d-md-flex align-items-md-center">
-                                        <div> Assignment <span class="ass_no"> {{ $assign->ass_no ?? '' }}
-                                            </span> </div>
-                                        <section class="lec_small_container d-md-flex align-items-md-center">
-                                            {{-- prettier-ignore --}}
+                                    @if ($assigns->count())
+                                        @foreach ($assigns as $assign)
+                                            @php $ass_desc = $assign->ass_desc; @endphp
+                                            <div class="my-3 container assign_con bg-white p-3 border">
+                                                <div class="row">
+                                                    <div class="col-md-6 d-md-flex align-items-md-center">
+                                                        <div> Assignment <span class="ass_no"> {{ $assign->ass_no ?? '' }}
+                                                            </span> </div>
+                                                        <section
+                                                            class="lec_small_container d-md-flex align-items-md-center">
+                                                            {{-- prettier-ignore --}}
 
                                                             @php
-                                            $ass_title = $assign->title ?? '';
-                                            if (!$ass_title) {
-                                            $ass_title = reduceCharIfAv($ass_title, 30);
-                                            }
-                                            @endphp
-                                            {{-- prettier-ignore --}}
+                                                            $ass_title = $assign->title ?? '';
+                                                            if (!$ass_title) {
+                                                            $ass_title = reduceCharIfAv($ass_title, 30);
+                                                            }
+                                                            @endphp
+                                                            {{-- prettier-ignore-end --}}
 
                                                             <div class="ass_title ml-md-3 font-weight-normal">
-                                            {{ $ass_title }}
-                                    </div>
-                                    <div title_edit="{{ route('update_assign', ['assign' => $assign]) }}"
-                                        class=" assign_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
-                                        <i class="las la-pencil-alt"></i>
-                                    </div>
-                                    <form action="{{ route('delete_assign', ['assign' => $assign]) }}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <div class="assign_del ml-md-3 text-danger d-inline d-md-block cursor_pointer">
-                                            <i class="las la-trash-alt"></i>
-                                        </div>
-                                    </form>
-        </section>
-    </div>
-    <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
-        <div class="@if ($ass_desc) show_desc_update @else add_desc @endif btn website-outline "
-            desc_url="{{ route('add_assign_desc', ['assign' => $assign]) }}">
-            @if ($ass_desc)
-                <i class="las la-caret-down"></i>
-            @else
-                <i class="las la-plus"></i>
-            @endif Description
-        </div>
-        <div class="btn website-outline @if ($assign->ass_f_name) add_assign_show @else add_assign @endif  ml-2"
-            assign_url="{{ route('add_ass', ['assign' => $assign]) }}">
-            @if ($assign->ass_f_name)
-                {!! __('<i class="las la-caret-down"></i>') !!}
-            @else
-                {!! __('<i class="las la-plus"></i>') !!}
-            @endif Assignment
-        </div>
-        <div class=" @if ($assign->ass_ans_f_name) add_sol_show @else add_sol @endif btn website-outline ml-md-2 mt-2 mt-md-0 "
-            sol_url="{{ route('add_sol', ['assign' => $assign]) }}">
-            @if ($assign->ass_ans_f_name)
-                {!! __('<i class="las la-caret-down"></i>') !!}
-            @else
-                {!! __('<i class="las la-plus"></i>') !!}
-            @endif Solution
-        </div>
-    </div>
-    </div>
-    </div>
-    @if ($ass_desc)
-        <div class="ass_desc_con bg-white border p-2 p-md-5 d-none">
-            <form desc_form_url="{{ route('add_assign_desc', compact('assign')) }}">
-                <h3> Description of Assignment </h3>
-                <p class="font-weight-normal"> The provided description will help
-                    your students
-                    to understand the assignment more clearly. please try your best
-                    to convince your students by providing them
-                    more details about the assignment to better understand it </p>
-                <div class="form-group">
-                    <textarea class="form-control ass_desc_detail" name="ass_desc_detail" id="ass_desc_detail" rows="10"
-                        cols="50" placeholder="Description of Assignment">{{ $ass_desc->description ?? '' }}</textarea>
+                                                                {{ $ass_title }}
+                                                            </div>
+                                                            <div title_edit="{{ route('update_assign', ['assign' => $assign]) }}"
+                                                                class=" assign_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
+                                                                <i class="las la-pencil-alt"></i>
+                                                            </div>
+                                                            <form
+                                                                action="{{ route('delete_assign', ['assign' => $assign]) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <div
+                                                                    class="assign_del ml-md-3 text-danger d-inline d-md-block cursor_pointer">
+                                                                    <i class="las la-trash-alt"></i>
+                                                                </div>
+                                                            </form>
+                                                        </section>
+                                                    </div>
+                                                    <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
+                                                        <div class="@if ($ass_desc) show_desc_update @else add_desc @endif btn website-outline "
+                                                            desc_url="{{ route('add_assign_desc', ['assign' => $assign]) }}">
+                                                            @if ($ass_desc)
+                                                                <i class="las la-caret-down"></i>
+                                                            @else
+                                                                <i class="las la-plus"></i>
+                                                            @endif Description
+                                                        </div>
+                                                        <div class="btn website-outline @if ($assign->ass_f_name) add_assign_show @else add_assign @endif  ml-2"
+                                                            assign_url="{{ route('add_ass', ['assign' => $assign]) }}">
+                                                            @if ($assign->ass_f_name)
+                                                                {!! __('<i class="las la-caret-down"></i>') !!}
+                                                            @else
+                                                                {!! __('<i class="las la-plus"></i>') !!}
+                                                            @endif Assignment
+                                                        </div>
+                                                        <div class=" @if ($assign->ass_ans_f_name) add_sol_show @else add_sol @endif btn website-outline ml-md-2 mt-2 mt-md-0 "
+                                                            sol_url="{{ route('add_sol', ['assign' => $assign]) }}">
+                                                            @if ($assign->ass_ans_f_name)
+                                                                {!! __('<i class="las la-caret-down"></i>') !!}
+                                                            @else
+                                                                {!! __('<i class="las la-plus"></i>') !!}
+                                                            @endif Solution
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if ($ass_desc)
+                                                <div class="ass_desc_con bg-white border p-2 p-md-5 d-none">
+                                                    <form
+                                                        desc_form_url="{{ route('add_assign_desc', compact('assign')) }}">
+                                                        <h3> Description of Assignment </h3>
+                                                        <p class="font-weight-normal"> The provided description will help
+                                                            your students
+                                                            to understand the assignment more clearly. please try your best
+                                                            to convince your students by providing them
+                                                            more details about the assignment to better understand it </p>
+                                                        <div class="form-group">
+                                                            <textarea class="form-control ass_desc_detail" name="ass_desc_detail" id="ass_desc_detail" rows="10"
+                                                                cols="50" placeholder="Description of Assignment">{{ $ass_desc->description ?? '' }}</textarea>
 
-                </div>
-                <div class="show_message show_message-danger d-none text-center ass_err_msg">
-                </div>
+                                                        </div>
+                                                        <div
+                                                            class="show_message show_message-danger d-none text-center ass_err_msg">
+                                                        </div>
 
-                <button type="button" class="btn bg-static-website add_ass_desc">Save
-                    Description</button>
+                                                        <button type="button"
+                                                            class="btn bg-static-website add_ass_desc">Save
+                                                            Description</button>
 
-            </form>
-        </div>
-    @endif
+                                                    </form>
+                                                </div>
+                                            @endif
 
-    @if ($assign->ass_f_name)
-        <section class="ass_container bg-white p-2 p-md-4 border d-none">
-            <h3 class="text-center"> Upload Assignment Document </h3>
-            <p class="text-info font-weight-normal px-2 py-1"> Please make a
-                comprehensive PDF file that contains all possible guide for the
-                student to solve your assignment. Please refer to the
-                lecture if you feel so.
+                                            @if ($assign->ass_f_name)
+                                                <section class="ass_container bg-white p-2 p-md-4 border d-none">
+                                                    <h3 class="text-center"> Upload Assignment Document </h3>
+                                                    <p class="text-info font-weight-normal px-2 py-1"> Please make a
+                                                        comprehensive PDF file that contains all possible guide for the
+                                                        student to solve your assignment. Please refer to the
+                                                        lecture if you feel so.
 
-            </p>
-            <form class="delete_ass_file d-flex align-items-center"
-                del_ass_url="{{ route('delete_ass_file', compact('assign')) }}">
-                <div prev_url="{{ route('prev_ass_file', ['file_id' => $assign]) }}" class="cursor_pointer as_f_pre">
-                    {{ reduceCharIfAv($assign->ass_f_name, 30) }} </div>
-                <button type="submit" class="btn btn-danger ml-3"> <i class="las la-trash-alt"></i> </button>
-            </form>
-        </section>
-    @endif
-    @if ($assign->ass_ans_f_name)
-        <section class="sol_container bg-white p-2 p-md-4 border d-none">
-            <h3 class="text-center"> Upload Assignment Document </h3>
-            <p class="text-info font-weight-normal px-2 py-1"> Please make a
-                comprehensive PDF file that contains all possible guide for the
-                student to solve your assignment. Please refer to the
-                lecture if you feel so.
+                                                    </p>
+                                                    <form class="delete_ass_file d-flex align-items-center"
+                                                        del_ass_url="{{ route('delete_ass_file', compact('assign')) }}">
+                                                        <div prev_url="{{ route('prev_ass_file', ['file_id' => $assign]) }}"
+                                                            class="cursor_pointer as_f_pre">
+                                                            {{ reduceCharIfAv($assign->ass_f_name, 30) }} </div>
+                                                        <button type="submit" class="btn btn-danger ml-3"> <i
+                                                                class="las la-trash-alt"></i> </button>
+                                                    </form>
+                                                </section>
+                                            @endif
+                                            @if ($assign->ass_ans_f_name)
+                                                <section class="sol_container bg-white p-2 p-md-4 border d-none">
+                                                    <h3 class="text-center"> Upload Assignment Document </h3>
+                                                    <p class="text-info font-weight-normal px-2 py-1"> Please make a
+                                                        comprehensive PDF file that contains all possible guide for the
+                                                        student to solve your assignment. Please refer to the
+                                                        lecture if you feel so.
 
-            </p>
-            <form class="delete_ass_file d-flex align-items-center"
-                del_ass_url="{{ route('delete_sol_file', compact('assign')) }}">
-                <div prev_url="{{ route('prev_sola_file', ['file_id' => $assign]) }}" class="cursor_pointer as_f_pre">
-                    {{ reduceCharIfAv($assign->ass_ans_f_name, 30) }} </div>
-                <button type="submit" class="btn btn-danger ml-3"> <i class="las la-trash-alt"></i> </button>
-            </form>
-        </section>
-    @endif
-    @endforeach
-    @endif
+                                                    </p>
+                                                    <form class="delete_ass_file d-flex align-items-center"
+                                                        del_ass_url="{{ route('delete_sol_file', compact('assign')) }}">
+                                                        <div prev_url="{{ route('prev_sola_file', ['file_id' => $assign]) }}"
+                                                            class="cursor_pointer as_f_pre">
+                                                            {{ reduceCharIfAv($assign->ass_ans_f_name, 30) }} </div>
+                                                        <button type="submit" class="btn btn-danger ml-3"> <i
+                                                                class="las la-trash-alt"></i> </button>
+                                                    </form>
+                                                </section>
+                                            @endif
+                                        @endforeach
+                                    @endif
 
-    @if ($quizzs->count())
-        @foreach ($quizzs as $quiz)
-            <div class="my-3 container quiz_con bg-white p-3 border">
-                <div class="row">
-                    <div class="col-md-6 d-md-flex align-items-md-center">
-                        <div> Quiz <span class="quiz_no"> {{ $quiz->quiz_no }} </span>
-                        </div>
-                        <section class="lec_small_container d-md-flex align-items-md-center">
-                            <div class="quiz_title ml-md-3 font-weight-normal">
-                                {{ reduceCharIfAv($quiz->title, 30) }} </div>
-                            <div title_edit="{{ route('update_quiz', compact('quiz')) }}"
-                                class="quiz_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
-                                <i class="las la-pencil-alt"></i>
-                            </div>
-                            <form action="{{ route('delete_quiz', compact('quiz')) }}" method="post">
-                                @method('delete')
-                                @csrf
-                                <div class="quiz_del ml-md-3 text-danger d-inline d-md-block cursor_pointer">
-                                    <i class="las la-trash-alt"></i>
-                                </div>
-                            </form>
-                        </section>
-                    </div>
-                    <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
-                        {{-- prettier-ignore --}}
+                                    @if ($quizzs->count())
+                                        @foreach ($quizzs as $quiz)
+                                            <div class="my-3 container quiz_con bg-white p-3 border">
+                                                <div class="row">
+                                                    <div class="col-md-6 d-md-flex align-items-md-center">
+                                                        <div> Quiz <span class="quiz_no"> {{ $quiz->quiz_no }} </span>
+                                                        </div>
+                                                        <section
+                                                            class="lec_small_container d-md-flex align-items-md-center">
+                                                            <div class="quiz_title ml-md-3 font-weight-normal">
+                                                                {{ reduceCharIfAv($quiz->title, 30) }} </div>
+                                                            <div title_edit="{{ route('update_quiz', compact('quiz')) }}"
+                                                                class="quiz_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
+                                                                <i class="las la-pencil-alt"></i>
+                                                            </div>
+                                                            <form action="{{ route('delete_quiz', compact('quiz')) }}"
+                                                                method="post">
+                                                                @method('delete')
+                                                                @csrf
+                                                                <div
+                                                                    class="quiz_del ml-md-3 text-danger d-inline d-md-block cursor_pointer">
+                                                                    <i class="las la-trash-alt"></i>
+                                                                </div>
+                                                            </form>
+                                                        </section>
+                                                    </div>
+                                                    <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
+                                                        {{-- prettier-ignore --}}
 
                         @php
-                        $quiz_desc = $quiz->quiz_desc;
-                        $quizzes = $quiz->quizzes;
-                        @endphp
-                        {{-- prettier-ignore --}}
+                                                        $quiz_desc = $quiz->quiz_desc;
+                                                        $quizzes = $quiz->quizzes;
+                                                        @endphp
+                                                        {{-- prettier-ignore-end --}}
 
-                        <div class="@if ($quiz_desc) quiz_s_op  @else quiz_desc @endif btn website-outline "
-                        desc_url="{{ route('add_quiz_desc', compact('quiz')) }}">
-                        @if ($quiz_desc)
-                            <i class="las la-caret-down"></i>
-                        @else
-                            <i class="las la-plus"></i>
-                        @endif Description
+                                                        <div class="@if ($quiz_desc) quiz_s_op  @else quiz_desc @endif btn website-outline "
+                                                            desc_url="{{ route('add_quiz_desc', compact('quiz')) }}">
+                                                            @if ($quiz_desc)
+                                                                <i class="las la-caret-down"></i>
+                                                            @else
+                                                                <i class="las la-plus"></i>
+                                                            @endif Description
+                                                        </div>
+                                                        <div class="btn website-outline @if ($quizzes) quiz_q_show  @else quiz_q @endif   ml-2"
+                                                            quiz_url="{{ route('add_quizzs', compact('quiz')) }}">
+                                                            @if ($quizzes)
+                                                                <i class="las la-caret-down"></i>
+                                                            @else
+                                                                <i class="las la-plus"></i>
+                                                            @endif Quiz
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @if ($quiz_desc)
+                                                <div class="quiz_desc_con bg-white border p-2 p-md-5 d-none">
+                                                    <form desc_form_url="{{ route('add_quiz_desc', compact('quiz')) }}">
+                                                        <h3 class="text-center"> Description of Quiz </h3>
+                                                        <p class="text-center font-weight-normal"> The provided description
+                                                            will help your students
+                                                            to understand the quiz more clearly. please try your best to
+                                                            convince your students by providing them
+                                                            more details about the quiz to better understand it </p>
+                                                        <div class="form-group">
+                                                            <textarea class="form-control quiz_desc_detail" name="quiz_desc_detail" id="quiz_desc_detail" rows="10"
+                                                                cols="50" placeholder="Description of Quiz">{{ $quiz_desc }}</textarea>
+
+                                                        </div>
+                                                        <button type="button"
+                                                            class="btn bg-static-website add_quiz_desc">Save
+                                                            Description</button>
+
+                                                    </form>
+                                                </div>
+                                            @endif
+
+                                            @if ($quizzes->count())
+                                                <div class="quiz_q_con border bg-white container p-3 d-none">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <h3 class="text-center"> Multiple choice Quiz </h3>
+                                                            <p class="text-center font-weight-normal text-info"> Create a
+                                                                multiple choice quiz by adding question and choosing it's
+                                                                answer. More, you can also provide the reason of your
+                                                                selected answer for students to
+                                                                understand the question.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row q_b_con">
+                                                        <div class="col-12">
+                                                            <div
+                                                                class="show_message show_message-danger d-none err_msg text-center">
+                                                            </div>
+                                                            <div class="btn btn-lg btn-info float-right create_quiz"
+                                                                quiz_url="{{ route('add_quizzs', compact('quiz')) }}"> <i
+                                                                    class="las la-pencil-alt"></i>
+                                                                Create Quiz </div>
+                                                        </div>
+                                                    </div>
+                                                    @foreach ($quizzes as $q)
+                                                        <div class="border bg-white container p-3 quiz-q-list mt-3">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="row">
+                                                                        <div class="col-2">
+                                                                            <div class="q-no"> {{ $q->count_quizzes }}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-10">
+                                                                            <div class="q-name">
+                                                                                {{ reduceCharIfAv($q->question, 30) }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6 d-flex">
+                                                                    <div class="cursor_pointer edit_quiz text-info"
+                                                                        quiz_edit_url="{{ route('edit_quizzes', ['quizzes' => $q]) }}">
+                                                                        <i class="las la-pencil-alt"></i>
+                                                                    </div>
+                                                                    <div class="cursor_pointer del_quiz ml-3 text-danger"
+                                                                        quiz_del_url="{{ route('del_quizzes', ['quizzes' => $q]) }}">
+                                                                        <i class="las la-trash-alt"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                @endforeach
+                            @endif
+                            <span class="mt-3 ml-2 website-color add_material">
+                                <i class="las la-plus-circle icon-sm"></i>
+                            </span>
+
+                        </section>
+
                     </div>
-                    <div class="btn website-outline @if ($quizzes) quiz_q_show  @else quiz_q @endif   ml-2"
-                        quiz_url="{{ route('add_quizzs', compact('quiz')) }}">
-                        @if ($quizzes)
-                            <i class="las la-caret-down"></i>
-                        @else
-                            <i class="las la-plus"></i>
-                        @endif Quiz
-                    </div>
-                </div>
-            </div>
-            </div>
-
-            @if ($quiz_desc)
-                <div class="quiz_desc_con bg-white border p-2 p-md-5 d-none">
-                    <form desc_form_url="{{ route('add_quiz_desc', compact('quiz')) }}">
-                        <h3 class="text-center"> Description of Quiz </h3>
-                        <p class="text-center font-weight-normal"> The provided description
-                            will help your students
-                            to understand the quiz more clearly. please try your best to
-                            convince your students by providing them
-                            more details about the quiz to better understand it </p>
-                        <div class="form-group">
-                            <textarea class="form-control quiz_desc_detail" name="quiz_desc_detail" id="quiz_desc_detail" rows="10"
-                                cols="50" placeholder="Description of Quiz">{{ $quiz_desc }}</textarea>
-
-                        </div>
-                        <button type="button" class="btn bg-static-website add_quiz_desc">Save
-                            Description</button>
-
-                    </form>
-                </div>
-            @endif
-
-            @if ($quizzes->count())
-                <div class="quiz_q_con border bg-white container p-3 d-none">
-                    <div class="row">
-                        <div class="col-12">
-                            <h3 class="text-center"> Multiple choice Quiz </h3>
-                            <p class="text-center font-weight-normal text-info"> Create a
-                                multiple choice quiz by adding question and choosing it's
-                                answer. More, you can also provide the reason of your
-                                selected answer for students to
-                                understand the question.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row q_b_con">
-                        <div class="col-12">
-                            <div class="show_message show_message-danger d-none err_msg text-center">
-                            </div>
-                            <div class="btn btn-lg btn-info float-right create_quiz"
-                                quiz_url="{{ route('add_quizzs', compact('quiz')) }}"> <i class="las la-pencil-alt"></i>
-                                Create Quiz </div>
-                        </div>
-                    </div>
-                    @foreach ($quizzes as $q)
-                        <div class="border bg-white container p-3 quiz-q-list mt-3">
+                @endforeach
+            @else
+                <div class="bg-light font-weight-bold p-3 section">
+                    <section>
+                        <div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-2">
-                                            <div class="q-no"> {{ $q->count_quizzes }}
-                                            </div>
-                                        </div>
-                                        <div class="col-10">
-                                            <div class="q-name">
-                                                {{ reduceCharIfAv($q->question, 30) }}
-                                            </div>
-                                        </div>
+                                <div class="col-md-2">
+                                    <div class="sec1">
+                                        section <span class="sec_no"> 1 </span>:
                                     </div>
                                 </div>
+                                <div class="col-md-10">
+                                    <div class="btn website add_title">
+                                        <i class="las la-plus"></i>
+                                        Add Title
+                                    </div>
 
-                                <div class="col-md-6 d-flex">
-                                    <div class="cursor_pointer edit_quiz text-info"
-                                        quiz_edit_url="{{ route('edit_quizzes', ['quizzes' => $q]) }}">
-                                        <i class="las la-pencil-alt"></i>
-                                    </div>
-                                    <div class="cursor_pointer del_quiz ml-3 text-danger"
-                                        quiz_del_url="{{ route('del_quizzes', ['quizzes' => $q]) }}">
-                                        <i class="las la-trash-alt"></i>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                        <span class="mt-3 ml-2 website-color add_material" data-toggle="tooltip" data-placement="right"
+                            title="Add Lecture,Assignment,Quiz">
+                            <i class="las la-plus-circle icon-sm"></i>
+                        </span>
+
+                    </section>
+
                 </div>
             @endif
-        @endforeach
-    @endif
-    @endforeach
-    @endif
-    <span class="mt-3 ml-2 website-color add_material">
-        <i class="las la-plus-circle icon-sm"></i>
-    </span>
 
-    </section>
-
-    </div>
-    @endforeach
-@else
-    <div class="bg-light font-weight-bold p-3 section">
-        <section>
-            <div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="sec1">
-                            section <span class="sec_no"> 1 </span>:
-                        </div>
-                    </div>
-                    <div class="col-md-10">
-                        <div class="btn website add_title">
-                            <i class="las la-plus"></i>
-                            Add Title
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <span class="mt-3 ml-2 website-color add_material" data-toggle="tooltip" data-placement="right"
-                title="Add Lecture,Assignment,Quiz">
+            <span class="mt-2 ml-2 website-color" id="add_sec" data-toggle="tooltip" data-placement="right"
+                title="Add Section">
                 <i class="las la-plus-circle icon-sm"></i>
             </span>
 
         </section>
-
-    </div>
-    @endif
-
-    <span class="mt-2 ml-2 website-color" id="add_sec" data-toggle="tooltip" data-placement="right"
-        title="Add Section">
-        <i class="las la-plus-circle icon-sm"></i>
-    </span>
-
-    </section>
 
     </div>
 

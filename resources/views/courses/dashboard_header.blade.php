@@ -67,12 +67,11 @@
             echo 'Database error';
             }
             @endphp
-            {{-- prettier-ignore --}}
+            {{-- prettier-ignore-end --}}
 
             <div
-            class="ml-3 badge
-                @if ($status == 'draft')
-{{ __('badge-warning') }}
+                class="ml-3 badge
+                @if ($status == 'draft') {{ __('badge-warning') }}
 @elseif($status == 'published')
 {{ __('badge-success') }}
 @elseif($status == 'pending')
@@ -80,10 +79,9 @@
 @elseif($status == 'block')
 {{ __('badge-danger') }}
 @elseif($status == 'unpublished')
-{{ __('badge-danger') }}
-@endif">
-            {{ $status ?? '' }}
-        </div>
+{{ __('badge-danger') }} @endif">
+                {{ $status ?? '' }}
+            </div>
         </div>
         <div class="d-flex">
             @if ($course->slug)

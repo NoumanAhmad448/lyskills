@@ -69,11 +69,16 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
 <body style="min-height: 100vh !important" class="d-flex flex-column ">
 
     @if (!Cache::store('file')->get('isLoaderLoaded'))
+        {{-- prettier-ignore --}}
+
         {!! '<section class="d-flex justify-content-center align-items-center loading-section">
-                    <div id="loading" class="spinner-border text-info text-center" style="width: 90px; height: 90px" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </section>' !!}
+        <div id="loading" class="spinner-border text-info text-center" style="width: 90px; height: 90px"
+            role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        </section>' !!}
+        {{-- prettier-ignore-end --}}
+
         @php Cache::store('file')->put('isLoaderLoaded', true, 3600); @endphp
     @endif
     @if (isset($ann) && $ann->count())
@@ -158,8 +163,8 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                                 @auth
                                     <div class="dropdown mx-3">
                                         @if (config('setting.login_profile'))
-                                            <div class="cursor_pointer text-center  pt-2" id="user_menu" data-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
+                                            <div class="cursor_pointer text-center  pt-2" id="user_menu"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <img height="50" width="50" class="rounded-circle object-cover"
                                                     src="@if (Auth::user()->profile_photo_path && !config('setting.store_img_s3')) {{ asset(Auth::user()->profile_photo_path) }}
                                 @elseif(config('setting.store_img_s3'))

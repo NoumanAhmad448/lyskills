@@ -46,30 +46,29 @@ use App\Models\Media;
                             ['sec_no', '=', $sec->section_no],
                             ])->get();
                             @endphp
-                            {{-- prettier-ignore --}}
-
+                            {{-- prettier-ignore-end --}}
 
                             @if ($lectures->count())
-                            @foreach ($lectures as $lec)
-                                @php $video = $lec->media; @endphp
+                                @foreach ($lectures as $lec)
+                                    @php $video = $lec->media; @endphp
 
-                                @if ($video && $video->lec_name && $video->lec_name[1])
-                                    <li
-                                        class=" list-group-item mt-2 py-2 pl-3 @if ($video->id === $media->id) bg-static-website @endif">
-                                        <section class="d-flex justify-content-between">
-                                            <a class="text-capitalize d-block @if ($video->id === $media->id) text-white @endif"
-                                                href="{{ route('video-page', ['slug' => $course->slug, 'video' => explode('/', $video->lec_name)[1]]) }}">
-                                                <i class="fa fa-play mr-2"
-                                                    aria-hidden="true"></i>{{ reduceCharIfAv($lec->lec_name ?? '', 40) }}
-                                            </a>
-                                            <span class="mr-1"> {{ $video->duration ?? '' }} </span>
-                                        </section>
-                                    </li>
-                                @endif
-                            @endforeach
-                    @endif
-                    </ul>
-                @endforeach
+                                    @if ($video && $video->lec_name && $video->lec_name[1])
+                                        <li
+                                            class=" list-group-item mt-2 py-2 pl-3 @if ($video->id === $media->id) bg-static-website @endif">
+                                            <section class="d-flex justify-content-between">
+                                                <a class="text-capitalize d-block @if ($video->id === $media->id) text-white @endif"
+                                                    href="{{ route('video-page', ['slug' => $course->slug, 'video' => explode('/', $video->lec_name)[1]]) }}">
+                                                    <i class="fa fa-play mr-2"
+                                                        aria-hidden="true"></i>{{ reduceCharIfAv($lec->lec_name ?? '', 40) }}
+                                                </a>
+                                                <span class="mr-1"> {{ $video->duration ?? '' }} </span>
+                                            </section>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </ul>
+                    @endforeach
                 @endif
                 {{-- <form action="{{route('getCerti')}}" method="get"> --}}
                 {{-- <form action="{{route('down-cert', ['course_name' => $course->course_title])}}" method="get">
@@ -107,10 +106,10 @@ use App\Models\Media;
                     </div>
                 @endif
                 <!--
-                        it requires three libraries to be imported.
-                        two of them are css files and one is js file
-                        all of them mentioned above in @page-css
-                        -->
+                                    it requires three libraries to be imported.
+                                    two of them are css files and one is js file
+                                    all of them mentioned above in @page-css
+                                    -->
                 <media-player
                     src="@if (file_exists(public_path('storage/' . $media->lec_name))) {{ asset('storage/' . $media->lec_name) }}@else{{ config('setting.s3Url') }}{{ $media->lec_name }} @endif"
                     aspect-ratio="16/9" type="{{ $media->f_mimetype ?? '' }}"

@@ -78,14 +78,14 @@
                                 @php
                                 $langs = LanguageModal::select('id', 'name')->get();
                                 @endphp
-                                {{-- prettier-ignore --}}
+                                {{-- prettier-ignore-end --}}
 
                                 @if (isset($langs) && $langs)
-                                @foreach ($langs as $lang)
-                                    <option value="{{ $lang->id ?? null }}"
-                                        @if (isset($course) && $course->lang_id === $lang->id) {{ __('selected') }} @endif>
-                                        {{ $lang->name ?? null }} </option>
-                                @endforeach
+                                    @foreach ($langs as $lang)
+                                        <option value="{{ $lang->id ?? null }}"
+                                            @if (isset($course) && $course->lang_id === $lang->id) {{ __('selected') }} @endif>
+                                            {{ $lang->name ?? null }} </option>
+                                    @endforeach
                                 @endif
                             </select>
                         </div>
@@ -120,10 +120,10 @@
                     $path = $course_img->image_path;
                     }
                     @endphp
-                    {{-- prettier-ignore --}}
+                    {{-- prettier-ignore-end --}}
 
                     <img src="@if ($path) {{ config('setting.s3Url') . $path }} @else {{ asset('img/thumbnail.jpg') }} @endif"
-                    alt="Course Thumbnail" class="img-fluid course_img" width="750" height="450" />
+                        alt="Course Thumbnail" class="img-fluid course_img" width="750" height="450" />
                 </div>
                 <div class="col-md-6">
                     <section class="d-flex justify-content-center align-items-center flex-column h-100">

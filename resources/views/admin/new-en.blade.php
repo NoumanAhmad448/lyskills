@@ -37,40 +37,40 @@
                         $user = $post->user && $post->user->id ? $post->user->id : '';
                         $course = $post->course && $post->course->id ? $post->course->id : '';
                         @endphp
-                        {{-- prettier-ignore --}}
+                        {{-- prettier-ignore-end --}}
 
                         @if ($course_title)
-                        <tr>
-                            <td>
-                                <form action="{{ route('n_en_p', compact('user', 'course')) }}" method="post">
-                                    @csrf
-                                    <input type="checkbox" name="status" class="change_status" />
-                                </form>
-                            </td>
+                            <tr>
+                                <td>
+                                    <form action="{{ route('n_en_p', compact('user', 'course')) }}" method="post">
+                                        @csrf
+                                        <input type="checkbox" name="status" class="change_status" />
+                                    </form>
+                                </td>
 
-                            <td> {{ $name }}</td>
-                            <td> {{ $email }} </td>
+                                <td> {{ $name }}</td>
+                                <td> {{ $email }} </td>
 
-                            <td> {{ $course_title }}</td>
-                            <td>
-                                {{ $post->created_at }}
-                            </td>
+                                <td> {{ $course_title }}</td>
+                                <td>
+                                    {{ $post->created_at }}
+                                </td>
 
-                            <td>
-                                <a href="{{ route('user-course', ['slug' => $post->course->slug]) }}"> Link </a>
-                            </td>
-                        </tr>
-                    @endif
-    @endforeach
-    </tbody>
-    </table>
-    </div>
-@else
-    <div class="jumbotron text-center bg-white mt-5">
-        <img src="{{ asset('img/not_found.png') }}" alt="no post found" width="100" height="100"
-            class="img-fluid rounded-circle">
-        <div> no new enrollment found </div>
-    </div>
+                                <td>
+                                    <a href="{{ route('user-course', ['slug' => $post->course->slug]) }}"> Link </a>
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @else
+        <div class="jumbotron text-center bg-white mt-5">
+            <img src="{{ asset('img/not_found.png') }}" alt="no post found" width="100" height="100"
+                class="img-fluid rounded-circle">
+            <div> no new enrollment found </div>
+        </div>
     @endif
 @endsection
 
