@@ -105,11 +105,15 @@ use App\Models\Media;
                             class="btn btn-lg btn-website"> Next </a>
                     </div>
                 @endif
+                {{-- prettier-ignore --}}
+
                 <!--
-                                    it requires three libraries to be imported.
-                                    two of them are css files and one is js file
-                                    all of them mentioned above in @page-css
-                                    -->
+                it requires three libraries to be imported.
+                two of them are css files and one is js file
+                all of them mentioned above in @page-css
+                -->
+                {{-- prettier-ignore-end --}}
+
                 <media-player
                     src="@if (file_exists(public_path('storage/' . $media->lec_name))) {{ asset('storage/' . $media->lec_name) }}@else{{ config('setting.s3Url') }}{{ $media->lec_name }} @endif"
                     aspect-ratio="16/9" type="{{ $media->f_mimetype ?? '' }}"

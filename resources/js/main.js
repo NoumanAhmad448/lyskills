@@ -1,3 +1,10 @@
+$(function() {
+  setTimeout(function () {
+      $('.skeleton-main-loader').each(function(){ $(this).hide();}); // Hide the skeleton loader
+      $('.content-main').each(function() { $(this).show() }); // Show the actual content
+  }, 5000); // 1 second delay
+});
+
 $(".option").click(function(){
     $('.next').attr('disabled',false);
 })

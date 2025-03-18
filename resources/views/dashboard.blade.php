@@ -91,12 +91,12 @@
                             </h4>
                         </div>
                         <div class="col-md-1 d-flex align-items-center ">
-                                                           {{-- prettier-ignore --}}
+                            {{-- prettier-ignore --}}
 
                            @php
-                                $status = $course->status;
+                            $status = $course->status;
                             @endphp
-                                                            {{-- prettier-ignore-end --}}
+                            {{-- prettier-ignore-end --}}
 
                             <div
                                 class="badge @if ($status == 'draft') {{ __('badge-warning') }} 
@@ -156,7 +156,7 @@
                             <div class="col-md-3 d-flex justify-content-center align-items-center flex-column">
                                 {{-- prettier-ignore --}}
 
-            @php
+                                @php
                                 $m_en = CourseEnrollment::where('course_id', $course->id)
                                 ->whereMonth('created_at', LyskillsCarbon::currentMonth())
                                 ->whereYear('created_at', LyskillsCarbon::currentYear())

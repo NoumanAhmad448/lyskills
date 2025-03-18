@@ -20,19 +20,23 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Article;
 use App\Models\RatingModal;
+use App\Models\Setting;
+
 
 class HomeController extends Controller
 {
     public function index()
     {
         try {
+            $settings = Setting::first();
+            $RatingModal = RatingModal::class;
             $title = __('lms::messages.site_title');
             $desc = __('description.home');
-            $cs = Categories::select('id', 'name', 'value')->get();
+            $cs = Categories::select('id', 'name', 'value')->paginate(20);
             $post = Post::where('status', 'published')->select('id', 'title', 'message', 'upload_img', 'f_name', 'slug')->orderByDesc('created_at')->first();
             $faq = Faq::where('status', 'published')->select('id', 'title', 'message', 'upload_img', 'f_name', 'slug')->orderByDesc('created_at')->first();
             $courses = Course::where('status', 'published')->whereNull('is_deleted')->with(['price:id,course_id,pricing,is_free', 'user:id,name', 'course_image'])->select('id', 'user_id', 'course_title', 'categories_selection', 'slug')->orderByDesc('created_at')->paginate(20);
-            return view(config("setting.welcome_blade"), compact('title', 'desc', 'cs', 'post', 'faq', 'courses'));
+            return view(config("setting.welcome_blade"), compact('title', 'desc', 'cs', 'post', 'faq', 'courses',"settings","RatingModal"));
         } catch (Exception $e) {
             if(config("app.debug")){
                 dd($e->getMessage());

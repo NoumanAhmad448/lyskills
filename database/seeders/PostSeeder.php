@@ -9,7 +9,8 @@ use Faker\Factory as Faker;  // Import the Faker Factory class
 
 class PostSeeder extends Seeder
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->faker = Faker::create();  // Manually instantiate the Faker object
 
     }
@@ -22,14 +23,15 @@ class PostSeeder extends Seeder
     {
 
         $fakeEmail = $this->faker->unique()->email;
-        echo $fakeEmail; // Outputs something like "john.doe@example.com"
+
+        debug_logs($fakeEmail); // Outputs something like "john.doe@example.com"
         // Get admin user or create one if doesn't exist
 
         $admin = User::where('is_admin', true)->first() ??
-                User::factory()->create([
-                    'is_admin' => true,
-                    'email' => $this->faker->email()
-                ]);
+            User::factory()->create([
+                'is_admin' => true,
+                'email' => $this->faker->email()
+            ]);
 
         // Create published posts
         Post::factory()
