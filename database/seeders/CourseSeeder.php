@@ -41,7 +41,7 @@ class CourseSeeder extends Seeder
         // ]);
 
         if (config("app.debug")) {
-            dump($instructor);
+            debug_logs($instructor);
         }
         // Get IT category or create it
         $itCategory = Categories::where('value', 'it')->first() ??
@@ -50,7 +50,7 @@ class CourseSeeder extends Seeder
                 'value' => 'it'
             ]);
         if (config("app.debug")) {
-            dump($itCategory);
+            debug_logs($itCategory);
         }
         // Create one draft course
         $course = Course::factory()
@@ -61,7 +61,7 @@ class CourseSeeder extends Seeder
                 'is_draft' => true
             ]);
         if (config("app.debug")) {
-            dump($course);
+            debug_logs($course);
         }
 
         Pricing::factory()->create([
@@ -71,13 +71,13 @@ class CourseSeeder extends Seeder
 
         if (config("app.debug")) {
 
-            dump($course->price);
+            debug_logs($course->price);
         }
 
         // Create courses for other categories
         Categories::where('value', '!=', 'it')->get()->each(function ($category) use ($instructor) {
             if (config("app.debug")) {
-                dump("inside the loop");
+                debug_logs("inside the loop");
             }
 
             $course = Course::factory()
@@ -90,7 +90,7 @@ class CourseSeeder extends Seeder
                 ]);
             if (config("app.debug")) {
 
-                dump($course);
+                debug_logs($course);
             }
             $course->each(function ($course) {
                 Pricing::factory()->create([
@@ -112,7 +112,7 @@ class CourseSeeder extends Seeder
                 );
                 if (config("app.debug")) {
 
-                    dump($course->price);
+                    debug_logs($course->price);
                 }
             });
         });

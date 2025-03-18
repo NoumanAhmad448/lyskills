@@ -80,29 +80,37 @@
                                     @endif
                                 </div>
                             </div>
+                            {{-- prettier-ignore --}}
 
                             @php
 
-                                $lecs = Lecture::where('course_id', $course_id)
-                                    ->where('sec_no', $sec->section_no)
-                                    ->get();
+                            $lecs = Lecture::where('course_id', $course_id)
+                            ->where('sec_no', $sec->section_no)
+                            ->get();
 
                             @endphp
+                            {{-- prettier-ignore-end --}}
+
                             @if ($lecs->count())
                                 @foreach ($lecs as $lec)
-                                    @php$lec_id = $lec->id;
-                                                                                                                                                                                                                                                $media = $lec->media;
-                                                                                                                                                                                                                                                $desc = Description::where('lecture_id', $lec_id)->first();
-                                                                                                                                                                                                                                                $res = $lec->res_vid;
-                                                                                                                                                                                                                                                $article = $lec->article;
-                                                                                                                                                                                                                                                $ex_res = $lec->ex_res;
-                                                                                                                                                                                                                                                $other_file = $lec->other_file;
-                                                                                                                                                                                                                                                $should_show_res = $res || $article || $ex_res || $other_file;
+                                    {{-- prettier-ignore --}}
 
-                                                                                                                                                                                                                                                $assigns = $lec->assign;
-                                                                                                                                                                                                                                                $quizzs = $lec->quizzs;
+                                    @php
+                                    $lec_id = $lec->id;
+                                    $media = $lec->media;
+                                    $desc = Description::where('lecture_id', $lec_id)->first();
+                                    $res = $lec->res_vid;
+                                    $article = $lec->article;
+                                    $ex_res = $lec->ex_res;
+                                    $other_file = $lec->other_file;
+                                    $should_show_res = $res || $article || $ex_res || $other_file;
 
-                                                                                                                                                                                                                        @endphp ?> ?> ?> ?> ?>
+                                    $assigns = $lec->assign;
+                                    $quizzs = $lec->quizzs;
+
+                                    @endphp
+                                    {{-- prettier-ignore-end --}}
+
                                     <div class="mt-3 container lecture_container bg-white p-3 border">
 
                                         <div class="row">
@@ -386,7 +394,8 @@
                                                     class="cursor_pointer file_preview"> {{ $other_file->f_name ?? '' }}
                                                 </div>
                                                 <button type="submit" class="btn btn-danger ml-3"> <i
-                                                        class="las la-trash-alt"></i> </button>
+                                                        class="las la-trash-alt"></i>
+                                                </button>
                                             </form>
                                         </section>
                                     @endif
@@ -401,14 +410,19 @@
                                                             </span> </div>
                                                         <section
                                                             class="lec_small_container d-md-flex align-items-md-center">
-                                                            @php$ass_title = $assign->title ?? '';
-                                                                                                                                                                                                                                                                                                                                                                                                if (!$ass_title) {
-                                                                                                                                                                                                                                                                                                                                                                                                    $ass_title = reduceCharIfAv($ass_title, 30);
-                                                                                                                                                                                                                                                                                                                                                                                                }
+                                                            {{-- prettier-ignore --}}
 
-                                                                                                                                                                                                                                                                                                                                                                        @endphp ?> ?> ?> ?> ?>
+                                                            @php
+                                                            $ass_title = $assign->title ?? '';
+                                                            if (!$ass_title) {
+                                                            $ass_title = reduceCharIfAv($ass_title, 30);
+                                                            }
+                                                            @endphp
+                                                            {{-- prettier-ignore-end --}}
+
                                                             <div class="ass_title ml-md-3 font-weight-normal">
-                                                                {{ $ass_title }}</div>
+                                                                {{ $ass_title }}
+                                                            </div>
                                                             <div title_edit="{{ route('update_assign', ['assign' => $assign]) }}"
                                                                 class=" assign_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer">
                                                                 <i class="las la-pencil-alt"></i>
@@ -548,8 +562,14 @@
                                                         </section>
                                                     </div>
                                                     <div class="col-md-6 d-md-flex align-items-md-center mt-3 mt-md-0">
-                                                        @php$quiz_desc = $quiz->quiz_desc;
-                                                                                                                                                                                                                                                                                                                                                $quizzes = $quiz->quizzes; @endphp ?> ?> ?> ?> ?>
+                                                        {{-- prettier-ignore --}}
+
+                        @php
+                                                        $quiz_desc = $quiz->quiz_desc;
+                                                        $quizzes = $quiz->quizzes;
+                                                        @endphp
+                                                        {{-- prettier-ignore-end --}}
+
                                                         <div class="@if ($quiz_desc) quiz_s_op  @else quiz_desc @endif btn website-outline "
                                                             desc_url="{{ route('add_quiz_desc', compact('quiz')) }}">
                                                             @if ($quiz_desc)
@@ -612,7 +632,8 @@
                                                             </div>
                                                             <div class="btn btn-lg btn-info float-right create_quiz"
                                                                 quiz_url="{{ route('add_quizzs', compact('quiz')) }}"> <i
-                                                                    class="las la-pencil-alt"></i> Create Quiz </div>
+                                                                    class="las la-pencil-alt"></i>
+                                                                Create Quiz </div>
                                                         </div>
                                                     </div>
                                                     @foreach ($quizzes as $q)
@@ -912,11 +933,11 @@
                                 // title_sec_container.removeClass('col-md-10').addClass('col-md-8');
                                 add_btn.replaceWith(`
                             <div class="sec_title ml-md-2">
-                                    ${returned_title}  
+                                    ${returned_title}
                                         <span class="sec_title_edit ml-2">
                                             <i class="las la-pen"></i>
-                                        </span>                                 
-                            </div>                                                                                          
+                                        </span>
+                            </div>
                                 `);
 
                                 //     if(d['del_sec_url']){
@@ -925,8 +946,8 @@
                             //         <div class="del_sec btn text-danger d-flex align-items-center float-right icon-sm p-0">
                             //             <i class="las la-trash-alt"></i>
                             //         </div>
-                            //     </section> `);       
-                                //     }          
+                            //     </section> `);
+                                //     }
                             } else {
                                 // console.log('not availble');
                             }
@@ -987,9 +1008,7 @@
                                     <div class="my-1 my-md-0 quiz ml-3 cursor_pointer change_color" >
                                         <i class="las la-book-open"></i> Quiz
                                     </div>
-                                    
                                 </div>
-                            
                             </div>
                             </div>
                  </div>`)
@@ -1030,7 +1049,7 @@
                     <div class="my-1 my-md-0 quiz ml-3 cursor_pointer change_color" >
                         <i class="las la-book-open"></i> Quiz
                     </div>
-                    
+
                 </div>
                 `);
             });
@@ -1081,7 +1100,7 @@
                                         <section class="lec_small_container d-md-flex align-items-md-center">
                                             <div class="ml-md-3 font-weight-normal"> ${current_lec_name} </div>
                                             <div class="lec_edit ml-md-3 d-inline d-md-block icon-color cursor_pointer"> <i class="las la-pencil-alt"></i> </div>
-                                            
+
                                             <form action="${msg['url']}" method="post">
                                                         @method('delete')
                                                         @csrf
@@ -1101,10 +1120,9 @@
                                             other_files_url ="${msg['other_files_url']}" >
                                             <i class="las la-plus"></i>  Resource
                                         </div>
-                                    </div>                                   
+                                    </div>
                                 </div>
                             </div>
-                                        
                         `);
 
 
@@ -3984,7 +4002,7 @@
                                         <label>Answers</label>
 
                                             <div class="form-check">
-                                                
+
                                                 <input class="form-check-input" type="radio" name="ans" id="a1" value="a1" >
                                                 <input type="text" class="form-control" value="${quizzes['ans1']}" id="ans1" name="ans1" placeholder="Answer">
                                             </div>
@@ -3993,13 +4011,10 @@
                                                 <input class="form-check-input" type="radio" name="ans" id="a2" value="a2" >
                                                 <input type="text" class="form-control" id="ans2" name="ans2" value="${quizzes['ans2']}" placeholder="Answer">
                                             </div>
-                                                
-
                                             <div class="form-check mt-3">
                                                 <input class="form-check-input" type="radio" name="ans" id="a3" value="a3" >
                                                 <input type="text" class="form-control" id="ans3" name="ans3" placeholder="Answer" value="${quizzes['ans3']}">
                                             </div>
-                                                
                                             <div class="form-check  mt-3">
                                                 <input class="form-check-input" type="radio" name="ans" id="a4" value="a4" >
                                                 <input type="text" class="form-control" id="ans4" name="ans4" placeholder="Answer" value="${quizzes['ans4']}">

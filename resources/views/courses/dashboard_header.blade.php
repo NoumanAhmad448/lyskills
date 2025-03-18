@@ -58,18 +58,28 @@
             <a href="{{ route('dashboard') }}" class="text-white"> <i class="las la-angle-left"></i> <span
                     class="d-none d-md-inline"> back to dashboard </span> </a>
             <div class="ml-3 text-uppercase"> {{ $course->course_title ?? '' }} </div>
-            @phptry {
-                                                                                                    $status = $course->status;
-                                                                                                } catch (Exception $e) {
-                                                                                                    echo 'Database error';
-                                                                                                }
-                                                                        @endphp ?> ?> ?> ?> ?>
+            {{-- prettier-ignore --}}
+
+            @php
+            try {
+            $status = $course->status;
+            } catch (Exception $e) {
+            echo 'Database error';
+            }
+            @endphp
+            {{-- prettier-ignore-end --}}
+
             <div
                 class="ml-3 badge
-                @if ($status == 'draft') {{ __('badge-warning') }}  @elseif($status == 'published') {{ __('badge-success') }}
-                @elseif($status == 'pending') {{ __('badge-info') }}
-                @elseif($status == 'block') {{ __('badge-danger') }}
-                @elseif($status == 'unpublished') {{ __('badge-danger') }} @endif">
+                @if ($status == 'draft') {{ __('badge-warning') }}
+@elseif($status == 'published')
+{{ __('badge-success') }}
+@elseif($status == 'pending')
+{{ __('badge-info') }}
+@elseif($status == 'block')
+{{ __('badge-danger') }}
+@elseif($status == 'unpublished')
+{{ __('badge-danger') }} @endif">
                 {{ $status ?? '' }}
             </div>
         </div>

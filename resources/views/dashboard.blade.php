@@ -73,17 +73,15 @@
                                     <a href="{{ route('user-course', ['slug' => $course->slug]) }}" target="_blank"
                                         class="text-dark" style="font-size: 1.2rem">
                                 @endif
-                                @php$course_title = $course->course_title;
-                                                                                                                                                                                                                        // if($course_title && strlen($course_title) > 20){
-                                                                                                                                                                                                                        //   echo substr($course_title , 0, 20) . '...';
-                                                                                                                                                                                                                        // }else
-                                                                                                                                                                                                                        if ($course_title) {
-                                                                                                                                                                                                                            echo $course_title;
-                                                                                                                                                                                                                        } else {
-                                                                                                                                                                                                                            echo 'No title';
-                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                        $course_id = $course->id;
-                                                                                                                                                                                                @endphp ?> ?> ?> ?> ?>
+                                {{-- prettier-ignore --}}
+
+                                @php
+                                $course_title = $course->course_title;
+                                // if($course_title && strlen($course_title) > 20){
+                                $course_id = $course->id;
+                                @endphp
+                                {{-- prettier-ignore-end --}}
+
                                 @if ($course->slug)
                                     </a>
                                 @endif
@@ -93,9 +91,13 @@
                             </h4>
                         </div>
                         <div class="col-md-1 d-flex align-items-center ">
-                            @php
-                                $status = $course->status;
+                            {{-- prettier-ignore --}}
+
+                           @php
+                            $status = $course->status;
                             @endphp
+                            {{-- prettier-ignore-end --}}
+
                             <div
                                 class="badge @if ($status == 'draft') {{ __('badge-warning') }} 
                                     @elseif($status == 'published') {{ __('badge-success') }}
@@ -152,17 +154,21 @@
                             </div>
                         @else
                             <div class="col-md-3 d-flex justify-content-center align-items-center flex-column">
+                                {{-- prettier-ignore --}}
+
                                 @php
-                                    $m_en = CourseEnrollment::where('course_id', $course->id)
-                                        ->whereMonth('created_at', LyskillsCarbon::currentMonth())
-                                        ->whereYear('created_at', LyskillsCarbon::currentYear())
-                                        ->count();
-                                    $m_ear = InstructorEarning::where('course_id', $course->id)
-                                        ->whereMonth('created_at', LyskillsCarbon::currentMonth())
-                                        ->whereYear('created_at', LyskillsCarbon::currentYear())
-                                        ->sum('earning');
+                                $m_en = CourseEnrollment::where('course_id', $course->id)
+                                ->whereMonth('created_at', LyskillsCarbon::currentMonth())
+                                ->whereYear('created_at', LyskillsCarbon::currentYear())
+                                ->count();
+                                $m_ear = InstructorEarning::where('course_id', $course->id)
+                                ->whereMonth('created_at', LyskillsCarbon::currentMonth())
+                                ->whereYear('created_at', LyskillsCarbon::currentYear())
+                                ->sum('earning');
 
                                 @endphp
+                                {{-- prettier-ignore-end --}}
+
                                 @if ($m_en)
                                     <div class="text-success"> This month Enrollment {{ $m_en }} </div>
                                 @endif

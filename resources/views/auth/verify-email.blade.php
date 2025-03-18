@@ -16,15 +16,6 @@
                 </div>
             @endif
             <div class="mt-4 flex items-center justify-between">
-                <!-- <form method="POST" action="{{ route('verification.send') }}">
-                                        @csrf
-
-                                        <div>
-                                            <x-jet-button type="submit">
-                                                {{ __('Resend Verification Email') }}
-                                            </x-jet-button>
-                                        </div>
-                                    </form> -->
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
