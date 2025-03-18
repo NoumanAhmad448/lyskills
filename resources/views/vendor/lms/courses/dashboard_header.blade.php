@@ -58,12 +58,17 @@
             <a href="{{ route('dashboard') }}" class="text-white"> <i class="las la-angle-left"></i> <span
                     class="d-none d-md-inline"> back to dashboard </span> </a>
             <div class="ml-3 text-uppercase"> {{ $course->course_title ?? '' }} </div>
-            @phptry {
-                                                                                                    $status = $course->status;
-                                                                                                } catch (Exception $e) {
-                                                                                                    echo 'Database error';
-                                                                                                }
-                                                                        @endphp ?> ?> ?> ?> ?>
+                                    {{-- prettier-ignore --}}
+
+            @php
+                try {
+                    $status = $course->status;
+                } catch (Exception $e) {
+                    echo 'Database error';
+                }
+            @endphp
+                                    {{-- prettier-ignore --}}
+
             <div
                 class="ml-3 badge
                 @if ($status == 'draft') {{ __('badge-warning') }}  @elseif($status == 'published') {{ __('badge-success') }}

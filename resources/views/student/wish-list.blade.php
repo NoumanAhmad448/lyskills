@@ -9,11 +9,17 @@ use App\Models\Course;
         @if ($courses->count())
             <div class="row">
                 @foreach ($courses as $c)
-                    @php$course = Course::where('id', $c->c_id)->first();
-                                                                                                                                                if (!$course) {
-                                                                                                                                                    continue;
-                                                                                                                                                }
-                                                                                                                        $ci = $course->course_image; @endphp ?> ?> ?> ?> ?>
+                                        {{-- prettier-ignore --}}
+
+                    @php
+                    $course = Course::where('id', $c->c_id)->first();
+                        if (!$course) {
+                            continue;
+                                            }
+                        $ci = $course->course_image; 
+                        @endphp
+                            {{-- prettier-ignore --}}
+
 
                     <div class="col-md-3 my-5">
                         @if ($course->slug)
