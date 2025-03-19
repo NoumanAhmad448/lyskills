@@ -215,7 +215,6 @@ Route::get('blogger-logout', [BloggerFaqController::class, 'logout'])->name('b_l
 
 });
 
-Route::post('update-lecture-status/{media_id}', [VideoController::class, 'set_video_free'])->name('update-lecture-status');
 
 Route::middleware(['verified','auth'])->group(function () {
 
@@ -260,7 +259,6 @@ Route::middleware('auth')->post('/paypal-integration/{slug}', [PaypalController:
 Route::middleware('auth')->get('payment-success', [PaypalController::class, 'paymentSuccess'])->name('success.payment');
 
 
-Route::post('e/{course_id}/{media_id}/edit_video', [VideoController::class, 'edit_video'])->name('e_video');
 
 // Include route files
 require __DIR__ . '/dev_routes.php';
