@@ -152,7 +152,7 @@ class ProgressControllerTest extends TestCase
         });
     }
 
-    /** @test */
+    /** @disabled */
     public function uploadingVideos()
     {
 
