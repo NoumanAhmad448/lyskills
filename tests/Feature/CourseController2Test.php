@@ -150,7 +150,7 @@ class CourseController2Test extends TestCase
         $this->get(route('instructor.login'))->assertViewIs('lms::auth.instructor.login')->assertViewHasAll(['title', "desc"]);
         $this->get(route('login'))->assertViewis("auth.login")->assertOk();
 
-        $this->get(route('user-categories', ["category" => $categories->value]))->assertOk();
+        $this->get(route('user-categories', ["category" => $categories->value]))->assertOk()->assertViewIs(config("setting.category_blade"));
         $this->get(route('register'))->assertOk();
 
         if (config("app.debug")) {
@@ -159,9 +159,8 @@ class CourseController2Test extends TestCase
         }
         $response = $this->get(route('instructor.register'))->assertViewIs(config("setting.show_blade"))
             ->assertViewHasAll(['title', 'desc']);
-        if (config("app.debug")) {
-            $response->dump();
-        }
+
+            debug_logs($response->dump());
 
         Course::factory()->create([
             "course_title" => "sample title",
