@@ -157,6 +157,9 @@ jobs:
         - name: Checking Laravel Health
           run: php artisan health:check --no-notification
 
+        - name: Setup Storage Link
+          run: php artisan storage:link-custom
+
         - name: Run Tests
           run: |
             # APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest
