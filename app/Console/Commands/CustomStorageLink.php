@@ -36,13 +36,13 @@ class CustomStorageLink extends Command
         // Check if the symbolic link already exists
         if (File::exists($publicStoragePath)) {
             $this->info('The symbolic link already exists.');
-            $this->createFolder();
+            // $this->createFolder();
             return 0;
         }
 
         // Create the symbolic link
         $this->laravel->make('files')->link($storageAppPublicPath, $publicStoragePath);
-        $this->createFolder();
+        // $this->createFolder();
 
         $this->info('The [public/storage] directory has been linked.');
         return 0;
