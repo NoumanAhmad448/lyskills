@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23c5eb23a0f29193848c9373ea70e1da",
+    "content-hash": "b3d3d6f88ae0b344468f20681b0f0c4b",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -1385,12 +1385,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/NoumanAhmad448/lms.git",
-                "reference": "9045ff0fa503f2d28f594bf5ed8942d017224787"
+                "reference": "8cb8bb32560803764a385732acb7865f3cc2b442"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/9045ff0fa503f2d28f594bf5ed8942d017224787",
-                "reference": "9045ff0fa503f2d28f594bf5ed8942d017224787",
+                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/8cb8bb32560803764a385732acb7865f3cc2b442",
+                "reference": "8cb8bb32560803764a385732acb7865f3cc2b442",
                 "shasum": ""
             },
             "require": {
@@ -1453,7 +1453,7 @@
                 "issues": "https://github.com/NoumanAhmad448/lms/issues",
                 "source": "https://github.com/NoumanAhmad448/lms/tree/v1.1"
             },
-            "time": "2025-03-17T15:59:24+00:00"
+            "time": "2025-03-19T07:16:40+00:00"
         },
         {
             "name": "firebase/php-jwt",

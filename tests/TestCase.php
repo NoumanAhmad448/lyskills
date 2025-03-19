@@ -4,6 +4,7 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -26,6 +27,9 @@ abstract class TestCase extends BaseTestCase
         // check the following seeder the future
         $this->seed(\Database\Seeders\DatabaseSeeder::class);
         $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+        if(config("app.env") == config("app.dev_env")){
+            Artisan::call("storage:link-custom");
+        }
 
     }
 }

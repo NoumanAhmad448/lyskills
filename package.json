@@ -8,7 +8,7 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "git_push": "npm run prod && composer validate && php artisan test --filter EnvFilesConsistencyTest && git add . && git commit -m 'cron_jobs_test_cases'  && git push",
+        "git_push": "npm run prod && composer validate && php artisan test --filter EnvFilesConsistencyTest && git pull origin master && git add . && git commit -m 'cron_jobs_test_cases'  && git push",
         "git_push_0": "npm run git_push --message='commit'",
         "git_push_help": "echo 'run the command mentioned in git_push_0'",
         "format:blade": "prettier --write resources/views/**/*.blade.php"
