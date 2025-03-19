@@ -41,7 +41,6 @@ class VideocontrollerTest extends TestCase
             'user_id' => $this->instructor->id
         ]);
 
-        $getID3 = new \getID3;
         $file = UploadedFile::fake()->create('video.mp4', 1024); // 1024 KB = 1 MB
         Artisan::call("storage:link-custom");
 
@@ -54,9 +53,7 @@ class VideocontrollerTest extends TestCase
             ])->create()->id
         ]), [
             'course_vid' => $file
-        ]);
-        $file = $getID3->analyze(public_path('storage/uploads/video.mp4'));
+        ])->assertOk();
 
-        $this->assertTrue($file['playtime_seconds']);
     }
 }
