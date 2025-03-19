@@ -1385,12 +1385,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/NoumanAhmad448/lms.git",
-                "reference": "d77568d4c3946fe04dd3eca619beff039b5b097a"
+                "reference": "95a1d225a5a59381631015a4fa8276420312257b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/d77568d4c3946fe04dd3eca619beff039b5b097a",
-                "reference": "d77568d4c3946fe04dd3eca619beff039b5b097a",
+                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/95a1d225a5a59381631015a4fa8276420312257b",
+                "reference": "95a1d225a5a59381631015a4fa8276420312257b",
                 "shasum": ""
             },
             "require": {
@@ -1453,7 +1453,7 @@
                 "issues": "https://github.com/NoumanAhmad448/lms/issues",
                 "source": "https://github.com/NoumanAhmad448/lms/tree/v1.1"
             },
-            "time": "2025-03-19T10:43:13+00:00"
+            "time": "2025-03-19T13:24:49+00:00"
         },
         {
             "name": "firebase/php-jwt",
