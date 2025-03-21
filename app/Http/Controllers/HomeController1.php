@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Contracts\IndexContracts;
 use App\Models\Categories;
 use App\Models\Course;
 use App\Models\Faq;
@@ -10,26 +11,14 @@ use App\Models\Page;
 use Exception;
 use App\Models\RatingModal;
 use App\Models\Setting;
-
+use Illuminate\Http\Request;
+use Illuminate\Routing\Pipeline;
 
 class HomeController1 extends Controller
 {
     public function index()
     {
-        try {
-            $settings = Setting::first();
-            $RatingModal = RatingModal::class;
-            $title = __('lms::messages.site_title');
-            $desc = __('description.home');
-            $cs = Categories::select('id', 'name', 'value')->paginate(20);
-            $post = Post::where('status', 'published')->select('id', 'title', 'message', 'upload_img', 'f_name', 'slug')->orderByDesc('created_at')->first();
-            $faq = Faq::where('status', 'published')->select('id', 'title', 'message', 'upload_img', 'f_name', 'slug')->orderByDesc('created_at')->first();
-            $courses = Course::where('status', 'published')->whereNull('is_deleted')->with(['price:id,course_id,pricing,is_free', 'user:id,name', 'course_image'])->select('id', 'user_id', 'course_title', 'categories_selection', 'slug')->orderByDesc('created_at')->paginate(20);
-            return view(config("setting.welcome_blade"), compact('title', 'desc', 'cs', 'post', 'faq', 'courses',"settings","RatingModal"));
-        } catch (Exception $e) {
-            debug_logs($e->getMessage());
-            return back()->with('error', __("messages.universal_err_msg"));
-        }
+        return app(IndexContracts::class);
     }
 
     public function post($slug)
@@ -45,8 +34,8 @@ class HomeController1 extends Controller
 
             $c_img = $post->upload_img;
 
-            $next = Post::where('status','published')->find($post->id + 1);
-            $prev = Post::where('status','published')->find($post->id - 1);
+            $next = Post::where('status', 'published')->find($post->id + 1);
+            $prev = Post::where('status', 'published')->find($post->id - 1);
             return view('public_post.view_post', compact('post', 'title', 'next', 'prev', 'desc', 'c_img'));
         } catch (\Throwable $th) {
             return back()->with('error', 'server error');
@@ -94,8 +83,8 @@ class HomeController1 extends Controller
 
             $c_img = $faq->upload_img;
 
-            $next = FAQ::where('id',$faq->id + 1)->where('status','published')->first();
-            $prev = FAQ::where('status','published')->find($faq->id - 1);
+            $next = FAQ::where('id', $faq->id + 1)->where('status', 'published')->first();
+            $prev = FAQ::where('status', 'published')->find($faq->id - 1);
             return view('public_post.view_faq', compact('faq', 'title', 'next', 'prev', 'desc', 'c_img'));
         } catch (\Throwable $th) {
         }

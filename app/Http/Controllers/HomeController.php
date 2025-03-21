@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Contracts\FaqContract;
+use App\Http\Contracts\PostsContract;
 use App\Http\Requests\ContactUsRequest;
 use App\Mail\ContactUsMail;
 use App\Models\Categories;
@@ -28,13 +30,7 @@ class HomeController extends Controller
 
     public function faqs()
     {
-        try {
-            $title = 'faq';
-            $faqs = FAQ::where('status', 'published')->orderByDesc('created_at')->simplePaginate(15);
-            return view('faq', compact('title', 'faqs'));
-        } catch (\Throwable $th) {
-            return back();
-        }
+        return app(FaqContract::class);
     }
 
     public function logout(Request $request)
@@ -54,13 +50,7 @@ class HomeController extends Controller
 
     public function posts()
     {
-        try {
-            $title = __('messages.post');
-            $desc = __('description.posts');
-            $posts = Post::where('status', 'published')->orderByDesc('created_at')->simplePaginate(15);
-            return view('public_post.posts', compact('title', 'posts', 'desc'));
-        } catch (Exception $th) {
-        }
+        return app(PostsContract::class);
     }
 
     public function contactUs()
