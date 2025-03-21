@@ -1,5 +1,7 @@
 <?php
 
+use App\Providers\HomeController1Provider;
+
 return [
 
     /*
@@ -170,6 +172,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        HomeController1Provider::class,
 
         /*
          * Package Service Providers...

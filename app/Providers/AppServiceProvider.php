@@ -26,7 +26,6 @@ use Spatie\Health\Facades\Health;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -43,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
         }
         $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
         $this->app->register(TelescopeServiceProvider::class);
+
     }
 
     /**
@@ -52,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         // Factory::factoryForModel(CronJobs::class, CronJobsFactory::class);
 
         try {
