@@ -1,6 +1,8 @@
 <?php
 
 $site_settings = [
+        "extra_middlewares" => ["show_text"],
+        "enable_text_showing" => true,
         "course_status" => [
                 "draft" => "draft",
                 "published" => "published",

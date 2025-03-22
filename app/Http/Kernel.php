@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ShowText;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,5 +68,7 @@ class Kernel extends HttpKernel
         'super_admin' => \App\Http\Middleware\SuperAdmin::class,
         'blogger' => \App\Http\Middleware\Blogger::class,
         'is_dev' => \App\Http\Middleware\IsDev::class,
+        "show_text" =>             ShowText::class,
+
     ];
 }

@@ -60,6 +60,9 @@ return [
     | and the user is authenticated. You are free to change this value.
     |
     */
+    "paths" => [
+        "login" => "login"
+    ],
 
     'home' => RouteServiceProvider::HOME,
 
@@ -89,7 +92,7 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    'middleware' => ['web', "show_text"],
 
     /*
     |--------------------------------------------------------------------------
