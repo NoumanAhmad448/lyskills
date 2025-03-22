@@ -1,6 +1,7 @@
 <?php
 
 $site_settings = [
+        "enable_text_showing" => true,
         "course_status" => [
                 "draft" => "draft",
                 "published" => "published",
