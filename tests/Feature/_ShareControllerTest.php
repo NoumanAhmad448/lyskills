@@ -19,7 +19,7 @@ class ShareControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->instructor = User::factory()->create([
             'is_instructor' => 1
         ]);
@@ -33,7 +33,7 @@ class ShareControllerTest extends TestCase
     public function instructor_can_share_course()
     {
         $this->actingAs($this->instructor);
-        
+
         $response = $this->post(route('share.course'), [
             'course_id' => $this->course->id,
             'platform' => 'facebook',
@@ -73,4 +73,4 @@ class ShareControllerTest extends TestCase
 
         $response->assertSessionHasErrors('platform');
     }
-} 
+}

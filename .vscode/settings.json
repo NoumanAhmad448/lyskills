@@ -10,5 +10,8 @@
         "**/.DS_Store/**",
         "**/bower_components/**",
         "**/.history/**"
-    ]
+    ],
+    "search.exclude": {
+        "**/node_modules": false
+    }
 }

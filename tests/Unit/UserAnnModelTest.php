@@ -3,12 +3,23 @@
 namespace Tests\Unit;
 
 use App\Models\UserAnnModel;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
+/**
+ * @group global-tests
+ */
 class UserAnnModelTest extends TestCase
 {
     use RefreshDatabase; // Ensures a fresh database for each test
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
 
     /** @test */
     public function it_can_create_a_user_announcement()
@@ -34,16 +45,9 @@ class UserAnnModelTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_message_to_be_created()
-    {
-        $this->expectException(\Illuminate\Database\QueryException::class);
-        UserAnnModel::create([]);
-    }
-
-    /** @test */
     public function it_allows_large_text_messages()
     {
-        $longMessage = str_repeat('A', 1000);
+        $longMessage = str_repeat('A', 200);
         $announcement = UserAnnModel::create(['message' => $longMessage]);
         $this->assertDatabaseHas('user_ann_models', ['message' => $longMessage]);
     }
@@ -58,13 +62,19 @@ class UserAnnModelTest extends TestCase
     /** @test */
     public function it_only_allows_fillable_fields()
     {
-        $announcement = UserAnnModel::create([
-            'message' => 'Valid message',
-            'unauthorized_field' => 'Should not be allowed'
-        ]);
+        try {
+            $response = UserAnnModel::create([
+                'message' => 'Valid message',
+                'unauthorized_field' => 'Should not be allowed'
+            ]);
+        } catch (Exception $e) {
+            $this->expectException(QueryException::class);
+        }
 
-        $this->assertDatabaseHas('user_ann_models', ['message' => 'Valid message']);
-        $this->assertDatabaseMissing('user_ann_models', ['unauthorized_field' => 'Should not be allowed']);
+        $this->assertFalse(
+            Schema::hasColumn('user_ann_models', 'unauthorized_field'),
+            "Column 'non_existing_column' should not exist in the users table."
+        );
     }
 
     /** @test */

@@ -9,9 +9,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
+/**
+ * @group global-tests
+ */
 class VideocontrollerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
@@ -44,16 +46,16 @@ class VideocontrollerTest extends TestCase
         $file = UploadedFile::fake()->create('video.mp4', 1024); // 1024 KB = 1 MB
         Artisan::call("storage:link-custom");
 
-        $file->store("uploads", "public");
-
         $this->post(route('upload_video', [
             'course_id' => $course->id,
             "lecture_id" => Lecture::factory([
                 "course_id" => $course->id
             ])->create()->id
         ]), [
-            'course_vid' => $file
-        ])->assertOk();
-
+            'upload_video' => $file
+        ])->assertOk()->assertJsonStructure([
+            "path",
+            "media"
+        ]);
     }
 }
