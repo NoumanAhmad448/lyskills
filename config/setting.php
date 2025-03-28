@@ -1,6 +1,7 @@
 <?php
 
 $site_settings = [
+        "cert_img_path" => config("app.url")."img/certificate.jpg",
         "en_2f" => false,
         "en_delete_user" => false,
         "available_langs" => "en,fr,ar,es,ur",

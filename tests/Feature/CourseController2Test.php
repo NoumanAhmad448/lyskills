@@ -163,7 +163,9 @@ class CourseController2Test extends TestCase
         $response = $this->get(route('instructor.register'))->assertViewIs(config("setting.show_blade"))
             ->assertViewHasAll(['title', 'desc']);
 
+        if (config("app.debug")) {
             debug_logs($response->dump());
+        }
 
         Course::factory()->create([
             "course_title" => "sample title",
@@ -197,5 +199,4 @@ class CourseController2Test extends TestCase
         $response->assertRedirect()->assertRedirectToRoute('dashboard');
         $this->assertNotNull($course->fresh()->is_deleted);
     }
-
 }

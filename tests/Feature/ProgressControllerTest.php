@@ -76,7 +76,7 @@ class ProgressControllerTest extends TestCase
     public function student_down_certificate()
     {
         $this->actingAs($this->student);
-
+        config(["setting.cert_img_path" => "https://www.101certificatetemplates.com/wp-content/uploads/2020/11/Certificate-Template-Word-1.jpg"]);
         $response = $this->get(route('down-cert', [
             "course_name" => fake()->name(),
         ]));

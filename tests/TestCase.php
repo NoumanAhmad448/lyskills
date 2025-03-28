@@ -29,14 +29,16 @@ abstract class TestCase extends BaseTestCase
             // check the following seeder the future
             $this->seed(\Database\Seeders\DatabaseSeeder::class);
         }
+
         $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
 
         if (config("app.env") == config("app.dev_env")) {
             Artisan::call("storage:link-custom");
         }
     }
-    public function runSeeder()
+    protected function runSeeder()
     {
         $this->run_seeder = true;
+        return $this;
     }
 }

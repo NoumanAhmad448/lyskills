@@ -13,6 +13,7 @@ class Course extends Model
     use HasSlug;
 
     protected $guarded = [];
+    public const UNPUBLISH = "unpublished";
 
 
     /**

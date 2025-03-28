@@ -1429,16 +1429,16 @@
         },
         {
             "name": "eren/lms",
-            "version": "1.4",
+            "version": "1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NoumanAhmad448/lms.git",
-                "reference": "8327d5d04fadf8e60cec2e0b073a071578749b47"
+                "reference": "3762c29dac62d6c4d3f5f3c01ebafcef5882343f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/8327d5d04fadf8e60cec2e0b073a071578749b47",
-                "reference": "8327d5d04fadf8e60cec2e0b073a071578749b47",
+                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/3762c29dac62d6c4d3f5f3c01ebafcef5882343f",
+                "reference": "3762c29dac62d6c4d3f5f3c01ebafcef5882343f",
                 "shasum": ""
             },
             "require": {
@@ -1499,9 +1499,9 @@
             "description": "It provides the user to create, maintain and upload the video based coures  on their website",
             "support": {
                 "issues": "https://github.com/NoumanAhmad448/lms/issues",
-                "source": "https://github.com/NoumanAhmad448/lms/tree/v1.4"
+                "source": "https://github.com/NoumanAhmad448/lms/tree/v1.5"
             },
-            "time": "2025-03-26T14:15:28+00:00"
+            "time": "2025-03-28T14:35:07+00:00"
         },
         {
             "name": "firebase/php-jwt",

@@ -98,7 +98,7 @@ class CourseController1Test extends TestCase
 
         $response->assertFound();
         $this->assertDatabaseHas("courses", [
-            "status" => "unpublished"
+            "status" => Course::UNPUBLISH
         ]);
     }
 }
