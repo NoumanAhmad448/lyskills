@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Pricing;
-use App\Models\Wishlist;
+use App\Models\WishList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -54,7 +54,7 @@ class WishlistControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        Wishlist::create([
+        WishList::create([
             'user_id' => $this->user->id,
             'c_id' => $this->course->id
         ]);
@@ -76,7 +76,7 @@ class WishlistControllerTest extends TestCase
         Pricing::factory()->create([
             "course_id" => $this->course->id
         ]);
-        Wishlist::create([
+        WishList::create([
             'user_id' => $this->user->id,
             'c_id' => $this->course->id
         ]);
