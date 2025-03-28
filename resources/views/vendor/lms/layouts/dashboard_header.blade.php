@@ -35,7 +35,7 @@
         {{-- @livewire('navigation-dropdown') --}}
         @if (config('setting.show_site_log'))
             <a href="{{ route('index') }}">
-                <img src="{{ asset('img/logo.jpg') }}" alt="Lykills" class="img-fluid" width="80" />
+                <img src="{{ asset(config("setting.img_logo_path")) }}" alt="Lykills" class="img-fluid" width="80" />
             </a>
         @endif
         <section class="d-flex align-items-center">

@@ -3,6 +3,8 @@
 // resources/lang/en/messages.php
 
 return [
+    "Create-Page"=> 'Create Page' ,
+    "ven"=> 'verification email has been sent. please check your email address' ,
     "Name" => "Name",
     "Email" => "Email",
     "Password" => "Password",

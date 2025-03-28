@@ -1,7 +1,7 @@
 <div class="container-fluid footer mt-auto">
     <div class="row bg-white border p-4">
         <div class="col-md-8 d-md-flex text-center align-items-center">
-            <img src="{{ asset('img/logo.jpg') }}" alt="lyskills" class="img-fluid" width="60" />
+            <img src="{{ asset(config("setting.img_logo_path")) }}" alt="lyskills" class="img-fluid" width="60" />
             <div class="ml-md-4"> copyright © {{ date('Y') }} </div>
         </div>
         <div class="col-md-4 d-flex align-items-center">

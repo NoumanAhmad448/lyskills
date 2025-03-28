@@ -37,7 +37,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_blogger',
         'is_admin',
         'is_role',
-        "role"
+        "role",
+        "language",
     ];
 
     /**

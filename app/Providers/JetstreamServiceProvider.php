@@ -3,8 +3,13 @@
 namespace App\Providers;
 
 use App\Actions\Jetstream\DeleteUser;
+use App\Http\Livewire\Profile\TwoFactorChallenge;
+use App\Http\Livewire\Profile\UpdateProfileInformationForm;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
+use Livewire\Livewire;
+use Illuminate\View\Compilers\BladeCompiler;
+
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -15,7 +20,11 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->afterResolving(BladeCompiler::class, function () {
+            if (config('jetstream.stack') === 'livewire' && class_exists(Livewire::class)) {
+                Livewire::component('profile.update-profile-information-form', UpdateProfileInformationForm::class);
+            }
+        });
     }
 
     /**
@@ -25,10 +34,10 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         $this->configurePermissions();
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
-
     }
 
     /**

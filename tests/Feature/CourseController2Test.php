@@ -14,6 +14,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @group global-tests
+ */
 class CourseController2Test extends TestCase
 {
     use RefreshDatabase, WithFaker;

@@ -10,6 +10,10 @@ use App\Models\InstructorEarning;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
+/**
+ * @group global-tests
+ */
+
 class AnalyticsControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

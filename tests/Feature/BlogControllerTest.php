@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
+/**
+ * @group global-tests
+ */
 class BlogControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

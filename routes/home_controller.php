@@ -7,7 +7,7 @@ use Eren\Lms\Controllers\HomeController1 as ControllersHomeController1;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [HomeController1::class, 'index'])->name('index');
+Route::get('', [HomeController1::class, 'index'])->name('index');
 Route::get('post/{slug}', [ControllersHomeController::class, 'post'])->name('public_posts');
 Route::get('posts', [HomeController::class, 'posts'])->name('all_public_posts');
 Route::get('page/{slug}', [ControllersHomeController1::class, 'page'])->name('public_pages');

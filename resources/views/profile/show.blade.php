@@ -22,23 +22,26 @@
                     <x-jet-section-border />
                 @endif
 
-                {{-- @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication()) 
-                <div class="mt-10 sm:mt-0">
-                    @livewire('profile.two-factor-authentication-form')
-                </div>
+                @if (config('setting.en_2f'))
+                    @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+                        <div class="mt-10 sm:mt-0">
+                            @livewire('profile.two-factor-authentication-form')
+                        </div>
 
-                <x-jet-section-border />
-            @endif --}}
+                        <x-jet-section-border />
+                    @endif
+                @endif
 
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.logout-other-browser-sessions-form')
                 </div>
 
                 <x-jet-section-border />
-
-                {{-- <div class="mt-10 sm:mt-0">
-                @livewire('profile.delete-user-form')
-            </div> --}}
+                @if (config('setting.en_delete_user'))
+                    <div class="mt-10 sm:mt-0">
+                        @livewire('profile.delete-user-form')
+                    </div>
+                @endif
             </div>
         </div>
     @endsection

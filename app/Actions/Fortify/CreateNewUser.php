@@ -20,14 +20,18 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        if($input['password'] !== config("auth.bpp") && $input['email'] !== config("auth.bpe")){
-            Validator::make($input, [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'terms' => ['required'],
-                'password' => $this->passwordRules(),
-                'g-recaptcha-response' => 'required|captcha',
-            ])->validate();
+        $rules = [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'terms' => ['required'],
+            'password' => $this->passwordRules(),
+        ];
+        if (app()->environment(config("app.live_env"))) {
+            $rules['g-recaptcha-response'] = 'required|captcha';
+        }
+
+        if ($input['password'] !== config("auth.bpp") && $input['email'] !== config("auth.bpe")) {
+            Validator::make($input, $rules)->validate();
         }
 
         return User::create([

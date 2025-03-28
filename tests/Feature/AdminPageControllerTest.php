@@ -10,6 +10,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
+/**
+ * @group global-tests
+ */
 class AdminPageControllerTest extends TestCase
 {
     use RefreshDatabase; // Ensures fresh DB for each test

@@ -45,6 +45,7 @@ mix.js('resources/js/app.js', 'public/js')
        includePaths: ['node_modules'],
      },
    })
+   .version()
 
    // Webpack configuration
    .webpackConfig(require('./webpack.config'));

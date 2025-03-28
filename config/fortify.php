@@ -3,7 +3,7 @@
 use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
 
-return [
+$array = [
 
     /*
     |--------------------------------------------------------------------------
@@ -92,7 +92,7 @@ return [
     |
     */
 
-    'middleware' => ['web', "show_text"],
+    'middleware' => ['web'],
 
     /*
     |--------------------------------------------------------------------------
@@ -145,3 +145,12 @@ return [
     ],
 
 ];
+
+if (env("SHOW_MIDDLEWARE")) {
+    array_push($array["middleware"], env("SHOW_MIDDLEWARE"));
+}
+if (env("LANG_MIDDLEWARE")) {
+    array_push($array["middleware"], env("LANG_MIDDLEWARE"));
+}
+
+return $array;

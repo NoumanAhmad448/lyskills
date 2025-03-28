@@ -13,6 +13,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
+/**
+ * @group global-tests
+ */
 class ProgressControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

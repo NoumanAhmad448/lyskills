@@ -6,6 +6,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
+/**
+ * @group global-tests
+ */
 class CommandsTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

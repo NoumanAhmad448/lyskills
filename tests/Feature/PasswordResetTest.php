@@ -13,6 +13,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\Course;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @group global-tests
+ */
 class PasswordResetTest extends TestCase
 {
 

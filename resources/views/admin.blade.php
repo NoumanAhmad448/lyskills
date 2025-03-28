@@ -23,7 +23,7 @@
     <div class="mt-5">
         <div class="d-flex justify-content-center">
             <a href="{{ route('index') }}" class="bg-white">
-                <img src="{{ asset('img/logo.jpg') }}" alt="lyskills" class="img-fluid" width="100" />
+                <img src="{{ asset(config("setting.img_logo_path")) }}" alt="lyskills" class="img-fluid" width="100" />
             </a>
         </div>
         @include('session_msg')

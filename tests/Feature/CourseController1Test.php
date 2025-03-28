@@ -15,6 +15,10 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @group global-tests
+ */
+
 class CourseController1Test extends TestCase
 {
     use RefreshDatabase, WithFaker;

@@ -5,7 +5,7 @@
     @section('content')
         <x-jet-authentication-card>
             <x-slot name="logo">
-                <img src="{{ asset('img/logo.jpg') }}" alt="lyskills" class="img-fluid" width="150" />
+                <img src="{{ asset(config("setting.img_logo_path")) }}" alt="lyskills" class="img-fluid" width="150" />
             </x-slot>
             <!-- <hr class="mb-4"/> -->
 

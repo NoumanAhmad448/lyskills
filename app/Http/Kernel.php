@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\LanguageMiddleware;
 use App\Http\Middleware\ShowText;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -69,6 +70,7 @@ class Kernel extends HttpKernel
         'blogger' => \App\Http\Middleware\Blogger::class,
         'is_dev' => \App\Http\Middleware\IsDev::class,
         "show_text" =>             ShowText::class,
+        "lang" =>             LanguageMiddleware::class,
 
     ];
 }
