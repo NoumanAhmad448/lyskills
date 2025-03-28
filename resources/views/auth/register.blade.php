@@ -8,7 +8,8 @@
 
                     <!--<x-slot name="logo" >-->
                     <div class="d-flex justify-content-center">
-                        <img src="{{ asset(config("setting.img_logo_path")) }}" alt="lyskills" class="img-fluid" width="150" />
+                        <img src="{{ asset(config('setting.img_logo_path')) }}" alt="lyskills" class="img-fluid"
+                            width="150" />
                     </div>
                     <!--</x-slot>-->
 
@@ -94,7 +95,7 @@
                                         href="https://lyskills.com/page/privacy-policy">conditions</a>
                                 </label>
                             </div>
-                            @if (app()->environment(config("app.live_env")))
+                            @if (app()->environment(config('app.live_env')))
                                 <div class="form-group mt-3">
                                     {!! NoCaptcha::renderJs() !!}
                                     {!! NoCaptcha::display() !!}

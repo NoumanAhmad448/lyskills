@@ -64,8 +64,9 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                     <div class="col-md-2">
                         <div class="d-md-flex align-items-md-center">
                             @if (config('setting.show_site_log'))
-                                <a href="{{ route('index') }}" class=""> <img src="{{ asset(config("setting.img_logo_path")) }}"
-                                        alt="Lykills" width="80" class="img-fluid" /> </a>
+                                <a href="{{ route('index') }}" class=""> <img
+                                        src="{{ asset(config('setting.img_logo_path')) }}" alt="Lykills"
+                                        width="80" class="img-fluid" /> </a>
                             @endif
                             @if (config('setting.category_menu'))
                                 <div class="dropdown">

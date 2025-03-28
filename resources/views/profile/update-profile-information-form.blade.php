@@ -68,12 +68,15 @@
             <x-jet-input-error for="email" class="mt-2" />
         </div>
 
-        @if (config("setting.en_user_lang"))
+        @if (config('setting.en_user_lang'))
             <div class="col-span-6 sm:col-span-4">
                 <x-jet-label for="language" value="{{ __('Language') }}" />
-                <select id="language" name="language" class="form-control mt-1 block w-full border-2" wire:model.defer="state.language">
-                    @foreach (config("code.lang") as $lang)
-                        <option value="{{$lang}}" {{ optional(auth()->user())->language == $lang ? 'selected' : '' }}>{{__("lang.lang.$lang")}}</option>
+                <select id="language" name="language" class="form-control mt-1 block w-full border-2"
+                    wire:model.defer="state.language">
+                    @foreach (config('code.lang') as $lang)
+                        <option value="{{ $lang }}"
+                            {{ optional(auth()->user())->language == $lang ? 'selected' : '' }}>
+                            {{ __("lang.lang.$lang") }}</option>
                     @endforeach
                 </select>
                 <x-jet-input-error for="language" class="mt-2" />

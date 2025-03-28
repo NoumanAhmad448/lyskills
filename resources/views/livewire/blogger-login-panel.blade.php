@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-center">
         <div class="card mt-5" style="width: 30rem;padding: 11rem 0px">
             <a href="{{ route('index') }}" class="bg-white card-img-top text-center">
-                <img src="{{ asset(config("setting.img_logo_path")) }}" alt="lyskills" class="img-fluid" width="100" />
+                <img src="{{ asset(config('setting.img_logo_path')) }}" alt="lyskills" class="img-fluid" width="100" />
             </a>
             <div class="card-body">
                 <h3 class="card-title text-center"> Blogger Login </h3>

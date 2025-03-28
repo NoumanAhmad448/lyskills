@@ -3,7 +3,7 @@
         <x-jet-authentication-card>
             <x-slot name="logo">
                 {{-- <x-jet-authentication-card-logo /> --}}
-                <img src="{{ asset(config("setting.img_logo_path")) }}" alt="lyskills" class="img-fluid" width="150" />
+                <img src="{{ asset(config('setting.img_logo_path')) }}" alt="lyskills" class="img-fluid" width="150" />
             </x-slot>
 
             @if (session('status') == 'verification-link-sent')

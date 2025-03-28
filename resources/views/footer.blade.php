@@ -5,7 +5,7 @@
                 <div class="col-md-3 mt-3 mt-md-0">
                     <h3 class="mb-3"> About US </h3>
                     <div class="text-justify">
-                        {{ __("description.home")}}
+                        {{ __('description.home') }}
                     </div>
 
                 </div>
@@ -44,7 +44,7 @@
                 <div class="col-md-3 mt-3 mt-md-0">
                     <h3 class="mb-3">Our Office </h3>
                     <div>
-                        {{ __("description.address") }}
+                        {{ __('description.address') }}
                     </div>
 
                     <h3 class="my-3">Follow Us</h3>

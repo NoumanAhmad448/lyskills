@@ -6,7 +6,8 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('index') }}">
-                        <img src="{{ asset(config("setting.img_logo_path")) }}" alt="lyskills" class="img-fluid" width="80" />
+                        <img src="{{ asset(config('setting.img_logo_path')) }}" alt="lyskills" class="img-fluid"
+                            width="80" />
                     </a>
                 </div>
                 {{-- <div class="pt-2 pb-3 space-y-1">

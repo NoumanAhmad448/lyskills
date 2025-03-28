@@ -103,8 +103,9 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                     <div class="col-md-2">
                         <div class="d-md-flex align-items-md-center">
                             @if (config('setting.show_site_log'))
-                                <a href="{{ route('index') }}" class=""> <img src="{{ asset(config("setting.img_logo_path")) }}"
-                                        alt="lms" width="80" class="img-fluid" /></a>
+                                <a href="{{ route('index') }}" class=""> <img
+                                        src="{{ asset(config('setting.img_logo_path')) }}" alt="lms"
+                                        width="80" class="img-fluid" /></a>
                             @endif
                             <div class="dropdown">
                                 <div class="ml-4 cursor_pointer show-dropdown" data-toggle="dropdown"
