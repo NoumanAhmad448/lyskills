@@ -14,7 +14,8 @@ class Course extends Model
 
     protected $guarded = [];
     public const UNPUBLISH = "unpublished";
-
+    public const PUBLISHED_STATUS = "published";
+    public const COURSE_STATUS = ["draft" => "draft"];
 
     /**
      * Get the options for generating the slug.

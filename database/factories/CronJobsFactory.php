@@ -20,16 +20,16 @@ class CronJobsFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
-            'w_name' => $this->faker->name(),
-            'status' => $this->faker->randomElement([
-                'idle',
-                'successed',
-                'error',
+            "name" => $this->faker->name(),
+            "w_name" => $this->faker->name(),
+            "status" => $this->faker->randomElement([
+                "idle",
+                "successed",
+                "error",
             ]),
-            'message' => $this->faker->sentence(),
-            'starts_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
-            'ends_at' => $this->faker->dateTimeBetween('now', '+1 month'),
+            "message" => $this->faker->sentence(),
+            "starts_at" => $this->faker->dateTimeBetween("-1 month", "now"),
+            "ends_at" => $this->faker->dateTimeBetween("now", "+1 month"),
         ];
     }
 }

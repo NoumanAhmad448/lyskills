@@ -18,8 +18,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        laravel: [9.*, 10.*]  # Laravel versions to test
-        php: [8.1, 8.2, 8.3]  # PHP versions to test
+        laravel: [9.*, 10.*] # Laravel versions to test
+        php: [8.1, 8.2, 8.3] # PHP versions to test
 
         commit_msg: ["Fixes coding style"]
     services:
@@ -139,8 +139,16 @@ jobs:
           echo "DB_USERNAME=${{secrets.DB_USERNAME}}"
           echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
 
-      - name: Running migrations Tests
-        run: yes | php artisan storage:link-custom
+      - name: Create Symlink (Linux/macOS)
+        run: ln -s $GITHUB_WORKSPACE/public $GITHUB_WORKSPACE/storage/public
+        if: runner.os != 'Windows'
+
+      - name: Create Symlink (Windows)
+        run: cmd.exe /c mklink /D $GITHUB_WORKSPACE/public $GITHUB_WORKSPACE/storage/public
+        if: runner.os == 'Windows'
+
+      - name: Verify Symlink
+        run: ls -l public/storage
 
       - name: Running migrations Tests
         run: yes | php artisan migrate --force
@@ -154,9 +162,6 @@ jobs:
 
       - name: Checking Laravel Health
         run: php artisan health:check --no-notification
-
-      - name: Setup Storage Link
-        run: php artisan storage:link-custom
 
       - name: Run Tests
         run: |

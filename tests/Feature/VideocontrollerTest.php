@@ -44,7 +44,6 @@ class VideocontrollerTest extends TestCase
         ]);
 
         $file = UploadedFile::fake()->create('video.mp4', 1024); // 1024 KB = 1 MB
-        Artisan::call("storage:link-custom");
 
         $this->post(route('upload_video', [
             'course_id' => $course->id,

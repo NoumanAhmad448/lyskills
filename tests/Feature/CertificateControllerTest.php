@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Certificate;
 use Tests\TestCase;
-use App\Models\User;
 use App\Models\Course;
-use Eren\Lms\Database\Factories\CertificateFactory;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -54,7 +54,7 @@ class CertificateControllerTest extends TestCase
     {
         $this->actingAs($this->student);
 
-        app(CertificateFactory::class)->create([
+        Certificate::factory()->create([
             'user_id' => $this->student->id,
             'course_id' => $this->course->id,
             'code' => 'CERT123'
@@ -75,7 +75,7 @@ class CertificateControllerTest extends TestCase
     {
         $this->actingAs($this->student);
 
-        $certificate = app(CertificateFactory::class)->create([
+        $certificate = Certificate::factory()->create([
             'user_id' => $this->student->id,
             'course_id' => $this->course->id
         ]);
@@ -91,12 +91,12 @@ class CertificateControllerTest extends TestCase
     {
         $this->actingAs($this->student);
 
-        $certificate1 = app(CertificateFactory::class)->create([
+        $certificate1 = Certificate::factory()->create([
             'user_id' => $this->student->id,
             'course_id' => $this->course->id
         ]);
 
-        $certificate2 = app(CertificateFactory::class)->create([
+        $certificate2 = Certificate::factory()->create([
             'user_id' => $this->student->id,
             'course_id' => $this->course->id
         ]);

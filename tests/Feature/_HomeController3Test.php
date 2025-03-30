@@ -3,14 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\User;
-use App\Models\Post;
-use App\Models\Faq;
 use App\Models\Course;
-use App\Models\Page;
 use App\Models\Categories;
-use App\Mail\ContactUsMail;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;

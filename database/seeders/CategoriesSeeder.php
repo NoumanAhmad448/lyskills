@@ -31,9 +31,7 @@ class CategoriesSeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            if(config("app.debug")){
-                dump($categories);
-            }
+            debug_logs($categories);
             Categories::create($category);
         }
     }

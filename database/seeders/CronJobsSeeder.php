@@ -3,13 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\CronJobs;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CronJobsSeeder extends Seeder
 {
-    private $total_cron_jobs = 5;
-
     /**
      * Run the database seeds.
      *
@@ -17,7 +14,7 @@ class CronJobsSeeder extends Seeder
      */
     public function run()
     {
-        CronJobs::factory()->count($this->total_cron_jobs)->create([
+        CronJobs::create([
             "name" => fake()->word,
             "w_name" => fake()->domainName,
             'status' => fake()->randomElement([

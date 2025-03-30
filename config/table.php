@@ -57,4 +57,5 @@ return [
     'land_comments_logs' => 'land_comments_logs',
     'SubmitButton' => 'Submit',
     "wishlist_tble" => "wish_lists",
+    'course_enrollments' => 'course_enrollments',
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\ResponseKeys;
 use App\Http\Contracts\FaqContract;
 use App\Http\Contracts\PostsContract;
 use App\Http\Requests\ContactUsRequest;
@@ -42,9 +43,9 @@ class HomeController extends Controller
 
             $request->session()->regenerateToken();
 
-            return redirect('/')->with('status', 'you are logged out');
-        } catch (\Throwable $th) {
-            return back();
+            return redirect('/')->with(ResponseKeys::STATUS, 'you are logged out');
+        } catch (\Throwable $e) {
+            return server_logs([true, $e], [false], true);
         }
     }
 
@@ -59,9 +60,9 @@ class HomeController extends Controller
             $title = "contact us";
             $desc = __('description.contact_us');
 
-            return view('xuesheng.contact-us', compact('title', 'desc'));
-        } catch (\Throwable $th) {
-            return back();
+            return view('xuesheng.contact-us', compact(ResponseKeys::TITLE, 'desc'));
+        } catch (\Throwable $e) {
+            return server_logs([true, $e], [false], true);
         }
     }
 
@@ -70,7 +71,6 @@ class HomeController extends Controller
         try {
 
             $request->validated();
-            // dd($request->all());
             Mail::to(config("mail.contact_us_email"))->queue(new ContactUsMail(
                 $request->name,
                 $request->email,
@@ -80,7 +80,7 @@ class HomeController extends Controller
                 $request->body
             ));
 
-            return back()->with('status', 'Your Message has delivered. We will contact you soon');
+            return back()->with(ResponseKeys::TITLE, 'Your Message has delivered. We will contact you soon');
         } catch (\Exception $e) {
             return back()->with('error', 'your message was not delievered. Please try again');
         }
@@ -116,8 +116,15 @@ class HomeController extends Controller
         try {
             $q = $request->q;
             $ex = '%' . $q . '%';
-            $res = DB::table('courses')->whereNull('is_deleted')->where('course_title', 'like', $ex)->orWhere('categories_selection', 'like', $ex)->orWhere('c_level', 'like', $ex)
-                ->where('status', 'published')->select('course_title')->orderByDesc('created_at')->take(10)->get();
+            $res = Course::
+                 where(ResponseKeys::STATUS, Course::PUBLISHED_STATUS)
+                ->where('is_deleted',0)
+                ->where(function ($query) use ($ex) {
+                    $query->where('course_title', 'like', $ex)
+                    ->orWhere('categories_selection', 'like', $ex)
+                    ->orWhere('c_level', 'like', $ex);
+                })
+                ->select('course_title')->orderByDesc('created_at')->take(10)->get();
             $data = [];
             if ($res && $res->count()) {
                 foreach ($res as $s) {
@@ -125,7 +132,7 @@ class HomeController extends Controller
                 }
             } else {
                 $users = User::where('name', 'like', "%" . $q . "%")->select('name')->orderByDesc('created_at')->take(10)->get();
-                if ($users->count()) {
+                if ($users && $users->count()) {
                     foreach ($users as $user) {
                         array_push($data, $user->name);
                     }

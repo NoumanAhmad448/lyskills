@@ -234,6 +234,7 @@ Route::middleware([config("middlewares.verified"), config("middlewares.auth")])-
 Route::middleware([config("middlewares.verified"), config("middlewares.auth")])->group(function () {
     Route::post('student/course/coupon', [CourseEx2Controller::class, 'coupon'])->name('coupon');
     Route::post('student/course/enroll-now/{course}', [CourseEx2Controller::class, 'enrollNow'])->name('enroll-now');
+    Route::delete('student/course/enroll-now/{course}', [CourseEx2Controller::class, 'un_enrollNow'])->name('un-enroll-now');
 });
 
 

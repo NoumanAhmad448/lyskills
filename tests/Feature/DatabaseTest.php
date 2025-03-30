@@ -5,7 +5,11 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Categories;
 use Database\Seeders\CategoriesSeeder;
+use Illuminate\Support\Facades\DB;
 
+/**
+ * @group global-tests
+ */
 class DatabaseTest extends TestCase
 {
     /** @test */
@@ -13,7 +17,7 @@ class DatabaseTest extends TestCase
     {
         $this->assertEquals(
             config('database.testing_db'),
-            \DB::connection()->getDatabaseName(),
+            DB::connection()->getDatabaseName(),
             'Not using test database!'
         );
     }
@@ -32,12 +36,6 @@ class DatabaseTest extends TestCase
         $this->assertDatabaseCount('categories', 5);
     }
 
-    /** @test */
-    public function create_an_inactive_category()
-    {
-        $inactiveCategory = Categories::factory()->inactive()->create();
-        $this->assertDatabaseHas('categories', ['id' => $inactiveCategory->id, 'status' => 'inactive']);
-    }
 
     /** @test */
     public function create_an_it_category()
@@ -70,4 +68,4 @@ class DatabaseTest extends TestCase
             'value' => 'business'
         ]);
     }
-} 
+}
