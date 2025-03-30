@@ -48,29 +48,29 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
 
-Route::post('/back', function () {
+Route::domain(config("app.url"))->post('/back', function () {
     return redirect()->route('index');
 })->name('back');
 
 if (GuestFeatures::enableVerifyEmail()) {
-    Route::get(GuestRoutes::verifyEmail(), function () {
+    Route::domain(config("app.url"))->get(GuestRoutes::verifyEmail(), function () {
         return view(GuestView::verifyEmailView());
     })->middleware([config("middlewares.auth")])->name(config("names.vn"));
 
-    Route::get(GuestRoutes::verifyEmailHash(), function (EmailVerificationRequest $request) {
+    Route::domain(config("app.url"))->get(GuestRoutes::verifyEmailHash(), function (EmailVerificationRequest $request) {
         $request->fulfill();
         return redirect()->route(config("names.login"));
     })
         ->middleware([config("middlewares.auth"), config("middlewares.signed")])->name(config("names.vv"));
 
-    Route::post(EmailRoutes::emailNotification(), function (Request $request) {
+    Route::domain(config("app.url"))->post(EmailRoutes::emailNotification(), function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
 
         return back()->with('status', __("messages.ven"));
     })->middleware([config("middlewares.auth"), config("middlwares.th_1_m_6")])->name(config("names.vs"));
 }
 
-Route::middleware([config("middlewares.auth"), config("middlewares.verified")])->group(function () {
+Route::domain(config("app.url"))->middleware([config("middlewares.auth"), config("middlewares.verified")])->group(function () {
 
     Route::get('/courses/create/{id}/{course_id}', [CourseController::class, 'index'])
         ->name('courses_instruction');
@@ -91,9 +91,12 @@ Route::middleware([config("middlewares.auth"), config("middlewares.verified")])-
 });
 
 
+$route = Route::middleware([config("middlewares.auth"), 'admin', config("middlewares.verified")]);
+if (config("setting.enable_admin_domain")) {
+    $route->domain(config("setting.admin_domain"));
+}
 
-
-Route::middleware([config("middlewares.auth"), 'admin', config("middlewares.verified")])->group(function () {
+$route->group(function () {
 
 
     Route::get('admin/show-post', [AdminPostController::class, 'view'])->name('admin_v_p');
@@ -214,7 +217,7 @@ Route::prefix('blogger')->middleware(['blogger', config("middlewares.auth"), con
 });
 
 
-Route::middleware([config("middlewares.verified"), config("middlewares.auth")])->group(function () {
+Route::domain(config("app.url"))->middleware([config("middlewares.verified"), config("middlewares.auth")])->group(function () {
 
 
     Route::delete('student/course/remove-from-wish-list/{slug}', [StudentController::class, 'removeFromWishlist'])->name('remove-wishlist-course');
@@ -231,14 +234,14 @@ Route::middleware([config("middlewares.verified"), config("middlewares.auth")])-
     Route::get('student/contacts-instructor', [CourseEx2Controller::class, 'chatIns'])->name('chat_w_i');
 });
 
-Route::middleware([config("middlewares.verified"), config("middlewares.auth")])->group(function () {
+Route::domain(config("app.url"))->middleware([config("middlewares.verified"), config("middlewares.auth")])->group(function () {
     Route::post('student/course/coupon', [CourseEx2Controller::class, 'coupon'])->name('coupon');
     Route::post('student/course/enroll-now/{course}', [CourseEx2Controller::class, 'enrollNow'])->name('enroll-now');
     Route::delete('student/course/enroll-now/{course}', [CourseEx2Controller::class, 'un_enrollNow'])->name('un-enroll-now');
 });
 
 
-Route::middleware([config("middlewares.auth"), 'admin', config("middlewares.verified")])->prefix('admin')->group(function () {
+Route::domain(config("app.url"))->middleware([config("middlewares.auth"), 'admin', config("middlewares.verified")])->prefix('admin')->group(function () {
     Route::post('payment/to/instructor/by-admin', [PaymentController::class, 'sendEmailToInstructor'])->name('send-email-to-ins');
     Route::get('student/enrollements', [PaymentController::class, 'newEnrollment'])->name('course-enrollment');
     Route::get('user-in-courses-enrollment/{course}', [PaymentController::class, 'enrollment'])->name('enrollment-user');
@@ -247,9 +250,9 @@ Route::middleware([config("middlewares.auth"), 'admin', config("middlewares.veri
 
 
 // Route::get('/testing-paypal-integration', [PaypalController::class, 'testingPaypal']);
-Route::middleware(config("middlewares.auth"))->post('/paypal-integration/{slug}', [PaypalController::class, 'testingPaypalPost'])->name('PaypalPost');
+Route::domain(config("app.url"))->middleware(config("middlewares.auth"))->post('/paypal-integration/{slug}', [PaypalController::class, 'testingPaypalPost'])->name('PaypalPost');
 // Route::get('cancel-payment', [PaypalController::class, 'paymentCancel'])->name('cancel.payment');
-Route::middleware(config("middlewares.auth"))->get('payment-success', [PaypalController::class, 'paymentSuccess'])->name('success.payment');
+Route::domain(config("app.url"))->middleware(config("middlewares.auth"))->get('payment-success', [PaypalController::class, 'paymentSuccess'])->name('success.payment');
 
 
 

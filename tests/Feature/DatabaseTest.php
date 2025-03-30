@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\DB;
  */
 class DatabaseTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
     /** @test */
     public function ensure_using_test_database()
     {

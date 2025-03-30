@@ -7,8 +7,11 @@ use App\Http\Livewire\EditAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\CreateAdmin as CreateAdminByAdmin;
 
-
-Route::middleware("super_admin")->group(function () {
+$route = Route::domain(config("app.url"))->middleware("super_admin");
+if (config("setting.enable_super_admin_domain")) {
+    $route->domain(config("setting.super_admin_domain"));
+}
+$route->group(function () {
 
     Route::get('admin/edit-admin/{user}', EditAdmin::class)->name('edit_admin___');
     Route::delete('admin/delete-admin/{user}', [BloggerController::class, 'delete'])->name('delete_admin___');

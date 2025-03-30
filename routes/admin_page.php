@@ -3,7 +3,12 @@
 use App\Http\Controllers\AdminPageController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix("admin")->middleware("admin")->group(function () {
+$route = Route::prefix("admin")->middleware("admin");
+
+if (config("setting.enable_admin_domain")) {
+    $route->domain(config("setting.admin_domain"));
+}
+$route->group(function () {
     Route::post('page/{page}/change-status', [AdminPageController::class, 'changeStatus'])->name('admin_cs_page');
     Route::delete('page/{page}/delete-page', [AdminPageController::class, 'delete'])->name('admin_page_delete');
     Route::get('show-page', [AdminPageController::class, 'view'])->name('admin_v_page');
