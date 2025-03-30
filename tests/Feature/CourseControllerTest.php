@@ -11,6 +11,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @group global-tests
+ */
 class CourseControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

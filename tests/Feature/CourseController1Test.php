@@ -15,6 +15,10 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @group global-tests
+ */
+
 class CourseController1Test extends TestCase
 {
     use RefreshDatabase, WithFaker;
@@ -94,7 +98,7 @@ class CourseController1Test extends TestCase
 
         $response->assertFound();
         $this->assertDatabaseHas("courses", [
-            "status" => "unpublished"
+            "status" => Course::UNPUBLISH
         ]);
     }
 }

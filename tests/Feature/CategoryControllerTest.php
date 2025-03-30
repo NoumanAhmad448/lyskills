@@ -9,6 +9,9 @@ use App\Models\SubCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
+/**
+ * @group global-tests
+ */
 class CategoryControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

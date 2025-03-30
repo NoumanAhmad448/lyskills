@@ -10,6 +10,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use RefreshDatabase;  // This will ensure fresh database for each test
+    public $run_seeder = false;
 
     protected function setUp(): void
     {
@@ -23,13 +24,21 @@ abstract class TestCase extends BaseTestCase
             throw new \Exception($msg);
         }
 
-        // Seed the database for testing
-        // check the following seeder the future
-        $this->seed(\Database\Seeders\DatabaseSeeder::class);
-        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
-        if(config("app.env") == config("app.dev_env")){
-            Artisan::call("storage:link-custom");
+        if ($this->run_seeder) {
+            // Seed the database for testing
+            // check the following seeder the future
+            $this->seed(\Database\Seeders\DatabaseSeeder::class);
         }
 
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
+        if (config("app.env") == config("app.dev_env")) {
+            Artisan::call("storage:link-custom");
+        }
+    }
+    protected function runSeeder()
+    {
+        $this->run_seeder = true;
+        return $this;
     }
 }

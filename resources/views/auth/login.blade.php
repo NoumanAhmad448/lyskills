@@ -5,7 +5,7 @@
     @section('content')
         <x-jet-authentication-card>
             <x-slot name="logo">
-                <img src="{{ asset('img/logo.jpg') }}" alt="lyskills" class="img-fluid" width="150" />
+                <img src="{{ asset(config('setting.img_logo_path')) }}" alt="lyskills" class="img-fluid" width="150" />
             </x-slot>
 
             <a href="{{ route('google-login') }}" style="" class="btn btn-info btn-lg d-block my-1"> <i

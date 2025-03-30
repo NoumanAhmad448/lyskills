@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 return [
@@ -15,4 +15,5 @@ return [
     'about_us' => 'Lyskills is an online learning platform where instructors can upload their multiple video contact and students can get life time access to all our courses in different languages. You can get your skills with Lyskills, a distance learning platform. Instructor can teach their students locally and globally and can get their life time business',
     'posts' => 'Lyskills is a Platform where student and instructors come from globally for enhancing their skills. so our Blog will help the Instructor, Student as well as user for improving his Skills',
     'accounting_and_finance' => 'Learn financial accounting online courses from Lyskills. Finance instructor can upload their video courses on E learning platform, students can get their online training of financial accounting and build a foundation of core business skills in finance and accounting.',
+    "address" => "Ground floor Akram Plaza, Muslim Town, Ferozepur Road, near Baba Qulfi wala, Lahore",
 ];

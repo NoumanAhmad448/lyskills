@@ -10,6 +10,9 @@ use App\Models\Faq;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
+/**
+ * @group global-tests
+ */
 class AdminControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
@@ -73,8 +76,8 @@ class AdminControllerTest extends TestCase
         $response->assertStatus(200); // Ensure the request is successful
 
         $user = $user->fresh();
-        if($user->is_blocked == 0){
-            $this->fail('User is not blocked '.$user);
+        if ($user->is_blocked == 0) {
+            $this->fail('User is not blocked ' . $user);
         }
         $this->assertDatabaseHas('users', [
             'id' => $user->id,

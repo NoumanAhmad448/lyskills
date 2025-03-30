@@ -3,13 +3,18 @@
         <x-jet-authentication-card>
             <x-slot name="logo">
                 {{-- <x-jet-authentication-card-logo /> --}}
-                <img src="{{ asset('img/logo.jpg') }}" alt="lyskills" class="img-fluid" width="150" />
+                <img src="{{ asset(config('setting.img_logo_path')) }}" alt="lyskills" class="img-fluid" width="150" />
             </x-slot>
 
-            <div class="mb-4 text-sm text-gray-600 text-center">
-                {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-            </div>
-
+            @if (session('status') == 'verification-link-sent')
+                <div class="mb-4 text-sm text-gray-600 text-center">
+                    {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+                </div>
+            @else
+                <div class="mb-4 text-sm text-gray-600 text-center">
+                    {{ __('Your email has already been verified. You may logged out now') }}
+                </div>
+            @endif
             @if (session('status') == 'verification-link-sent')
                 <div class="mb-4 font-medium text-sm text-green-600 text-center">
                     {{ __('A new verification link has been sent to the email address you provided during registration.') }}

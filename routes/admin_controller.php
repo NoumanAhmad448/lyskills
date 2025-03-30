@@ -3,15 +3,36 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
-Route::get('/admin', [AdminController::class, 'admin_panel'])->name('admin');
-Route::post('/admin/post', [AdminController::class, 'login'])->name('admin_a');
+$route = Route::prefix("admin");
+if (config("setting.enable_admin_domain")) {
+    $route->domain(config("setting.admin_domain"));
+}
 
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
-    Route::post('/admin/homepage/update', [AdminController::class, 'homepageUpdate'])->name('admin.homepage.update');
+$route->group(function () {
+
+    Route::get('/', [AdminController::class, 'admin_panel'])->name('admin');
+    Route::post('/post', [AdminController::class, 'login'])->name('admin_a');
 });
 
-Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(function () {
+$route = Route::prefix('admin')->middleware(['auth', 'admin']);
+if (config("setting.enable_admin_domain")) {
+    $route->domain(config("setting.admin_domain"));
+}
+
+$route->group(function () {
+
+    Route::get('/homepage', [AdminController::class, 'homepage'])->name('admin.homepage');
+    Route::post('/homepage/update', [AdminController::class, 'homepageUpdate'])->name('admin.homepage.update');
+});
+
+$route = Route::prefix('admin')->middleware(['auth', 'admin', 'verified']);
+
+if (config("setting.enable_admin_domain")) {
+    $route->domain(config("setting.admin_domain"));
+}
+
+$route->group(function () {
+
     Route::get('send-email', [AdminController::class, 'sendEmail'])->name('a-send-email');
     Route::post('send-email', [AdminController::class, 'sendEmailPost'])->name('a-p-send-email');
 
@@ -38,10 +59,10 @@ Route::prefix('admin')->middleware(['auth', 'admin', 'verified'])->group(functio
     Route::post('/all-courses-searching', [AdminController::class, 'courseSearching'])->name('a_c_searching');
     Route::get('/all-courses-searching', [AdminController::class, 'viewCourse']);
 
-    Route::get('admin/password/change-password', [AdminController::class, 'changePassword'])->name('admin_change_pass');
-    Route::patch('admin/password/change-password', [AdminController::class, 'changePasswordP'])->name('admin_p_change_pass');
+    Route::get('password/change-password', [AdminController::class, 'changePassword'])->name('admin_change_pass');
+    Route::patch('password/change-password', [AdminController::class, 'changePasswordP'])->name('admin_p_change_pass');
 
-    Route::get('admin/setting/payment-share-setting', [AdminController::class, 'sharePayment'])->name('a_share_payment');
-    Route::post('admin/setting/payment-share-setting', [AdminController::class, 'sharePostPayment'])->name('a_p_share_payment');
-    Route::get('admin/instructor-earning-detail/{id}', [AdminController::class, 'getInsDetailedEaning'])->name('total-earning-detail');
+    Route::get('setting/payment-share-setting', [AdminController::class, 'sharePayment'])->name('a_share_payment');
+    Route::post('setting/payment-share-setting', [AdminController::class, 'sharePostPayment'])->name('a_p_share_payment');
+    Route::get('instructor-earning-detail/{id}', [AdminController::class, 'getInsDetailedEaning'])->name('total-earning-detail');
 });

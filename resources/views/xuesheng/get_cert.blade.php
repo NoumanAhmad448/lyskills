@@ -36,7 +36,7 @@
         <!--<div style="font-size:25px">on  </div> <br/><br/>-->
         <!--<div style="font-size:30px"> Lyskills.com </div><br>-->
         <div style="display: flex;justify-content: center;">
-            <img src="{{ asset('img/logo.jpg') }}" alt="company logo" style="width: 150px;" />
+            <img src="{{ asset(config('setting.img_logo_path')) }}" alt="company logo" style="width: 150px;" />
         </div>
         <div style="font-size:25px;"><i>Dated</i></div>
         <div style="font-size:30px;color: #000"> @php echo LyskillsCarbon::now(true); @endphp </div>

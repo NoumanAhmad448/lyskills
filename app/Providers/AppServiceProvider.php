@@ -4,25 +4,9 @@ namespace App\Providers;
 
 use App\Models\ConfigSetting;
 use App\Models\Social;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
-use App\Spatie\GoogleCaptcha;
-use App\Spatie\Js_Debug;
-use App\Spatie\SlackKeys;
-use Spatie\CpuLoadHealthCheck\CpuLoadCheck;
-use Spatie\Health\Checks\Checks\CacheCheck;
-use Spatie\Health\Checks\Checks\DatabaseCheck;
-use Spatie\Health\Checks\Checks\DatabaseConnectionCountCheck;
-use Spatie\Health\Checks\Checks\DatabaseSizeCheck;
-use Spatie\Health\Checks\Checks\DatabaseTableSizeCheck;
-use Spatie\Health\Checks\Checks\DebugModeCheck;
-use Spatie\Health\Checks\Checks\EnvironmentCheck;
-use Spatie\Health\Checks\Checks\OptimizedAppCheck;
-use Spatie\Health\Checks\Checks\PingCheck;
-use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
-use Spatie\Health\Facades\Health;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -42,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
         }
         $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
         $this->app->register(TelescopeServiceProvider::class);
-
     }
 
     /**
@@ -76,30 +59,6 @@ class AppServiceProvider extends ServiceProvider
                 URL::forceScheme(config("setting.http"));
                 resolve(\Illuminate\Routing\UrlGenerator::class)->forceScheme(config("setting.http"));
             }
-            $checks = [
-                DatabaseCheck::new(),
-                CacheCheck::new(),
-                OptimizedAppCheck::new()
-                    ->checkConfig()
-                    ->checkRoutes(),
-                DatabaseConnectionCountCheck::new()
-                    ->failWhenMoreConnectionsThan(100),
-                DatabaseTableSizeCheck::new()
-                    ->table(config('table.users'), maxSizeInMb: config('setting.max_tble_size')),
-                DebugModeCheck::new(),
-                GoogleCaptcha::new(),
-                DatabaseSizeCheck::new(),
-                SlackKeys::new(),
-            ];
-
-            if (in_array(config('app.env'), [config("app.live_env"), 'prod'])) {
-                $checks[] = Js_Debug::new();
-                // $checks[] = CpuLoadCheck::new()->failWhenLoadIsHigherInTheLast15Minutes(2.0);
-                $checks[] = EnvironmentCheck::new();
-                $checks[] = UsedDiskSpaceCheck::new();
-                $checks[] = PingCheck::new()->url(config('app.url'))->retryTimes(config('setting.retry_time'));
-            }
-            Health::checks($checks);
         } catch (\Exception $e) {
             Log::error('Database connection failed: ' . $e->getMessage());
         }

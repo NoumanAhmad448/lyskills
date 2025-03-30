@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 class SubCategoryFactory extends Factory
 {
     protected $model = SubCategory::class;
-    
+
     public function definition()
     {
         $name = $this->faker->name();

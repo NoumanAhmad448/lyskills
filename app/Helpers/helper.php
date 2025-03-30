@@ -3,8 +3,10 @@
 use App\Models\CourseStatus;
 use Illuminate\Support\Facades\Auth;
 use App\Classes\LyskillsCarbon;
-
+use Symfony\Component\HttpFoundation\Response;
 use App\Notifications\SlackErrorNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 if (! function_exists('custom_dump')) {
@@ -224,9 +226,11 @@ if (!function_exists('server_logs')) {
         $e = array(),
         $request = array(),
         $config = false,
-        $response_status = 500,
-        $return_response = true
-    ) {
+        $return_response = true,
+        ) {
+        Log::channel("slack")->error("Exception caught: " . $e[1]->getMessage(),[
+            "exception" => $e[1]
+        ]);
         if (config("app.debug")) {
             if (count($e) > 1 && $e[0]) {
                 custom_dump($e[1]->getMessage());
@@ -243,7 +247,13 @@ if (!function_exists('server_logs')) {
                 custom_dump("-----------------------");
             }
         } else if ($return_response) {
-            return response()->json(['error', config("setting.err_msg"), $response_status]);
+            $response = ['error', config("setting.err_msg")];
+            return
+            $request[0] && $request[1]->expectsJson() ?
+
+                    response()->json($response, Response::HTTP_INTERNAL_SERVER_ERROR)
+                    :
+                    back()->with($response);
         }
     }
 }

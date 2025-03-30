@@ -1,7 +1,25 @@
 <?php
 
 $site_settings = [
-        "extra_middlewares" => ["show_text"],
+        "enable_admin_domain" => true,
+        "enable_instructor_domain" => true,
+        "enable_dev_domain" => true,
+        "enable_super_admin_domain" => true,
+        "instructor_domain" => "instructor.".env("APP_URL"),
+        "dev_domain" => "dev.".env("APP_URL"),
+        "super_admin_domain" => "super-admin.".env("APP_URL"),
+        "admin_domain" => "admin.".env("APP_URL"),
+        "cert_img_path" => config("app.url")."img/certificate.jpg",
+        "en_2f" => false,
+        "en_delete_user" => false,
+        "available_langs" => "en,fr,ar,es,ur",
+        "en_user_lang" => false,
+        "rate_limit" => 60,
+        "lang_middleware" => "",
+        #Image logo path is set w.r.t public folder.
+        "img_logo_path" => "img/logo.jpg",
+        "enable_verify_email" => true,
+        "extra_middlewares" => [],
         "enable_text_showing" => true,
         "course_status" => [
                 "draft" => "draft",
@@ -19,7 +37,7 @@ $site_settings = [
         ],
         "cron_paginate" => 40,
         "s3Url" => env('AWS_URL'),
-        "https_s3Url" => env('AWS_BUCKET_URL')."/",
+        "https_s3Url" => env('AWS_BUCKET_URL') . "/",
         "no_reply_email_pass" => env('NO_REPLY_EMAIL_PASS'),
         "max_tble_size" => 9_0000000,
         "retry_time" => 5,
@@ -79,4 +97,10 @@ $site_settings = [
         "en_showing_vid_val" => false
 ];
 
+if (env("SHOW_MIDDLEWARE")) {
+        array_push($site_settings["extra_middlewares"], env("SHOW_MIDDLEWARE"));
+}
+if (env("LANG_MIDDLEWARE", null)) {
+        $site_settings["lang_middleware"] = env("LANG_MIDDLEWARE");
+}
 return $site_settings;

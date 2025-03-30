@@ -58,7 +58,7 @@ class LyskillsPayment
     {
         setEmailConfigForCourse();
         $course_url = route('user-course', $slug);
-        // dd($course->user->email);
+
         Mail::to($email)->queue(new StudentEnrollmentMail($name, $course->course_title, $course_url));
         Mail::to($course->user->email)->queue(new InformInstructorMail($name, $course->course_title, $course_url, $course->user->name));
     }

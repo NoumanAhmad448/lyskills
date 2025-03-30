@@ -1,0 +1,17 @@
+<?php
+
+return [
+    'home' => 'Lyskills est une plateforme éducative en ligne où les instructeurs peuvent télécharger leur contenu vidéo et cibler leurs étudiants localement et globalement. Les étudiants peuvent suivre une formation en ligne sur n\'importe quel sujet, dans n\'importe quelle langue, avec un accès à vie à des milliers de nos cours vidéo. Apprenez des cours en ligne et développez des compétences créatives pour atteindre vos objectifs personnels et professionnels.',
+    'default' => 'Lyskills est une plateforme éducative en ligne où les instructeurs peuvent télécharger leur contenu vidéo et cibler leurs étudiants localement et globalement. Les étudiants peuvent suivre une formation en ligne sur n\'importe quel sujet, dans n\'importe quelle langue, avec un accès à vie à des milliers de nos cours vidéo. Apprenez des cours en ligne et développez des compétences créatives pour atteindre vos objectifs personnels et professionnels.',
+    'engineering' => 'Inscrivez-vous à des cours d\'ingénierie en ligne ou explorez des domaines spécifiques tels que l\'électrotechnique, l\'automatisation, le génie mécanique, les systèmes embarqués, Raspberry Pi et bien d\'autres domaines de l\'ingénierie.',
+    'it' => 'Apprenez des cours d\'informatique en ligne sur Lyskills. Des instructeurs du monde entier peuvent télécharger leurs cours vidéo et commencer à former leurs étudiants localement et globalement avec un certificat électronique.',
+    'mathematics' => 'Apprenez les mathématiques en ligne avec des instructeurs experts du monde entier. Les étudiants peuvent recevoir une formation sur la géométrie, le calcul, les méthodes mathématiques, l\'algèbre et bien plus encore.',
+    'designing' => 'Apprenez des cours de design en ligne sur la plateforme e-commerce Lyskills. Les étudiants peuvent recevoir une formation en design d\'intérieur, mode, graphisme et web design en différentes langues.',
+    'photography' => 'Apprenez la photographie numérique en ligne sur Lyskills, une plateforme mondiale. Suivez votre formation en photographie numérique avec des instructeurs experts et obtenez un certificat électronique.',
+    'contact_us' => 'Lyskills est une plateforme d\'apprentissage en ligne où les instructeurs peuvent télécharger leur contenu vidéo et les étudiants peuvent accéder à tous nos cours à vie en différentes langues.',
+    'privacy' => 'La politique de confidentialité de Lyskills protège les cours en ligne des instructeurs, leur contenu vidéo et les droits des étudiants qui achètent des cours.',
+    'terms' => 'Tous nos utilisateurs, y compris nos instructeurs et nos étudiants, doivent suivre nos termes et conditions sur Lyskills.',
+    'about_us' => 'Lyskills est une plateforme d\'apprentissage en ligne où les instructeurs peuvent télécharger plusieurs vidéos et les étudiants peuvent accéder à vie à tous nos cours en différentes langues. Les instructeurs peuvent enseigner localement et mondialement et bâtir une entreprise durable.',
+    'posts' => 'Lyskills est une plateforme où étudiants et instructeurs du monde entier viennent améliorer leurs compétences. Notre blog aide les instructeurs, les étudiants et les utilisateurs à perfectionner leurs compétences.',
+    'accounting_and_finance' => 'Apprenez la comptabilité financière en ligne avec Lyskills. Les instructeurs en finance peuvent télécharger leurs cours, les étudiants peuvent recevoir une formation en comptabilité financière et développer des compétences commerciales clés.',
+];

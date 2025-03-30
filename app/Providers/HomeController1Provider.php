@@ -19,6 +19,9 @@ class HomeController1Provider extends ServiceProvider
      */
     public function register()
     {
+
+
+
         $this->app->bind(IndexContracts::class, IndexResponse::class);
         $this->app->bind(PostsContract::class, PostsResponse::class);
         $this->app->bind(FaqContract::class, FaqResponse::class);

@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use App\Helpers\UploadData;
+use Symfony\Component\HttpFoundation\Response;
 
 class LandingPageController extends Controller
 {
@@ -171,11 +172,8 @@ class LandingPageController extends Controller
                 ]);
             }
         } catch (\Throwable $e) {
-            if(config("app.debug")){
-                server_logs($e=[true,$e], $request=[true,$request],$config=true);
-            }else{
-                return response()->json(['course_vid', config("setting.err_msg")],500);
-            }
+            server_logs($e=[true,$e], $request=[true,$request],true, false);
+            return response()->json(['course_vid', config("setting.err_msg")],Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

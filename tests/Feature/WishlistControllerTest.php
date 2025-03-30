@@ -5,10 +5,14 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Course;
-use App\Models\Wishlist;
+use App\Models\Pricing;
+use App\Models\WishList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
+/**
+ * @group global-tests
+ */
 class WishlistControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
@@ -19,10 +23,10 @@ class WishlistControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->user = User::factory()->create();
         $instructor = User::factory()->create(['is_instructor' => 1]);
-        
+
         $this->course = Course::factory()->create([
             'user_id' => $instructor->id,
             'status' => 'published'
@@ -34,14 +38,14 @@ class WishlistControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $response = $this->post(route('wishlist.store'), [
-            'course_id' => $this->course->id
-        ]);
+        $response = $this->post(route('wishlist-course-post', [
+            'slug' => $this->course->slug
+        ]));
 
-        $response->assertStatus(201);
-        $this->assertDatabaseHas('wishlists', [
+        $response->assertFound()->assertRedirectToRoute('get-wishlist-course');
+        $this->assertDatabaseHas(config("table.wishlist_tble"), [
             'user_id' => $this->user->id,
-            'course_id' => $this->course->id
+            'c_id' => $this->course->id
         ]);
     }
 
@@ -50,17 +54,17 @@ class WishlistControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        Wishlist::create([
+        WishList::create([
             'user_id' => $this->user->id,
-            'course_id' => $this->course->id
+            'c_id' => $this->course->id
         ]);
 
-        $response = $this->delete(route('wishlist.destroy', $this->course->id));
+        $response = $this->delete(route('remove-wishlist-course', $this->course->slug));
 
-        $response->assertStatus(200);
-        $this->assertDatabaseMissing('wishlists', [
+        $response->assertFound();
+        $this->assertDatabaseMissing(config("table.wishlist_tble"), [
             'user_id' => $this->user->id,
-            'course_id' => $this->course->id
+            'c_id' => $this->course->id
         ]);
     }
 
@@ -69,37 +73,44 @@ class WishlistControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        Wishlist::create([
+        Pricing::factory()->create([
+            "course_id" => $this->course->id
+        ]);
+        WishList::create([
             'user_id' => $this->user->id,
-            'course_id' => $this->course->id
+            'c_id' => $this->course->id
         ]);
 
-        $response = $this->get(route('wishlist.index'));
+        $response = $this->get(route("get-wishlist-course"));
 
         $response->assertStatus(200);
-        $response->assertViewHas('wishlist_items');
-        $response->assertSee($this->course->course_title);
+        $response->assertViewIs('lms::student.wish-list');
+        $response->assertViewHas("title");
     }
 
     /** @test */
     public function guest_cannot_access_wishlist()
     {
-        $response = $this->get(route('wishlist.index'));
+        $response = $this->get(route("get-wishlist-course"));
 
-        $response->assertRedirect(route('login'));
+        $response->assertRedirect(route('register'));
     }
 
     /** @test */
     public function cannot_add_unpublished_course_to_wishlist()
     {
         $this->actingAs($this->user);
-        
+
         $this->course->update(['status' => 'draft']);
 
-        $response = $this->post(route('wishlist.store'), [
-            'course_id' => $this->course->id
-        ]);
+        $response = $this->post(route('wishlist-course-post', [
+            'slug' => $this->course->slug
+        ]));
 
-        $response->assertStatus(404);
+        $response->assertFound();
+        $this->assertDatabaseMissing(config("table.wishlist_tble"), [
+            'user_id' => $this->user->id,
+            'c_id' => $this->course->id
+        ]);
     }
-} 
+}

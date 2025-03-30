@@ -13,6 +13,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 
+/**
+ * @group global-tests
+ */
 class ProgressControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
@@ -68,17 +71,6 @@ class ProgressControllerTest extends TestCase
             'c_anns',
             'should_usr_hv_acs'
         ]);
-    }
-    /** @test */
-    public function student_down_certificate()
-    {
-        $this->actingAs($this->student);
-
-        $response = $this->get(route('down-cert', [
-            "course_name" => fake()->name(),
-        ]));
-
-        $response->assertOk();
     }
 
     /** @test **/

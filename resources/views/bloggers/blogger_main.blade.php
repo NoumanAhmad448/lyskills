@@ -28,7 +28,7 @@
 <body style="font-family: 'Roboto', sans-serif;'">
     <nav class="navbar bg-info">
         <a class="navbar-brand text-white" href="{{ route('blogger_home') }}">
-            {{-- <img src="{{asset('img/logo.jpg')}}" alt="lyskills" class="img-fluid" width="60"/> --}}
+            {{-- <img src="{{asset(config("setting.img_logo_path"))}}" alt="lyskills" class="img-fluid" width="60"/> --}}
             Lyskills
         </a>
         <ul class="navbar-nav ml-auto">

@@ -7,7 +7,7 @@
     </style>
     <meta property="og:type" content="website" />
     <meta property="og:image"
-        content="@if (isset($c_img) && empty($c_img)) {{ asset('img/logo.jpg') }} @else {{ asset('storage/' . $c_img) }} @endif" />
+        content="@if (isset($c_img) && empty($c_img)) {{ asset(config('setting.img_logo_path')) }} @else {{ asset('storage/' . $c_img) }} @endif" />
 @endsection
 @section('content')
     <div class="jumbotron mt-35  text-center jumbotron-bg-color border border-light rounded text-uppercase">

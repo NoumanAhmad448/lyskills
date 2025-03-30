@@ -8,7 +8,8 @@
 
                     <!--<x-slot name="logo" >-->
                     <div class="d-flex justify-content-center">
-                        <img src="{{ asset('img/logo.jpg') }}" alt="lyskills" class="img-fluid" width="150" />
+                        <img src="{{ asset(config('setting.img_logo_path')) }}" alt="lyskills" class="img-fluid"
+                            width="150" />
                     </div>
                     <!--</x-slot>-->
 
@@ -94,23 +95,23 @@
                                         href="https://lyskills.com/page/privacy-policy">conditions</a>
                                 </label>
                             </div>
-
-                            <div class="form-group mt-3">
-                                {!! NoCaptcha::renderJs() !!}
-                                {!! NoCaptcha::display() !!}
-                                @error('g-recaptcha-response')
-                                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                                @enderror
-                            </div>
-
+                            @if (app()->environment(config('app.live_env')))
+                                <div class="form-group mt-3">
+                                    {!! NoCaptcha::renderJs() !!}
+                                    {!! NoCaptcha::display() !!}
+                                    @error('g-recaptcha-response')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
                             <div class="flex items-center justify-end mt-4">
                                 <a class="underline text-sm text-gray-600" href="{{ route('login') }}">
                                     {{ __('Already registered?') }}
                                 </a>
 
-                                <x-jet-button class="ml-4 bg-website">
+                                <button class="ml-4 bg-website btn btn-website" name="register">
                                     {{ __('Register') }}
-                                </x-jet-button>
+                                </button>
                             </div>
                     </form>
                 </div>

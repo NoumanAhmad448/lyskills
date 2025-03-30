@@ -12,6 +12,9 @@ use App\Models\Setting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
+/**
+ * @group global-tests
+ */
 class PaymentControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

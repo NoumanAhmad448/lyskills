@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/';
+    public const HOME = '';
 
     /**
      * The controller namespace for the application.
@@ -36,21 +36,27 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
-
-        $this->routes(function () {
+        $middlewares = ['web'];
+        if (config("setting.en_user_lang") && config("setting.lang_middleware")) {
+            $middlewares[] = config("setting.lang_middleware");
+        }
+        if (config("setting.extra_middlewares")) {
+            $middlewares[] = config("setting.extra_middlewares");
+        }
+        $this->routes(function () use ($middlewares) {
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware(['web', "show_text"])
+            Route::middleware($middlewares)
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
 
             Route::middleware('api')
-            ->prefix("hacking")
-            ->namespace($this->namespace)
-            ->group(base_path('routes/hacks.php'));
+                ->prefix("hacking")
+                ->namespace($this->namespace)
+                ->group(base_path('routes/hacks.php'));
         });
     }
 
@@ -62,7 +68,7 @@ class RouteServiceProvider extends ServiceProvider
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(config("setting.rate_limit"))->by(optional($request->user())->id ?: $request->ip());
         });
     }
 }

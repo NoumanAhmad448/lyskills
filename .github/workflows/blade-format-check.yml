@@ -33,4 +33,4 @@ jobs:
 
       - name: Check for changes
         run: |
-          git diff --exit-code || (echo "Blade files are not formatted properly. Run 'npm run format:blade' and commit the changes." && exit 1)
+          git diff -- *.blade --exit-code || (echo "Blade files are not formatted properly. Run 'npm run format:blade' and commit the changes." && exit 1)

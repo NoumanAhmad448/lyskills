@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\ResponseKeys;
 use App\Helpers\UploadData;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
@@ -18,9 +19,9 @@ class AdminPostController extends Controller
         try {
             $posts = Post::orderByDesc('created_at')->simplePaginate(10);
             $title = "posts";
-            return view('admin.view_post', compact('title', 'posts'));
+            return view('admin.view_post', compact(ResponseKeys::TITLE, 'posts'));
         } catch (\Throwable $th) {
-            return back();
+            return server_logs([true, $th], [false], true);
         }
     }
 

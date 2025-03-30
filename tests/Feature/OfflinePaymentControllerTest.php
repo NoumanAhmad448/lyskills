@@ -13,6 +13,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Setting;
 
+/**
+ * @group global-tests
+ */
 class OfflinePaymentControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

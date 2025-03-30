@@ -10,7 +10,7 @@
     <div class="d-flex justify-content-end">
         <a href="{{ route('admin_c_page') }}" class="btn btn-lg btn-info"><i class="fa fa-pencil-square-o"
                 aria-hidden="true"></i>
-            Create Page
+            {{ __('messages.Create-Page') }}
         </a>
     </div>
 

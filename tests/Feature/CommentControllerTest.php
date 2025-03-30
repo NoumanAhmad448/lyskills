@@ -9,6 +9,9 @@ use App\Models\Comment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
+/**
+ * @group global-tests
+ */
 class CommentControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;

@@ -57,7 +57,6 @@ class CategoriesFactory extends Factory
             return [
                 'name' => 'Information Technology',
                 'value' => 'it',
-                'description' => 'All IT related courses',
             ];
         });
     }
@@ -73,7 +72,6 @@ class CategoriesFactory extends Factory
             return [
                 'name' => 'Business',
                 'value' => 'business',
-                'description' => 'All business related courses',
             ];
         });
     }

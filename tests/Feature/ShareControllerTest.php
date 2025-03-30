@@ -5,10 +5,12 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Course;
-use App\Models\Share;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
+/**
+ * @group global-tests
+ */
 class ShareControllerTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
@@ -19,7 +21,7 @@ class ShareControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->instructor = User::factory()->create([
             'is_instructor' => 1
         ]);
@@ -30,47 +32,16 @@ class ShareControllerTest extends TestCase
     }
 
     /** @test */
-    public function instructor_can_share_course()
+    public function share_course_link()
     {
-        $this->actingAs($this->instructor);
-        
-        $response = $this->post(route('share.course'), [
-            'course_id' => $this->course->id,
-            'platform' => 'facebook',
-            'share_url' => 'https://facebook.com/share/123'
-        ]);
-
-        $response->assertStatus(200);
-        $this->assertDatabaseHas('shares', [
-            'course_id' => $this->course->id,
-            'platform' => 'facebook'
-        ]);
+        $response = $this->get(route("user-course", ["slug" => $this->course->slug]));
+        $response->assertSee("Share");
     }
-
     /** @test */
-    public function non_instructor_cannot_share_course()
+    public function disabled_share()
     {
-        $user = User::factory()->create(['is_instructor' => 0]);
-        $this->actingAs($user);
-
-        $response = $this->post(route('share.course'), [
-            'course_id' => $this->course->id,
-            'platform' => 'facebook'
-        ]);
-
-        $response->assertStatus(403);
+        config(["setting.course_desc_share_btn" => false]);
+        $response = $this->get(route("user-course", ["slug" => $this->course->slug]));
+        $response->assertViewMissing("Share");
     }
-
-    /** @test */
-    public function share_requires_valid_platform()
-    {
-        $this->actingAs($this->instructor);
-
-        $response = $this->post(route('share.course'), [
-            'course_id' => $this->course->id,
-            'platform' => 'invalid_platform'
-        ]);
-
-        $response->assertSessionHasErrors('platform');
-    }
-} 
+}

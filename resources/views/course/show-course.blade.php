@@ -11,7 +11,7 @@
     <meta property="og:url" content="{{ route('user-course', ['slug' => $course->slug]) }}" />
     <meta property="og:type" content="website" />
     <meta property="og:image"
-        content="@if (empty($c_img)) {{ asset('img/logo.jpg') }} @else  {{ config('setting.s3Url') . $c_img }} @endif" />
+        content="@if (empty($c_img)) {{ asset(config('setting.img_logo_path')) }} @else  {{ config('setting.s3Url') . $c_img }} @endif" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack/styles/defaults.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vidstack/styles/community-skin/video.min.css" />
     <script type="module" src="https://cdn.jsdelivr.net/npm/vidstack/dist/cdn/prod.js"></script>

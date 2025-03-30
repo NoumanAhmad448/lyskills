@@ -9,7 +9,7 @@
         </x-slot> --}}
 
             <x-slot name="logo">
-                <img src="{{ asset('img/logo.jpg') }}" alt="lyskills" class="img-fluid" width="150" />
+                <img src="{{ asset(config('setting.img_logo_path')) }}" alt="lyskills" class="img-fluid" width="150" />
             </x-slot>
 
             <x-jet-validation-errors class="mb-4" />
