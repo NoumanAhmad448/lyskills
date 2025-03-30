@@ -148,7 +148,7 @@ jobs:
         if: runner.os == 'Windows'
 
       - name: Verify Symlink
-        run: ls -l $GITHUB_WORKSPACE/public/storage
+        run: ls -l $GITHUB_WORKSPACE/public
 
       - name: Running migrations Tests
         run: yes | php artisan migrate --force
