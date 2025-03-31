@@ -2,14 +2,17 @@
 
 namespace App\Http\Response;
 
+use App\Classes\CacheKeys;
+use App\Classes\CourseCache;
+use App\Classes\FaqCache;
+use App\Classes\PostCache;
+use App\Classes\ResponseKeys;
 use App\Http\Contracts\IndexContracts;
-use App\Models\Categories;
-use App\Models\Course;
 use App\Models\Faq;
-use App\Models\Post;
 use App\Models\RatingModal;
 use App\Models\Setting;
 use Exception;
+use Illuminate\Support\Facades\Cache;
 
 class IndexResponse implements IndexContracts
 {
@@ -21,17 +24,16 @@ class IndexResponse implements IndexContracts
             $RatingModal = RatingModal::class;
             $title = __('lms::messages.site_title');
             $desc = __('description.home');
-            $cs = Categories::select('id', 'name', 'value')->paginate(20);
-            $post = Post::where('status', 'published')->select('id', 'title', 'message', 'upload_img', 'f_name', 'slug')->orderByDesc('created_at')->first();
-            $faq = Faq::where('status', 'published')->select('id', 'title', 'message', 'upload_img', 'f_name', 'slug')->orderByDesc('created_at')->first();
-            $courses = Course::where('status', 'published')->whereNull('is_deleted')->with(['price:id,course_id,pricing,is_free', 'user:id,name', 'course_image'])
-                ->select('id', 'user_id', 'course_title', 'categories_selection', 'slug')->orderByDesc('created_at')->paginate(20);
+            $cs =  Cache::has(CacheKeys::CATEGORIES) ? Cache::get(CacheKeys::CATEGORIES) : CacheKeys::setcourseCategories();
+            $post = Cache::has(PostCache::FIRST_POST) ? Cache::get(PostCache::FIRST_POST) : PostCache::setFristPost();
+            $faq = Cache::has(FaqCache::FAQS) ? Cache::get(FaqCache::FAQS) : FaqCache::setFaqs();
+            $courses = Cache::has(CourseCache::COURSES) ? Cache::get(CourseCache::COURSES) : CourseCache::setCourses();
 
             return $request->wantsJson()
                 ? response()->json([
-                    'title' => $title,
-                    'desc' => $desc,
-                    'cs' => $cs,
+                    ResponseKeys::TITLE => $title,
+                    ResponseKeys::DESC => $desc,
+                    ResponseKeys::CS => $cs,
                     'post' => $post,
                     'faq' => $faq,
                     'courses' => $courses,
@@ -40,8 +42,7 @@ class IndexResponse implements IndexContracts
                 ])
                 : view(config("setting.welcome_blade"), compact('title', 'desc', 'cs', 'post', 'faq', 'courses', "settings", "RatingModal"));
         } catch (Exception $e) {
-            debug_logs($e->getMessage());
-            return back()->with('error', __("messages.universal_err_msg"));
+            return server_logs([true, $e], [true, $request]);
         }
     }
 }

@@ -9,4 +9,6 @@ class ResponseKeys
     public const STATUS = 'status';
     public const FAQS = 'faqs';
     public const TITLE = "title";
+    public const DESC = "desc";
+    public const CS = "cs";
 }
