@@ -9,7 +9,7 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
         "validate_comopser" : "composer validate",
-        "git_push": "php artisan test --filter EnvFilesConsistencyTest && git add . && git commit -m \"caches included\" && git pull origin master && git push",
+        "git_push": "php artisan test --filter EnvFilesConsistencyTest && git add . && git commit -m \"caches included\" && git push && echo \" I hope you had git pull & npm run validate_composer command earlier\"",
         "git_push_0": "npm run git_push --message='commit'",
         "git_push_help": "echo 'run the command mentioned in git_push_0'",
         "format:blade": "prettier --write resources/views/**/*.blade.php"

@@ -13,7 +13,7 @@ $site_settings = [
         "en_2f" => false,
         "en_delete_user" => false,
         "available_langs" => "en,fr,ar,es,ur",
-        "en_user_lang" => false,
+        "en_user_lang" => true,
         "rate_limit" => 60,
         "lang_middleware" => "",
         #Image logo path is set w.r.t public folder.
