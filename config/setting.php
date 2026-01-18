@@ -13,7 +13,7 @@ $site_settings = [
         "en_2f" => false,
         "en_delete_user" => false,
         "available_langs" => "en,fr,ar,es,ur",
-        "en_user_lang" => false,
+        "en_user_lang" => true,
         "rate_limit" => 60,
         "lang_middleware" => "",
         #Image logo path is set w.r.t public folder.
@@ -98,7 +98,7 @@ $site_settings = [
 ];
 
 if (env("SHOW_MIDDLEWARE")) {
-        array_push($site_settings["extra_middlewares"], env("SHOW_MIDDLEWARE"));
+        $site_settings["extra_middlewares"] = env("SHOW_MIDDLEWARE");
 }
 if (env("LANG_MIDDLEWARE", null)) {
         $site_settings["lang_middleware"] = env("LANG_MIDDLEWARE");
