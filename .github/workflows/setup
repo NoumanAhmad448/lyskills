@@ -43,7 +43,7 @@ jobs:
         uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
         with:
           php-version: ${{ matrix.php }}
-          extensions: json, dom, curl, libxml, mbstring, bz2, fileinfo, gd, gettext, mbstring, exif, mysqli, pdo_mysql
+          extensions: json, dom, curl, libxml, mbstring, bz2, fileinfo, gd, gettext, mbstring, exif, mysqli, pdo_mysql redis
           tools: pint:1.16.1, phpdoc, composer:2.4.4
           coverage: none
 

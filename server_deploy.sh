@@ -12,7 +12,7 @@ mkdir -p /home/nomilyskills/public_html/storage/logs
 mkdir -p /home/nomilyskills/public_html/bootstrap/cache
 
 # Generate artisan key
-yes | php artisan key:generate
+yes | php artisan key:generate --force
 
 # Secure .env and other sensitive files
 sudo chmod -R 775 /home/nomilyskills/public_html/
@@ -54,7 +54,7 @@ yes | composer require --dev phpunit/phpunit
 sudo chown -R root:root /home/nomilyskills/public_html/
 
 # Create a custom link of public folder with storage folder
-yes | php artisan storage:link-custom
+yes | php artisan storage:link
 
 # Run database migrations
 yes | php artisan migrate --force
@@ -153,13 +153,15 @@ php artisan health:check --no-notification
 # Reset permissions for web server & FTP user
 sudo chown -R nomilyskills:nomilyskills /home/nomilyskills/public_html/
 sudo chmod -R 755 /home/nomilyskills/public_html/
+sudo chmod -R 777 /home/nomilyskills/public_html/storage
+sudo chmod -R 777 /home/nomilyskills/public_html/bootstrap/cache
 sudo chmod 444 /home/nomilyskills/public_html/.env
 
 # Run cron
-php artisan schedule:run >> /dev/null 2>&1
+# php artisan schedule:run >> /dev/null 2>&1
 
 # TO save all the logs in the the databse table
-php artisan schedule-monitor:sync
+# php artisan schedule-monitor:sync
 
 # Disable maintenance mode
 php artisan up

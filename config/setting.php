@@ -98,7 +98,7 @@ $site_settings = [
 ];
 
 if (env("SHOW_MIDDLEWARE")) {
-        array_push($site_settings["extra_middlewares"], env("SHOW_MIDDLEWARE"));
+        $site_settings["extra_middlewares"] = env("SHOW_MIDDLEWARE");
 }
 if (env("LANG_MIDDLEWARE", null)) {
         $site_settings["lang_middleware"] = env("LANG_MIDDLEWARE");

@@ -24,81 +24,6 @@ Lyskills
 
 A **Video-Based Learning Management System (LMS)** is a specialized platform designed to deliver, manage, and track educational courses and training programs primarily through video content. It is widely used in online education, corporate training, and skill development to provide an engaging and flexible learning experience.
 
-#### **Core Features of a Video-Based LMS:**
-
-1. **Video Content Management**:
-
-    - Upload, organize, and stream video lectures, tutorials, and demonstrations.
-    - Support for multiple video formats (e.g., MP4, WebM, MOV).
-    - Adaptive streaming for smooth playback across devices.
-
-    - Upload, organize, and stream video lectures, tutorials, and demonstrations.
-    - Support for multiple video formats (e.g., MP4, WebM, MOV).
-    - Adaptive streaming for smooth playback across devices.
-
-2. **Course Creation and Management**:
-
-    - Create structured courses with video modules, quizzes, and assignments.
-    - Add supplementary materials like PDFs, slides, and external links.
-    - Set prerequisites and completion rules for course progression.
-
-    - Create structured courses with video modules, quizzes, and assignments.
-    - Add supplementary materials like PDFs, slides, and external links.
-    - Set prerequisites and completion rules for course progression.
-
-3. **Interactive Learning Tools**:
-
-    - **Quizzes and Assessments**: Embed quizzes within or after videos to test knowledge.
-    - **Annotations and Comments**: Allow learners to add timestamped comments or questions.
-    - **Polls and Surveys**: Engage learners with interactive polls during video playback.
-
-    - **Quizzes and Assessments**: Embed quizzes within or after videos to test knowledge.
-    - **Annotations and Comments**: Allow learners to add timestamped comments or questions.
-    - **Polls and Surveys**: Engage learners with interactive polls during video playback.
-
-4. **Progress Tracking and Analytics**:
-
-    - Track learner progress through video courses (e.g., % watched, quiz scores).
-    - Monitor engagement metrics like video completion rates and drop-off points.
-    - Generate detailed reports for instructors and administrators.
-
-    - Track learner progress through video courses (e.g., % watched, quiz scores).
-    - Monitor engagement metrics like video completion rates and drop-off points.
-    - Generate detailed reports for instructors and administrators.
-
-5. **Accessibility and Inclusivity**:
-
-    - Add subtitles, closed captions, and transcripts for better accessibility.
-    - Support multiple languages for global audiences.
-    - Ensure responsive design for seamless viewing on mobile, tablet, and desktop.
-
-    - Add subtitles, closed captions, and transcripts for better accessibility.
-    - Support multiple languages for global audiences.
-    - Ensure responsive design for seamless viewing on mobile, tablet, and desktop.
-
-6. **Collaboration and Communication**:
-
-    - **Live Sessions**: Host live webinars or virtual classrooms with real-time interaction.
-    - **Discussion Forums**: Enable learners to discuss course topics and share insights.
-    - **Chat and Messaging**: Facilitate communication between learners and instructors.
-
-    - **Live Sessions**: Host live webinars or virtual classrooms with real-time interaction.
-    - **Discussion Forums**: Enable learners to discuss course topics and share insights.
-    - **Chat and Messaging**: Facilitate communication between learners and instructors.
-
-7. **Gamification and Engagement**:
-
-    - Award badges, certificates, or points for completing courses or achieving milestones.
-    - Leaderboards to encourage healthy competition among learners.
-
-    - Award badges, certificates, or points for completing courses or achieving milestones.
-    - Leaderboards to encourage healthy competition among learners.
-
-8. **Integration and Scalability**:
-    - Integrate with third-party services (e.g., payment gateways, social media platforms).
-    - Support for large-scale deployments with high availability and scalability.
-    - Integrate with third-party services (e.g., payment gateways, social media platforms).
-    - Support for large-scale deployments with high availability and scalability.
 
 ## Development
 
@@ -420,10 +345,7 @@ chmod -R 775 /home/web_server/public_html/bootstrap/cache
     ```bash
     mysql -u web_server_lyskills_root5 -p lyskills_db < /path/to/dump.sql
     ```
-    ```bash
-    mysql -u web_server_lyskills_root5 -p lyskills_db < /path/to/dump.sql
-    ```
-
+   
 ### **5.2. Verify Database Connection**
 
 Ensure the `.env.example` file has the correct database credentials:
@@ -454,7 +376,7 @@ nano /home/web_server/public_html/storage/logs/laravel.log
 
 ---
 
-## **7. Post-Deployment Tasks**
+## **Post-Deployment Tasks**
 
 ### **7.1. Set Up Cron Jobs**
 
@@ -468,9 +390,6 @@ Set up a cron job for Laravel's scheduler:
     crontab -e
     ```
 2. Add the following line:
-    ```bash
-    * * * * * php /home/web_server/public_html/artisan schedule:run >> /dev/null 2>&1
-    ```
     ```bash
     * * * * * php /home/web_server/public_html/artisan schedule:run >> /dev/null 2>&1
     ```
