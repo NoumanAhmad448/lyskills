@@ -54,7 +54,7 @@ yes | composer require --dev phpunit/phpunit
 sudo chown -R root:root /home/nomilyskills/public_html/
 
 # Create a custom link of public folder with storage folder
-yes | php artisan storage:link
+# yes | php artisan storage:link
 
 # Run database migrations
 yes | php artisan migrate --force
