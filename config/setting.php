@@ -5,10 +5,12 @@ $site_settings = [
         "enable_instructor_domain" => true,
         "enable_dev_domain" => true,
         "enable_super_admin_domain" => true,
+        // website subdomains
         "instructor_domain" => "instructor.".env("APP_URL"),
         "dev_domain" => "dev.".env("APP_URL"),
         "super_admin_domain" => "super-admin.".env("APP_URL"),
         "admin_domain" => "admin.".env("APP_URL"),
+        // website subdomains
         "cert_img_path" => config("app.url")."img/certificate.jpg",
         "en_2f" => false,
         "en_delete_user" => false,
