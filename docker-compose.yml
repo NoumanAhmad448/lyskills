@@ -11,8 +11,9 @@ services:
       args:
         - APP_ENV='${APP_ENV}'
     container_name: lyskills-app
+    image: noumanlaravel/lyskills-app:latest   # <--- Add this
     volumes:
-      - .:/var/www/html  # Bind mount to sync your application code
+      # - .:/var/www/html  # Bind mount to sync your application code- not needed for live
       - laravel_storage:/var/www/html/storage  # Named volume for persistent data (e.g., Laravel storage)
       - laravel_logs:/var/www/html/storage/logs  # Named volume for logs
     networks:
