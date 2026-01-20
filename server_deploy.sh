@@ -57,7 +57,7 @@ sudo chown -R root:root /home/nomilyskills/public_html/
 # yes | php artisan storage:link
 
 # Run database migrations
-yes | php artisan migrate --force
+yes | php artisan migrate
 
 # Clear caches
 php artisan cache:clear && php artisan config:clear && php artisan route:clear
