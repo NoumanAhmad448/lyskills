@@ -33,7 +33,6 @@ return new class extends Migration
         else {
             echo "❌ Error: User model does not exist. Please check your models directory.";
         }
-        
     }
 
     /**
