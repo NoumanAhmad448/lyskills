@@ -1,0 +1,181 @@
+name: CRM Deployment Docker Deploy
+
+on:
+  push:
+    branches:
+      - master # Only trigger when pushing to the 'master' branch
+  workflow_dispatch:
+    inputs:
+      deploy_type:
+        description: "Choose deploy type"
+        required: true
+        default: "normal"
+        type: choice
+        options:
+          - docker
+          - normal
+
+permissions:
+  contents: write # Allows the workflow to push changes
+  actions: read # Allows reading action logs
+  pull-requests: write # Enables PR creation and updates
+
+jobs:
+  docker-deploy:
+    if: ${{ vars.DEPLOY_TYPE == 'docker'}}  && github.actor == "NoumanAhmad448"
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1] # You can add more PHP versions in the future if needed
+        commit_msg: ["Fixes coding style"]
+        container: ["lyskills-app"]
+        app: ["lyskills-app"]
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        volumes:
+          - ./my.cnf:/etc/mysql/my.cnf # Mount the custom config file
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch the entire repository history
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@21e092a3e0c2fabb77bf641337eced34a4bcd3cc
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: json, dom, curl, libxml, mbstring, bz2, fileinfo, gd, gettext, exif, mysqli, pdo_mysql
+          tools: pint:1.16.1, phpdoc, composer:2.4.4
+          coverage: none
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20" # Specify the Node.js version you want to use (e.g., 14, 16, 18, etc.)
+      - name: Set up Environment File
+        run: |
+          cp .env.testing.example .env
+          # Read the keys from the secrets.json file (no values)
+          # keys=$(cat secrets.json)
+
+          # # Loop through each key, get the value from GitHub Secrets and set it in the .env file
+          # following loop is not valid for github action
+          # for key in $keys; do
+          #   value=secrets.$key"
+          #   echo "$key=$value" >> .env
+          # done
+
+          echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}"  >> .env
+          echo "DB_HOST=${{secrets.DB_HOST}}"  >> .env
+          echo "DB_PORT=${{secrets.DB_PORT}}"  >> .env
+          echo "DB_DATABASE=${{secrets.DB_DATABASE}}"  >> .env
+          echo "DB_USERNAME=${{secrets.DB_USERNAME}}"  >> .env
+          echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"  >> .env
+          echo "MAIL_HOST=${{secrets.MAIL_HOST}}"  >> .env
+          echo "MAIL_USERNAME=${{secrets.MAIL_USERNAME}}"  >> .env
+          echo "MAIL_PASSWORD=${{secrets.MAIL_PASSWORD}}"  >> .env
+          echo "MAIL_FROM_ADDRESS=${{secrets.MAIL_FROM_ADDRESS}}"  >> .env
+          echo "AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}"  >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}"  >> .env
+          echo "AWS_DEFAULT_REGION=${{secrets.AWS_DEFAULT_REGION}}"  >> .env
+          echo "AWS_BUCKET=${{secrets.AWS_BUCKET}}"  >> .env
+          echo "NOCAPTCHA_SITEKEY=${{secrets.NOCAPTCHA_SITEKEY}}"  >> .env
+          echo "NOCAPTCHA_SECRET=${{secrets.NOCAPTCHA_SECRET}}"  >> .env
+          echo "GOOGLE_APP_KEY=${{secrets.GOOGLE_APP_KEY}}"  >> .env
+          echo "GOOGLE_SECURITY_KEY=${{secrets.GOOGLE_SECURITY_KEY}}"  >> .env
+          echo "FACEBOOK_APP_KEY=${{secrets.FACEBOOK_APP_KEY}}"  >> .env
+          echo "FACEBOOK_SECURITY_KEY=${{secrets.FACEBOOK_SECURITY_KEY}}"  >> .env
+          echo "LINKEDIN_APP_KEY=${{secrets.LINKEDIN_APP_KEY}}"  >> .env
+          echo "LINKEDIN_SECURITY_KEY=${{secrets.LINKEDIN_SECURITY_KEY}}"  >> .env
+          echo "STRIPE_KEY=${{secrets.STRIPE_KEY}}"  >> .env
+          echo "STRIPE_SECRET=${{secrets.STRIPE_SECRET}}"  >> .env
+          echo "PAYPAL_SANDBOX_CLIENT_ID=${{secrets.PAYPAL_SANDBOX_CLIENT_ID}}"  >> .env
+          echo "PAYPAL_SANDBOX_CLIENT_SECRET=${{secrets.PAYPAL_SANDBOX_CLIENT_SECRET}}"  >> .env
+          echo "PAYPAL_LIVE_CLIENT_ID=${{secrets.PAYPAL_LIVE_CLIENT_ID}}"  >> .env
+          echo "PAYPAL_LIVE_CLIENT_SECRET=${{secrets.PAYPAL_LIVE_CLIENT_SECRET}}"  >> .env
+          echo "DEBUG_JS=${{secrets.DEBUG_JS}}"  >> .env
+          echo "AWS_URL=${{secrets.AWS_URL}}"  >> .env
+          echo "NO_REPLY_EMAIL_PASS=${{secrets.NO_REPLY_EMAIL_PASS}}"  >> .env
+          echo "DB_TESTING_DATABASE=${{secrets.DB_TESTING_DATABASE}}"  >> .env
+          echo "DB_Laravel=${{secrets.DB_Laravel}}"  >> .env
+          echo "AWS_ENDPOINT=${{secrets.AWS_ENDPOINT}}"  >> .env
+          echo "CONTACT_US_MAIL=${{secrets.CONTACT_US_MAIL}}"  >> .env
+          echo "SLACK_URL=${{secrets.SLACK_URL}}"  >> .env
+          echo "SLACK_CHANNEL=${{secrets.SLACK_CHANNEL}}"  >> .env
+          echo "SLACK_USR_NAM=${{secrets.SLACK_USR_NAM}}"  >> .env
+          echo "SLACK_CHANNEL=${{secrets.DB_TESTING_DATABASE}}"  >> .env
+          echo "SLACK_USR_NAM=${{secrets.DB_LARAVEL}}"  >> .env
+
+      - name: Run Pint for code styling
+        run: pint --config pint.json
+
+      - name: Prepare storage and bootstrap directories
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/storage/{app,framework/{cache,sessions,views},logs} \
+                  $GITHUB_WORKSPACE/bootstrap/cache
+          chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+
+      # Fiel permission may fail on Github Action if you use sudo
+      - name: File permission
+        run: chmod -R 777 $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+
+      - name: Show file structure
+        run: ls -l $GITHUB_WORKSPACE
+
+      - name: check user
+        run: whoami
+
+      # This won't work with sudo
+      - name: Set folder ownership to current user
+        run: chown -R $(whoami):$(whoami) $GITHUB_WORKSPACE/storage/ $GITHUB_WORKSPACE/bootstrap/cache
+
+      - name: installing composer
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-cache
+
+      - name: Checking databse credentials
+        run: |
+          echo "DB_CONNECTION=${{secrets.DB_CONNECTION}}"
+          echo "DB_HOST=${{secrets.DB_HOST}}"
+          echo "DB_PORT=${{secrets.DB_PORT}}"
+          echo "DB_DATABASE=${{secrets.DB_DATABASE}}"
+          echo "DB_USERNAME=${{secrets.DB_USERNAME}}"
+          echo "DB_PASSWORD=${{secrets.DB_PASSWORD}}"
+
+      - name: install npm
+        run: npm install
+
+      - name: installing run production
+        run: npm run production
+
+      # - name: Running migrations Tests(Do not run on Github Action. Takes too much time and not recommended)
+        # run: php artisan migrate --force
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build images using docker-compose
+        run: docker compose build
+
+      # - name: Tag the image(DO not need)
+      #   run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
+
+      - name: Push the image to Docker Hub
+        run: docker push noumanlaravel/crm-app:latest
+
+      # - name: Stop Docker containers
+      #   run: |
+      #     docker compose down
