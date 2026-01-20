@@ -17,7 +17,7 @@
                             class="fa fa-google" aria-hidden="true"></i>
                         Sign Up With Google
                     </a>
-                    <a href="{{ route('fb-login') }}" class="btn btn-info btn-lg  my-1 d-block" style=""> <i
+                    {{-- <a href="{{ route('fb-login') }}" class="btn btn-info btn-lg  my-1 d-block" style=""> <i
                             class="fa fa-facebook" aria-hidden="true"></i>
 
                         Sign Up With Facebook
@@ -25,7 +25,7 @@
                     <a href="{{ route('li-login') }}" class="btn btn-info btn-lg  my-1 d-block" style=""> <i
                             class="fa fa-linkedin" aria-hidden="true"></i>
                         Sign Up With LinkedIn
-                    </a>
+                    </a> --}}
                     <x-jet-validation-errors class="mb-4" />
 
                     <form method="POST" action="{{ route('register') }}">

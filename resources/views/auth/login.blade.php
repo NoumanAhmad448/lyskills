@@ -12,7 +12,7 @@
                     class="fa fa-google" aria-hidden="true"></i>
                 Sign In With Google
             </a>
-            <a href="{{ route('fb-login') }}" style="" class="btn btn-info btn-lg  my-1 d-block"> <i
+            {{-- <a href="{{ route('fb-login') }}" style="" class="btn btn-info btn-lg  my-1 d-block"> <i
                     class="fa fa-facebook" aria-hidden="true"></i>
 
                 Sign In With Facebook
@@ -20,7 +20,7 @@
             <a href="{{ route('li-login') }}" style="" class="btn btn-info btn-lg  my-1 d-block"> <i
                     class="fa fa-linkedin" aria-hidden="true"></i>
                 Sign In With LinkedIn
-            </a>
+            </a> --}}
 
             <x-jet-validation-errors class="mb-4" />
 

@@ -174,7 +174,7 @@ jobs:
       #   run: docker tag ${{matrix.container}} ${{ secrets.DOCKER_USERNAME }}/${{matrix.container}}:latest
 
       - name: Push the image to Docker Hub
-        run: docker push noumanlaravel/crm-app:latest
+        run: docker push noumanlaravel/lyskills-app:latest
 
       # - name: Stop Docker containers
       #   run: |
