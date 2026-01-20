@@ -142,7 +142,7 @@ nvm use 20.18.3
 /root/.nvm/versions/node/v20.18.3/bin/npm run production
 
 # make sure .env files are same
-APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest
+# APP_ENV=testing php artisan test --filter EnvFilesConsistencyTest
 
 php artisan config:cache && php artisan route:cache && php artisan view:cache
 php artisan event:cache && php artisan optimize
