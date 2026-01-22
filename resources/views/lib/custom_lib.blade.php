@@ -27,6 +27,7 @@
     debug = '{{ config('app.debug') ? 1 : 0 }}';
     debug = debug == "1" ? true : false;
     let err_msg = '{{ config('setting.err_msg') }}';
+    let s3Url = '{{ config('setting.s3Url') }}';
 </script>
 <script src='{{ asset('js/common_functions.js') }}'></script>
 {{-- should not include after this line --}}

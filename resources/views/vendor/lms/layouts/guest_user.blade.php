@@ -1,7 +1,7 @@
 <?php
 
-use Eren\Lms\Models\UserAnnModel;
-use Eren\Lms\Models\Categories;
+use App\Http\Models\UserAnnModel;
+use App\Http\Models\Categories;
 use Illuminate\Support\Facades\Cache;
 
 $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();

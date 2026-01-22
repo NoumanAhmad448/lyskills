@@ -1,1 +1,77 @@
-$(document).ready((function(){$("#learnable_skills_btn").click((function(){var e=$("#learnable_skills_err"),s=$("#learnable_skills_sec input");Boolean(s.length)?""!==s.last().val()?($("#learnable_skills_sec input").last(),$("#learnable_skills_sec").append(' <div class="input-group input-group-lg my-2" ><input type="text"class="form-control learnable_skills"placeholder="example: about the design of wordpress" ><span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span><span class="input-group-text"  > <i class="las la-arrows-alt"></i></span></div>'),e.removeClass("d-block").addClass("d-none").text("")):e.removeClass("d-none").addClass("d-block").text("please fill up the first requirement before"):($("#learnable_skills_sec").append(' <div class="input-group input-group-lg mt-2" ><input type="text" class="form-control learnable_skills"placeholder="example: about the design of wordpress" ><span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span><span class="input-group-text"  > <i class="las la-arrows-alt"></i></span></div>'),e.removeClass("d-block").addClass("d-none").text(""))})),$("#course_requirement_btn").click((function(){var e=$("#course_requirement_err"),s=$("#course_requirement_sec input");Boolean(s.length)?""!==s.last().val()?(s.last(),$("#course_requirement_sec").append(' <div class="input-group input-group-lg mt-2" ><input type="text"  class="form-control course_requirement"placeholder="example: wordpress designing must be experienced before a bit" ><span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span><span class="input-group-text"  > <i class="las la-arrows-alt"></i></span></div>'),e.removeClass("d-block").addClass("d-none").text("")):e.removeClass("d-none").addClass("d-block").text("please fill up the first requirement before"):($("#course_requirement_sec").append(' <div class="input-group input-group-lg mt-2" ><input type="text"  class="form-control course_requirement"placeholder="example: wordpress designing must be experienced before a bit" ><span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span><span class="input-group-text"  > <i class="las la-arrows-alt"></i></span></div>'),e.removeClass("d-block").addClass("d-none").text(""))})),$("#targeting_students_btn").click((function(){var e=$("#targeting_students_err"),s=$("#targeting_students_sec input");Boolean(s.length)?""!==$("#targeting_students_sec input").last().val()?($("#targeting_students_sec input").last(),$("#targeting_students_sec").append(' <div class="input-group input-group-lg mt-2" ><input type="text" class="form-control targeting_students"placeholder="Example: Beginner Python developers curious about data science" ><span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span><span class="input-group-text"  > <i class="las la-arrows-alt"></i></span></div>'),e.removeClass("d-block").addClass("d-none").text("")):e.removeClass("d-none").addClass("d-block").text("please fill up the first field before"):($("#targeting_students_sec").append(' <div class="input-group input-group-lg mt-2" ><input type="text"  class="form-control targeting_students"placeholder="Example: Beginner Python developers curious about data science" ><span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span><span class="input-group-text"  > <i class="las la-arrows-alt"></i></span></div>'),e.removeClass("d-block").addClass("d-none").text(""))})),$(".learnable_skills, .course_requirement , .targeting_students").keypress((function(){$("#save_btn,.save_btn").removeAttr("disabled")})),""===$(".learnable_skills").first().val()&&""===$(".course_requirement").first().val()&&""===$(".targeting_students").first().val()||$("#save_btn, .save_btn").removeAttr("disabled"),$("#target_students").removeClass("text-info").addClass("bg-website text-white"),$("#learnable_skills_sec").sortable({revert:!0}),$("#course_requirement_sec").sortable({revert:!0}),$("#targeting_students_sec").sortable({revert:!0})}));
+/******/ (() => { // webpackBootstrap
+/*!********************************************!*\
+  !*** ./resources/js/target_ur_students.js ***!
+  \********************************************/
+$(document).ready(function () {
+  $("#learnable_skills_btn").click(function () {
+    var learnable_skills_err = $("#learnable_skills_err");
+    var learnable_skills_sec = $('#learnable_skills_sec input');
+    var existed_elem = Boolean(learnable_skills_sec.length);
+    if (existed_elem) {
+      if (learnable_skills_sec.last().val() !== "") {
+        var last_elem = $('#learnable_skills_sec input').last();
+        $("#learnable_skills_sec").append(' <div class="input-group input-group-lg my-2" >' + '<input type="text"' + 'class="form-control learnable_skills"' + 'placeholder="example: about the design of wordpress" >' + '<span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span>' + '<span class="input-group-text"  > <i class="las la-arrows-alt"></i></span>' + '</div>');
+        learnable_skills_err.removeClass('d-block').addClass('d-none').text('');
+      } else {
+        learnable_skills_err.removeClass('d-none').addClass('d-block').text("please fill up the first requirement before");
+      }
+    } else {
+      $("#learnable_skills_sec").append(' <div class="input-group input-group-lg mt-2" >' + '<input type="text" class="form-control learnable_skills"' + 'placeholder="example: about the design of wordpress" >' + '<span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span>' + '<span class="input-group-text"  > <i class="las la-arrows-alt"></i></span>' + '</div>');
+      learnable_skills_err.removeClass('d-block').addClass('d-none').text('');
+    }
+  });
+  $("#course_requirement_btn").click(function () {
+    // show_message('working');
+    var course_requirement_err = $("#course_requirement_err");
+    var course_requirement_sec = $('#course_requirement_sec input');
+    var existed_elem = Boolean(course_requirement_sec.length);
+    if (existed_elem) {
+      if (course_requirement_sec.last().val() !== "") {
+        var last_elem = course_requirement_sec.last();
+        $("#course_requirement_sec").append(' <div class="input-group input-group-lg mt-2" >' + '<input type="text"  class="form-control course_requirement"' + 'placeholder="example: wordpress designing must be experienced before a bit" >' + '<span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span>' + '<span class="input-group-text"  > <i class="las la-arrows-alt"></i></span>' + '</div>');
+        course_requirement_err.removeClass('d-block').addClass('d-none').text('');
+      } else {
+        course_requirement_err.removeClass('d-none').addClass('d-block').text("please fill up the first requirement before");
+      }
+    } else {
+      $("#course_requirement_sec").append(' <div class="input-group input-group-lg mt-2" >' + '<input type="text"  class="form-control course_requirement"' + 'placeholder="example: wordpress designing must be experienced before a bit" >' + '<span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span>' + '<span class="input-group-text"  > <i class="las la-arrows-alt"></i></span>' + '</div>');
+      course_requirement_err.removeClass('d-block').addClass('d-none').text('');
+    }
+  });
+  $("#targeting_students_btn").click(function () {
+    // show_message('working');
+    var targeting_students_err = $("#targeting_students_err");
+    var targeting_students_sec = $('#targeting_students_sec input');
+    var existed_elem = Boolean(targeting_students_sec.length);
+    if (existed_elem) {
+      if ($('#targeting_students_sec input').last().val() !== "") {
+        var last_elem = $('#targeting_students_sec input').last();
+        $("#targeting_students_sec").append(' <div class="input-group input-group-lg mt-2" >' + '<input type="text" class="form-control targeting_students"' + 'placeholder="Example: Beginner Python developers curious about data science" >' + '<span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span>' + '<span class="input-group-text"  > <i class="las la-arrows-alt"></i></span>' + '</div>');
+        targeting_students_err.removeClass('d-block').addClass('d-none').text('');
+      } else {
+        targeting_students_err.removeClass('d-none').addClass('d-block').text("please fill up the first field before");
+      }
+    } else {
+      $("#targeting_students_sec").append(' <div class="input-group input-group-lg mt-2" >' + '<input type="text"  class="form-control targeting_students"' + 'placeholder="Example: Beginner Python developers curious about data science" >' + '<span class="input-group-text btn btn-danger"  onclick="removeParent(event)" ><i class="las la-trash-alt"></i></span>' + '<span class="input-group-text"  > <i class="las la-arrows-alt"></i></span>' + '</div>');
+      targeting_students_err.removeClass('d-block').addClass('d-none').text('');
+    }
+  });
+  $(".learnable_skills, .course_requirement , .targeting_students").keypress(function () {
+    $('#save_btn,.save_btn').removeAttr('disabled');
+  });
+  if ($('.learnable_skills').first().val() !== '' || $('.course_requirement').first().val() !== '' || $('.targeting_students').first().val() !== '') {
+    $('#save_btn, .save_btn').removeAttr('disabled');
+  }
+  $('#target_students').removeClass('text-info').addClass('bg-website text-white');
+  $('#learnable_skills_sec').sortable({
+    revert: true
+  });
+  $('#course_requirement_sec').sortable({
+    revert: true
+  });
+  $('#targeting_students_sec').sortable({
+    revert: true
+  });
+});
+/******/ })()
+;

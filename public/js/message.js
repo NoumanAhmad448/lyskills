@@ -1,1 +1,50 @@
-$((function(){$("#msg").removeClass("text-info").addClass("bg-website text-white"),$(".final_form").submit((function(t){t.preventDefault();var e=$(this),s=e.attr("url"),r=e.serialize(),n=$("#wel_err"),o=$("#congo_err"),a=$(".success_msg");s&&$.ajax({data:r,url:s,type:"post",headers:{"X-CSRF-TOKEN":$('meta[name="csrf-token"]').attr("content")},success:function(t){a.text(t.status),setTimeout((function(){a.text("")}),1e4)},error:function(t){var e=JSON.parse(t.responseText).errors,s=e.wel_msg,r=e.congo_msg;s&&n.text(s[0]),r&&o.text(r),setTimeout((function(){n.text(""),o.text("")}),1e4)},dataType:"json"})}))}));
+/******/ (() => { // webpackBootstrap
+/*!*********************************!*\
+  !*** ./resources/js/message.js ***!
+  \*********************************/
+$(function () {
+  $('#msg').removeClass('text-info').addClass('bg-website text-white');
+  $('.final_form').submit(function (e) {
+    e.preventDefault();
+    var c = $(this);
+    var url = c.attr('url');
+    var data = c.serialize();
+    var wel_err = $('#wel_err');
+    var congo_err = $('#congo_err');
+    var success_msg = $('.success_msg');
+    if (url) {
+      $.ajax({
+        data: data,
+        url: url,
+        type: 'post',
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function success(d) {
+          success_msg.text(d['status']);
+          setTimeout(function () {
+            success_msg.text('');
+          }, 10000);
+        },
+        error: function error(d) {
+          var err = JSON.parse(d.responseText).errors;
+          var wel_msg = err['wel_msg'];
+          var congo_msg = err['congo_msg'];
+          if (wel_msg) {
+            wel_err.text(wel_msg[0]);
+          }
+          if (congo_msg) {
+            congo_err.text(congo_msg);
+          }
+          setTimeout(function () {
+            wel_err.text('');
+            congo_err.text('');
+          }, 10000);
+        },
+        dataType: 'json'
+      });
+    }
+  });
+});
+/******/ })()
+;

@@ -4,14 +4,14 @@ namespace App\Classes;
 
 use App\Models\Course;
 use App\Traits\SetTime;
-use Eren\Lms\Classes\LmsCarbon;
+use App\Classes\LyskillsCarbon;
 use Illuminate\Support\Facades\Cache;
 
 class CourseCache
 {
     use SetTime;
 
-    private $default_time = 86400;
+    private $default_time = 1;
     public const COURSES = "courses";
 
     public static function courses()
@@ -20,7 +20,7 @@ class CourseCache
             ->select('id', 'user_id', 'course_title', 'categories_selection', 'slug')->orderByDesc('created_at')->paginate(20);
     }
 
-    public static function setCourses(?LmsCarbon $time = null)
+    public static function setCourses(?LyskillsCarbon $time = null)
     {
         (new static)->setTime($time);
         return Cache::remember(self::COURSES, (new static)->default_time, fn() => self::courses());

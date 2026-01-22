@@ -13,7 +13,7 @@
                     {{-- prettier-ignore --}}
 
                     @php
-                    $path = asset('storage/' . $m->lec_name);
+                    $path = config('setting.s3Url') . $m->lec_name;
                     @endphp
                     {{-- prettier-ignore-end --}}
 

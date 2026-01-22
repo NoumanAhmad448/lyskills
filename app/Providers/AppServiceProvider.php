@@ -36,8 +36,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        // Factory::factoryForModel(CronJobs::class, CronJobsFactory::class);
-
         try {
             DB::connection()->getPdo();  // Try to connect to the database
             if (Schema::hasTable('socials')) {

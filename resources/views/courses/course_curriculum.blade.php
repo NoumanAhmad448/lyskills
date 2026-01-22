@@ -1345,6 +1345,7 @@
             });
 
             function videoResponse(data, upload_vid, path, media) {
+                path = s3Url+path;
                 let response = `<section class="lecture_vid row p-3">
                                                 <div class="col-md-9">
                                                 <div class="form-check my-3">
@@ -1660,7 +1661,7 @@
                                 },
                                 success: function(data) {
                                     current_file.attr('disabled', false);
-                                    let path = data['path'];
+                                    let path = s3Url + data['path'];
                                     let upload_vid = current_file.parents('.up_vid_res')
                                         .first();
                                     let media = data['media'];

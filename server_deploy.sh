@@ -48,7 +48,7 @@ composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev -
 # For ENV file testing
 yes | composer require --dev phpunit/phpunit
 
-# yes | php artisan db:seed --class=LanguageSeeder
+# yes | php artisan db:seed --class=CourseSeeder
 
 # Avoid any node permission error
 sudo chown -R root:root /home/nomilyskills/public_html/
