@@ -1,6 +1,5 @@
 <?php
 use App\Models\RatingModal;
-
 ?>
 @if (config('setting.show_courses_main_page'))
     @if ($courses && $courses->count())

@@ -77,13 +77,13 @@ use App\Models\Media;
                 <button type="submit" class="btn btn-website btn-lg mt-5 ml-4"> Get Your Certificate </button>
             </form> --}}
                 @if ($course->course_title)
-                    <a href="{{ route('down-cert', ['course_name' => $course->course_title]) }}"
+                    <a href="{{ route('down-cert', ['course_name' => $course?->course_title]) }}"
                         class="btn btn-website btn-lg mt-5 ml-4" target="_blank" style="width: 230px">
                         {{-- <img src="https://media.giphy.com/media/4p1JhLCYEOEJa/giphy.gif" width="50" height="50"/> --}}
                         Get Your Certificate
                     </a>
                     <a title="Commenting on course will show the detail in course page"
-                        href="{{ route('laoshi-comment', ['course_name' => $course->slug]) }}"
+                        href="{{ route('laoshi-comment', ['course_name' => $course?->slug]) }}"
                         class="btn btn-website btn-lg mt-2 ml-4" target="_blank" style="width: 230px">
                         <img src="https://media.giphy.com/media/LHZyixOnHwDDy/giphy.gif" alt="nothing" width="50"
                             height="50">
@@ -257,10 +257,10 @@ use App\Models\Media;
     </script>
 
     <script>
-        let rating_url = "{{ route('rating-course') }}"
+        let rating_url = "{{ route('rating-course') }}";
         let rating =
-            '@if ($course->rating) {{ $course->rating->rating }} @endif'
-        let course_slug = '{{ $course->slug }}'
+            '@if ($course->rating) {{ $course->rating->rating }} @endif';
+        let course_slug = '{{ $course->slug }}';
     </script>
     <script src="{{ asset('js/course-content.js') }}"></script>
 @endsection

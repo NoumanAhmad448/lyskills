@@ -172,7 +172,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        HomeController1Provider::class,
 
         /*
          * Package Service Providers...
@@ -193,6 +192,7 @@ return [
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         App\Providers\RuleServiceProvider::class,
         App\Providers\HealthServiceProvider::class,
+        HomeController1Provider::class,
         // Mostafaznv\Recaptcha\RecaptchaServiceProvider::class,
     ],
 

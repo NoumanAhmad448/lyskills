@@ -8,16 +8,10 @@ use App\Http\Controllers\CourseEx2Controller;
 use App\Http\Controllers\CourseEx3Controller;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DescriptionController;
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\ExResController;
-use App\Http\Controllers\OtherFilesController;
-use App\Http\Controllers\AssignmentController;
-use App\Http\Controllers\QuizController;
-use App\Http\Controllers\LandingPageController;
-use App\Http\Controllers\PricingController;
-use App\Http\Controllers\PromotionController;
-use App\Http\Controllers\SayonaraController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HomeController1;
+use App\Http\Controllers\InstructorAuthController;
 use App\Http\Controllers\AdminFaqController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\BloggerController;
@@ -46,6 +40,8 @@ use App\Routes\GuestRoutes;
 use App\Views\GuestView;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+
+
 
 
 Route::domain(config("app.url"))->post('/back', function () {
@@ -271,6 +267,59 @@ require __DIR__ . '/admin_page.php';
 require __DIR__ . '/cron_job.php';
 require __DIR__ . '/assignment.php';
 require __DIR__ . '/categories_controller.php';
+
+
+$route = Route::middleware(['web', 'auth']);
+if (config("setting.enable_instructor_domain")) {
+    $route->domain(config("setting.instructor_domain"));
+}
+$route->group(function () {
+    Route::get(
+        '/dashboard',
+        [DashboardController::class, 'index']
+    )->name('dashboard');
+});
+
+Route::domain(config("app.url"))->middleware(['web'])->group(function () {
+    Route::get('show-all-courses', [CourseEx3Controller::class, 'showAllCourses'])->name('show-all-courses');
+
+    Route::get('/', [HomeController1::class, 'index'])->name('index');
+    Route::get('/user_logout', [HomeController1::class, 'logout'])->name('logout_user');
+    Route::post('/user_logout_post', [HomeController1::class, 'logout'])->name('logout_post');
+    Route::get('/admin', [AdminController::class, 'admin_panel'])->name('admin');
+    Route::post('/admin/post', [AdminController::class, 'login'])->name('admin_a');
+    Route::get('course/{slug}', [CourseEx3Controller::class, 'showCourse'])->name('user-course');
+
+    // social login
+    Route::get('/login/google', [SocialController::class, 'googleVerification'])->name('google-login');
+    Route::get('/google/callback', [SocialController::class, 'googleLogin'])->name('google.callback');
+
+    Route::get('/login/facebook', [SocialController::class, 'facebookVerification'])->name('fb-login');
+    Route::get('/facebook/callback', [SocialController::class, 'facebookLogin'])->name('facebook.callback');
+
+    Route::get('/login/linkedin', [SocialController::class, 'linkedinVerification'])->name('li-login');
+    Route::get('/linkedin/callback', [SocialController::class, 'linkedinLogin']);
+
+    Route::post('course-search', [HomeController::class, 'userSearch'])->name('c-search-page');
+    Route::get('show-search-course/{keyword}', [HomeController::class, 'showSearchCourse'])->name('s-search-page');
+
+    Route::get('/instructor/register', [InstructorAuthController::class, 'showRegister'])
+        ->name('instructor.register');
+    Route::post('/instructor/register', [InstructorAuthController::class, 'register']);
+
+    Route::get('/instructor/login', [InstructorAuthController::class, 'showLogin'])
+        ->name('instructor.login');
+    Route::post('/instructor/login', [InstructorAuthController::class, 'login'])->name("instructor.login.post");
+    Route::get('categories/{category}', [CategoriesController::class, 'showCategory'])->name('user-categories');
+});
+
+require __DIR__ . '/ins_profile.php';
+require __DIR__ . '/course_mngmt.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/dashboard.php';
+require __DIR__ . '/student.php';
+require __DIR__ . '/guest.php';
+require __DIR__ . '/payment.php';
 
 if (trim(config('app.env')) == config("setting.roles.dev")) {
     URL::forceScheme(config("setting.http"));

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f08de3c6107233989ccae3ff999485b",
+    "content-hash": "15a75d8361a8be23158938485e229e0f",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -1426,82 +1426,6 @@
                 "source": "https://github.com/NoumanAhmad448/laravel-commands/tree/v1.1"
             },
             "time": "2025-03-26T14:19:57+00:00"
-        },
-        {
-            "name": "eren/lms",
-            "version": "1.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/NoumanAhmad448/lms.git",
-                "reference": "17298e8a78f73890345b58f739069d871edc0dff"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/NoumanAhmad448/lms/zipball/17298e8a78f73890345b58f739069d871edc0dff",
-                "reference": "17298e8a78f73890345b58f739069d871edc0dff",
-                "shasum": ""
-            },
-            "require": {
-                "anhskohbo/no-captcha": "^3.7",
-                "cocur/slugify": "^4.0",
-                "dragon-code/laravel-migration-actions": "^2.9",
-                "fruitcake/laravel-cors": "^2.0",
-                "guzzlehttp/guzzle": "^7.0.1",
-                "intervention/image": "^2.5",
-                "james-heinrich/getid3": "^1.9",
-                "laravel/cashier": "^12.12",
-                "laravel/framework": "9.52.17",
-                "laravel/jetstream": "^1.6",
-                "laravel/sanctum": "^2.6",
-                "laravel/slack-notification-channel": "^3.5",
-                "laravel/socialite": "^5.2",
-                "laravel/telescope": "^5.5",
-                "laravel/tinker": "^2.5",
-                "league/flysystem-aws-s3-v3": "^3.0",
-                "livewire/livewire": "^2.0",
-                "paypal/paypal-checkout-sdk": "1.0.1",
-                "paypal/rest-api-sdk-php": "^1.14",
-                "phpunit/phpunit": "^9.6",
-                "spatie/laravel-health": "^1.32",
-                "spatie/laravel-ignition": "^1.0",
-                "spatie/laravel-schedule-monitor": "^3.10",
-                "spatie/laravel-sluggable": "^3.4"
-            },
-            "require-dev": {
-                "inertiajs/inertia-laravel": "^0.5.2"
-            },
-            "type": "project",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Eren\\Lms\\Providers\\LmsServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/Helpers/helper.php"
-                ],
-                "psr-4": {
-                    "Eren\\Lms\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Eren",
-                    "email": "nouman.laravel@outlook.com"
-                }
-            ],
-            "description": "It provides the user to create, maintain and upload the video based coures  on their website",
-            "support": {
-                "issues": "https://github.com/NoumanAhmad448/lms/issues",
-                "source": "https://github.com/NoumanAhmad448/lms/tree/v1.8"
-            },
-            "time": "2025-03-30T21:02:19+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -11549,12 +11473,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }

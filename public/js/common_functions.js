@@ -1,1 +1,55 @@
-(()=>{function o(e){return o="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(o){return typeof o}:function(o){return o&&"function"==typeof Symbol&&o.constructor===Symbol&&o!==Symbol.prototype?"symbol":typeof o},o(e)}window.show_popup=function(o){$("#modal-body").html(o),$("#pop-message").modal({keyboard:!0,focus:!0,show:!0})},window.show_message=function(){swal({title:arguments.length>1&&void 0!==arguments[1]?arguments[1]:"Info",text:arguments.length>0&&void 0!==arguments[0]?arguments[0]:"your message",icon:arguments.length>2&&void 0!==arguments[2]?arguments[2]:"info",button:arguments.length>3&&void 0!==arguments[3]?arguments[3]:"ok"})},window.popup_message=function(e){if(debug&&(console.error(e),console.error(o(e))),Array.isArray(e))show_message(text=e[0]);else if("object"===o(e))show_message(text=err_msg);else if("json"==typeof e){"string"==typeof(e=JSON.parse(e.responseText).errors)?show_message(text=e):Array.isArray(e)&&e.length>1?show_message(text=e[0]):"object"==o(e)&&e.course_img&&(Array.isArray(e.course_img)?show_message(text=e.course_img[0]):"string"==typeof e&&show_message(text=e.course_img))}else"string"==typeof e&&show_message(text=e)}})();
+/******/ (() => { // webpackBootstrap
+/*!******************************************!*\
+  !*** ./resources/js/common_functions.js ***!
+  \******************************************/
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+window.show_popup = function (message) {
+  $("#modal-body").html(message);
+  $("#pop-message").modal({
+    keyboard: true,
+    focus: true,
+    show: true
+  });
+};
+window.show_message = function () {
+  var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "your message";
+  var title = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "Info";
+  var icon = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "info";
+  var button = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "ok";
+  swal({
+    title: title,
+    text: text,
+    icon: icon,
+    button: button
+  });
+};
+window.popup_message = function (d) {
+  if (debug) {
+    console.error(d);
+    console.error(_typeof(d));
+  }
+  if (Array.isArray(d)) {
+    show_message(text = d[0]);
+  } else if (_typeof(d) === "object") {
+    show_message(text = err_msg);
+  } else if (typeof d === "json") {
+    var d = JSON.parse(d.responseText).errors;
+    if (typeof d == "string") {
+      show_message(text = d);
+    } else if (Array.isArray(d) && d.length > 1) {
+      show_message(text = d[0]);
+    } else if (_typeof(d) == "object") {
+      if (d["course_img"]) {
+        if (Array.isArray(d["course_img"])) {
+          show_message(text = d["course_img"][0]);
+        } else if (typeof d == "string") {
+          show_message(text = d["course_img"]);
+        }
+      }
+    }
+  } else if (typeof d === "string") {
+    show_message(text = d);
+  }
+};
+/******/ })()
+;

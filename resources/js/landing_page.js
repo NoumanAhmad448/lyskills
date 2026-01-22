@@ -209,7 +209,7 @@ $(function() {
                                 current_file.attr('disabled',false);
                                 vid_p_con.addClass('d-none');
 
-                                var video_path = data['video_path'];
+                                var video_path = "{{ config('setting.s3Url') }}" + data['video_path'];
                                 var video_type = data['video_type'];
 
                                 video_img.replaceWith(`
