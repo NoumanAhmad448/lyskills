@@ -54,13 +54,13 @@ class CourseController2Test extends TestCase
 
         $response = $this->get(route('dashboard'));
 
-        $response->assertViewIs("lms::dashboard");
+        $response->assertViewIs("dashboard");
         $response->assertViewHasAll(['courses', 'title', 'ann']);
         $this->assertDatabaseHas('users', [
             'is_instructor' => 1
         ]);
 
-        $this->assertTrue(View::exists('lms::dashboard'));
+        $this->assertTrue(View::exists('dashboard'));
     }
 
     /** @test */
@@ -83,8 +83,8 @@ class CourseController2Test extends TestCase
             $response->dump();
         }
 
-        $response->assertViewIs("lms::xuesheng.all-courses")->assertViewHasAll(['title', 'courses']);
-        $this->assertTrue(View::exists('lms::xuesheng.all-courses'));
+        $response->assertViewIs("xuesheng.all-courses")->assertViewHasAll(['title', 'courses']);
+        $this->assertTrue(View::exists('xuesheng.all-courses'));
         $response->assertOk();
 
         $response = $this->get(route('logout_user'));
@@ -150,7 +150,7 @@ class CourseController2Test extends TestCase
             "fb-login",
         ]));
 
-        $this->get(route('instructor.login'))->assertViewIs('lms::auth.instructor.login')->assertViewHasAll(['title', "desc"]);
+        $this->get(route('instructor.login'))->assertViewIs('auth.instructor.login')->assertViewHasAll(['title', "desc"]);
         $this->get(route('login'))->assertViewis("auth.login")->assertOk();
 
         $this->get(route('user-categories', ["category" => $categories->value]))->assertOk()->assertViewIs(config("setting.category_blade"));
@@ -172,7 +172,7 @@ class CourseController2Test extends TestCase
             "slug" => Str::slug("sample title")
         ]);
         $response = $this->get(route('s-search-page', ["keyword" => "sample_title"]));
-        $response->assertViewIs("lms::xuesheng.show-course")
+        $response->assertViewIs("xuesheng.show-course")
             ->assertViewHasAll(
                 [
                     'title',

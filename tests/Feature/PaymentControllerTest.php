@@ -46,7 +46,7 @@ class PaymentControllerTest extends TestCase
         Setting::first()?->paypal_is_enable ?? Setting::factory()->create([
             "paypal_is_enable" => true
         ]);
-        $this->get(route("a_payment_methods", ["slug" => $this->course->slug]))->assertViewIs("lms::xuesheng.available_payment")
+        $this->get(route("a_payment_methods", ["slug" => $this->course->slug]))->assertViewIs("xuesheng.available_payment")
             ->assertViewHasAll([
                 'title',
                 'slug',
@@ -64,7 +64,7 @@ class PaymentControllerTest extends TestCase
         Setting::first()?->s_is_enable ?? Setting::factory()->create([
             "s_is_enable" => true
         ]);
-        $this->get(route("credit_card_payment", ["slug" => $this->course->slug]))->assertViewIs("lms::xuesheng.credit-card")
+        $this->get(route("credit_card_payment", ["slug" => $this->course->slug]))->assertViewIs("xuesheng.credit-card")
             ->assertViewHasAll(['title', 'slug', 'course', "extras"]);
     }
 

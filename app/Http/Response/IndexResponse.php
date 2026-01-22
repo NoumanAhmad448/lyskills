@@ -22,7 +22,7 @@ class IndexResponse implements IndexContracts
 
             $settings = Setting::first();
             $RatingModal = RatingModal::class;
-            $title = __('lms::messages.site_title');
+            $title = __('messages.site_title');
             $desc = __('description.home');
             $cs =  Cache::has(CacheKeys::CATEGORIES) ? Cache::get(CacheKeys::CATEGORIES) : CacheKeys::setcourseCategories();
             $post = Cache::has(PostCache::FIRST_POST) ? Cache::get(PostCache::FIRST_POST) : PostCache::setFristPost();

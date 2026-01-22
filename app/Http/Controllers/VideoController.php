@@ -92,10 +92,9 @@ class VideoController extends Controller
 
             $getID3 = new \getID3;
             $file = $getID3->analyze(public_path('storage/'.$path1));
-
             $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
 
-            $duration = LyskillsCarbon::parse($time_mili,$toTimeString=true);
+            $duration = round($time_mili / 60, 2); // 2 minutes
             if(file_exists(public_path('storage/'.$path1))){
                 // @ supress the error
                 @unlink(public_path('storage/'.$path1));
