@@ -51,7 +51,7 @@ class CourseController1Test extends TestCase
     {
         $this->actingAs($this->instructor);
         $response = $this->get(route('pricing', ["course" => $this->course?->id]));
-        $response->assertViewIs("lms::courses.pricing")->assertViewHasAll(['course']);
+        $response->assertViewIs("courses.pricing")->assertViewHasAll(['course']);
         $response->assertOk();
     }
 
@@ -61,7 +61,7 @@ class CourseController1Test extends TestCase
         $this->actingAs($this->instructor);
 
         $this->get(route('setting', ["course" => $this->course]))->assertOk()
-            ->assertViewIs("lms::courses.change-course-status-setting")
+            ->assertViewIs("courses.change-course-status-setting")
             ->assertViewHasAll([
                 'title',
                 'course'

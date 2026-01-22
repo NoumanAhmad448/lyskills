@@ -12,12 +12,12 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
     <title id="seo_title">
         @if (isset($title)){{ $title }}
         @else
-            {{ __('lms::messages.site_title') }} @endif
+            {{ __('messages.site_title') }} @endif
     </title>
     <meta id="seo_desc" name="description"
         content="@if (isset($desc) && $desc !== '') {{ $desc }} @else {{ __('description.default') }} @endif">
     <meta property="og:title"
-        content="@if (isset($title)) {{ $title }} @else {{ __('lms::messages.site_title') }} @endif">
+        content="@if (isset($title)) {{ $title }} @else {{ __('messages.site_title') }} @endif">
     <meta id="seo_fb" property="og:description"
         content="@if (isset($desc) && $desc !== '') {{ $desc }} @else {{ __('description.default') }} @endif">
     <link rel="canonical" href="{{ url()->current() }}">

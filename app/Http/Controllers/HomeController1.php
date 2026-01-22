@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\ResponseKeys;
 use App\Http\Contracts\IndexContracts;
 use App\Models\Categories;
 use App\Models\Course;
@@ -13,6 +14,7 @@ use App\Models\RatingModal;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Pipeline;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController1 extends Controller
 {
@@ -21,6 +23,21 @@ class HomeController1 extends Controller
         return app(IndexContracts::class);
     }
 
+    public function logout(Request $request)
+    {
+        try {
+            Auth::logout();
+
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+
+            return redirect('/')->with(ResponseKeys::STATUS, 'you are logged out');
+        } catch (\Throwable $e) {
+            server_logs([true, $e], [false], true);
+            return redirect("/");
+        }
+    }
     public function post($slug)
     {
         try {

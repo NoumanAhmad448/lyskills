@@ -62,7 +62,7 @@ class ProgressControllerTest extends TestCase
             "video" => explode("/", $this->media->lec_name)[1],
         ]));
 
-        $response->assertOk()->assertViewIs("lms::xuesheng.course-content")->assertViewHasAll([
+        $response->assertOk()->assertViewIs("xuesheng.course-content")->assertViewHasAll([
             'course',
             'title',
             'media',

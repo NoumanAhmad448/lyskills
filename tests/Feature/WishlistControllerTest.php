@@ -84,7 +84,7 @@ class WishlistControllerTest extends TestCase
         $response = $this->get(route("get-wishlist-course"));
 
         $response->assertStatus(200);
-        $response->assertViewIs('lms::student.wish-list');
+        $response->assertViewIs('student.wish-list');
         $response->assertViewHas("title");
     }
 

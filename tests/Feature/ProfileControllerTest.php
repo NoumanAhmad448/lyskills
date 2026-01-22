@@ -43,7 +43,7 @@ class ProfileControllerTest extends TestCase
     public function user_can_update_profile_picture()
     {
         $this->actingAs($this->user);
-        $this->get(route('i-profile'))->assertOk()->assertViewIs("lms::instructor.profile");
+        $this->get(route('i-profile'))->assertOk()->assertViewIs("instructor.profile");
     }
 
 
