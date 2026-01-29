@@ -80,10 +80,13 @@ $ann = UserAnnModel::select('message')->orderByDesc('updated_at')->first();
                                         @endphp
 
                                         @foreach ($cs as $c)
+                                                                                    @if(!empty($c->value)  && !empty($c->name ))
+
                                             <a class="dropdown-item"
                                                 href="{{ route('user-categories', ['category' => $c->value]) }}">
                                                 {{ $c->name }}
                                             </a>
+                                            @endif
                                         @endforeach
                                     </div>
                                 </div>

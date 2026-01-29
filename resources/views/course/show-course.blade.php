@@ -135,7 +135,7 @@
                 @php $price = $course->price; @endphp
                 @if ($price)
                     <section class="d-flex ">
-                        @if ($price->is_free)
+                        @if ($price?->is_free)
                             <div class="mt-2 h3"> FREE </div>
                         @else
                             @php $total_p = $price->pricing; @endphp
