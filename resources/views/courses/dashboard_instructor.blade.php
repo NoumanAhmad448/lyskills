@@ -117,7 +117,7 @@
             <div class="my-2 btn website-outline" id="targeting_students_btn"> <i class="las la-plus"></i> Add answer
             </div>
         </div>
-        <input type="hidden" id="myurl" url="{{ url('course/' . $course_id . '/manage/goals') }}" />
+        <input type="hidden" id="myurl" url="{{ route('courses_dashboard_post', ["course_id" =>$course_id]) }}" />
 
         <button type="button" class="btn btn-lg btn-info" disabled id="save_btn"> <i class="las la-save"></i> Save
         </button>
@@ -166,8 +166,6 @@
                 var l_errs = $('.learn_errs');
                 var re_errs = $('.re_errs');
                 var target_errs = $('.target_errs');
-
-
 
                 $.ajax({
                     headers: {
