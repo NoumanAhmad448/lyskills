@@ -204,7 +204,7 @@ use App\Models\Media;
                                 Extra Recommended Video
                             </h3>
                             @if ($should_usr_hv_acs)
-                                <video controls class="w-100" oncontextmenu="return false;">
+                                <video controls class="w-100" oncontextmenu="return false;" preload="auto">
                                     <source src="{{ config('setting.s3Url') }}{{ $extra_vid->lec_path }}"
                                         type="{{ $extra_vid->f_mimetype ?? '' }}">
                                     {{ __('video_nt_fnd') }}
