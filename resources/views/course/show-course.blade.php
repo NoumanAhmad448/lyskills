@@ -133,7 +133,8 @@
             @endif
             <div class="px-2">
                 @php $price = $course->price; @endphp
-                @if ($price)
+                {{-- {{ dd($price) }} --}}
+                @if ($price && !is_string($price))
                     <section class="d-flex ">
                         @if ($price?->is_free)
                             <div class="mt-2 h3"> FREE </div>
@@ -155,13 +156,13 @@
                             ->first();
                     @endphp
                     @unless (
-                        ($price && $price->is_free) ||
+                        ($price && !is_string($price) && $price->is_free) ||
                             allowCourseToAdmin() ||
                             $u_id == $course->user_id ||
                             ($enrolled_s && $enrolled_s->count()))
                         <a href="{{ route('a_payment_methods', ['slug' => $course->slug]) }}"
                             class="btn btn-lg btn-block btn-outline-website"> Buy Now </a>
-                    @elseif($price && $price->is_free && $enrolled_s == null)
+                    @elseif($price && !is_string($price) && $price->is_free && $enrolled_s == null)
                         <form action="{{ route('enroll-now', ['course' => $course->id]) }}" method="post">
                             @csrf
                             <input type="submit" class="btn btn-lg btn-block btn-outline-website" value="Enroll Now" />
@@ -185,11 +186,11 @@
                     @endif
                 @endauth
                 @guest
-                    @unless ($price && $price->is_free)
+                    @unless ($price && !is_string($price) && $price->is_free)
                         <a href="{{ route('a_payment_methods', ['slug' => $course->slug]) }}"
                             class="btn btn-lg btn-block btn-outline-website"> Buy Now </a>
                     @endunless
-                    @if ($price && $price->is_free)
+                    @if ($price && !is_string($price) && $price->is_free )
                         <form action="{{ route('enroll-now', ['course' => $course->id]) }}" method="post">
                             @csrf
                             <input type="submit" class="btn btn-lg btn-block btn-outline-website" value="Enroll Now" />
@@ -361,7 +362,8 @@
                                                                 $media = $lec->media;
                                                             }
                                                             if ($media) {
-                                                                $total_time += (int) $media->time_in_mili;
+                                                                $total_time += (float) trim($media->duration);
+                                                                // dd($total_time);
                                                             }
                                                             $is_media_free = $media && $media->is_free;
                                                             $col = $is_media_free ? 'col-9' : 'col-10';
@@ -441,7 +443,7 @@
                                     @endforeach
                                 @endif
 
-                                @php $total_time = LyskillsCarbon::parse($total_time,true); @endphp
+                                {{-- @php $total_time = LyskillsCarbon::parse($total_time,true); @endphp --}}
                                 <input type="hidden" id="total_time" value="{{ $total_time }}">
 
                             </div>
@@ -585,7 +587,7 @@
             @endif
             <div class="px-2">
                 @php $price = $course->price; @endphp
-                @if ($price)
+                @if ($price && !is_string($price))
                     <section class="d-flex ">
                         @if ($price->is_free)
                             <div class="mt-2 h3"> FREE </div>
@@ -608,13 +610,13 @@
                             ->first();
                     @endphp
                     @unless (
-                        ($price && $price->is_free) ||
+                        ($price && !is_string($price) && $price->is_free) ||
                             allowCourseToAdmin() ||
                             $u_id == $course->user_id ||
                             ($enrolled_s && $enrolled_s->count()))
                         <a href="{{ route('a_payment_methods', ['slug' => $course->slug]) }}"
                             class="btn btn-lg btn-block btn-outline-website"> Buy Now </a>
-                    @elseif($price && $price->is_free && $enrolled_s == null)
+                    @elseif($price && !is_string($price) && $price->is_free && $enrolled_s == null)
                         <form action="{{ route('enroll-now', ['course' => $course->id]) }}" method="post">
                             @csrf
                             <input type="submit" class="btn btn-lg btn-block btn-outline-website" value="Enroll Now" />
@@ -638,11 +640,11 @@
                     @endif
                 @endauth
                 @guest
-                    @unless ($price && $price->is_free)
+                    @unless ($price && !is_string($price) && $price->is_free)
                         <a href="{{ route('a_payment_methods', ['slug' => $course->slug]) }}"
                             class="btn btn-lg btn-block btn-outline-website"> Buy Now </a>
                     @endunless
-                    @if ($price && $price->is_free)
+                    @if ($price && !is_string($price) && $price->is_free)
                         <form action="{{ route('enroll-now', ['course' => $course->id]) }}" method="post">
                             @csrf
                             <input type="submit" class="btn btn-lg btn-block btn-outline-website" value="Enroll Now" />

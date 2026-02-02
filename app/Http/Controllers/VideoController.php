@@ -238,7 +238,7 @@ class VideoController extends Controller
 
             $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
 
-            $duration = LyskillsCarbon::parse($time_mili,$toTimeString=true);
+            $duration = round($time_mili / 60, 2); // 2 minutes
             if(file_exists(public_path($this->st_path.$path1))){
                 // @ supress the error
                 @unlink(public_path($this->st_path.$path1));
