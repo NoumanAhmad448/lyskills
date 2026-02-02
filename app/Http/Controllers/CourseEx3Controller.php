@@ -184,7 +184,8 @@ class CourseEx3Controller extends Controller
                 abort(403);
             }
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            \server_logs($th->getMessage());
+            return back();
         }
     }
 
