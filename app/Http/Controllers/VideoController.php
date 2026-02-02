@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\UploadData;
+use Illuminate\Support\Facades\Log;
 
 class VideoController extends Controller
 {
@@ -22,7 +23,7 @@ class VideoController extends Controller
     public function __construct() {
         $this->uploadData = new UploadData;
         $this->uploadData = $this->uploadData->enableVideoUploading();
-        $this->st_path = "storage";
+        $this->st_path = "storage/";
     }
 
     function validate_user($course_id){
@@ -227,6 +228,7 @@ class VideoController extends Controller
             $f_mimetype = $file->getClientMimeType();
 
             $path1 = $file->store('uploads','public');
+            // dd($path1);
 
             $path = "uploads";
 
@@ -235,9 +237,12 @@ class VideoController extends Controller
 
             $getID3 = new \getID3;
             $file = $getID3->analyze(public_path($this->st_path.$path1));
-
-            $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
-
+            // dd($file);
+            $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 0;
+            if(empty($time_mili)){
+                Log::alert("the object time_mili has an issue with file storage path. Please make sure file is being saved correctly. Check this->st_path. it should have slash in the end");
+            }
+            // dd($time_mili);
             $duration = round($time_mili / 60, 2); // 2 minutes
             if(file_exists(public_path($this->st_path.$path1))){
                 // @ supress the error
@@ -257,7 +262,7 @@ class VideoController extends Controller
             $course->updated_at = LyskillsCarbon::now();
             $course->save();
             return response()->json([
-                'path' => $path,
+                'path' => config('setting.s3Url').$path,
                 'media' => $media,
                 'delete' => route('delete_video',['course_id'=>$course_id, 'media_id' => $media->id]),
                 'f_name' => reduceCharIfAv($f_name,30)

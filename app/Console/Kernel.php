@@ -32,6 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('cron:telescope-prune')->everyMinute();
         $schedule->command('env:check-consistency')->everyMinute();
         $schedule->command('app:check-debug')->everyMinute();
+        $schedule->command('uploads:clear')->everySixHours()->runInBackground();
 
     }
 

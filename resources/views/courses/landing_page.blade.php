@@ -165,7 +165,7 @@
                     @if ($vid_path)
                         <?php //echo Storage::disk('s3')->url($vid_path)
                         ?>
-                        <video width="450" height="350" controls>
+                        <video width="450" height="350" controls preload="auto">
                             <source src="{{ config('setting.s3Url') }}{{ $vid_path }}"
                                 type="{{ $course_vid->video_type }}">
                         </video>

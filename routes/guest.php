@@ -39,5 +39,5 @@ Route::domain(config("app.url"))->middleware(['web'])->group(function () {
     Route::get('/instructor/login', [InstructorAuthController::class, 'showLogin'])
         ->name('instructor.login');
     Route::post('/instructor/login', [InstructorAuthController::class, 'login']);
-    Route::get('categories/{category}', [CategoriesController::class, 'showCategory'])->name('user-categories');
+    // Route::get('categories/{category}', [CategoriesController::class, 'showCategory'])->name('user-categories');
 });
