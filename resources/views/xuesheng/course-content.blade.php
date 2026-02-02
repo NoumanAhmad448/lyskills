@@ -114,7 +114,7 @@ use App\Models\Media;
                 -->
                 {{-- prettier-ignore-end --}}
 
-                <media-player
+                {{-- <media-player
                     src="@if (file_exists(public_path('storage/' . $media->lec_name))) {{ asset('storage/' . $media->lec_name) }}@else{{ config('setting.s3Url') }}{{ $media->lec_name }} @endif"
                     aspect-ratio="16/9" type="{{ $media->f_mimetype ?? '' }}"
                     @if (empty($media->is_download)) {!! 'oncontextmenu="return false"' !!} @endif>
@@ -131,8 +131,13 @@ use App\Models\Media;
                         </media-seek-button>
                     </media-outlet>
                     <media-community-skin></media-community-skin>
-                </media-player>
-
+                </media-player> --}}
+                    <video controls class="w-100" oncontextmenu="return false;" preload="auto">
+                        <source src="{{ config('setting.s3Url') }}{{ $media->lec_name }}"
+                        {{-- <source src="http://lyskills-by-us-yes-that-us.s3.ap-south-1.amazonaws.com/uploads/uTxkkvjjh09Xs7a4Gohy37hnV55ZA8zQcpt2Qxsm.mp4" --}}
+                            type="{{ $extra_vid->f_mimetype ?? '' }}">
+                        {{ __('video_nt_fnd') }}
+                    </video>
                 <div class="my-5">
                     <div class="container">
                         <div class="row">
@@ -258,8 +263,6 @@ use App\Models\Media;
 
     <script>
         let rating_url = "{{ route('rating-course') }}";
-        let rating =
-            '@if ($course->rating) {{ $course->rating->rating }} @endif';
         let course_slug = '{{ $course->slug }}';
     </script>
     <script src="{{ asset('js/course-content.js') }}"></script>
