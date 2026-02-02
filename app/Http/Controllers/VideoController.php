@@ -262,7 +262,7 @@ class VideoController extends Controller
             $course->updated_at = LyskillsCarbon::now();
             $course->save();
             return response()->json([
-                'path' => config('setting.s3Url').$path,
+                'path' => $path,
                 'media' => $media,
                 'delete' => route('delete_video',['course_id'=>$course_id, 'media_id' => $media->id]),
                 'f_name' => reduceCharIfAv($f_name,30)
