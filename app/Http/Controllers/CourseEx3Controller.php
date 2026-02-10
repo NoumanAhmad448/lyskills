@@ -18,7 +18,7 @@ use App\Models\CourseEnrollment;
 use App\Models\CourseStatus;
 use App\Models\Media;
 use App\Models\OfflineEnrollment;
-use App\Models\Promotion;
+use Carbon\CarbonInterval;
 use App\Models\RatingModal;
 use App\Models\User;
 use App\Rules\IsScriptAttack;

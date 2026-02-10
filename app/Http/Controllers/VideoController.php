@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\UploadData;
 use Illuminate\Support\Facades\Log;
+use Carbon\CarbonInterval;
 
 class VideoController extends Controller
 {
@@ -24,6 +25,24 @@ class VideoController extends Controller
         $this->uploadData = new UploadData;
         $this->uploadData = $this->uploadData->enableVideoUploading();
         $this->st_path = "storage/";
+    }
+
+    public static function toSeconds($getId3)
+    {
+        // 1️⃣ Preferred: numeric seconds from getID3
+        if (!empty($getId3['playtime_seconds'])) {
+            return (int) round($getId3['playtime_seconds']);
+        }
+
+        // 2️⃣ Fallback: H:MM:SS string
+        if (!empty($getId3['playtime_string'])) {
+            return CarbonInterval::createFromFormat(
+                'H:i:s',
+                $getId3['playtime_string']
+            )->totalSeconds;
+        }
+
+        return 0;
     }
 
     function validate_user($course_id){
@@ -95,7 +114,8 @@ class VideoController extends Controller
             $file = $getID3->analyze(public_path('storage/'.$path1));
             $time_mili = !empty($file) && !empty($file['playtime_seconds']) ? $file['playtime_seconds'] : 2;
 
-            $duration = round($time_mili / 60, 2); // 2 minutes
+            // $duration = round($time_mili / 60, 2); // 2 minutes
+            $duration = $this->toSeconds($file);
             if(file_exists(public_path('storage/'.$path1))){
                 // @ supress the error
                 @unlink(public_path('storage/'.$path1));
@@ -243,7 +263,8 @@ class VideoController extends Controller
                 Log::alert("the object time_mili has an issue with file storage path. Please make sure file is being saved correctly. Check this->st_path. it should have slash in the end");
             }
             // dd($time_mili);
-            $duration = round($time_mili / 60, 2); // 2 minutes
+            // $duration = round($time_mili / 60, 2); // 2 minutes
+            $duration = $this->toSeconds($file);
             if(file_exists(public_path($this->st_path.$path1))){
                 // @ supress the error
                 @unlink(public_path($this->st_path.$path1));

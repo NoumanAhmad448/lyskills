@@ -4,6 +4,7 @@
     use App\Models\WishList;
     use App\Models\CourseEnrollment;
     use App\Classes\LyskillsCarbon;
+    use Carbon\CarbonInterval;
 @endphp
 @extends(config('setting.guest_blade'))
 
@@ -385,7 +386,7 @@
                                                                     </div>
                                                                 @endif
                                                                 <div class="col-2">
-                                                                    {{ $media->duration ?? '' }}
+                                                                    {{ CarbonInterval::seconds($media->duration)?->cascade()?->forHumans() ?? '' }}
                                                                 </div>
                                                             @endif
 
@@ -444,7 +445,9 @@
                                 @endif
 
                                 {{-- @php $total_time = LyskillsCarbon::parse($total_time,true); @endphp --}}
-                                <input type="hidden" id="total_time" value="{{ $total_time }}">
+                                <input type="hidden" id="total_time" value="{{ CarbonInterval::seconds($total_time)
+    ->cascade()
+    ->forHumans() }}">
 
                             </div>
                 @endif
@@ -666,7 +669,9 @@
                         <div> {{ $quizzes }} Quizzes </div>
                     @endif
                     @if (!empty($total_time) && $total_time)
-                        <i class="fa fa-star-o" aria-hidden="true"></i> total time {{ $total_time }}
+                        <i class="fa fa-star-o" aria-hidden="true"></i> total time {{ CarbonInterval::seconds($total_time)
+    ->cascade()
+    ->forHumans() }}
                     @endif
                     @php $ass = $course->assignments->count(); @endphp
                     @if ($ass)
