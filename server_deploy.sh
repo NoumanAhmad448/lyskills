@@ -53,8 +53,8 @@ yes | composer require --dev phpunit/phpunit
 # Avoid any node permission error
 sudo chown -R root:root /home/nomilyskills/public_html/
 
-# Create a custom link of public folder with storage folder
-# yes | php artisan storage:link
+# Create a custom link of public folder with storage folder. Always keep in on
+yes | php artisan storage:link
 
 # Run database migrations
 yes | php artisan migrate
