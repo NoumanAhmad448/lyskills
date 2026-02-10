@@ -93,15 +93,5 @@
 <!--load whatsapp-->
 <a href="https://wa.me/923349376619" class="whatsapp mr-3 mb-4" style="position: fixed; left: 5;bottom:0"> <img
         src="https://img.icons8.com/color/48/000000/whatsapp--v4.png" style="width: 4.5rem" alt="whatsapp" /> </a>
-<!--messenger-->
-
-<script async defer crossorigin="anonymous"
-    src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0&appId=444177396566651&autoLogAppEvents=1"
-    nonce="XPw3MZUm"></script>
-<!-- Load Facebook SDK for JavaScript -->
-<!-- Your Chat Plugin code -->
-<div class="fb-customerchat" style="bottom: 10px" attribution=setup_tool page_id="113826713695283"
-    greeting_dialog_display="hide">
-</div>
 
 @yield('script')

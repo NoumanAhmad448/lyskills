@@ -145,6 +145,7 @@ class VideoController extends Controller
                 'path' => $path,
                 'media' => $media,
                 'delete' => route('delete_video',['course_id'=>$course_id, 'media_id' => $media->id]),
+                "edit_video" => route('e_video', ['course_id' => $course_id, 'media_id' => $media->id]),
                 'f_name' => reduceCharIfAv($f_name,30)
             ]);
         }catch(Exception $d){

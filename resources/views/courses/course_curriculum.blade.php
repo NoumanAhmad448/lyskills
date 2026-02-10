@@ -231,11 +231,11 @@
                                                         </form>
                                                         <form
                                                             url="{{ route('e_video', ['course_id' => $course_id, 'media_id' => $media->id]) }}"
-                                                            class="ml-2 edit_form">
+                                                            class="ml-2 edit_form upload_video__form">
                                                             <input type="file" name="edit_video"
                                                                 class="custom-file-input edit_video d-none"
-                                                                id="edit_video">
-                                                            <label for="edit_video" class="btn btn-website"> Edit lecture
+                                                                id="edit_video{{$media->id}}">
+                                                            <label for="edit_video{{$media->id}}" class="btn btn-website"> Edit Lecture
                                                             </label>
                                                         </form>
                                                     </section>
@@ -758,8 +758,13 @@
 @endsection
 
 @section('page-js')
+@include("courses.js_functions")
+@include("courses.upload_video")
+@include("courses.edit_video")
     <script>
-        $(function() {
+               $(function() {
+
+
             $('#courses_curriculum').removeClass('text-info').addClass('bg-website text-white');
 
             $("#add_sec").click(function() {
@@ -1286,7 +1291,7 @@
                         </ul>
                             <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <form class="upload_video_form">
+                                <form class="upload_video__form">
                                     <div class="d-none show_message show_message-danger video_err text-center"> </div>
                                     <div class="form-check my-3">
                                         <input class="form-check-input" type="checkbox" id="set_free" name="set_free">
@@ -1344,291 +1349,17 @@
 
             });
 
-            function videoResponse(data, upload_vid, path, media) {
-                path = s3Url+path;
-                let response = `<section class="lecture_vid row p-3">
-                                                <div class="col-md-9">
-                                                <div class="form-check my-3">
-                                                        <input class="form-check-input is_free" type="checkbox"
-                                                        media_id="${data['media']}"
-                                                            id="is_free_${data['media']['id']}"
-                                                         name="set_free"
-                                                        ${data['media']['is_free'] ? "checked" : ''}
-                                                        >
-                                                        <label class="form-check-label" for="set_free">
-                                                            set video download
-                                                        </label>
-                                                    </div>
-                                                <div class="form-check my-3">
-                                                        <input class="form-check-input is_free" type="checkbox"
-                                                        media_id="${data['media']['id']}"
-                                                        id="is_download_${data['media']}" name="is_download"
-                                                        ${data['media']['is_download'] ? "checked" : ''}
-                                                        >
-                                                        <label class="form-check-label" for="is_download">
-                                                            set video free
-                                                        </label>
-                                                </div>`
-                if ({{ config('setting.en_showing_vid_val') ? 1 : 0 }}) {
-                    $response += `
-                                                <section class="d-flex justify-content-start align-items-center my-3">
-                                                    <div class="col-3" name="access_duration">
-                                                        <label for="date_time">Until Valid Date?</label>
-                                                        <input p_d="${data['media']['access_duration']}"
-                                                        value="${data['media']['access_duration']}" type="text"
-                                                        class="form-control date-picker
-                                                        access_duration_${data['media']['course_id']}" autocomplete="off"
-                                                        id="date_time" name="date_time">
-                                                    </div>
-                                                    <button class="saveAccess btn btn-info" style="margin-top: 2rem"
-                                                    data-course-id="${data['media']['course_id']}"
-                                                    data-lecture-id="${data['media']['lecture_id']}" class=''>Save</button>
-                                                </section>`
-                }
-                response += `
-                                                <div class="d-flex">
-                                                    <video width="500" height="240" controls oncontextmenu="return false;" preload="auto">
-                                                        <source src="${path}" type="${media['f_mimetype']}">
-                                                    </video>
-                                                </div>
-                                                <section class="mt-2">
-                                                    <h3 class="d-none d-md-block ml-3"> ${data['f_name']} </h3>
-                                                    <form url="${data['delete']}">
-                                                        <button type="button" class="btn btn-danger del_media"> Delete lecture </button>
-                                                    </form>
-                                                </section>
-                                                </div>
-                                            </section>
-                                        `
-                upload_vid.replaceWith(response);
-            }
-            $('.sec-container').on('change', '.upload_video', function() {
-                let current_file = $(this);
-                let c_f_form = current_file.parents('.upload_video_form');
-                var form_data = new FormData(c_f_form[0]);
-                console.log(form_data)
-                let file = this.files[0];
-                if (file) {
-                    let file_err = current_file.parent().find('.file_err');
-                    var f_type = file.type;
-                    if (f_type !== "video/mp4" && f_type !== "video/ogg" && f_type !== "video/webm") {
-                        file_err.addClass('d-block').text('Only MP4, OGG, WEBM formats are allowed');
-                        current_file.addClass('is-invalid');
-                        setInterval(function() {
-                            file_err.removeClass('d-block').addClass('d-none').text();
-                            current_file.removeClass('is-invalid');
-                        }, 10000);
-                        current_file.val('');
-                    } else if (parseInt(file.size / 1024 / 1024 / 1024) > 4.2) {
-                        file_err.addClass('d-block').text('File size cannot exceed from 4GB');
-                        current_file.addClass('is-invalid');
-                        setInterval(function() {
-                            file_err.removeClass('d-block').addClass('d-none').text();
-                            current_file.removeClass('is-invalid');
-                        }, 10000);
-                        current_file.val('');
+            
+      
 
-                    } else {
-                        current_file.attr('disabled', true);
-                        let video_url = current_file.attr('video_url');
-                        let main_parent = current_file.parents('.upload_video_con').first();
-                        main_parent.append(`
-                        <div class="progress mt-3">
-                            <div class="p_bar progress-bar bg-info progress-bar-striped" role="progressbar" style="width: 0%"
-                            aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        `);
-                        let progress_bar = main_parent.find('.p_bar');
-                        if (video_url) {
-                            $.ajax({
-                                url: video_url,
-                                type: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: form_data,
-                                contentType: false,
-                                processData: false,
-                                dataType: 'JSON',
-
-                                xhr: function() {
-                                    var xhr = new window.XMLHttpRequest();
-                                    xhr.upload.addEventListener("progress", function(evt) {
-                                        if (evt.lengthComputable) {
-                                            var percentComplete = evt.loaded / evt
-                                                .total;
-                                            let c_progress = Math.round(
-                                                percentComplete * 100);
-                                            progress_bar.attr('aria-valuenow',
-                                                c_progress);
-                                            progress_bar.css('width', c_progress + '%');
-
-                                            progress_bar.html('<b> Uploading  ' +
-                                                c_progress + '% </b>');
-                                        }
-                                    }, false);
-                                    return xhr;
-                                },
-                                success: function(data) {
-                                    current_file.attr('disabled', false);
-                                    if (data['err']) {
-                                        show_message(data['err'])
-                                    } else {
-                                        let path = data['path'];
-                                        let upload_vid = current_file.parents(
-                                            '.upload_video_con').first();
-                                        let media = data['media'];
-                                        let video_btn = current_file.parents(
-                                                '.upload_video_con').prev('.lecture_container')
-                                            .find('.lec_content').first();
-                                        video_btn.removeClass('lec_content').addClass(
-                                            'v_c_vid');
-
-                                        videoResponse(data, upload_vid, path, media)
-                                        current_file.val('');
-                                    }
-                                },
-                                error: function(data) {
-                                    current_file.val('');
-                                    progress_bar.parent().remove();
-                                    current_file.attr('disabled', false);
-                                    let show_err = c_f_form.children('.video_err');
-                                    let res = JSON.parse(data);
-                                    $(".progress").each(function() {
-                                        $(this).hide()
-                                    })
-                                    if (res['err']) {
-                                        show_message(res['err'])
-                                    } else {
-                                        data = JSON.parse(data['responseText'])['errors'];
-                                        show_err.removeClass('d-none').addClass('d-block').text(
-                                            data['upload_video']);
-                                        setTimeout(function() {
-                                            show_err.addClass('d-none').removeClass(
-                                                'd-block');
-                                        }, 15000);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-
-            $('.sec-container').on('change', '.edit_video', function() {
-                let current_file = $(this);
-                let c_f_form = current_file.parents('.edit_form');
-
-                let form = current_file.parents('form').first();
-                var form_data = new FormData(c_f_form[0]);
-                let file = this.files[0];
-                if (file) {
-                    var f_type = file.type;
-                    if (f_type !== "video/mp4" && f_type !== "video/ogg" && f_type !== "video/webm") {
-                        show_message('Only MP4, OGG, WEBM formats are allowed');
-                    } else if (parseInt(file.size / 1024 / 1024 / 1024) > 4) {
-                        show_message("File size cannot exceed from 4GB");
-                    } else {
-                        current_file.attr('disabled', true);
-                        let video_url = form.attr('url');
-                        let main_parent = current_file.parents('.upload_video_con').first();
-                        main_parent.append(`
-                        <div class="progress mt-3 ml-2" style="width: 70%">
-                            <div class="p_bar progress-bar bg-info progress-bar-striped" role="progressbar" style="width: 0%"
-                            aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        `);
-                        let progress_bar = main_parent.find('.p_bar');
-                        if (video_url) {
-                            $.ajax({
-                                url: video_url,
-                                type: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                data: form_data,
-                                contentType: false,
-                                processData: false,
-                                dataType: 'JSON',
-
-                                xhr: function() {
-                                    var xhr = new window.XMLHttpRequest();
-                                    xhr.upload.addEventListener("progress", function(evt) {
-                                        if (evt.lengthComputable) {
-                                            var percentComplete = evt.loaded / evt
-                                                .total;
-                                            let c_progress = Math.round(
-                                                percentComplete * 100);
-                                            progress_bar.attr('aria-valuenow',
-                                                c_progress);
-                                            progress_bar.css('width', c_progress + '%');
-
-                                            progress_bar.html('<b> Uploading  ' +
-                                                c_progress + '% </b>');
-                                        }
-                                    }, false);
-                                    return xhr;
-                                },
-                                success: function(data) {
-                                    current_file.attr('disabled', false);
-                                    // console.error(data[path]);
-                                    let path = data['path'];
-                                    let upload_vid = current_file.parents('.lecture_vid')
-                                        .first().find('source').first();
-                                    upload_vid.attr('src', path);
-                                    let media = data['media'];
-
-                                    progress_bar.parent().remove();
-                                },
-                                error: function(data) {
-                                    show_message('something went wrong');
-                                    progress_bar.parent().remove();
-                                    current_file.attr('disabled', false);
-                                    current_file.val('')
-
-
-                                }
-                            });
-                        }
-                    }
-                }
-            });
+  
 
 
             $('.sec-container').on('change', '.upload_video_res', function() {
-                let current_file = $(this);
-                let c_f_form = current_file.parents('.up_video_form');
-                var form_data = new FormData(c_f_form[0]);
-                let file = this.files[0];
-                if (file) {
-                    let file_err = current_file.parent().find('.file_err');
-                    var f_type = file.type;
-                    if (f_type !== "video/mp4" && f_type !== "video/ogg" && f_type !== "video/webm") {
-                        file_err.addClass('d-block').text('Only MP4, OGG, WEBM formats are allowed');
-                        current_file.addClass('is-invalid');
-                        setInterval(function() {
-                            file_err.removeClass('d-block').addClass('d-none').text();
-                            current_file.removeClass('is-invalid');
-                        }, 10000);
-                    } else if (parseInt(file.size / 1024 / 1024) > 4096) {
-                        file_err.addClass('d-block').text('File size cannot exceed from 4GB');
-                        current_file.addClass('is-invalid');
-                        setInterval(function() {
-                            file_err.removeClass('d-block').addClass('d-none').text();
-                            current_file.removeClass('is-invalid');
-                        }, 10000);
-
-                    } else {
-                        current_file.attr('disabled', true);
-                        let video_url = current_file.attr('video_url');
-                        let main_parent = current_file.parents('.up_vid_res').first();
-                        main_parent.append(`
-                        <div class="progress mt-3">
-                            <div class="p_bar progress-bar bg-info progress-bar-striped" role="progressbar" style="width: 0%"
-                            aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        `);
-                        let progress_bar = main_parent.find('.p_bar');
+                 const {video_url, progress_bar,form_data,
+                    current_file,
+                    c_f_form
+                 } = handleVideoUpload(this, 75)
                         if (video_url) {
                             $.ajax({
                                 url: video_url,
@@ -1642,22 +1373,8 @@
                                 dataType: 'JSON',
 
                                 xhr: function() {
-                                    var xhr = new window.XMLHttpRequest();
-                                    xhr.upload.addEventListener("progress", function(evt) {
-                                        if (evt.lengthComputable) {
-                                            var percentComplete = evt.loaded / evt
-                                                .total;
-                                            let c_progress = Math.round(
-                                                percentComplete * 100);
-                                            progress_bar.attr('aria-valuenow',
-                                                c_progress);
-                                            progress_bar.css('width', c_progress + '%');
+                                    return createProgressXhr(progress_bar);
 
-                                            progress_bar.html('<b> Uploading  ' +
-                                                c_progress + '% </b>');
-                                        }
-                                    }, false);
-                                    return xhr;
                                 },
                                 success: function(data) {
                                     current_file.attr('disabled', false);
@@ -1705,8 +1422,6 @@
                                 }
                             });
                         }
-                    }
-                }
             });
 
 
@@ -2664,12 +2379,7 @@
                         current_file.attr('disabled', true);
                         let file_url = current_file.attr('other_files_url');
                         let main_parent = current_file.parents('.other_files_con').first();
-                        main_parent.append(`
-                        <div class="progress mt-3">
-                            <div class="p_bar progress-bar bg-info progress-bar-striped" role="progressbar" style="width: 0%"
-                            aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        `);
+                        main_parent.append(p_elment());
                         let progress_bar = main_parent.find('.p_bar');
                         if (file_url) {
                             $.ajax({
