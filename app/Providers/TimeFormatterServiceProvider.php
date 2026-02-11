@@ -20,5 +20,14 @@ class TimeFormatterServiceProvider extends ServiceProvider
 
             return new HumanTimeFormatter();
         });
+
+        $this->app->singleton('mediaPlayerView', function () {
+
+            if (config('time.video') === 'modern') {
+                return 'xuesheng.media-player';
+            }
+
+            return 'xuesheng.html5-player';
+        });
     }
 }
