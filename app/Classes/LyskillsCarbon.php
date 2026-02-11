@@ -15,6 +15,7 @@ class LyskillsCarbon
      */
     private static $date_form = "Y-m-d";
     private static $db_date_form = "Y-m-d H:i:s";
+    private static $show_date = "d-M-y";
 
     public static function  setDate($date) {
         return Carbon::parse($date);
@@ -93,7 +94,7 @@ class LyskillsCarbon
     }
 
     public static function parse($value,$format=false){
-        return $format ? Carbon::parse($value)->format($format) : Carbon::parse($value);
+        return $format ? Carbon::parse($value)->format(self::$show_date) : Carbon::parse($value);
     }
 
     public static function dateFormat($value){
