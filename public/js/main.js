@@ -53,7 +53,6 @@ $(function () {
     });
   }
 });
-
 $(function () {
   $("#close_user_notification").click(function () {
     localStorage.setItem("closed_user_notification", true);

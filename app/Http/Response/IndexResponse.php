@@ -29,18 +29,10 @@ class IndexResponse implements IndexContracts
             $faq = Cache::has(FaqCache::FAQS) ? Cache::get(FaqCache::FAQS) : FaqCache::setFaqs();
             $courses = Cache::has(CourseCache::COURSES) ? Cache::get(CourseCache::COURSES) : CourseCache::setCourses();
 
+            $data = compact('title', 'desc', 'cs', 'post', 'faq', 'courses', "settings", "RatingModal");
             return $request->wantsJson()
-                ? response()->json([
-                    ResponseKeys::TITLE => $title,
-                    ResponseKeys::DESC => $desc,
-                    ResponseKeys::CS => $cs,
-                    'post' => $post,
-                    'faq' => $faq,
-                    'courses' => $courses,
-                    "settings" => $settings,
-                    "RatingModal" => $RatingModal
-                ])
-                : view(config("setting.welcome_blade"), compact('title', 'desc', 'cs', 'post', 'faq', 'courses', "settings", "RatingModal"));
+                ? response()->json($data)
+                : view(config("setting.welcome_blade"), $data);
         } catch (Exception $e) {
             return server_logs([true, $e], [true, $request]);
         }
