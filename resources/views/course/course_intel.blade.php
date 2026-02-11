@@ -1,3 +1,8 @@
+@php
+    use App\Classes\LyskillsCarbon;
+    use App\Models\WishList;
+
+@endphp
 <h1 class="text-capitalize" style="font-weight: bold!important"> {{ $course->course_title ?? '' }}
 </h1>
 <div class="mt-2" class="text-justify">
