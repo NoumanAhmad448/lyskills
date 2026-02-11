@@ -123,12 +123,7 @@
     </div>
 </div>
 
-<section class="d-flex justify-content-center align-items-center loader loading-section loader">
-    <div id="loading" class="spinner-border text-info text-center" style="width: 90px; height: 90px"
-        role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-</section>
+@include("loader")
 
 <div class="modal fade" tabindex="-1" id="submitCourseModal" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">

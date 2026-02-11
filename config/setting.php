@@ -95,7 +95,9 @@ $site_settings = [
                 '.env.live.example',
                 '.env.dev.example',
         ],
-        "en_showing_vid_val" => false
+        "en_showing_vid_val" => false,
+        "show_loader" => false,
+        "show_nav" => true,
 ];
 
 if (env("SHOW_MIDDLEWARE")) {
