@@ -11,7 +11,7 @@ class HourMinuteTimeFormatter implements TimeFormatterInterface
     {
         $interval = CarbonInterval::seconds($totalSeconds)->cascade();
 
-        $hours = str_pad($interval->hours, 2, '0', STR_PAD_LEFT);
+        $hours = str_pad((int) $interval->totalHours, 2, '0', STR_PAD_LEFT);
         $minutes = str_pad($interval->minutes, 2, '0', STR_PAD_LEFT);
 
         return "{$hours}:{$minutes}";
