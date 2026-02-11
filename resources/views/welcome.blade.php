@@ -1,6 +1,7 @@
 @extends("layouts.guest")
 
 @section('content')
+    @include('loader')
     @include('session_msg')
     @include('home_page')
 
