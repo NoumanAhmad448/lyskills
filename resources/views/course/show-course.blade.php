@@ -4,7 +4,7 @@
     use App\Models\WishList;
     use App\Models\CourseEnrollment;
     use App\Classes\LyskillsCarbon;
-    use Carbon\CarbonInterval;
+    $formatter = app(\App\Classes\Contracts\TimeFormatterInterface::class);
 @endphp
 @extends(config('setting.guest_blade'))
 
@@ -386,57 +386,10 @@
                                                                     </div>
                                                                 @endif
                                                                 <div class="col-2">
-                                                                    {{ CarbonInterval::seconds($media->duration)?->cascade()?->forHumans() ?? '' }}
+                                                                    {{ $formatter->format($media->duration) }}
                                                                 </div>
                                                             @endif
-
                                                         </section>
-                                                        {{-- @php $res_video = $lec->res_vid; @endphp --}}
-                                                        {{-- @if ($res_video)
-                                                            <div>
-                                                                <i class="fa fa-video-camera mr-2" aria-hidden="true"></i>
-                                                                {{ $res_video->f_name ?? '' }}
-                                </div>
-                                @endif
-                                @php $article = $lec->article; @endphp
-                                @if ($article)
-                                <div>
-                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                    {{ reduceCharIfAv($article->article_txt ?? '' , 50) }}
-                                </div>
-                                @endif
-                                @php $ex_res = $lec->ex_res; @endphp
-                                @if ($ex_res)
-                                <div>
-                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                    {{ $ex_res->title ?? ''  }}
-                                </div>
-                                @endif
-                                @php $other_file = $lec->other_file; @endphp
-                                @if ($other_file)
-                                <div>
-                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                    {{ $other_file->saved_f_name ?? ''  }}
-                                </div>
-                                @endif --}}
-                                                        {{-- @php $assign = $lec->assign; @endphp
-                                                        @if ($assign->count())
-                                                            @foreach ($assign as $ass)
-                                                                <div>
-                                                                    <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                                                    {{ $ass->title ?? ''  }}
-                            </div>
-                            @endforeach
-                            @endif
-                            @php $quizzs = $lec->quizzs; @endphp
-                            @if ($quizzs->count())
-                            @foreach ($quizzs as $q)
-                            <div>
-                                <i class="fa fa-file-text mr-2" aria-hidden="true"></i>
-                                {{ $q->title ?? ''  }}
-                            </div>
-                            @endforeach
-                            @endif --}}
                                                     @endforeach
                                                 @endif
                                             </div>
@@ -445,9 +398,7 @@
                                 @endif
 
                                 {{-- @php $total_time = LyskillsCarbon::parse($total_time,true); @endphp --}}
-                                <input type="hidden" id="total_time" value="{{ CarbonInterval::seconds($total_time)
-    ->cascade()
-    ->forHumans() }}">
+                                <input type="hidden" id="total_time" value="{{  $formatter->format($total_time)}}">
 
                             </div>
                 @endif
@@ -669,9 +620,7 @@
                         <div> {{ $quizzes }} Quizzes </div>
                     @endif
                     @if (!empty($total_time) && $total_time)
-                        <i class="fa fa-star-o" aria-hidden="true"></i> total time {{ CarbonInterval::seconds($total_time)
-    ->cascade()
-    ->forHumans() }}
+                        <i class="fa fa-star-o" aria-hidden="true"></i> Total time {{ $formatter->format($total_time)}}
                     @endif
                     @php $ass = $course->assignments->count(); @endphp
                     @if ($ass)

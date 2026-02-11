@@ -1,7 +1,8 @@
-<?php
+@php
 use App\Models\Lecture;
 use App\Models\Media;
-?>
+$formatter = app(\App\Classes\Contracts\TimeFormatterInterface::class);
+@endphp
 @extends(config('setting.guest_blade'))
 
 @section('page-css')
@@ -61,7 +62,7 @@ use App\Models\Media;
                                                     <i class="fa fa-play mr-2"
                                                         aria-hidden="true"></i>{{ reduceCharIfAv($lec->lec_name ?? '', 40) }}
                                                 </a>
-                                                <span class="mr-1"> {{ $video->duration ?? '' }} </span>
+                                                <span class="mr-1"> {{ $formatter->format($video->duration) }} </span>
                                             </section>
                                         </li>
                                     @endif

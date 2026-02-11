@@ -193,6 +193,7 @@ return [
         App\Providers\RuleServiceProvider::class,
         App\Providers\HealthServiceProvider::class,
         HomeController1Provider::class,
+        App\Providers\TimeFormatterServiceProvider::class,
         // Mostafaznv\Recaptcha\RecaptchaServiceProvider::class,
     ],
 
