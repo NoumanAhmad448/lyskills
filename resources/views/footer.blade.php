@@ -75,6 +75,7 @@
             <div class="row mt-3 pb-3">
                 <div class="col">
                     <p class="text-center">&copy; Copyright {{ date('Y') }}- Lyskills. All Rights Are Reserved.</p>
+                    <p class="text-center">Powered By <a class="text-white border-bottom border-black" href="https://sites.google.com/view/noumanwebsitebuilder/home"> Nouman Website Builder </a></p>
                 </div>
             </div>
         </div>
